@@ -1,0 +1,30 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"1": "celestisynth:item/solaris",
+		"particle": "celestisynth:item/solaris"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, -90, 55],
+			"translation": [0, 7.75, 0],
+			"scale": [1.5, 1.5, 0.85]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 90, -55],
+			"translation": [0, 7.75, 0],
+			"scale": [1.5, 1.5, 0.85]
+		},
+		"firstperson_righthand": {
+			"rotation": [-20, -90, 10],
+			"translation": [1.13, 5.2, -0.26],
+			"scale": [1.36, 1.36, 0.68]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-20, 90, -10],
+			"translation": [1.13, 5.2, -0.26],
+			"scale": [1.36, 1.36, 0.68]
+		}
+	}
+}

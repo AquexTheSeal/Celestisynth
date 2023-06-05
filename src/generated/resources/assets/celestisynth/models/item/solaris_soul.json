@@ -1,0 +1,6 @@
+{
+  "parent": "celestisynth:item/long_blade",
+  "textures": {
+    "layer0": "celestisynth:item/solaris_soul"
+  }
+}
