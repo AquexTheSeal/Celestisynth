@@ -2,9 +2,7 @@ package com.aqutheseal.celestisynth;
 
 import com.aqutheseal.celestisynth.animation.CSAnimator;
 import com.aqutheseal.celestisynth.network.CSNetwork;
-import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
-import com.aqutheseal.celestisynth.registry.CSItemRegistry;
-import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
+import com.aqutheseal.celestisynth.registry.*;
 import com.aqutheseal.celestisynth.registry.datagen.CSItemModelProvider;
 import com.mojang.logging.LogUtils;
 import net.minecraft.data.DataGenerator;
@@ -32,6 +30,7 @@ public class Celestisynth {
         CSEntityRegistry.ENTITY_TYPES.register(modEventBus);
         CSItemRegistry.ITEMS.register(modEventBus);
         CSSoundRegistry.SOUND_EVENTS.register(modEventBus);
+        CSFeatureRegistry.FEATURES.register(modEventBus);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
                 modEventBus.addListener(CSAnimator::registerAnimationLayer)
         );

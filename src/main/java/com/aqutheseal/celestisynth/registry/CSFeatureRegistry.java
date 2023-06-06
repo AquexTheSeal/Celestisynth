@@ -1,0 +1,17 @@
+package com.aqutheseal.celestisynth.registry;
+
+import com.aqutheseal.celestisynth.Celestisynth;
+import com.aqutheseal.celestisynth.world.feature.SolarCraterFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+public class CSFeatureRegistry {
+    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Celestisynth.MODID);
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> SOLAR_CRATER = FEATURES.register("solar_crater",
+            () -> new SolarCraterFeature(NoneFeatureConfiguration.CODEC)
+    );
+}
