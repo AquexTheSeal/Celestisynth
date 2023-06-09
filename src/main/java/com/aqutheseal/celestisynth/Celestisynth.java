@@ -3,7 +3,10 @@ package com.aqutheseal.celestisynth;
 import com.aqutheseal.celestisynth.animation.CSAnimator;
 import com.aqutheseal.celestisynth.network.CSNetwork;
 import com.aqutheseal.celestisynth.registry.*;
+import com.aqutheseal.celestisynth.registry.datagen.CSBlockModelProvider;
+import com.aqutheseal.celestisynth.registry.datagen.CSBlockstateProvider;
 import com.aqutheseal.celestisynth.registry.datagen.CSItemModelProvider;
+import com.aqutheseal.celestisynth.registry.datagen.CSRecipeProvider;
 import com.mojang.logging.LogUtils;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,6 +32,7 @@ public class Celestisynth {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         CSEntityRegistry.ENTITY_TYPES.register(modEventBus);
         CSItemRegistry.ITEMS.register(modEventBus);
+        CSBlockRegistry.BLOCKS.register(modEventBus);
         CSSoundRegistry.SOUND_EVENTS.register(modEventBus);
         CSFeatureRegistry.FEATURES.register(modEventBus);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
@@ -50,7 +54,10 @@ public class Celestisynth {
         DataGenerator dataGenerator = event.getGenerator();
         final ExistingFileHelper efh = event.getExistingFileHelper();
         if (event.includeServer()) {
+            dataGenerator.addProvider(true, new CSBlockModelProvider(dataGenerator.getPackOutput(), MODID, efh));
+            dataGenerator.addProvider(true, new CSBlockstateProvider(dataGenerator.getPackOutput(), MODID, efh));
             dataGenerator.addProvider(true, new CSItemModelProvider(dataGenerator.getPackOutput(), MODID, efh));
+            dataGenerator.addProvider(true, new CSRecipeProvider(dataGenerator.getPackOutput()));
         }
     }
 }

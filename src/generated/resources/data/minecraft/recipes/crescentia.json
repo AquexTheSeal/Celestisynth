@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "i": {
+      "item": "minecraft:iron_sword"
+    },
+    "l": {
+      "item": "celestisynth:lunar_stone"
+    },
+    "n": {
+      "item": "minecraft:netherite_ingot"
+    }
+  },
+  "pattern": [
+    "lnl",
+    " ln",
+    "i l"
+  ],
+  "result": {
+    "item": "celestisynth:crescentia"
+  },
+  "show_notification": true
+}

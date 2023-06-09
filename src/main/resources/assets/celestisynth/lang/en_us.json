@@ -1,6 +1,8 @@
 {
+  "tab.celestisynth.celestisynth_tab": "Celestisynth",
   "item.celestisynth.shift_notice": "[Hold SHIFT to view description]",
   "item.celestisynth.celestial_tier": "CELESTIAL GRADE",
+
   "item.celestisynth.solaris": "Solaris",
   "item.celestisynth.solaris.desc_0": "- Right-click to perform a graceful spin, inflicting damage and burning nearby entities.",
   "item.celestisynth.solaris.desc_1": "- Right-click while holding SHIFT to dash forward, striking and temporarily igniting entities in your path.",

@@ -139,8 +139,11 @@ dependencies {
     implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:4534645")
     implementation fg.deobf("curse.maven:cloth-config-348521:4440461")
 
-    //implementation fg.deobf("curse.maven:rubidium-574856:4448053")
-    //implementation fg.deobf("curse.maven:oculus-581495:4451142")
+    implementation fg.deobf("curse.maven:rubidium-574856:4448053")
+    implementation fg.deobf("curse.maven:oculus-581495:4451142")
+
+    implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4531203")
+    implementation fg.deobf("curse.maven:citadel-331936:4556622")
 }
 
 jar {
