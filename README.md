@@ -1,4 +1,4 @@
-# Celestisynth![celestisynth](https://github.com/AquexTheSeal/Celestisynth/assets/85479639/22551545-a8ff-434b-b4fc-8dc5159774ca)
+![celestisynth](https://github.com/AquexTheSeal/Celestisynth/assets/85479639/22551545-a8ff-434b-b4fc-8dc5159774ca)
 
 ### Welcome to the Celestisynth repository!
 Celestisynth is an exceptional Minecraft Forge mod for version 1.19.4. Its primary objective is to introduce
