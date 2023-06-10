@@ -1,4 +1,5 @@
-![scaled](https://github.com/AquexTheSeal/Celestisynth/assets/85479639/77cb003b-628e-45cf-8ef3-2122ad5901e8)
+
+![celestisynth_banner](https://github.com/AquexTheSeal/Celestisynth/assets/85479639/36ac5f88-2c2f-4d2b-a904-f0aca9b0233c)
 
 ### Welcome to the Celestisynth repository!
 
