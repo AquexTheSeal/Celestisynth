@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.item;
 
 import com.aqutheseal.celestisynth.animation.AnimationManager;
+import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.aqutheseal.celestisynth.entities.CrescentiaRanged;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
@@ -109,20 +110,22 @@ public class CrescentiaItem extends SwordItem {
                 player.hurtMarked = true;
             }
             if (animationTimer == 20) {
-                CrescentiaRanged projectile = CSEntityRegistry.CRESCENTIA_RANGED.get().create(level);
-                double d0 = -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
-                double d1 = Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-                double d2 = -Mth.sin(player.getXRot() * ((float) Math.PI / 180F));
+                if (!level.isClientSide()) {
+                    CrescentiaRanged projectile = CSEntityRegistry.CRESCENTIA_RANGED.get().create(level);
+                    double d0 = -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
+                    double d1 = Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
+                    double d2 = -Mth.sin(player.getXRot() * ((float) Math.PI / 180F));
 
-                projectile.setOwnerUuid(player.getUUID());
-                projectile.setAngleX((float) d0);
-                projectile.setAngleY((float) d2);
-                projectile.setAngleZ((float) d1);
-                projectile.setAddAngleX((float) d0 / 2);
-                projectile.setAddAngleY((float) d2 / 2);
-                projectile.setAddAngleZ((float) d1 / 2);
-                projectile.moveTo(player.getX(), player.getY() + 1, player.getZ());
-                level.addFreshEntity(projectile);
+                    projectile.setOwnerUuid(player.getUUID());
+                    projectile.setAngleX((float) d0);
+                    projectile.setAngleY((float) d2);
+                    projectile.setAngleZ((float) d1);
+                    projectile.setAddAngleX((float) d0 / 2);
+                    projectile.setAddAngleY((float) d2 / 2);
+                    projectile.setAddAngleZ((float) d1 / 2);
+                    projectile.moveTo(player.getX(), player.getY() + 1, player.getZ());
+                    level.addFreshEntity(projectile);
+                }
 
                 for (int i = 0; i < 10; i++) {
                     Random random = new Random();
@@ -166,7 +169,7 @@ public class CrescentiaItem extends SwordItem {
                             double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
                             target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
                             target.invulnerableTime = 0;
-                            target.hurt(player.damageSources().playerAttack(player), 1.3f + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
+                            target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.crescentiaSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
                             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                             target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
                         }

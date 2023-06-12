@@ -1,7 +1,9 @@
 package com.aqutheseal.celestisynth.entities;
 
+import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.CrescentiaItem;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -9,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -38,7 +41,7 @@ public class CrescentiaRanged extends Entity {
     private static final EntityDataAccessor<Float> ANGLE_ADD_X = SynchedEntityData.defineId(CrescentiaRanged.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ANGLE_ADD_Y = SynchedEntityData.defineId(CrescentiaRanged.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ANGLE_ADD_Z = SynchedEntityData.defineId(CrescentiaRanged.class, EntityDataSerializers.FLOAT);
-    
+
     public CrescentiaRanged(EntityType<?> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -58,6 +61,7 @@ public class CrescentiaRanged extends Entity {
         double newX = getX() + getAngleX();
         double newY = getY() + getAngleY();
         double newZ = getZ() + getAngleZ();
+        BlockPos newPos = new BlockPos((int) newX, (int) newY, (int) newZ);
 
         if (new Random().nextBoolean()) {
             CSEffect.createInstance(this, CSEffectTypes.CRESCENTIA_THROW, getAngleX(), getAngleY() - 1.5, getAngleZ());
@@ -75,7 +79,7 @@ public class CrescentiaRanged extends Entity {
                     double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
                     target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
                     target.invulnerableTime = 0;
-                    target.hurt(player.damageSources().playerAttack(player), 0.7f + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, stack) / 3F));
+                    target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.crescentiaShiftSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, stack) / 3F));
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                     target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
                 }
@@ -87,8 +91,19 @@ public class CrescentiaRanged extends Entity {
             }
         }
 
-        if (tickCount == 100) {
-            level.explode(player, newX, newY, newZ, 1.0F, Level.ExplosionInteraction.MOB);
+        int radius = 2;
+        for (int sx = -radius; sx <= radius; sx++) {
+            for (int sy = -radius; sy <= radius; sy++) {
+                for (int sz = -radius; sz <= radius; sz++) {
+                    if (getLevel().getBlockState(newPos.offset(sx, sy, sz)).is(BlockTags.REPLACEABLE_PLANTS)) {
+                        getLevel().destroyBlock(newPos.offset(sx, sy, sz), false, player);
+                    }
+                }
+            }
+        }
+
+        if (tickCount == 100 || !getLevel().getBlockState(newPos).isAir()) {
+            level.explode(player, newX, newY, newZ, 3.0F, Level.ExplosionInteraction.MOB);
             CrescentiaItem.createCrescentiaFirework(stack, level, player, newX, newY, newZ, true, tickCount);
             this.remove(RemovalReason.DISCARDED);
         }
@@ -96,7 +111,7 @@ public class CrescentiaRanged extends Entity {
 
     public void playRandomBladeSound(int length, double x, double y, double z) {
         SoundEvent randomSound = CrescentiaItem.CRESENTIA_SOUNDS[new Random().nextInt(length)];
-        level.playSound(level.getPlayerByUUID(getOwnerUuid()), x, y, z, randomSound, SoundSource.HOSTILE, 0.25F, 0.5F + new Random().nextFloat());
+        level.playSound(level.getPlayerByUUID(getOwnerUuid()), x, y, z, randomSound, SoundSource.HOSTILE, 0.10F, 0.5F + new Random().nextFloat());
     }
 
     @Override

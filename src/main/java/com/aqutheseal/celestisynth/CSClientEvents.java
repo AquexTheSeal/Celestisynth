@@ -36,17 +36,19 @@ public class CSClientEvents {
     public static void onToolTipComponent(RenderTooltipEvent.GatherComponents event) {
         ItemStack stack = event.getItemStack();
         String name = ForgeRegistries.ITEMS.getKey(stack.getItem()).getPath();
-        if(!stack.isEmpty()) {
+        if(!stack.isEmpty() && stack.getRarity() == CSRarityTypes.CELESTIAL) {
             List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
 
             List<Either<FormattedText, TooltipComponent>> elementsToAdd = new ArrayList<>();
 
-            elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.celestial_tier").withStyle(ChatFormatting.AQUA)));
+            elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.celestial_tier").withStyle(ChatFormatting.AQUA).withStyle(ChatFormatting.BOLD)));
             elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.shift_notice").withStyle(ChatFormatting.GREEN)));
 
             if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".desc_0").withStyle(ChatFormatting.GRAY)));
-                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".desc_1").withStyle(ChatFormatting.DARK_AQUA)));
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".skill_0").withStyle(ChatFormatting.GOLD)));
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".desc_0").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC)));
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".skill_1").withStyle(ChatFormatting.GOLD)));
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".desc_1").withStyle(ChatFormatting.DARK_AQUA).withStyle(ChatFormatting.ITALIC)));
             }
 
             ListIterator<Either<FormattedText, TooltipComponent>> iterator = elementsToAdd.listIterator(elementsToAdd.size());

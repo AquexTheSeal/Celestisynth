@@ -1,5 +1,4 @@
 {
-	"credit": "Made with Blockbench",
 	"parent": "minecraft:item/handheld",
 	"textures": {
 		"1": "celestisynth:item/solaris",

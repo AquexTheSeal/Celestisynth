@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth;
 
 import com.aqutheseal.celestisynth.animation.CSAnimator;
+import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.network.CSNetwork;
 import com.aqutheseal.celestisynth.registry.*;
 import com.aqutheseal.celestisynth.registry.datagen.CSBlockModelProvider;
@@ -15,7 +16,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -28,6 +31,7 @@ public class Celestisynth {
 
     public Celestisynth() {
         GeckoLib.initialize();
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CSConfig.COMMON_SPEC, "celestisynth/common.toml");
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         CSEntityRegistry.ENTITY_TYPES.register(modEventBus);

@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.item;
 
 import com.aqutheseal.celestisynth.animation.AnimationManager;
+import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
@@ -133,7 +134,7 @@ public class SolarisItem extends SwordItem {
                         double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
                         target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
                         target.invulnerableTime = 0;
-                        target.hurt(player.damageSources().playerAttack(player), (isStraight ? 1.5f : 1.0f) + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.5F));
+                        target.hurt(player.damageSources().playerAttack(player), (isStraight ? CSConfig.COMMON.solarisShiftSkillDmg.get() : CSConfig.COMMON.solarisSkillDmg.get()) + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.5F));
                         target.setSecondsOnFire(5);
                         target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
                     }

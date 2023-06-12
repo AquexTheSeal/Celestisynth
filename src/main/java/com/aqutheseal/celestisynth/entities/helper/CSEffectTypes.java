@@ -16,8 +16,8 @@ public enum CSEffectTypes {
     SOLARIS_AIR_LARGE("solaris_air_large", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 3.5, true, true, false),
     CRESCENTIA_STRIKE("crescentia_strike", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 2.5, false, false, true),
     CRESCENTIA_STRIKE_INVERTED("crescentia_strike_inverted", "crescentia_strike", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 2.5, false, false, true),
-    CRESCENTIA_THROW("crescentia_throw", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 3, false, false, true),
-    CRESCENTIA_THROW_INVERTED("crescentia_throw_inverted", "crescentia_throw", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 3, false, false, true);
+    CRESCENTIA_THROW("crescentia_throw", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 3, false, true, true),
+    CRESCENTIA_THROW_INVERTED("crescentia_throw_inverted", "crescentia_throw", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 3, false, true, true);
 
     final String name;
     final String texture;

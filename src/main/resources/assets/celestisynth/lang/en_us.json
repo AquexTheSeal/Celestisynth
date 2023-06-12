@@ -4,10 +4,14 @@
   "item.celestisynth.celestial_tier": "CELESTIAL GRADE",
 
   "item.celestisynth.solaris": "Solaris",
+  "item.celestisynth.solaris.skill_0": "Spinning Flames - Full Round",
   "item.celestisynth.solaris.desc_0": "- Right-click to perform a graceful spin, inflicting damage and burning nearby entities.",
+  "item.celestisynth.solaris.skill_1": "Spinning Flames - Soul Straight Dash",
   "item.celestisynth.solaris.desc_1": "- Right-click while holding SHIFT to dash forward, striking and temporarily igniting entities in your path.",
   "item.celestisynth.crescentia": "Crescentia",
+  "item.celestisynth.crescentia.skill_0": "Lunar Celebration Barrage",
   "item.celestisynth.crescentia.desc_0": "- Right-click to unleash a dazzling barrage of strikes on nearby entities, accompanied by a mesmerizing firework display.",
+  "item.celestisynth.crescentia.skill_1": "Dragon Crescent Boom",
   "item.celestisynth.crescentia.desc_1": "- Right-click while holding SHIFT to unleash a ranged barrage of slashes, cutting through any entity in its path.",
 
   "block.celestisynth.solar_crystal": "Solar Crystal",

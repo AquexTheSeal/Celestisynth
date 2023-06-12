@@ -3,6 +3,7 @@ package com.aqutheseal.celestisynth.world.feature;
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -25,7 +26,6 @@ public class LunarCraterFeature extends Feature<NoneFeatureConfiguration> {
         WorldGenLevel worldgenlevel = context.level();
         RandomSource randomsource = context.random();
         BlockPos blockpos = context.origin();
-
         int[] layerRadii = {7, 7, 6, 6, 4, 2};
         for (int i = 0; i < layerRadii.length; i++) {
             int radiuss = layerRadii[i] + 3 + randomsource.nextInt(7);
@@ -39,27 +39,38 @@ public class LunarCraterFeature extends Feature<NoneFeatureConfiguration> {
         return true;
     }
 
-    public void createLayer(int radius, @Nullable BlockState block, WorldGenLevel level, RandomSource random, BlockPos origin) {
+    public void createLayer(int radius, @Nullable BlockState filler, WorldGenLevel level, RandomSource random, BlockPos origin) {
         for (int sx = -radius; sx <= radius; sx++) {
             for (int sz = -radius; sz <= radius; sz++) {
                 if (sx * sx + sz * sz <= radius * radius) {
                     BlockPos pos = origin.offset(sx, 0, sz);
+                    int randomInt = random.nextInt(4);
+                    BlockState blockToPut;
+                    if (randomInt == 0) {
+                        blockToPut = level.getBlockState(pos) == Blocks.DEEPSLATE.defaultBlockState() ? Blocks.DEEPSLATE_LAPIS_ORE.defaultBlockState() : Blocks.LAPIS_ORE.defaultBlockState();
+                    } else if (randomInt == 1) {
+                        blockToPut = level.getBlockState(pos);
+                    } else if (randomInt == 2) {
+                        blockToPut = CSBlockRegistry.LUNAR_STONE.get().defaultBlockState();
+                    } else {
+                        blockToPut = Blocks.SEA_LANTERN.defaultBlockState();
+                    }
                     if (!level.getBlockState(pos).isAir()) {
-                        if (block == null) {
-                            int randomInt = random.nextInt(4);
-                            BlockState blockToPut;
-                            if (randomInt == 0) {
-                                blockToPut = level.getBlockState(pos) == Blocks.DEEPSLATE.defaultBlockState() ? Blocks.DEEPSLATE_LAPIS_ORE.defaultBlockState() : Blocks.LAPIS_ORE.defaultBlockState();
-                            } else if (randomInt == 1) {
-                                blockToPut = level.getBlockState(pos);
-                            } else if (randomInt == 2) {
-                                blockToPut = CSBlockRegistry.LUNAR_STONE.get().defaultBlockState();
-                            } else {
-                                blockToPut = Blocks.SEA_LANTERN.defaultBlockState();
-                            }
+                        if (filler == null) {
                             this.setBlock(level, pos, blockToPut);
                         } else {
-                            this.setBlock(level, pos, block);
+                            if (!level.getBlockState(pos.below()).isAir()) {
+                                this.setBlock(level, pos, filler);
+                            } else {
+                                this.setBlock(level, pos, blockToPut);
+                            }
+
+                            for (Direction direction : Direction.Plane.HORIZONTAL) {
+                                if (level.getBlockState(pos.relative(direction)).isAir()) {
+                                    this.setBlock(level, pos, blockToPut);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }

@@ -22,17 +22,12 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.UUID;
-
 public class CSEffect extends Entity implements GeoEntity {
     public CSEffect(EntityType<? extends CSEffect> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
         this.noCulling = true;
     }
 
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<String> TYPE_ID = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> FRAME_LEVEL = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_X = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
@@ -53,15 +48,6 @@ public class CSEffect extends Entity implements GeoEntity {
 
     public void setEffectType(CSEffectTypes getEffectType) {
         this.setTypeID(getEffectType.getName());
-    }
-
-    public void setOwnerUuid(@Nullable UUID ownerUuid) {
-        this.entityData.set(OWNER_UUID, Optional.ofNullable(ownerUuid));
-    }
-
-    @Nullable
-    public UUID getOwnerUuid() {
-        return this.entityData.get(OWNER_UUID).orElse(null);
     }
 
     public String getTypeID() {
@@ -144,16 +130,20 @@ public class CSEffect extends Entity implements GeoEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, event -> {
             if (getEffectType() != null) {
-                return event.setAndContinue(RawAnimation.begin().thenPlayAndHold(getEffectType().getAnimation().getAnimationString()));
+                return event.setAndContinue(RawAnimation.begin().thenLoop(getEffectType().getAnimation().getAnimationString()));
             } else {
-                Celestisynth.LOGGER.info("EffectType for CSEffect is null!");
-                return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.cs_effect.spin"));
+                Celestisynth.LOGGER.warn("EffectType for CSEffect is null!");
+                return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cs_effect.spin"));
             }
         }));
     }
 
     @Override
     public void tick() {
+        if (owner == null) {
+            this.remove(RemovalReason.DISCARDED);
+        }
+
         ++lifespan;
         if (lifespan >= this.getEffectType().getAnimation().getLifespan()) {
             this.setLifespan(0);
@@ -169,7 +159,6 @@ public class CSEffect extends Entity implements GeoEntity {
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(OWNER_UUID, Optional.empty());
         this.entityData.define(TYPE_ID, "none");
         this.entityData.define(FRAME_LEVEL, 1);
         this.entityData.define(SET_ROT_X, 0);
@@ -183,14 +172,12 @@ public class CSEffect extends Entity implements GeoEntity {
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundNBT) {
-        this.setOwner(level.getPlayerByUUID(compoundNBT.getUUID("cs.ownerUuid")));
         this.setLifespan(compoundNBT.getInt("lifespan"));
         this.setTypeID(compoundNBT.getString("typeId"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundNBT) {
-        compoundNBT.putUUID("cs.ownerUuid", getOwnerUuid());
         compoundNBT.putInt("lifespan", this.lifespan);
         compoundNBT.putString("typeId", this.getTypeID());
     }

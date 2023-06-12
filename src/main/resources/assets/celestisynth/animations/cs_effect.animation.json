@@ -105,7 +105,7 @@
 						},
 						"0.5": {
 							"vector": [0, -135, 0],
-							"easing": "easeOutCirc"
+							"easing": "easeOutBack"
 						}
 					},
 					"scale": {
@@ -131,7 +131,7 @@
 						},
 						"0.5": {
 							"vector": [0, 135, 0],
-							"easing": "easeOutCirc"
+							"easing": "easeOutBack"
 						}
 					},
 					"scale": {
