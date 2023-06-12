@@ -1,11 +1,13 @@
 package com.aqutheseal.celestisynth.entities.renderer;
 
+import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.entities.model.CSEffectModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -62,11 +64,16 @@ public class CSEffectRenderer extends GeoEntityRenderer<CSEffect> {
 
     @Override
     public Color getRenderColor(CSEffect animatable, float partialTick, int packedLight) {
+        Minecraft mc = Minecraft.getInstance();
         float decreasingAlpha = 1.0f;
+        boolean shouldHideAtFirstPerson = false;
         if (animatable.getEffectType().isFadeOut()) {
             int lifespan = animatable.getEffectType().getAnimation().getLifespan();
             decreasingAlpha = 1.0F - ((float) animatable.tickCount / lifespan);
         }
-        return Color.ofRGBA(1, 1, 1, decreasingAlpha);
+        if (mc.options.getCameraType().isFirstPerson() && animatable.getOwnerUuid() == mc.player.getUUID() && CSConfig.CLIENT.visibilityOnFirstPerson.get()) {
+            shouldHideAtFirstPerson = true;
+        }
+        return Color.ofRGBA(1, 1, 1, shouldHideAtFirstPerson ? 0F : decreasingAlpha);
     }
 }

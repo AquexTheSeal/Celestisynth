@@ -16,19 +16,22 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class AnimationManager {
-    //public static final ResourceLocation DEFAULT_LAYER = new ResourceLocation(Celestisynth.MODID, "csanimation");
+    public static int animIndex;
 
     public enum AnimationsList {
-        CLEAR(null, 0),
-        ANIM_SOLARIS_SPIN("cs_solaris_spin", 1),
-        ANIM_CRESCENTIA_STRIKE("cs_crescentia_strike", 2),
-        ANIM_CRESCENTIA_THROW("cs_crescentia_throw", 3);
+        CLEAR(null),
+        ANIM_SOLARIS_SPIN("cs_solaris_spin"),
+        ANIM_CRESCENTIA_STRIKE("cs_crescentia_strike"),
+        ANIM_CRESCENTIA_THROW("cs_crescentia_throw"),
+        ANIM_BREEZEBREAKER_NORMAL_SINGLE("cs_breezebreaker_normal_single"),
+        ANIM_BREEZEBREAKER_NORMAL_DOUBLE("cs_breezebreaker_normal_double");
 
         final String path;
         final int id;
-        AnimationsList(String file, int animId) {
+
+        AnimationsList(String file) {
             path = file;
-            id = animId;
+            id = animIndex++;
         }
 
         public KeyframeAnimation getAnimation() {

@@ -5,19 +5,18 @@ import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
+import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -30,19 +29,9 @@ import net.minecraft.world.phys.AABB;
 import java.util.List;
 import java.util.Random;
 
-public class SolarisItem extends SwordItem {
+public class SolarisItem extends SwordItem implements CSWeapon {
     public static final String DIRECTION_INDEX_KEY = "cs.directionIndex";
     public static final String HEAD_ROT_LOCK_KEY = "cs.headRotLock";
-    public static final String ANIMATION_TIMER_KEY = "cs.animationTimer";
-    public static final String ANIMATION_BEGUN_KEY = "cs.hasAnimationBegun";
-    public static final SoundEvent[] SOLARIS_SOUNDS = {
-            CSSoundRegistry.SOLARIS_1.get(),
-            CSSoundRegistry.SOLARIS_2.get(),
-            CSSoundRegistry.SOLARIS_3.get(),
-            CSSoundRegistry.SOLARIS_5.get(),
-            CSSoundRegistry.SOLARIS_6.get(),
-            CSSoundRegistry.SOLARIS_4.get()
-    };
 
     public SolarisItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
         super(tier, attackDamage, attackSpeed, properties);
@@ -51,7 +40,7 @@ public class SolarisItem extends SwordItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack itemstack = player.getItemInHand(interactionHand);
-        CompoundTag itemTag = itemstack.getOrCreateTagElement("csController");
+        CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
         if (!player.getCooldowns().isOnCooldown(itemstack.getItem()) && !itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (level.isClientSide()) {
@@ -87,7 +76,7 @@ public class SolarisItem extends SwordItem {
 
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
-        CompoundTag data = itemStack.getOrCreateTagElement("csController");
+        CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         if (entity instanceof Player player && data.getBoolean(ANIMATION_BEGUN_KEY)) {
             player.getInventory().selected = itemSlot;
             if (level.isClientSide()) {
@@ -95,7 +84,6 @@ public class SolarisItem extends SwordItem {
                     Minecraft.getInstance().screen = null;
                 }
             }
-
             int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
             data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
             if (animationTimer == 22) {
@@ -107,7 +95,6 @@ public class SolarisItem extends SwordItem {
                     }
                 }
             }
-
             if (animationTimer > 0 && animationTimer < 35) {
                 if (level instanceof ServerLevel) {
                     if (data.getInt(DIRECTION_INDEX_KEY) == 2) {
@@ -127,21 +114,16 @@ public class SolarisItem extends SwordItem {
                 List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
                 for (LivingEntity target : entities) {
                     if (target != player && target.isAlive()) {
-                        double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
-                        target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
-                        target.invulnerableTime = 0;
-                        target.hurt(player.damageSources().playerAttack(player), (isStraight ? CSConfig.COMMON.solarisShiftSkillDmg.get() : CSConfig.COMMON.solarisSkillDmg.get()) + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.5F));
+                        constantAttack(player, target, (isStraight ? CSConfig.COMMON.solarisShiftSkillDmg.get() : CSConfig.COMMON.solarisSkillDmg.get()) + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.5F));
                         target.setSecondsOnFire(5);
-                        target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
                     }
                 }
-
                 player.playSound(SoundEvents.SWEET_BERRY_BUSH_BREAK);
                 if (data.getInt(DIRECTION_INDEX_KEY) == 2) {
                     movePlayerInStraightMotion(player, data.getInt(HEAD_ROT_LOCK_KEY));
                     CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_BLITZ_SOUL);
                     CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_AIR_LARGE);
-                    playRandomBladeSound(player, SOLARIS_SOUNDS.length);
+                    playRandomBladeSound(player, CRESENTIA_SOUNDS.length);
                 } else if (data.getInt(DIRECTION_INDEX_KEY) == 0) {
                     movePlayerInCircularMotion(player, animationTimer, false);
                     CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_BLITZ);
@@ -188,11 +170,6 @@ public class SolarisItem extends SwordItem {
         }
 
         super.inventoryTick(itemStack, level, entity, itemSlot, isSelected);
-    }
-
-    public void playRandomBladeSound(Entity entity, int length) {
-        SoundEvent randomSound = SOLARIS_SOUNDS[new Random().nextInt(length)];
-        entity.playSound(randomSound, 0.7F, 0.5F + new Random().nextFloat());
     }
 
     private void movePlayerInCircularMotion(Player player, int tick, boolean isRight) {

@@ -1,9 +1,7 @@
 package com.aqutheseal.celestisynth.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -12,11 +10,17 @@ public class CSConfig {
 
     public static final ForgeConfigSpec COMMON_SPEC;
     public static final CSCommonConfig COMMON;
+    public static final ForgeConfigSpec CLIENT_SPEC;
+    public static final CSClientConfig CLIENT;
 
     static {
         final Pair<CSCommonConfig, ForgeConfigSpec> commonSpecPair = new ForgeConfigSpec.Builder().configure(CSCommonConfig::new);
         COMMON_SPEC = commonSpecPair.getRight();
         COMMON = commonSpecPair.getLeft();
+
+        final Pair<CSClientConfig, ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder().configure(CSClientConfig::new);
+        CLIENT_SPEC = clientSpecPair.getRight();
+        CLIENT = clientSpecPair.getLeft();
     }
 
     public static class CSCommonConfig {
@@ -51,11 +55,13 @@ public class CSConfig {
         }
     }
 
-    @SubscribeEvent
-    public static void onLoad(final ModConfigEvent.Loading configEvent) {
-    }
+    public static class CSClientConfig {
+        public final ForgeConfigSpec.ConfigValue<Boolean> visibilityOnFirstPerson;
 
-    @SubscribeEvent
-    public static void onReload(final ModConfigEvent.Reloading configEvent) {
+        protected CSClientConfig(ForgeConfigSpec.Builder builder) {
+            builder.push("Client-side Configurations");
+            visibilityOnFirstPerson = builder.comment("Should the weapon attack effects be visible on first person mode?").define("Is Visible?", true);
+            builder.pop();
+        }
     }
 }

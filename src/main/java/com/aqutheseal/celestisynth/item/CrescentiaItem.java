@@ -5,13 +5,12 @@ import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.aqutheseal.celestisynth.entities.CrescentiaRanged;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
-import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -20,7 +19,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
@@ -32,18 +30,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import java.util.List;
 import java.util.Random;
 
-public class CrescentiaItem extends SwordItem {
-    public static final String ANIMATION_TIMER_KEY = "cs.animationTimer";
-    public static final String ANIMATION_BEGUN_KEY = "cs.hasAnimationBegun";
-    public static final String IS_RANGED_KEY = "cs.isRangedAttack";
-    public static final SoundEvent[] CRESENTIA_SOUNDS = {
-            CSSoundRegistry.SOLARIS_1.get(),
-            CSSoundRegistry.SOLARIS_2.get(),
-            CSSoundRegistry.SOLARIS_3.get(),
-            CSSoundRegistry.SOLARIS_5.get(),
-            CSSoundRegistry.SOLARIS_6.get(),
-            CSSoundRegistry.SOLARIS_4.get()
-    };
+public class CrescentiaItem extends SwordItem implements CSWeapon {
 
     public CrescentiaItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
         super(tier, attackDamage, attackSpeed, properties);
@@ -52,7 +39,7 @@ public class CrescentiaItem extends SwordItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack itemstack = player.getItemInHand(interactionHand);
-        CompoundTag itemTag = itemstack.getOrCreateTagElement("csController");
+        CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
         if (!player.getCooldowns().isOnCooldown(itemstack.getItem()) && !itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
             itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
@@ -80,7 +67,7 @@ public class CrescentiaItem extends SwordItem {
 
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
-        CompoundTag data = itemStack.getOrCreateTagElement("csController");
+        CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         if (data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (entity instanceof Player player) {
                 player.getInventory().selected = itemSlot;
@@ -101,26 +88,21 @@ public class CrescentiaItem extends SwordItem {
     }
 
     public void tickRanged(ItemStack itemStack, Level level, Player player, int animationTimer) {
-        CompoundTag data = itemStack.getOrCreateTagElement("csController");
+        CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
         if (animationTimer <= 20) {
-            player.setDeltaMovement(0, 0, 0);
-            player.hurtMarked = true;
+            setDeltaPlayer(player, 0, 0, 0);
         }
         if (animationTimer == 20) {
             if (!level.isClientSide()) {
                 CrescentiaRanged projectile = CSEntityRegistry.CRESCENTIA_RANGED.get().create(level);
-                double d0 = -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
-                double d1 = Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-                double d2 = -Mth.sin(player.getXRot() * ((float) Math.PI / 180F));
-
                 projectile.setOwnerUuid(player.getUUID());
-                projectile.setAngleX((float) d0);
-                projectile.setAngleY((float) d2);
-                projectile.setAngleZ((float) d1);
-                projectile.setAddAngleX((float) d0 / 2);
-                projectile.setAddAngleY((float) d2 / 2);
-                projectile.setAddAngleZ((float) d1 / 2);
+                projectile.setAngleX((float) calculateXLook(player));
+                projectile.setAngleY((float) calculateYLook(player));
+                projectile.setAngleZ((float) calculateZLook(player));
+                projectile.setAddAngleX((float) calculateXLook(player) / 2);
+                projectile.setAddAngleY((float) calculateYLook(player) / 2);
+                projectile.setAddAngleZ((float) calculateZLook(player) / 2);
                 projectile.moveTo(player.getX(), player.getY() + 1, player.getZ());
                 level.addFreshEntity(projectile);
             }
@@ -146,21 +128,14 @@ public class CrescentiaItem extends SwordItem {
         data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
         //player.setDeltaMovement(0, 0, 0);
         if (animationTimer >= 27 && animationTimer <= 70) {
-            double d0 = -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
-            double d1 = Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-
             double range = 7.0;
             double rangeSq = Mth.square(range);
-            List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range).move(d0, 0, d1));
+            List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range).move(calculateXLook(player), 0, calculateZLook(player)));
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && target.distanceToSqr(player) < rangeSq) {
-                        double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
-                        target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
-                        target.invulnerableTime = 0;
-                        target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.crescentiaSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
+                        constantAttack(player, target, CSConfig.COMMON.crescentiaSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
                         target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
-                        target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
                     }
                 }
                 if (entityBatch instanceof Projectile projectile) {
@@ -171,9 +146,9 @@ public class CrescentiaItem extends SwordItem {
             }
 
             if (new Random().nextBoolean()) {
-                CSEffect.createInstance(player, null, CSEffectTypes.CRESCENTIA_STRIKE, d0, 0, d1);
+                CSEffect.createInstance(player, null, CSEffectTypes.CRESCENTIA_STRIKE, calculateXLook(player), 0, calculateZLook(player));
             } else {
-                CSEffect.createInstance(player, null, CSEffectTypes.CRESCENTIA_STRIKE_INVERTED, d0, 0, d1);
+                CSEffect.createInstance(player, null, CSEffectTypes.CRESCENTIA_STRIKE_INVERTED, calculateXLook(player), 0, calculateZLook(player));
             }
             CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_AIR);
             playRandomBladeSound(player, CRESENTIA_SOUNDS.length);
@@ -222,10 +197,5 @@ public class CrescentiaItem extends SwordItem {
         if ((tagR != null && (tagR.getBoolean(ANIMATION_BEGUN_KEY)) || (tagL != null && (tagL.getBoolean(ANIMATION_BEGUN_KEY))))) {
             event.setAmount(event.getAmount() * 0.7F);
         }
-    }
-
-    public static void playRandomBladeSound(Entity entity, int length) {
-        SoundEvent randomSound = CRESENTIA_SOUNDS[new Random().nextInt(length)];
-        entity.playSound(randomSound, 0.55F, 0.5F + new Random().nextFloat());
     }
 }

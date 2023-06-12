@@ -3,6 +3,7 @@ package com.aqutheseal.celestisynth.entities;
 import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.CrescentiaItem;
+import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -93,7 +94,7 @@ public class CrescentiaRanged extends Entity {
             CSEffect.createInstance(player, this, CSEffectTypes.CRESCENTIA_THROW_INVERTED, getAngleX(), getAngleY() - 1.5, getAngleZ());
         }
         CSEffect.createInstance(player, this, CSEffectTypes.SOLARIS_AIR, getAngleX(), getAngleY(), getAngleZ());
-        playRandomBladeSound(CrescentiaItem.CRESENTIA_SOUNDS.length, newX, newY, newZ);
+        playRandomBladeSound(CSWeapon.CRESENTIA_SOUNDS.length, newX, newY, newZ);
 
         int radius = 2;
         for (int sx = -radius; sx <= radius; sx++) {

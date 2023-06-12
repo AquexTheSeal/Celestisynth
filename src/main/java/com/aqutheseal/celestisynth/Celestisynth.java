@@ -32,6 +32,7 @@ public class Celestisynth {
     public Celestisynth() {
         GeckoLib.initialize();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CSConfig.COMMON_SPEC, "celestisynth/common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CSConfig.CLIENT_SPEC, "celestisynth/client.toml");
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         CSEntityRegistry.ENTITY_TYPES.register(modEventBus);
