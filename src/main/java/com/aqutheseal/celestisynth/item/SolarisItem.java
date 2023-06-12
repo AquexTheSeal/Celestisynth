@@ -85,10 +85,6 @@ public class SolarisItem extends SwordItem {
         return super.hurtEnemy(itemStack, entity, source);
     }
 
-    public int getUseDuration(ItemStack p_42933_) {
-        return 32;
-    }
-
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
         CompoundTag data = itemStack.getOrCreateTagElement("csController");
@@ -143,18 +139,18 @@ public class SolarisItem extends SwordItem {
                 player.playSound(SoundEvents.SWEET_BERRY_BUSH_BREAK);
                 if (data.getInt(DIRECTION_INDEX_KEY) == 2) {
                     movePlayerInStraightMotion(player, data.getInt(HEAD_ROT_LOCK_KEY));
-                    CSEffect.createInstance(player, CSEffectTypes.SOLARIS_BLITZ_SOUL);
-                    CSEffect.createInstance(player, CSEffectTypes.SOLARIS_AIR_LARGE);
+                    CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_BLITZ_SOUL);
+                    CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_AIR_LARGE);
                     playRandomBladeSound(player, SOLARIS_SOUNDS.length);
                 } else if (data.getInt(DIRECTION_INDEX_KEY) == 0) {
                     movePlayerInCircularMotion(player, animationTimer, false);
-                    CSEffect.createInstance(player, CSEffectTypes.SOLARIS_BLITZ);
-                    CSEffect.createInstance(player, CSEffectTypes.SOLARIS_AIR);
+                    CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_BLITZ);
+                    CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_AIR);
                     playRandomBladeSound(player, 4);
                 } else if (data.getInt(DIRECTION_INDEX_KEY) == 1) {
                     movePlayerInCircularMotion(player, animationTimer, true);
-                    CSEffect.createInstance(player, CSEffectTypes.SOLARIS_BLITZ);
-                    CSEffect.createInstance(player, CSEffectTypes.SOLARIS_AIR);
+                    CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_BLITZ);
+                    CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_AIR);
                     playRandomBladeSound(player, 4);
                 }
 

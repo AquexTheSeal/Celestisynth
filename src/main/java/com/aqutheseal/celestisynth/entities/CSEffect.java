@@ -9,18 +9,24 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
-import org.joml.Random;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import javax.annotation.Nullable;
+import java.util.Optional;
+import java.util.UUID;
 
 public class CSEffect extends Entity implements GeoEntity {
     public CSEffect(EntityType<? extends CSEffect> p_19870_, Level p_19871_) {
@@ -28,12 +34,14 @@ public class CSEffect extends Entity implements GeoEntity {
         this.noCulling = true;
     }
 
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<String> TYPE_ID = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> FRAME_LEVEL = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_X = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_Z = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private LivingEntity owner;
+    public Player owner;
+    public Entity toFollow;
     public int lifespan;
     public int frameTimer;
 
@@ -82,32 +90,47 @@ public class CSEffect extends Entity implements GeoEntity {
         return this.entityData.get(SET_ROT_Z);
     }
 
-    public LivingEntity getOwner() {
-        return this.owner;
+    public void setOwnerUuid(@Nullable UUID ownerUuid) {
+        this.entityData.set(OWNER_UUID, Optional.ofNullable(ownerUuid));
     }
 
-    public void setOwner(LivingEntity livingEntity) {
-        this.owner = livingEntity;
+    @Nullable
+    public UUID getOwnerUuid() {
+        return this.entityData.get(OWNER_UUID).orElse(null);
+    }
+
+    public Entity getToFollow() {
+        return this.toFollow;
+    }
+
+    public void setToFollow(Entity livingEntity) {
+        this.toFollow = livingEntity;
     }
 
     public void setLifespan(int value) {
         lifespan = value;
     }
 
-    public static CSEffect getEffectInstance(Entity owner, CSEffectTypes effectTypes, double offsetX, double offsetY, double offsetZ) {
+    public static CSEffect getEffectInstance(Player owner, @Nullable Entity toFollow, CSEffectTypes effectTypes, double offsetX, double offsetY, double offsetZ) {
         CSEffect slash = CSEntityRegistry.CS_EFFECT.get().create(owner.level);
+
+        if (toFollow != null) {
+            slash.moveTo(toFollow.getX() + offsetX, (toFollow.getY() - 1.5) + offsetY, toFollow.getZ() + offsetZ);
+        } else {
+            slash.moveTo(owner.getX()  + offsetX, (owner.getY() - 1.5) + offsetY, owner.getZ() + offsetZ);
+        }
+
+        slash.setOwnerUuid(owner.getUUID());
+        slash.setToFollow(toFollow);
         slash.setEffectType(effectTypes);
         slash.setRandomRotation();
-        Random rand = new Random(69420);
-        float offset = -(rand.nextFloat() / 2) + rand.nextFloat();
-        float offsetRot = -10 + rand.nextInt(10);
-        slash.moveTo((owner.getX() + offset) + offsetX, (owner.getY() - 1.5) + offsetY, (owner.getZ() + offset) + offsetZ);
-        if (owner instanceof LivingEntity living) {
-            slash.setOwner(living);
-            slash.setYRot(owner.getYRot() + offsetRot);
-            slash.yRotO = slash.getYRot();
-            slash.setRot(slash.getYRot() + offsetRot, slash.getXRot());
-        }
+
+        float offsetRot = -10 + owner.getRandom().nextInt(10);
+
+        slash.setYRot(owner.getYRot() + offsetRot);
+        slash.yRotO = slash.getYRot();
+        slash.setRot(slash.getYRot() + offsetRot, slash.getXRot());
+
         return slash;
     }
 
@@ -118,29 +141,34 @@ public class CSEffect extends Entity implements GeoEntity {
         this.entityData.set(SET_ROT_Z, rotationZ);
     }
 
-    public static void createInstance(Entity owner, CSEffectTypes effectTypes) {
-       createInstance(owner, effectTypes, 0, 0, 0);
+    public static void createInstance(Player owner, @Nullable Entity toFollow, CSEffectTypes effectTypes) {
+       createInstance(owner, toFollow, effectTypes, 0, 0, 0);
     }
 
-    public static void createInstance(Entity owner, CSEffectTypes effectTypes, double xOffset, double yOffset, double zOffset) {
-        owner.level.addFreshEntity(getEffectInstance(owner, effectTypes, xOffset, yOffset, zOffset));
+    public static void createInstance(Player owner, @Nullable Entity toFollow, CSEffectTypes effectTypes, double xOffset, double yOffset, double zOffset) {
+        CSEffect slash = getEffectInstance(owner, toFollow, effectTypes, xOffset, yOffset, zOffset);
+        slash.setOwnerUuid(owner.getUUID());
+        owner.level.addFreshEntity(slash);
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, event -> {
-            if (getEffectType() != null) {
-                return event.setAndContinue(RawAnimation.begin().thenLoop(getEffectType().getAnimation().getAnimationString()));
-            } else {
-                Celestisynth.LOGGER.warn("EffectType for CSEffect is null!");
-                return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cs_effect.spin"));
-            }
-        }));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
+    }
+
+    private PlayState predicate(AnimationState<?> state) {
+        if (getEffectType() != null) {
+            state.getController().setAnimation(RawAnimation.begin().thenPlayAndHold(getEffectType().getAnimation().getAnimationString()));
+        } else {
+            Celestisynth.LOGGER.warn("EffectType for CSEffect is null!");
+            state.getController().setAnimation(RawAnimation.begin().thenPlayAndHold("animation.cs_effect.spin"));
+        }
+        return PlayState.CONTINUE;
     }
 
     @Override
     public void tick() {
-        if (owner == null) {
+        if (level.getPlayerByUUID(getOwnerUuid()) == null) {
             this.remove(RemovalReason.DISCARDED);
         }
 
@@ -159,6 +187,7 @@ public class CSEffect extends Entity implements GeoEntity {
 
     @Override
     protected void defineSynchedData() {
+        this.entityData.define(OWNER_UUID, Optional.empty());
         this.entityData.define(TYPE_ID, "none");
         this.entityData.define(FRAME_LEVEL, 1);
         this.entityData.define(SET_ROT_X, 0);
@@ -172,12 +201,29 @@ public class CSEffect extends Entity implements GeoEntity {
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundNBT) {
+        UUID uuid;
+        if (compoundNBT.hasUUID("Owner")) {
+            uuid = compoundNBT.getUUID("Owner");
+        } else {
+            String s = compoundNBT.getString("Owner");
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+        }
+        if (uuid != null) {
+            try {
+                this.setOwnerUuid(uuid);
+            } catch (Throwable throwable) {
+                throw new IllegalStateException("...Crescentia-Ranged got no goddamn owner.");
+            }
+        }
         this.setLifespan(compoundNBT.getInt("lifespan"));
         this.setTypeID(compoundNBT.getString("typeId"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundNBT) {
+        if (this.getOwnerUuid() != null) {
+            compoundNBT.putUUID("Owner", getOwnerUuid());
+        }
         compoundNBT.putInt("lifespan", this.lifespan);
         compoundNBT.putString("typeId", this.getTypeID());
     }

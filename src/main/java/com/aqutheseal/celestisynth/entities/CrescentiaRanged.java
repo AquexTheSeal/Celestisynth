@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -49,7 +50,9 @@ public class CrescentiaRanged extends Entity {
     @Override
     public void tick() {
         super.tick();
-        Player player = level.getPlayerByUUID(getOwnerUuid());
+        UUID uuid = this.getOwnerUuid();
+        Player player = uuid == null ? null : this.getLevel().getPlayerByUUID(uuid);
+
         if (player == null || player.isDeadOrDying()) {
             this.remove(RemovalReason.DISCARDED);
         }
@@ -63,13 +66,6 @@ public class CrescentiaRanged extends Entity {
         double newZ = getZ() + getAngleZ();
         BlockPos newPos = new BlockPos((int) newX, (int) newY, (int) newZ);
 
-        if (new Random().nextBoolean()) {
-            CSEffect.createInstance(this, CSEffectTypes.CRESCENTIA_THROW, getAngleX(), getAngleY() - 1.5, getAngleZ());
-        } else {
-            CSEffect.createInstance(this, CSEffectTypes.CRESCENTIA_THROW_INVERTED, getAngleX(), getAngleY() - 1.5, getAngleZ());
-        }
-        CSEffect.createInstance(this, CSEffectTypes.SOLARIS_AIR, getAngleX(), getAngleY(), getAngleZ());
-        playRandomBladeSound(CrescentiaItem.CRESENTIA_SOUNDS.length, newX, newY, newZ);
         double range = 7.0;
         List<Entity> entities = level.getEntitiesOfClass(Entity.class, new AABB(newX + range, newY + range, newZ + range, newX - range, newY - range, newZ - range));
         ItemStack stack = new ItemStack(Items.FIREWORK_ROCKET);
@@ -90,6 +86,14 @@ public class CrescentiaRanged extends Entity {
                 projectile.remove(RemovalReason.DISCARDED);
             }
         }
+
+        if (new Random().nextBoolean()) {
+            CSEffect.createInstance(player, this, CSEffectTypes.CRESCENTIA_THROW, getAngleX(), getAngleY() - 1.5, getAngleZ());
+        } else {
+            CSEffect.createInstance(player, this, CSEffectTypes.CRESCENTIA_THROW_INVERTED, getAngleX(), getAngleY() - 1.5, getAngleZ());
+        }
+        CSEffect.createInstance(player, this, CSEffectTypes.SOLARIS_AIR, getAngleX(), getAngleY(), getAngleZ());
+        playRandomBladeSound(CrescentiaItem.CRESENTIA_SOUNDS.length, newX, newY, newZ);
 
         int radius = 2;
         for (int sx = -radius; sx <= radius; sx++) {
@@ -127,7 +131,20 @@ public class CrescentiaRanged extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
-        setOwnerUuid(tag.getUUID("cs.ownerUuid"));
+        UUID uuid;
+        if (tag.hasUUID("Owner")) {
+            uuid = tag.getUUID("Owner");
+        } else {
+            String s = tag.getString("Owner");
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+        }
+        if (uuid != null) {
+            try {
+                this.setOwnerUuid(uuid);
+            } catch (Throwable throwable) {
+                throw new IllegalStateException("...Crescentia-Ranged got no goddamn owner.");
+            }
+        }
         setAngleX(tag.getFloat("cs.angleX"));
         setAngleY(tag.getFloat("cs.angleY"));
         setAngleZ(tag.getFloat("cs.angleZ"));
@@ -138,7 +155,9 @@ public class CrescentiaRanged extends Entity {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.putUUID("cs.ownerUuid", getOwnerUuid());
+        if (this.getOwnerUuid() != null) {
+            tag.putUUID("Owner", getOwnerUuid());
+        }
         tag.putFloat("cs.angleX", getAngleX());
         tag.putFloat("cs.angleY", getAngleY());
         tag.putFloat("cs.angleZ", getAngleZ());

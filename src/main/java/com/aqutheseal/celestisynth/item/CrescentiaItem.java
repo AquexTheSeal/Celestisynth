@@ -55,6 +55,7 @@ public class CrescentiaItem extends SwordItem {
         CompoundTag itemTag = itemstack.getOrCreateTagElement("csController");
 
         if (!player.getCooldowns().isOnCooldown(itemstack.getItem()) && !itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
+            itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
             itemTag.putBoolean(IS_RANGED_KEY, player.isShiftKeyDown());
             if (level.isClientSide()) {
                 if (itemTag.getBoolean(IS_RANGED_KEY)) {
@@ -63,7 +64,6 @@ public class CrescentiaItem extends SwordItem {
                     AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_CRESCENTIA_STRIKE);
                 }
             }
-            itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
             player.getCooldowns().addCooldown(itemstack.getItem(), itemTag.getBoolean(IS_RANGED_KEY) ? 40 : 120);
         }
         return InteractionResultHolder.success(itemstack);
@@ -89,108 +89,104 @@ public class CrescentiaItem extends SwordItem {
                         Minecraft.getInstance().screen = null;
                     }
                 }
-            }
-        }
-        if (data.getBoolean(IS_RANGED_KEY)) {
-            tickRanged(itemStack, level, entity);
-        } else {
-            tickMelee(itemStack, level, entity);
-        }
-    }
-
-    public void tickRanged(ItemStack itemStack, Level level, Entity entity) {
-        CompoundTag data = itemStack.getOrCreateTagElement("csController");
-
-        if (entity instanceof Player player && data.getBoolean(ANIMATION_BEGUN_KEY)) {
-            int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
-            data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
-
-            if (animationTimer <= 20) {
-                player.setDeltaMovement(0, 0, 0);
-                player.hurtMarked = true;
-            }
-            if (animationTimer == 20) {
-                if (!level.isClientSide()) {
-                    CrescentiaRanged projectile = CSEntityRegistry.CRESCENTIA_RANGED.get().create(level);
-                    double d0 = -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
-                    double d1 = Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-                    double d2 = -Mth.sin(player.getXRot() * ((float) Math.PI / 180F));
-
-                    projectile.setOwnerUuid(player.getUUID());
-                    projectile.setAngleX((float) d0);
-                    projectile.setAngleY((float) d2);
-                    projectile.setAngleZ((float) d1);
-                    projectile.setAddAngleX((float) d0 / 2);
-                    projectile.setAddAngleY((float) d2 / 2);
-                    projectile.setAddAngleZ((float) d1 / 2);
-                    projectile.moveTo(player.getX(), player.getY() + 1, player.getZ());
-                    level.addFreshEntity(projectile);
+                int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
+                data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
+                if (!data.getBoolean(IS_RANGED_KEY)) {
+                    tickMelee(itemStack, level, player, animationTimer);
+                } else {
+                    tickRanged(itemStack, level, player, animationTimer);
                 }
-
-                for (int i = 0; i < 10; i++) {
-                    Random random = new Random();
-                    float offX = random.nextFloat() * 12 - 6;
-                    float offY = random.nextFloat() * 12 - 6;
-                    float offZ = random.nextFloat() * 12 - 6;
-                    createCrescentiaFirework(itemStack, level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, true, animationTimer);
-                    entity.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
-                }
-            }
-            if (animationTimer >= 30) {
-                data.putInt(ANIMATION_TIMER_KEY, 0);
-                data.putBoolean(ANIMATION_BEGUN_KEY, false);
             }
         }
     }
 
-    public void tickMelee(ItemStack itemStack, Level level, Entity entity) {
+    public void tickRanged(ItemStack itemStack, Level level, Player player, int animationTimer) {
         CompoundTag data = itemStack.getOrCreateTagElement("csController");
 
-        if (entity instanceof Player player && data.getBoolean(ANIMATION_BEGUN_KEY)) {
-            int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
-            data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
-            //player.setDeltaMovement(0, 0, 0);
-            if (animationTimer >= 27 && animationTimer <= 70) {
+        if (animationTimer <= 20) {
+            player.setDeltaMovement(0, 0, 0);
+            player.hurtMarked = true;
+        }
+        if (animationTimer == 20) {
+            if (!level.isClientSide()) {
+                CrescentiaRanged projectile = CSEntityRegistry.CRESCENTIA_RANGED.get().create(level);
                 double d0 = -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
                 double d1 = Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-                if (new Random().nextBoolean()) {
-                    CSEffect.createInstance(player, CSEffectTypes.CRESCENTIA_STRIKE, d0, 0, d1);
-                } else {
-                    CSEffect.createInstance(player, CSEffectTypes.CRESCENTIA_STRIKE_INVERTED, d0, 0, d1);
-                }
-                CSEffect.createInstance(player, CSEffectTypes.SOLARIS_AIR);
-                playRandomBladeSound(player, CRESENTIA_SOUNDS.length);
-                double range = 7.0;
-                double rangeSq = Mth.square(range);
-                List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range).move(d0, 0, d1));
-                for (Entity entityBatch : entities) {
-                    if (entityBatch instanceof LivingEntity target) {
-                        if (target != player && target.isAlive() && target.distanceToSqr(player) < rangeSq) {
-                            double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
-                            target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
-                            target.invulnerableTime = 0;
-                            target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.crescentiaSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
-                            target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
-                            target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
-                        }
-                    }
-                    if (entityBatch instanceof Projectile projectile) {
-                        createCrescentiaFirework(itemStack, level, player, projectile.getX(), projectile.getY(), projectile.getZ(), true, animationTimer);
-                        player.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
-                        projectile.remove(Entity.RemovalReason.DISCARDED);
-                    }
-                }
+                double d2 = -Mth.sin(player.getXRot() * ((float) Math.PI / 180F));
 
+                projectile.setOwnerUuid(player.getUUID());
+                projectile.setAngleX((float) d0);
+                projectile.setAngleY((float) d2);
+                projectile.setAngleZ((float) d1);
+                projectile.setAddAngleX((float) d0 / 2);
+                projectile.setAddAngleY((float) d2 / 2);
+                projectile.setAddAngleZ((float) d1 / 2);
+                projectile.moveTo(player.getX(), player.getY() + 1, player.getZ());
+                level.addFreshEntity(projectile);
+            }
+
+            for (int i = 0; i < 10; i++) {
                 Random random = new Random();
                 float offX = random.nextFloat() * 12 - 6;
                 float offY = random.nextFloat() * 12 - 6;
                 float offZ = random.nextFloat() * 12 - 6;
-                createCrescentiaFirework(itemStack, level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, false, animationTimer);
+                createCrescentiaFirework(itemStack, level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, true, animationTimer);
+                player.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
             }
-            if (animationTimer >= 80) {
-                data.putInt(ANIMATION_TIMER_KEY, 0);
-                data.putBoolean(ANIMATION_BEGUN_KEY, false);
+        }
+        if (animationTimer >= 30) {
+            data.putInt(ANIMATION_TIMER_KEY, 0);
+            data.putBoolean(ANIMATION_BEGUN_KEY, false);
+        }
+    }
+
+    public void tickMelee(ItemStack itemStack, Level level, Player player, int animationTimer) {
+        CompoundTag data = itemStack.getOrCreateTagElement("csController");
+
+        data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
+        //player.setDeltaMovement(0, 0, 0);
+        if (animationTimer >= 27 && animationTimer <= 70) {
+            double d0 = -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
+            double d1 = Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
+
+            double range = 7.0;
+            double rangeSq = Mth.square(range);
+            List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range).move(d0, 0, d1));
+            for (Entity entityBatch : entities) {
+                if (entityBatch instanceof LivingEntity target) {
+                    if (target != player && target.isAlive() && target.distanceToSqr(player) < rangeSq) {
+                        double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
+                        target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
+                        target.invulnerableTime = 0;
+                        target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.crescentiaSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
+                        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
+                        target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
+                    }
+                }
+                if (entityBatch instanceof Projectile projectile) {
+                    createCrescentiaFirework(itemStack, level, player, projectile.getX(), projectile.getY(), projectile.getZ(), true, animationTimer);
+                    player.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
+                    projectile.remove(Entity.RemovalReason.DISCARDED);
+                }
             }
+
+            if (new Random().nextBoolean()) {
+                CSEffect.createInstance(player, null, CSEffectTypes.CRESCENTIA_STRIKE, d0, 0, d1);
+            } else {
+                CSEffect.createInstance(player, null, CSEffectTypes.CRESCENTIA_STRIKE_INVERTED, d0, 0, d1);
+            }
+            CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_AIR);
+            playRandomBladeSound(player, CRESENTIA_SOUNDS.length);
+
+            Random random = new Random();
+            float offX = random.nextFloat() * 12 - 6;
+            float offY = random.nextFloat() * 12 - 6;
+            float offZ = random.nextFloat() * 12 - 6;
+            createCrescentiaFirework(itemStack, level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, false, animationTimer);
+        }
+        if (animationTimer >= 80) {
+            data.putInt(ANIMATION_TIMER_KEY, 0);
+            data.putBoolean(ANIMATION_BEGUN_KEY, false);
         }
     }
 
