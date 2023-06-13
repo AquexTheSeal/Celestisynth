@@ -14,10 +14,14 @@ public enum CSEffectTypes {
     SOLARIS_BLITZ_SOUL("solaris_spin_soul", Model.FLAT, Animation.SPIN_20, 11, 2, 3.5, true, true, false),
     SOLARIS_AIR("solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 2.5, true, true, false),
     SOLARIS_AIR_LARGE("solaris_air_large", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 3.5, true, true, false),
+    SOLARIS_AIR_LARGE_FLAT("solaris_air_large_flat", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 3.5, false, true, false),
     CRESCENTIA_STRIKE("crescentia_strike", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 2.5, false, false, true),
     CRESCENTIA_STRIKE_INVERTED("crescentia_strike_inverted", "crescentia_strike", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 2.5, false, false, true),
     CRESCENTIA_THROW("crescentia_throw", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 3, false, true, true),
-    CRESCENTIA_THROW_INVERTED("crescentia_throw_inverted", "crescentia_throw", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 3, false, true, true);
+    CRESCENTIA_THROW_INVERTED("crescentia_throw_inverted", "crescentia_throw", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 3, false, true, true),
+    BREEZEBREAKER_SLASH("breezebreaker_slash", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 3, false, true, true),
+    BREEZEBREAKER_SLASH_INVERTED("breezebreaker_slash_inverted", "breezebreaker_slash", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 3, false, true, true),
+    BREEZEBREAKER_SLASH_VERTICAL("breezebreaker_slash_vertical", "solaris_air", Model.FLAT_VERTICAL_FRONTFACE, Animation.SWEEP_RTOL, 0, 0, 4, false, true, false);
 
     final String name;
     final String texture;
@@ -91,8 +95,8 @@ public enum CSEffectTypes {
 
         FLAT("cs_effect_flat"),
         FLAT_INVERTED("cs_effect_flat_inverted"),
-        FLAT_VERTICAL("cs_effect_flat_vertical"),
-        FLAT_VERTICAL_SIDE("cs_effect_flat_vertical_side"),
+        FLAT_VERTICAL_SIDEFACE("cs_effect_flat_vertical"),
+        FLAT_VERTICAL_FRONTFACE("cs_effect_flat_vertical_side"),
         IMPACT("cs_effect_impact")
         ;
 
@@ -138,8 +142,13 @@ public enum CSEffectTypes {
     }
 
     public static void setSpecialProperties(PoseStack poseStack, CSEffect animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        if (animatable.getEffectType() == CRESCENTIA_STRIKE || animatable.getEffectType() == CRESCENTIA_STRIKE_INVERTED || animatable.getEffectType() == CRESCENTIA_THROW || animatable.getEffectType() == CRESCENTIA_THROW_INVERTED) {
-            poseStack.mulPose(Axis.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 90.0F) - 45.0F));
+        switch (animatable.getEffectType()) {
+            case CRESCENTIA_STRIKE, CRESCENTIA_STRIKE_INVERTED, CRESCENTIA_THROW, CRESCENTIA_THROW_INVERTED ->
+                    poseStack.mulPose(Axis.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 90.0F) - 45.0F));
+            case BREEZEBREAKER_SLASH, BREEZEBREAKER_SLASH_INVERTED ->
+                    poseStack.mulPose(Axis.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
+            default -> {
+            }
         }
     }
 }

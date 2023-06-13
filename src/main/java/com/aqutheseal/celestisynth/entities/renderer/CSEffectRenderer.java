@@ -28,7 +28,7 @@ public class CSEffectRenderer extends GeoEntityRenderer<CSEffect> {
 
     @Override
     public void preRender(PoseStack poseStack, CSEffect animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        float lerpBodyRot = Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot()) - 135;
+        float lerpBodyRot = Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot()) - 165;
         float ageInTicks = animatable.tickCount + partialTick;
         applyRotations(animatable, poseStack, ageInTicks, lerpBodyRot, partialTick);
         
@@ -49,7 +49,7 @@ public class CSEffectRenderer extends GeoEntityRenderer<CSEffect> {
 
     @Override
     public RenderType getRenderType(CSEffect animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucent(texture);
+        return RenderType.entityTranslucentEmissive(texture);
     }
 
     @Override
@@ -71,8 +71,12 @@ public class CSEffectRenderer extends GeoEntityRenderer<CSEffect> {
             int lifespan = animatable.getEffectType().getAnimation().getLifespan();
             decreasingAlpha = 1.0F - ((float) animatable.tickCount / lifespan);
         }
-        if (mc.options.getCameraType().isFirstPerson() && animatable.getOwnerUuid() == mc.player.getUUID() && CSConfig.CLIENT.visibilityOnFirstPerson.get()) {
-            shouldHideAtFirstPerson = true;
+        if (!CSConfig.CLIENT.visibilityOnFirstPerson.get()) {
+            if (mc.level != null && animatable.getOwnerUuid() != null && mc.player != null) {
+                if (mc.options.getCameraType().isFirstPerson() && animatable.getOwnerUuid() == mc.player.getUUID()) {
+                    shouldHideAtFirstPerson = true;
+                }
+            }
         }
         return Color.ofRGBA(1, 1, 1, shouldHideAtFirstPerson ? 0F : decreasingAlpha);
     }

@@ -12,8 +12,10 @@ import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
 
 public class AnimationManager {
     public static int animIndex;
@@ -24,21 +26,29 @@ public class AnimationManager {
         ANIM_CRESCENTIA_STRIKE("cs_crescentia_strike"),
         ANIM_CRESCENTIA_THROW("cs_crescentia_throw"),
         ANIM_BREEZEBREAKER_NORMAL_SINGLE("cs_breezebreaker_normal_single"),
-        ANIM_BREEZEBREAKER_NORMAL_DOUBLE("cs_breezebreaker_normal_double");
+        ANIM_BREEZEBREAKER_NORMAL_DOUBLE("cs_breezebreaker_normal_double"),
+        ANIM_BREEZEBREAKER_SHIFT_RIGHT("cs_breezebreaker_shift_right"),
+        ANIM_BREEZEBREAKER_SHIFT_LEFT("cs_breezebreaker_shift_left"),
+        ANIM_BREEZEBREAKER_JUMP("cs_breezebreaker_jump"),
+        ANIM_BREEZEBREAKER_JUMP_ATTACK("cs_breezebreaker_jump_attack");
 
-        final String path;
+        final @Nullable String path;
         final int id;
 
-        AnimationsList(String file) {
+        AnimationsList(@Nullable String file) {
             path = file;
             id = animIndex++;
         }
 
-        public KeyframeAnimation getAnimation() {
-            return PlayerAnimationRegistry.getAnimation(new ResourceLocation(Celestisynth.MODID, getPath()));
+        public @Nullable KeyframeAnimation getAnimation() {
+            if (getPath() != null) {
+                return PlayerAnimationRegistry.getAnimation(new ResourceLocation(Celestisynth.MODID, getPath()));
+            } else {
+                return null;
+            }
         }
 
-        public String getPath() {
+        public @Nullable String getPath() {
             return path;
         }
 
@@ -47,23 +57,42 @@ public class AnimationManager {
         }
     }
 
+    public static void playAnimation(Level level, AnimationsList animation) {
+        if (level.isClientSide()) {
+            playAnimation(animation, false);
+        }
+    }
+
     public static void playAnimation(AnimationsList animation) {
-        CSNetwork.sendToServer(new SetAnimationServerPacket(animation.getId()));
+        playAnimation(animation, false);
     }
 
-    public static void playAnimation(KeyframeAnimation animation, ModifierLayer<IAnimation> layer) {
-        layer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(10, Ease.LINEAR), new KeyframeAnimationPlayer(animation)
-                .setFirstPersonMode(FirstPersonMode.THIRD_PERSON_MODEL)
-                .setFirstPersonConfiguration(new FirstPersonConfiguration()
-                        .setShowRightArm(true)
-                        .setShowLeftItem(true)
-                ), true
-        );
+    public static void playAnimation(AnimationsList animation, boolean isOtherLayer) {
+        CSNetwork.sendToServer(new SetAnimationServerPacket(isOtherLayer, animation.getId()));
     }
 
-    public static void cancelConcurrentAnimation(AbstractClientPlayer player, ModifierLayer<IAnimation> layer) {
-        if (layer.getAnimation() != null) {
-            layer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(0, Ease.LINEAR), null);
+    public static void playAnimation(@Nullable KeyframeAnimation animation, ModifierLayer<IAnimation> layer) {
+        if (animation == null) {
+            layer.setAnimation(null);
+        } else {
+            if (CSAnimator.animationData.containsValue(layer)) {
+                layer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(10, Ease.LINEAR), new KeyframeAnimationPlayer(animation)
+                        .setFirstPersonMode(FirstPersonMode.THIRD_PERSON_MODEL)
+                        .setFirstPersonConfiguration(new FirstPersonConfiguration()
+                                .setShowRightArm(true).setShowRightItem(true)
+                                .setShowLeftArm(true).setShowLeftItem(true)
+                        ), true
+                );
+            }
+            if (CSAnimator.otherAnimationData.containsValue(layer)) {
+                layer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(10, Ease.LINEAR), new KeyframeAnimationPlayer(animation)
+                        .setFirstPersonMode(FirstPersonMode.THIRD_PERSON_MODEL)
+                        .setFirstPersonConfiguration(new FirstPersonConfiguration()
+                                .setShowRightArm(false).setShowRightItem(true)
+                                .setShowLeftArm(false).setShowLeftItem(true)
+                        ), true
+                );
+            }
         }
     }
 

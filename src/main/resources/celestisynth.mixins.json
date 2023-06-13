@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "celestisynth.refmap.json",
   "mixins": [
+    "ServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -60,15 +60,6 @@ public class SolarisItem extends SwordItem implements CSWeapon {
     }
 
     @Override
-    public boolean onDroppedByPlayer(ItemStack item, Player player) {
-        CompoundTag itemTag = item.getOrCreateTagElement("csController");
-        if (itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
-            return false;
-        }
-        return super.onDroppedByPlayer(item, player);
-    }
-
-    @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity entity, LivingEntity source) {
         entity.setSecondsOnFire(5);
         return super.hurtEnemy(itemStack, entity, source);
@@ -78,7 +69,9 @@ public class SolarisItem extends SwordItem implements CSWeapon {
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         if (entity instanceof Player player && data.getBoolean(ANIMATION_BEGUN_KEY)) {
-            player.getInventory().selected = itemSlot;
+            if (player.getMainHandItem() == itemStack) {
+                player.getInventory().selected = itemSlot;
+            }
             if (level.isClientSide()) {
                 if (Minecraft.getInstance().screen != null) {
                     Minecraft.getInstance().screen = null;
@@ -113,7 +106,7 @@ public class SolarisItem extends SwordItem implements CSWeapon {
                 int range = isStraight ? 7 : 4;
                 List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
                 for (LivingEntity target : entities) {
-                    if (target != player && target.isAlive()) {
+                    if (target != player && !player.isAlliedTo(target) && target.isAlive()) {
                         constantAttack(player, target, (isStraight ? CSConfig.COMMON.solarisShiftSkillDmg.get() : CSConfig.COMMON.solarisSkillDmg.get()) + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.5F));
                         target.setSecondsOnFire(5);
                     }
@@ -123,7 +116,7 @@ public class SolarisItem extends SwordItem implements CSWeapon {
                     movePlayerInStraightMotion(player, data.getInt(HEAD_ROT_LOCK_KEY));
                     CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_BLITZ_SOUL);
                     CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_AIR_LARGE);
-                    playRandomBladeSound(player, CRESENTIA_SOUNDS.length);
+                    playRandomBladeSound(player, BASE_WEAPON_EFFECTS.length);
                 } else if (data.getInt(DIRECTION_INDEX_KEY) == 0) {
                     movePlayerInCircularMotion(player, animationTimer, false);
                     CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_BLITZ);

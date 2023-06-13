@@ -30,6 +30,7 @@ public class CSItemModelProvider extends ItemModelProvider {
 
         this.csSinglePredicatedModel(CSItemRegistry.SOLARIS, "item/long_blade", csLoc("soul"), "item/long_blade");
         this.csCustomModel(CSItemRegistry.CRESCENTIA, getCSLoc("item/long_blade"));
+        this.csCustomModel(CSItemRegistry.BREEZEBREAKER, getCSLoc("item/long_blade"));
 
         this.csCustomModel(CSBlockRegistry.SOLAR_CRYSTAL.get().asItem(), getMcLoc("item/generated"));
         this.block(CSBlockRegistry.LUNAR_STONE);

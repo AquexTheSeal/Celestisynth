@@ -7,28 +7,31 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import java.util.Random;
 
 public interface CSWeapon {
 
     String CS_CONTROLLER_TAG_ELEMENT = "csController";
-
     String ANIMATION_TIMER_KEY = "cs.animationTimer";
     String ANIMATION_BEGUN_KEY = "cs.hasAnimationBegun";
-    String IS_RANGED_KEY = "cs.isRangedAttack";
 
-    SoundEvent[] CRESENTIA_SOUNDS = {
-            CSSoundRegistry.SOLARIS_1.get(),
-            CSSoundRegistry.SOLARIS_2.get(),
-            CSSoundRegistry.SOLARIS_3.get(),
-            CSSoundRegistry.SOLARIS_5.get(),
-            CSSoundRegistry.SOLARIS_6.get(),
-            CSSoundRegistry.SOLARIS_4.get()
+    SoundEvent[] BASE_WEAPON_EFFECTS = {
+            CSSoundRegistry.CS_SWORD_SWING.get(),
+            CSSoundRegistry.CS_SWORD_SWING_FIRE.get(),
+            CSSoundRegistry.CS_AIR_SWING.get(),
+            CSSoundRegistry.CS_SWORD_CLASH.get(),
+            CSSoundRegistry.CS_FIRE_SHOOT.get(),
+            CSSoundRegistry.CS_IMPACT_HIT.get()
     };
 
+    default void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
+    }
+
     default void playRandomBladeSound(Entity entity, int length) {
-        SoundEvent randomSound = CRESENTIA_SOUNDS[new Random().nextInt(length)];
+        SoundEvent randomSound = BASE_WEAPON_EFFECTS[new Random().nextInt(length)];
         entity.playSound(randomSound, 0.55F, 0.5F + new Random().nextFloat());
     }
 

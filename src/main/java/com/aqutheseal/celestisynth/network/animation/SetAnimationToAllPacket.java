@@ -10,21 +10,25 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class SetAnimationToAllPacket {
-    private final int id;
+    private final boolean isOtherLayer;
+    private final int playerId;
     private final int animId;
 
-    public SetAnimationToAllPacket(int id, int animId) {
-        this.id = id;
+    public SetAnimationToAllPacket(boolean isOtherLayer, int playerId, int animId) {
+        this.isOtherLayer = isOtherLayer;
+        this.playerId = playerId;
         this.animId = animId;
     }
 
     public SetAnimationToAllPacket(FriendlyByteBuf buf) {
-        this.id = buf.readInt();
+        this.isOtherLayer = buf.readBoolean();
+        this.playerId = buf.readInt();
         this.animId = buf.readInt();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeInt(id);
+        buf.writeBoolean(isOtherLayer);
+        buf.writeInt(playerId);
         buf.writeInt(animId);
     }
 
@@ -32,14 +36,14 @@ public class SetAnimationToAllPacket {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             Minecraft instance = Minecraft.getInstance();
-            var player = instance.level.getEntity(id);
-            animatePlayer(animId, (AbstractClientPlayer) player);
+            var player = instance.level.getEntity(playerId);
+            animatePlayer(isOtherLayer, animId, (AbstractClientPlayer) player);
         });
         return true;
     }
 
-    public static void animatePlayer(int animId, AbstractClientPlayer player) {
-        var animation = CSAnimator.animationData.get(player);
+    public static void animatePlayer(boolean isOtherLayer, int animId, AbstractClientPlayer player) {
+        var animation = isOtherLayer ? CSAnimator.otherAnimationData.get(player) : CSAnimator.animationData.get(player);
         if (animation != null) {
             AnimationManager.playAnimation(AnimationManager.getAnimFromId(animId).getAnimation(), animation);
         }

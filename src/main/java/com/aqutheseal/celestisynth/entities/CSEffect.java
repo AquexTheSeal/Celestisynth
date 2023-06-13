@@ -168,7 +168,7 @@ public class CSEffect extends Entity implements GeoEntity {
 
     @Override
     public void tick() {
-        if (level.getPlayerByUUID(getOwnerUuid()) == null) {
+        if (getOwnerUuid() == null) {
             this.remove(RemovalReason.DISCARDED);
         }
 

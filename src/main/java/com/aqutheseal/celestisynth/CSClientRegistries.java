@@ -1,7 +1,7 @@
 package com.aqutheseal.celestisynth;
 
 import com.aqutheseal.celestisynth.entities.renderer.CSEffectRenderer;
-import com.aqutheseal.celestisynth.entities.renderer.CrescentiaRangedRenderer;
+import com.aqutheseal.celestisynth.entities.renderer.NullRenderer;
 import com.aqutheseal.celestisynth.item.SolarisItem;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
@@ -19,7 +19,8 @@ public class CSClientRegistries {
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(CSEntityRegistry.CS_EFFECT.get(), CSEffectRenderer::new);
-        event.registerEntityRenderer(CSEntityRegistry.CRESCENTIA_RANGED.get(), CrescentiaRangedRenderer::new);
+        event.registerEntityRenderer(CSEntityRegistry.CRESCENTIA_RANGED.get(), NullRenderer::new);
+        event.registerEntityRenderer(CSEntityRegistry.BREEZEBREAKER_TORNADO.get(), NullRenderer::new);
     }
 
     @SubscribeEvent

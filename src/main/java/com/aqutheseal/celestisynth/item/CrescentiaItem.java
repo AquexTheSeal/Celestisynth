@@ -32,6 +32,8 @@ import java.util.Random;
 
 public class CrescentiaItem extends SwordItem implements CSWeapon {
 
+    public static final String IS_RANGED_KEY = "cs.isRangedAttack";
+
     public CrescentiaItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
         super(tier, attackDamage, attackSpeed, properties);
     }
@@ -57,20 +59,13 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
     }
 
     @Override
-    public boolean onDroppedByPlayer(ItemStack item, Player player) {
-        CompoundTag itemTag = item.getOrCreateTagElement("csController");
-        if (itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
-            return false;
-        }
-        return super.onDroppedByPlayer(item, player);
-    }
-
-    @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         if (data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (entity instanceof Player player) {
-                player.getInventory().selected = itemSlot;
+                if (player.getMainHandItem() == itemStack) {
+                    player.getInventory().selected = itemSlot;
+                }
                 if (level.isClientSide()) {
                     if (Minecraft.getInstance().screen != null) {
                         Minecraft.getInstance().screen = null;
@@ -133,7 +128,7 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
             List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range).move(calculateXLook(player), 0, calculateZLook(player)));
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
-                    if (target != player && target.isAlive() && target.distanceToSqr(player) < rangeSq) {
+                    if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
                         constantAttack(player, target, CSConfig.COMMON.crescentiaSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
                         target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                     }
@@ -151,7 +146,7 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
                 CSEffect.createInstance(player, null, CSEffectTypes.CRESCENTIA_STRIKE_INVERTED, calculateXLook(player), 0, calculateZLook(player));
             }
             CSEffect.createInstance(player, null, CSEffectTypes.SOLARIS_AIR);
-            playRandomBladeSound(player, CRESENTIA_SOUNDS.length);
+            playRandomBladeSound(player, BASE_WEAPON_EFFECTS.length);
 
             Random random = new Random();
             float offX = random.nextFloat() * 12 - 6;
@@ -190,10 +185,10 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
         }
     }
 
-    public static void doCrescentiaDamageReduction(LivingHurtEvent event) {
+    public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
         LivingEntity entity = event.getEntity();
-        CompoundTag tagR = entity.getMainHandItem().getItem().getShareTag(entity.getMainHandItem());
-        CompoundTag tagL = entity.getOffhandItem().getItem().getShareTag(entity.getOffhandItem());
+        CompoundTag tagR = mainHandItem.getItem().getShareTag(entity.getMainHandItem());
+        CompoundTag tagL = offHandItem.getItem().getShareTag(entity.getOffhandItem());
         if ((tagR != null && (tagR.getBoolean(ANIMATION_BEGUN_KEY)) || (tagL != null && (tagL.getBoolean(ANIMATION_BEGUN_KEY))))) {
             event.setAmount(event.getAmount() * 0.7F);
         }

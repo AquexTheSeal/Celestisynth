@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.registry;
 
 import com.aqutheseal.celestisynth.Celestisynth;
+import com.aqutheseal.celestisynth.entities.BreezebreakerTornado;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.aqutheseal.celestisynth.entities.CrescentiaRanged;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +18,9 @@ public class CSEntityRegistry {
             .sized(0.5F, 0.5F).clientTrackingRange(32).build(new ResourceLocation(Celestisynth.MODID, "cs_effect").toString())
     );
     public static final RegistryObject<EntityType<CrescentiaRanged>> CRESCENTIA_RANGED = ENTITY_TYPES.register("crescentia_ranged", () -> EntityType.Builder.of(CrescentiaRanged::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F).clientTrackingRange(1).build(new ResourceLocation(Celestisynth.MODID, "crescentia_ranged").toString())
+            .sized(0.5F, 0.5F).clientTrackingRange(16).build(new ResourceLocation(Celestisynth.MODID, "crescentia_ranged").toString())
+    );
+    public static final RegistryObject<EntityType<BreezebreakerTornado>> BREEZEBREAKER_TORNADO = ENTITY_TYPES.register("breezebreaker_tornado", () -> EntityType.Builder.of(BreezebreakerTornado::new, MobCategory.MISC)
+            .sized(0.5F, 0.5F).clientTrackingRange(16).build(new ResourceLocation(Celestisynth.MODID, "breezebreaker_tornado").toString())
     );
 }
