@@ -18,6 +18,7 @@ public class CSBlockModelProvider extends BlockModelProvider {
     protected void registerModels() {
         this.cross(CSBlockRegistry.SOLAR_CRYSTAL.get());
         this.cubeAll(CSBlockRegistry.LUNAR_STONE.get());
+        this.cubeAll(CSBlockRegistry.ZEPHYR_DEPOSIT.get());
     }
 
     public void cross(Block block) {

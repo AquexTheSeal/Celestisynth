@@ -32,12 +32,22 @@ public class CSRecipeProvider extends RecipeProvider {
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CSItemRegistry.CRESCENTIA.get())
                 .pattern("lnl")
-                .pattern(" ln")
-                .pattern("i l")
+                .pattern("l n")
+                .pattern("i  ")
                 .define('l', Ingredient.of(CSBlockRegistry.LUNAR_STONE.get()))
                 .define('n', Ingredient.of(Items.NETHERITE_INGOT))
                 .define('i', Ingredient.of(Items.IRON_SWORD))
                 .unlockedBy("has_item", has(CSBlockRegistry.LUNAR_STONE.get()))
                 .save(consumer, "crescentia");
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CSItemRegistry.BREEZEBREAKER.get())
+                .pattern(" nz")
+                .pattern("znn")
+                .pattern("iz ")
+                .define('z', Ingredient.of(CSBlockRegistry.ZEPHYR_DEPOSIT.get()))
+                .define('n', Ingredient.of(Items.NETHERITE_INGOT))
+                .define('i', Ingredient.of(Items.IRON_SWORD))
+                .unlockedBy("has_item", has(CSBlockRegistry.LUNAR_STONE.get()))
+                .save(consumer, "breezebreaker");
     }
 }

@@ -14,8 +14,8 @@
   },
   "pattern": [
     "lnl",
-    " ln",
-    "i l"
+    "l n",
+    "i  "
   ],
   "result": {
     "item": "celestisynth:crescentia"

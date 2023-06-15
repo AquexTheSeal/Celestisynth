@@ -20,6 +20,7 @@ public class CSBlockstateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         this.crossBlock(CSBlockRegistry.SOLAR_CRYSTAL.get());
         this.simpleBlock(CSBlockRegistry.LUNAR_STONE.get());
+        this.simpleBlock(CSBlockRegistry.ZEPHYR_DEPOSIT.get());
     }
 
     public void crossBlock(Block block) {

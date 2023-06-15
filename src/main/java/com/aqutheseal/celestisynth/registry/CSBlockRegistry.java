@@ -24,8 +24,13 @@ public class CSBlockRegistry {
             )
     );
     public static final RegistryObject<Block> LUNAR_STONE = registerBlock("lunar_stone",
-            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_BLUE).sound(SoundType.GILDED_BLACKSTONE)
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_BLUE).sound(SoundType.STONE)
                     .requiresCorrectToolForDrops().strength(4.0F, 9.0F).lightLevel((a) -> 3)
+            )
+    );
+    public static final RegistryObject<Block> ZEPHYR_DEPOSIT = registerBlock("zephyr_deposit",
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_GREEN).sound(SoundType.GILDED_BLACKSTONE)
+                    .requiresCorrectToolForDrops().strength(5.5F, 9.0F).lightLevel((a) -> 3)
             )
     );
 

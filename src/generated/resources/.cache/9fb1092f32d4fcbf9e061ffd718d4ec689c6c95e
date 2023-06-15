@@ -1,5 +1,7 @@
-// 1.19.4	2023-06-09T17:32:36.3904148	Recipes
+// 1.19.4	2023-06-15T21:18:25.2558861	Recipes
+0df34d0b98c24b28dbd5b6c99701980b5fb610f3 data/minecraft/advancements/recipes/building_blocks/breezebreaker.json
 7aa78186cb72be6c30e0d1ddafea4f6c092dca93 data/minecraft/advancements/recipes/building_blocks/crescentia.json
 a78098d0fda486b5921b376123d2ecb663fa2826 data/minecraft/advancements/recipes/building_blocks/solaris.json
-8570926afda34febe7fb63738c58d4b8cff7a7ef data/minecraft/recipes/crescentia.json
+c61fabccfca812a01de164032993afd1260dd74e data/minecraft/recipes/breezebreaker.json
+4624aad22916841ea49f30d8e342b2dcd3e6fcb0 data/minecraft/recipes/crescentia.json
 f5185585415f153b40fc4de8ced88b899c5f9ab4 data/minecraft/recipes/solaris.json

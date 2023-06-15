@@ -1,9 +1,9 @@
 {
-  "feature": "celestisynth:lunar_crater",
+  "feature": "celestisynth:zephyr_deposit",
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 13
+      "chance": 6
     },
     {
       "type": "minecraft:in_square"
@@ -13,10 +13,10 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 30
+          "absolute": 320
         },
         "min_inclusive": {
-          "above_bottom": 0
+          "absolute": 150
         }
       }
     },

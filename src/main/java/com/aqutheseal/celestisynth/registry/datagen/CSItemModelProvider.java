@@ -34,6 +34,7 @@ public class CSItemModelProvider extends ItemModelProvider {
 
         this.csCustomModel(CSBlockRegistry.SOLAR_CRYSTAL.get().asItem(), getMcLoc("item/generated"));
         this.block(CSBlockRegistry.LUNAR_STONE);
+        this.block(CSBlockRegistry.ZEPHYR_DEPOSIT);
     }
 
     public void defaultItem(Collection<RegistryObject<Item>> items) {

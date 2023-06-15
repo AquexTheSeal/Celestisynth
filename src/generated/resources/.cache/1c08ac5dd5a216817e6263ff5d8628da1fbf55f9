@@ -1,5 +1,7 @@
-// 1.19.4	2023-06-09T17:32:36.3884131	Block States: celestisynth
+// 1.19.4	2023-06-15T21:18:25.2548851	Block States: celestisynth
 634112289c12ab9b996dc106f12a509667735f02 assets/celestisynth/blockstates/lunar_stone.json
 9dea2973f0f035870132cbc7ee96ccdd3d1fb128 assets/celestisynth/blockstates/solar_crystal.json
+9c8a445347813bb922754c3379382d0d92eabec3 assets/celestisynth/blockstates/zephyr_deposit.json
 21e5bb748927f678e29b2fa6b1f422507c6c349d assets/celestisynth/models/block/lunar_stone.json
 5389cf4eee1f6e682a33a714d4e73ca9bbbdf934 assets/celestisynth/models/block/solar_crystal.json
+78da5f5e2b87502f1f26b9de1af702317fa54c38 assets/celestisynth/models/block/zephyr_deposit.json
