@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "i": {
+      "item": "minecraft:iron_sword"
+    },
+    "n": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "z": {
+      "item": "celestisynth:zephyr_deposit"
+    }
+  },
+  "pattern": [
+    " nz",
+    "znn",
+    "iz "
+  ],
+  "result": {
+    "item": "celestisynth:breezebreaker"
+  },
+  "show_notification": true
+}
