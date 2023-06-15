@@ -46,5 +46,11 @@
     "sounds": [
       "celestisynth:cs_wind_strike"
     ]
+  },
+  "cs_whirlwind": {
+    "subtitle": "subtitles.celestisynth.cs_whirlwind",
+    "sounds": [
+      "celestisynth:cs_whirlwind"
+    ]
   }
 }

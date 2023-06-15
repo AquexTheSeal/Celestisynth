@@ -15,6 +15,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +37,21 @@ public class SolarisItem extends SwordItem implements CSWeapon {
 
     public SolarisItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
         super(tier, attackDamage, attackSpeed, properties);
+    }
+
+    @Override
+    public int getSkillsAmount() {
+        return 2;
+    }
+
+    @Override
+    public boolean hasPassive() {
+        return true;
+    }
+
+    @Override
+    public int getPassiveAmount() {
+        return 1;
     }
 
     @Override
@@ -68,8 +85,13 @@ public class SolarisItem extends SwordItem implements CSWeapon {
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+
+        if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof SolarisItem)) {
+            player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2, 0));
+        }
+
         if (entity instanceof Player player && data.getBoolean(ANIMATION_BEGUN_KEY)) {
-            if (player.getMainHandItem() == itemStack) {
+            if (player.getMainHandItem() != itemStack) {
                 player.getInventory().selected = itemSlot;
             }
             if (level.isClientSide()) {
@@ -100,6 +122,7 @@ public class SolarisItem extends SwordItem implements CSWeapon {
                 }
                 player.setDeltaMovement(0, 0, 0);
                 player.hurtMarked = true;
+
             } else if (animationTimer > 35 && animationTimer < 60) {
                 BlockPos blockPosForAttack = player.blockPosition();
                 boolean isStraight = data.getInt(DIRECTION_INDEX_KEY) == 2;

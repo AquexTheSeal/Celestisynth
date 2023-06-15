@@ -4,10 +4,7 @@ import com.aqutheseal.celestisynth.animation.CSAnimator;
 import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.network.CSNetwork;
 import com.aqutheseal.celestisynth.registry.*;
-import com.aqutheseal.celestisynth.registry.datagen.CSBlockModelProvider;
-import com.aqutheseal.celestisynth.registry.datagen.CSBlockstateProvider;
-import com.aqutheseal.celestisynth.registry.datagen.CSItemModelProvider;
-import com.aqutheseal.celestisynth.registry.datagen.CSRecipeProvider;
+import com.aqutheseal.celestisynth.registry.datagen.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.api.distmarker.Dist;
@@ -63,6 +60,7 @@ public class Celestisynth {
             dataGenerator.addProvider(true, new CSBlockstateProvider(dataGenerator.getPackOutput(), MODID, efh));
             dataGenerator.addProvider(true, new CSItemModelProvider(dataGenerator.getPackOutput(), MODID, efh));
             dataGenerator.addProvider(true, new CSRecipeProvider(dataGenerator.getPackOutput()));
+            // dataGenerator.addProvider(true, new CSSoundProvider(dataGenerator.getPackOutput(), MODID, efh));
         }
     }
 }

@@ -4,6 +4,8 @@ import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.item.BreezebreakerItem;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
+import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -22,15 +24,14 @@ public class CSUtilityEvents {
         LivingEntity entity = event.getEntity();
         ItemStack itemR = entity.getMainHandItem();
         ItemStack itemL = entity.getOffhandItem();
-        if (itemR != ItemStack.EMPTY) {
-            if (itemR.getItem() instanceof CSWeapon cs) {
-                cs.onPlayerHurt(event, itemR, itemL);
-            }
+        if (itemR.getItem() instanceof CSWeapon cs && !(itemL.getItem() instanceof CSWeapon)) {
+            cs.onPlayerHurt(event, itemR, itemL);
         }
-        if (itemL != ItemStack.EMPTY) {
-            if (itemL.getItem() instanceof CSWeapon cs) {
-                cs.onPlayerHurt(event, itemR, itemL);
-            }
+        if (itemL.getItem() instanceof CSWeapon cs && !(itemR.getItem() instanceof CSWeapon)) {
+            cs.onPlayerHurt(event, itemR, itemL);
+        }
+        if (itemR.getItem() instanceof CSWeapon cs && itemL.getItem() instanceof CSWeapon) {
+            cs.onPlayerHurt(event, itemR, itemL);
         }
     }
 
@@ -43,6 +44,13 @@ public class CSUtilityEvents {
             if (entity instanceof Player player) {
                 if (player.getLevel().isClientSide()) {
                     AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_JUMP, true);
+                }
+                player.playSound(CSSoundRegistry.CS_STEP.get());
+                if (itemR instanceof CSWeapon wp) {
+                    wp.sendExpandingParticles(entity.level, ParticleTypes.SMOKE, player.blockPosition(), 75, 0.35F);
+                } else {
+                    CSWeapon wp = (CSWeapon) itemL;
+                    wp.sendExpandingParticles(entity.level, ParticleTypes.SMOKE, player.blockPosition(), 75, 0.35F);
                 }
                 player.setDeltaMovement(entity.getDeltaMovement().multiply(3, 2.3, 3));
             }

@@ -112,6 +112,10 @@ public class CSEffect extends Entity implements GeoEntity {
     }
 
     public static CSEffect getEffectInstance(Player owner, @Nullable Entity toFollow, CSEffectTypes effectTypes, double offsetX, double offsetY, double offsetZ) {
+        if (owner == null) {
+            return null;
+        }
+
         CSEffect slash = CSEntityRegistry.CS_EFFECT.get().create(owner.level);
 
         if (toFollow != null) {
@@ -146,6 +150,7 @@ public class CSEffect extends Entity implements GeoEntity {
     }
 
     public static void createInstance(Player owner, @Nullable Entity toFollow, CSEffectTypes effectTypes, double xOffset, double yOffset, double zOffset) {
+        if (owner == null) return;
         CSEffect slash = getEffectInstance(owner, toFollow, effectTypes, xOffset, yOffset, zOffset);
         slash.setOwnerUuid(owner.getUUID());
         owner.level.addFreshEntity(slash);

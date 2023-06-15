@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.item;
 
 import com.aqutheseal.celestisynth.animation.AnimationManager;
+import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.BreezebreakerTornado;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
@@ -11,7 +12,7 @@ import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -29,12 +30,17 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Random;
 
 public class BreezebreakerItem extends SwordItem implements CSWeapon {
+    public static final String BB_COMBO_POINTS = "cs.attackIndex";
+    public static final String AT_BUFF_STATE = "cs.buffState";
+    public static final String BUFF_STATE_LIMITER = "cs.buffStateLimiter";
+
     public static final String ATTACK_INDEX = "cs.attackIndex";
     public static final String IS_SHIFT_RIGHT = "cs.isShiftRight";
     public static final int
@@ -48,7 +54,22 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
         super(tier, attackDamage, attackSpeed, properties);
     }
 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    @Override
+    public int getSkillsAmount() {
+        return 5;
+    }
+
+    @Override
+    public int getPassiveAmount() {
+        return 2;
+    }
+
+    @Override
+    public boolean hasPassive() {
+        return true;
+    }
+
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
@@ -58,6 +79,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
                 boolean isOffHandBreezebreaker = player.getItemBySlot(EquipmentSlot.OFFHAND).getItem() instanceof BreezebreakerItem;
 
                 itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
+                addComboPoint(itemstack, player);
                 itemTag.putInt(ATTACK_INDEX, ATTACK_SHIFT);
 
                 if (hand == InteractionHand.MAIN_HAND && !isOffHandBreezebreaker) {
@@ -75,17 +97,23 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
                     }
                     itemTag.putBoolean(IS_SHIFT_RIGHT, shouldShiftRight);
                 }
-                player.getCooldowns().addCooldown(itemstack.getItem(), 35);
+                player.getCooldowns().addCooldown(itemstack.getItem(), buffStateModified(itemstack, 35));
                 return InteractionResultHolder.success(itemstack);
             }
             if (player.isSprinting() && player.isOnGround()) {
+                itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
+                addComboPoint(itemstack, player);
+                itemTag.putInt(ATTACK_INDEX, ATTACK_SPRINT);
+                AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SPRINT_ATTACK);
+                player.getCooldowns().addCooldown(itemstack.getItem(), buffStateModified(itemstack, 15));
                 return InteractionResultHolder.success(itemstack);
             }
             if (!player.isOnGround()) {
                 itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
+                addComboPoint(itemstack, player);
                 itemTag.putInt(ATTACK_INDEX, ATTACK_MIDAIR);
                 AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_JUMP_ATTACK);
-                player.getCooldowns().addCooldown(itemstack.getItem(), 40);
+                player.getCooldowns().addCooldown(itemstack.getItem(), buffStateModified(itemstack, 40));
                 return InteractionResultHolder.success(itemstack);
             }
         }
@@ -98,13 +126,14 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
         }
     }
 
-    public void releaseUsing(ItemStack itemstack, Level level, LivingEntity entity, int i) {
+    public void releaseUsing(ItemStack itemstack, @NotNull Level level, @NotNull LivingEntity entity, int i) {
         CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
         if (entity instanceof Player player) {
             int dur = this.getUseDuration(itemstack) - i;
             if (dur >= 0) {
                 itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
+                addComboPoint(itemstack, player);
                 if (dur < 10) {
                     AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_NORMAL_SINGLE);
                     itemTag.putInt(ATTACK_INDEX, ATTACK_NORMAL_SINGLE);
@@ -114,8 +143,8 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
                 }
 
                 int cooldown = switch (itemTag.getInt(ATTACK_INDEX)) {
-                    case ATTACK_NORMAL_SINGLE -> 15;
-                    case ATTACK_NORMAL_DOUBLE -> 20;
+                    case ATTACK_NORMAL_SINGLE -> buffStateModified(itemstack, 15);
+                    case ATTACK_NORMAL_DOUBLE -> buffStateModified(itemstack, 20);
                     default -> throw new IllegalStateException("Unexpected value: " + itemTag.getInt(ATTACK_INDEX));
                 };
 
@@ -125,11 +154,17 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
     }
 
     @Override
-    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack itemStack, @NotNull Level level, @NotNull Entity entity, int itemSlot, boolean isSelected) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data1 = itemStack.getOrCreateTagElement(CS_EXTRAS_ELEMENT);
+
+        if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof BreezebreakerItem)) {
+            sendExpandingParticles(level, ParticleTypes.END_ROD, entity.getX(), entity.getY(), entity.getZ(), 1, 0.1F);
+        }
+
         if (data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (entity instanceof Player player) {
-                if (player.getMainHandItem() == itemStack) {
+                if (player.getMainHandItem() != itemStack) {
                     player.getInventory().selected = itemSlot;
                 }
                 if (level.isClientSide()) {
@@ -142,12 +177,31 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
                 switch (data.getInt(ATTACK_INDEX)) {
                     case ATTACK_NORMAL_SINGLE, ATTACK_NORMAL_DOUBLE -> tickNormalAttack(itemStack, level, player, animationTimer);
                     case ATTACK_SHIFT -> tickShiftAttack(itemStack, level, player, animationTimer);
-                    /*
-                    case ATTACK_SPRINT -> ;
-                    */
+                    case ATTACK_SPRINT -> tickDashAttack(itemStack, level, player, animationTimer);
                     case ATTACK_MIDAIR -> tickMidairAttack(itemStack, level, player, animationTimer);
                     default -> throw new IllegalStateException("Unexpected value: " + data.getInt(ATTACK_INDEX));
                 }
+            }
+        }
+
+        if (data1.getBoolean(AT_BUFF_STATE)) {
+            if (entity instanceof Player player) {
+                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, 1));
+                for (int i = 0; i < 45; i++) {
+                    Vec3 lookDirection = player.getLookAngle().normalize();
+                    double offGlobal = 0;
+                    double offX = offGlobal + lookDirection.x() * -1;
+                    double offY = offGlobal + lookDirection.y() * -1;
+                    double offZ = offGlobal + lookDirection.z() * -1;
+                    CSUtilityFunctions.sendParticles(level, ParticleTypes.POOF, entity.getX(), entity.getY() + 1, entity.getZ(), 0, offX, offY, offZ);
+                }
+            }
+
+            data1.putInt(BUFF_STATE_LIMITER, data1.getInt(BUFF_STATE_LIMITER) + 1);
+            if (data1.getInt(BUFF_STATE_LIMITER) >= 200) {
+                data1.putBoolean(AT_BUFF_STATE, false);
+                data1.putInt(BB_COMBO_POINTS, 0);
+                data1.putInt(BUFF_STATE_LIMITER, 0);
             }
         }
     }
@@ -161,22 +215,9 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
-                        constantAttack(player, target, 13 + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
+                        constantAttack(player, target, CSConfig.COMMON.breezebreakerSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
                         target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 1));
-
-                        for (int i = 0; i < 15; i++) {
-                            Random random = new Random();
-                            float offX = -0.5f + random.nextFloat();
-                            float offY = -0.5f + random.nextFloat();
-                            float offZ = -0.5f + random.nextFloat();
-                            if (level instanceof ServerLevel) {
-                                CSUtilityFunctions.sendParticles((ServerLevel) level, ParticleTypes.POOF,
-                                        target.getX(), target.getY() + 1, target.getZ(), 0,
-                                        offX, offY, offZ
-                                );
-
-                            }
-                        }
+                        sendExpandingParticles(level, ParticleTypes.POOF, target.blockPosition().above(), 15, 0);
                     }
                 }
             }
@@ -205,6 +246,8 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
     public void tickShiftAttack(ItemStack itemStack, Level level, Player player, int animationTimer) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         if (animationTimer == 10) {
+            player.playSound(CSSoundRegistry.CS_WIND_STRIKE.get());
+            player.playSound(CSSoundRegistry.CS_WHIRLWIND.get());
             if (!level.isClientSide()) {
                 BreezebreakerTornado projectile = CSEntityRegistry.BREEZEBREAKER_TORNADO.get().create(level);
                 projectile.setOwnerUuid(player.getUUID());
@@ -225,53 +268,55 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
         }
     }
 
+    public void tickDashAttack(ItemStack itemStack, Level level, Player player, int animationTimer) {
+        CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        if (animationTimer == 10) {
+            sendExpandingParticles(level, ParticleTypes.CAMPFIRE_COSY_SMOKE, player.blockPosition(), 45, 0.2F);
+
+            if (getLookAtEntity(player, 12) instanceof LivingEntity living) {
+                constantAttack(player, living, CSConfig.COMMON.breezebreakerSprintSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
+                living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 2));
+                living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
+                sendExpandingParticles(level, ParticleTypes.FIREWORK, player.blockPosition().above(), 45, 0);
+            }
+
+            double speed = 7;
+            Vec3 delta = player.getDeltaMovement().add(new Vec3(calculateXLook(player) * speed, 0, calculateZLook(player) * speed));
+            this.setDeltaPlayer(player, delta);
+            sendExpandingParticles(level, ParticleTypes.POOF, player.blockPosition().above(), 45, 2);
+            CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_DASH, (delta.x()) * 2, 0, (delta.z()) * 2);
+            player.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
+            player.playSound(CSSoundRegistry.CS_IMPACT_HIT.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundRegistry.CS_STEP.get(), 1.0F, 1.0F);
+
+        }
+        if (animationTimer >= 20) {
+            data.putInt(ANIMATION_TIMER_KEY, 0);
+            data.putBoolean(ANIMATION_BEGUN_KEY, false);
+        }
+    }
+
     public void tickMidairAttack(ItemStack itemStack, Level level, Player player, int animationTimer) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         if (animationTimer == 10) {
             double range = 7.5;
             double rangeSq = Mth.square(range);
-            List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range));
+            List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, 2));
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
-                        constantAttack(player, target, 8 + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
+                        constantAttack(player, target, CSConfig.COMMON.breezebreakerSprintSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
                         target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 1));
-
-                        for (int i = 0; i < 45; i++) {
-                            Random random = new Random();
-                            float offX = -0.5f + random.nextFloat();
-                            float offY = -0.5f + random.nextFloat();
-                            float offZ = -0.5f + random.nextFloat();
-                            if (level instanceof ServerLevel) {
-                                CSUtilityFunctions.sendParticles((ServerLevel) level, ParticleTypes.POOF,
-                                        target.getX(), target.getY() + 1, target.getZ(), 0,
-                                        offX, offY, offZ
-                                );
-
-                            }
-                        }
+                        sendExpandingParticles(level, ParticleTypes.POOF, target.blockPosition().above(), 45, 0);
                     }
                 }
             }
 
-            CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_SLASH_VERTICAL, 0, -1, 0);
+            CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_WHEEL, 0, -1, 0);
             player.playSound(CSSoundRegistry.CS_FIRE_SHOOT.get(), 1.0F, 1.0F);
             player.playSound(CSSoundRegistry.CS_AIR_SWING.get(), 1.0F, 1.0F);
             player.playSound(CSSoundRegistry.CS_WIND_STRIKE.get());
-
-            for (int i = 0; i < 75; i++) {
-                Random random = new Random();
-                float offX = -0.5f + random.nextFloat();
-                float offY = -0.5f + random.nextFloat();
-                float offZ = -0.5f + random.nextFloat();
-                if (level instanceof ServerLevel) {
-                    CSUtilityFunctions.sendParticles((ServerLevel) level, ParticleTypes.END_ROD,
-                            player.getX(), player.getY() + 1, player.getZ(), 0,
-                            offX, offY, offZ
-                    );
-
-                }
-            }
+            sendExpandingParticles(level, ParticleTypes.END_ROD, player.blockPosition().above(), 75, 0);
         }
 
         if (animationTimer >= 25) {
@@ -280,20 +325,42 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
         }
     }
 
+    public void addComboPoint(ItemStack itemStack, Player player) {
+        CompoundTag data1 = itemStack.getOrCreateTagElement(CS_EXTRAS_ELEMENT);
+        if (data1.getInt(BB_COMBO_POINTS) < 10) {
+            player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
+            data1.putInt(BB_COMBO_POINTS, data1.getInt(BB_COMBO_POINTS) + 1);
+        } else {
+            player.playSound(SoundEvents.ELDER_GUARDIAN_CURSE);
+            data1.putBoolean(AT_BUFF_STATE, !data1.getBoolean(AT_BUFF_STATE));
+            data1.putInt(BB_COMBO_POINTS, 0);
+        }
+    }
+
+    public int buffStateModified(ItemStack itemStack, int originalValue) {
+        CompoundTag data1 = itemStack.getOrCreateTagElement(CS_EXTRAS_ELEMENT);
+        if (data1.getBoolean(AT_BUFF_STATE)) {
+            return originalValue / 2;
+        }
+        return originalValue;
+    }
+
     @Override
     public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
         if (event.getSource().is(DamageTypeTags.IS_FALL)) {
             event.setCanceled(true);
+        } else {
+            event.setAmount(event.getAmount() * 2F);
         }
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(@NotNull ItemStack stack) {
         return 72000;
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
+    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack stack) {
         return UseAnim.BOW;
     }
 }

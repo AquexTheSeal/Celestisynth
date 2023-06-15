@@ -30,7 +30,8 @@ public class AnimationManager {
         ANIM_BREEZEBREAKER_SHIFT_RIGHT("cs_breezebreaker_shift_right"),
         ANIM_BREEZEBREAKER_SHIFT_LEFT("cs_breezebreaker_shift_left"),
         ANIM_BREEZEBREAKER_JUMP("cs_breezebreaker_jump"),
-        ANIM_BREEZEBREAKER_JUMP_ATTACK("cs_breezebreaker_jump_attack");
+        ANIM_BREEZEBREAKER_JUMP_ATTACK("cs_breezebreaker_jump_attack"),
+        ANIM_BREEZEBREAKER_SPRINT_ATTACK("cs_breezebreaker_sprint_attack");
 
         final @Nullable String path;
         final int id;

@@ -19,4 +19,5 @@ public class CSSoundRegistry {
     public static final RegistryObject<SoundEvent> CS_SWORD_CLASH = SOUND_EVENTS.register("solaris_5", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Celestisynth.MODID, "solaris_5")));
     public static final RegistryObject<SoundEvent> CS_FIRE_SHOOT = SOUND_EVENTS.register("solaris_6", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Celestisynth.MODID, "solaris_6")));
     public static final RegistryObject<SoundEvent> CS_WIND_STRIKE = SOUND_EVENTS.register("cs_wind_strike", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Celestisynth.MODID, "cs_wind_strike")));
+    public static final RegistryObject<SoundEvent> CS_WHIRLWIND = SOUND_EVENTS.register("cs_whirlwind", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Celestisynth.MODID, "cs_whirlwind")));
 }

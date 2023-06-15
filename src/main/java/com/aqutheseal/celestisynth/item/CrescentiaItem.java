@@ -26,6 +26,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Random;
@@ -39,7 +40,22 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+    public int getSkillsAmount() {
+        return 2;
+    }
+
+    @Override
+    public boolean hasPassive() {
+        return true;
+    }
+
+    @Override
+    public int getPassiveAmount() {
+        return 1;
+    }
+
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand interactionHand) {
         ItemStack itemstack = player.getItemInHand(interactionHand);
         CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
@@ -59,11 +75,22 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
     }
 
     @Override
-    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+    public boolean hurtEnemy(ItemStack itemStack, LivingEntity entity, LivingEntity source) {
+        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 2));
+        return super.hurtEnemy(itemStack, entity, source);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack itemStack, @NotNull Level level, @NotNull Entity entity, int itemSlot, boolean isSelected) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+
+        if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof CrescentiaItem)) {
+            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2, 0));
+        }
+
         if (data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (entity instanceof Player player) {
-                if (player.getMainHandItem() == itemStack) {
+                if (player.getMainHandItem() != itemStack) {
                     player.getInventory().selected = itemSlot;
                 }
                 if (level.isClientSide()) {

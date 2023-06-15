@@ -14,6 +14,8 @@ public enum CSEffectTypes {
     SOLARIS_BLITZ_SOUL("solaris_spin_soul", Model.FLAT, Animation.SPIN_20, 11, 2, 3.5, true, true, false),
     SOLARIS_AIR("solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 2.5, true, true, false),
     SOLARIS_AIR_LARGE("solaris_air_large", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 3.5, true, true, false),
+    SOLARIS_AIR_FLAT("solaris_air_flat", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 1.5, false, true, false),
+    SOLARIS_AIR_MEDIUM_FLAT("solaris_air_medium_flat", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 2.5, false, true, false),
     SOLARIS_AIR_LARGE_FLAT("solaris_air_large_flat", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 3.5, false, true, false),
     CRESCENTIA_STRIKE("crescentia_strike", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 2.5, false, false, true),
     CRESCENTIA_STRIKE_INVERTED("crescentia_strike_inverted", "crescentia_strike", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 2.5, false, false, true),
@@ -21,7 +23,8 @@ public enum CSEffectTypes {
     CRESCENTIA_THROW_INVERTED("crescentia_throw_inverted", "crescentia_throw", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 3, false, true, true),
     BREEZEBREAKER_SLASH("breezebreaker_slash", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 3, false, true, true),
     BREEZEBREAKER_SLASH_INVERTED("breezebreaker_slash_inverted", "breezebreaker_slash", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 3, false, true, true),
-    BREEZEBREAKER_SLASH_VERTICAL("breezebreaker_slash_vertical", "solaris_air", Model.FLAT_VERTICAL_FRONTFACE, Animation.SWEEP_RTOL, 0, 0, 4, false, true, false);
+    BREEZEBREAKER_WHEEL("breezebreaker_slash_vertical", "breezebreaker_wheel", Model.FLAT_VERTICAL_FRONTFACE, Animation.SWEEP_RTOL, 0, 0, 4, false, true, false),
+    BREEZEBREAKER_DASH("breezebreaker_dash", Model.CROSS, Animation.STRETCH, 0, 0, 3, false, true, false);
 
     final String name;
     final String texture;
@@ -97,7 +100,8 @@ public enum CSEffectTypes {
         FLAT_INVERTED("cs_effect_flat_inverted"),
         FLAT_VERTICAL_SIDEFACE("cs_effect_flat_vertical"),
         FLAT_VERTICAL_FRONTFACE("cs_effect_flat_vertical_side"),
-        IMPACT("cs_effect_impact")
+        IMPACT("cs_effect_impact"),
+        CROSS("cs_effect_cross")
         ;
 
         final String modelString;
@@ -122,7 +126,8 @@ public enum CSEffectTypes {
         ASCEND("animation.cs_effect.ascend", 20),
         SLOW_ROTATION("animation.cs_effect.slow_rotation", Integer.MAX_VALUE),
         SWEEP_RTOL("animation.cs_effect.sweep_rtol", 15),
-        SWEEP_LTOR("animation.cs_effect.sweep_ltor", 15);
+        SWEEP_LTOR("animation.cs_effect.sweep_ltor", 15),
+        STRETCH("animation.cs_effect.stretch", 15);
 
         final String animationString;
         final int lifespan;

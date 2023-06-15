@@ -1,11 +1,13 @@
 package com.aqutheseal.celestisynth;
 
 import com.aqutheseal.celestisynth.item.helpers.CSRarityTypes;
+import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,7 +38,7 @@ public class CSClientEvents {
     public static void onToolTipComponent(RenderTooltipEvent.GatherComponents event) {
         ItemStack stack = event.getItemStack();
         String name = ForgeRegistries.ITEMS.getKey(stack.getItem()).getPath();
-        if(!stack.isEmpty() && stack.getRarity() == CSRarityTypes.CELESTIAL) {
+        if(!stack.isEmpty() && stack.getItem() instanceof CSWeapon cs) {
             List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
 
             List<Either<FormattedText, TooltipComponent>> elementsToAdd = new ArrayList<>();
@@ -44,17 +46,46 @@ public class CSClientEvents {
             elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.celestial_tier").withStyle(ChatFormatting.AQUA).withStyle(ChatFormatting.BOLD)));
             elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.shift_notice").withStyle(ChatFormatting.GREEN)));
 
-            if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".skill_0").withStyle(ChatFormatting.GOLD)));
-                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".desc_0").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC)));
-                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".skill_1").withStyle(ChatFormatting.GOLD)));
-                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".desc_1").withStyle(ChatFormatting.DARK_AQUA).withStyle(ChatFormatting.ITALIC)));
+            addBorders(elementsToAdd);
+
+            if (cs.hasPassive()) {
+
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.passive_notice").withStyle(ChatFormatting.GOLD)));
+                for (int i = 1; i < cs.getPassiveAmount() + 1; i++) {
+                    elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".passive_" + i).withStyle(ChatFormatting.LIGHT_PURPLE)));
+                    if (Screen.hasShiftDown() || Screen.hasControlDown()) {
+                        elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".passive_desc_" + i).withStyle(ChatFormatting.GRAY)));
+                    }
+                }
+
+                addBorders(elementsToAdd);
             }
+
+            elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.skill_notice").withStyle(ChatFormatting.GOLD)));
+            for (int i = 1; i < cs.getSkillsAmount() + 1; i++) {
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".skill_" + i).withStyle(ChatFormatting.LIGHT_PURPLE)));
+                if (Screen.hasShiftDown() || Screen.hasControlDown()) {
+                    elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".condition_" + i).withStyle(ChatFormatting.RED)));
+                    elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".desc_" + i).withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC)));
+                }
+            }
+
+            addBorders(elementsToAdd);
 
             ListIterator<Either<FormattedText, TooltipComponent>> iterator = elementsToAdd.listIterator(elementsToAdd.size());
             while (iterator.hasPrevious()) {
                 elements.add(1, iterator.previous());
             }
         }
+    }
+
+    public static void addBorders(List<Either<FormattedText, TooltipComponent>> list) {
+        boolean shouldExpand = Screen.hasShiftDown() || Screen.hasControlDown();
+        MutableComponent border = Component.literal(shouldExpand ? "[ -------------------- o -------------------- ]" : "[ ------------ o ------------ ]");
+        MutableComponent edge = Component.literal(" ");
+
+        list.add(Either.left(edge));
+        list.add(Either.left(border.withStyle(shouldExpand ? ChatFormatting.GREEN : ChatFormatting.GRAY)));
+        list.add(Either.left(edge));
     }
 }

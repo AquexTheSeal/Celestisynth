@@ -29,8 +29,14 @@ public class CSConfig {
 
         public final ForgeConfigSpec.ConfigValue<Float> solarisSkillDmg;
         public final ForgeConfigSpec.ConfigValue<Float> solarisShiftSkillDmg;
+
         public final ForgeConfigSpec.ConfigValue<Float> crescentiaSkillDmg;
         public final ForgeConfigSpec.ConfigValue<Float> crescentiaShiftSkillDmg;
+
+        public final ForgeConfigSpec.ConfigValue<Float> breezebreakerSkillDmg;
+        public final ForgeConfigSpec.ConfigValue<Float> breezebreakerShiftSkillDmg;
+        public final ForgeConfigSpec.ConfigValue<Float> breezebreakerSprintSkillDmg;
+        public final ForgeConfigSpec.ConfigValue<Float> breezebreakerMidairSkillDmg;
 
         protected CSCommonConfig(ForgeConfigSpec.Builder builder) {
             builder.push("Base Damage Modifications (Temporarily Unusable)");
@@ -38,11 +44,21 @@ public class CSConfig {
             crescentiaDmg = baseDamage(builder, "crescentia", 8);
             builder.pop();
 
-            builder.push("Skill Damage Modifications");
+            builder.push("Value Modifiers - Solaris");
             solarisSkillDmg = skillDamage(builder, "solaris", "Spinning Flames - Full Round", 1.0f);
             solarisShiftSkillDmg = skillDamage(builder, "solaris", "Spinning Flames - Soul Straight Dash [Shift]", 1.5f);
+            builder.pop();
+
+            builder.push("Value Modifiers - Crescentia");
             crescentiaSkillDmg = skillDamage(builder, "crescentia", "Lunar Celebration Barrage", 1.3f);
             crescentiaShiftSkillDmg = skillDamage(builder, "crescentia", "Dragon Crescent Boom [Shift]", 0.7f);
+            builder.pop();
+
+            builder.push("Value Modifiers - Breezebreaker");
+            breezebreakerSkillDmg = skillDamage(builder, "breezebreaker", "Galestorm + Dual Galestorm", 13.0f);
+            breezebreakerShiftSkillDmg = skillDamage(builder, "breezebreaker", "Full-Force Whirlwind Extravagance [Shift]", 3.0f);
+            breezebreakerSprintSkillDmg = skillDamage(builder, "breezebreaker", "Roar of the Wind [Sprint]", 12.5f);
+            breezebreakerMidairSkillDmg = skillDamage(builder, "breezebreaker", "Zephyr's Death Wheel [Mid-air]", 8.0f);
             builder.pop();
         }
 

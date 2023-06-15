@@ -7,6 +7,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 
 public class CSUtilityFunctions {
 
@@ -22,6 +23,14 @@ public class CSUtilityFunctions {
         }
 
         return i;
+    }
+
+    public static <T extends ParticleType<?>> int sendParticles(Level world, T pType, double pPosX, double pPosY, double pPosZ, int pParticleCount, double pXSpeed, double pYSpeed, double pZSpeed) {
+        if (!world.isClientSide()) {
+            return sendParticles((ServerLevel) world, pType, pPosX, pPosY, pPosZ, pParticleCount, 0, 0, 0, pXSpeed, pYSpeed, pZSpeed);
+        } else {
+            return 0;
+        }
     }
 
     public static <T extends ParticleType<?>> int sendParticles(ServerLevel serverWorld, T pType, double pPosX, double pPosY, double pPosZ, int pParticleCount, double pXSpeed, double pYSpeed, double pZSpeed) {

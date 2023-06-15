@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth.entities;
 
+import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.BlockPos;
@@ -8,11 +9,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.players.OldUsersConverter;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -65,12 +63,10 @@ public class BreezebreakerTornado extends Entity {
         for (Entity entityBatch : entities) {
             if (entityBatch instanceof LivingEntity target) {
                 if (target != player && target.isAlive()) {
-                    double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
-                    target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
                     target.invulnerableTime = 0;
-                    target.hurt(player.damageSources().playerAttack(player), 3);
-                    target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
-                    target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
+                    target.hurtMarked = true;
+                    target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.breezebreakerShiftSkillDmg.get());
+                    target.setDeltaMovement(target.getDeltaMovement().add(0, 0.05 - (target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue() * 0.001), 0));
                 }
             }
             if (entityBatch instanceof Projectile projectile) {
@@ -79,12 +75,20 @@ public class BreezebreakerTornado extends Entity {
         }
 
         for (int yLevel = -1; yLevel < 6; yLevel++) {
-            CSEffect.createInstance(player, this, CSEffectTypes.SOLARIS_AIR_LARGE_FLAT, getAngleX(), getAngleY() + yLevel, getAngleZ());
-            CSEffect.createInstance(player, this, CSEffectTypes.BREEZEBREAKER_SLASH, getAngleX(), getAngleY() + yLevel, getAngleZ());
+            if (yLevel == -1 || yLevel == 0 || yLevel == 1) {
+                CSEffect.createInstance(player, this, CSEffectTypes.SOLARIS_AIR_FLAT, getAngleX(), getAngleY() + yLevel, getAngleZ());
+            }
+            if (yLevel == 2 || yLevel == 3) {
+                CSEffect.createInstance(player, this, CSEffectTypes.SOLARIS_AIR_MEDIUM_FLAT, getAngleX(), getAngleY() + yLevel, getAngleZ());
+            }
+            if (yLevel == 4 || yLevel == 5) {
+                CSEffect.createInstance(player, this, CSEffectTypes.SOLARIS_AIR_LARGE_FLAT, getAngleX(), getAngleY() + yLevel, getAngleZ());
+            }
         }
 
-        SoundEvent sfx = level.random.nextBoolean() ? CSSoundRegistry.CS_AIR_SWING.get() : CSSoundRegistry.CS_WIND_STRIKE.get();
-        level.playSound(level.getPlayerByUUID(getOwnerUuid()), getAngleX(), getAngleY(), getAngleZ(), sfx, SoundSource.HOSTILE, 0.10F, 0.5F + new Random().nextFloat());
+        if (tickCount % 20 == 0) {
+            level.playSound(level.getPlayerByUUID(getOwnerUuid()), getAngleX(), getAngleY(), getAngleZ(), CSSoundRegistry.CS_WHIRLWIND.get(), SoundSource.HOSTILE, 0.10F, 0.5F + new Random().nextFloat());
+        }
 
         int radius = 2;
         for (int sx = -radius; sx <= radius; sx++) {
