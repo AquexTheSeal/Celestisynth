@@ -1,12 +1,11 @@
-package com.aqutheseal.celestisynth.common.entity;
+package com.aqutheseal.celestisynth.entities;
 
 import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -15,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -116,7 +116,7 @@ public class CSEffect extends Entity implements GeoEntity {
             return null;
         }
 
-        CSEffect slash = CSEntities.CS_EFFECT.get().create(owner.level);
+        CSEffect slash = CSEntityRegistry.CS_EFFECT.get().create(owner.level);
 
         if (toFollow != null) {
             slash.moveTo(toFollow.getX() + offsetX, (toFollow.getY() - 1.5) + offsetY, toFollow.getZ() + offsetZ);
@@ -240,6 +240,6 @@ public class CSEffect extends Entity implements GeoEntity {
 
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

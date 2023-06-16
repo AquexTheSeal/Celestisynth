@@ -1,11 +1,12 @@
-package com.aqutheseal.celestisynth.common.item;
+package com.aqutheseal.celestisynth.item;
 
-import com.aqutheseal.celestisynth.client.animation.AnimationManager;
-import com.aqutheseal.celestisynth.common.entity.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.CSEntities;
-import com.aqutheseal.celestisynth.common.entity.CrescentiaRanged;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
-import com.aqutheseal.celestisynth.common.item.helpers.CSWeapon;
+import com.aqutheseal.celestisynth.animation.AnimationManager;
+import com.aqutheseal.celestisynth.config.CSConfig;
+import com.aqutheseal.celestisynth.entities.CSEffect;
+import com.aqutheseal.celestisynth.entities.CrescentiaRanged;
+import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
+import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -115,7 +117,7 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
         }
         if (animationTimer == 20) {
             if (!level.isClientSide()) {
-                CrescentiaRanged projectile = CSEntities.CRESCENTIA_RANGED.get().create(level);
+                CrescentiaRanged projectile = CSEntityRegistry.CRESCENTIA_RANGED.get().create(level);
                 projectile.setOwnerUuid(player.getUUID());
                 projectile.setAngleX((float) calculateXLook(player));
                 projectile.setAngleY((float) calculateYLook(player));
@@ -154,8 +156,7 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
-                        //constantAttack(player, target, CSConfig.COMMON.crescentiaSkillDmg.get() + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
-                        constantAttack(player, target, ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
+                        constantAttack(player, target, CSConfig.COMMON.crescentiaSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
                         target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                     }
                 }
@@ -211,12 +212,12 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
         }
     }
 
-    /*public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
+    public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
         LivingEntity entity = event.getEntity();
         CompoundTag tagR = mainHandItem.getItem().getShareTag(entity.getMainHandItem());
         CompoundTag tagL = offHandItem.getItem().getShareTag(entity.getOffhandItem());
         if ((tagR != null && (tagR.getBoolean(ANIMATION_BEGUN_KEY)) || (tagL != null && (tagL.getBoolean(ANIMATION_BEGUN_KEY))))) {
             event.setAmount(event.getAmount() * 0.7F);
         }
-    }*/
+    }
 }

@@ -1,15 +1,15 @@
-package com.aqutheseal.celestisynth.common.sound;
+package com.aqutheseal.celestisynth.registry;
 
 import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.reg.RegistrationProvider;
-import com.aqutheseal.celestisynth.reg.RegistryObject;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-public class CSSounds {
+public class CSSoundRegistry {
 
-    public static final RegistrationProvider<SoundEvent> SOUND_EVENTS = RegistrationProvider.get(Registries.SOUND_EVENT, Celestisynth.MODID);
+    public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, "your_mod_id");
 
     public static final RegistryObject<SoundEvent> CS_STEP = SOUND_EVENTS.register("cs_step", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Celestisynth.MODID, "cs_step")));
     public static final RegistryObject<SoundEvent> CS_SWORD_SWING = SOUND_EVENTS.register("solaris_1", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Celestisynth.MODID, "solaris_1")));
@@ -20,8 +20,4 @@ public class CSSounds {
     public static final RegistryObject<SoundEvent> CS_FIRE_SHOOT = SOUND_EVENTS.register("solaris_6", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Celestisynth.MODID, "solaris_6")));
     public static final RegistryObject<SoundEvent> CS_WIND_STRIKE = SOUND_EVENTS.register("cs_wind_strike", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Celestisynth.MODID, "cs_wind_strike")));
     public static final RegistryObject<SoundEvent> CS_WHIRLWIND = SOUND_EVENTS.register("cs_whirlwind", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Celestisynth.MODID, "cs_whirlwind")));
-
-    public static void init(){
-
-    }
 }

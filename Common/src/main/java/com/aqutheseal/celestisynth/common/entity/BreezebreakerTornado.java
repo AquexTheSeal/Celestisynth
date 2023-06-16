@@ -1,7 +1,8 @@
-package com.aqutheseal.celestisynth.common.entity;
+package com.aqutheseal.celestisynth.entities;
 
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
-import com.aqutheseal.celestisynth.common.sound.CSSounds;
+import com.aqutheseal.celestisynth.config.CSConfig;
+import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -64,8 +65,7 @@ public class BreezebreakerTornado extends Entity {
                 if (target != player && target.isAlive()) {
                     target.invulnerableTime = 0;
                     target.hurtMarked = true;
-                    //target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.breezebreakerShiftSkillDmg.get());
-                    target.hurt(player.damageSources().playerAttack(player), 3.0F);
+                    target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.breezebreakerShiftSkillDmg.get());
                     target.setDeltaMovement(target.getDeltaMovement().add(0, 0.05 - (target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue() * 0.001), 0));
                 }
             }
@@ -87,7 +87,7 @@ public class BreezebreakerTornado extends Entity {
         }
 
         if (tickCount % 20 == 0) {
-            level.playSound(level.getPlayerByUUID(getOwnerUuid()), getAngleX(), getAngleY(), getAngleZ(), CSSounds.CS_WHIRLWIND.get(), SoundSource.HOSTILE, 0.10F, 0.5F + new Random().nextFloat());
+            level.playSound(level.getPlayerByUUID(getOwnerUuid()), getAngleX(), getAngleY(), getAngleZ(), CSSoundRegistry.CS_WHIRLWIND.get(), SoundSource.HOSTILE, 0.10F, 0.5F + new Random().nextFloat());
         }
 
         int radius = 2;
