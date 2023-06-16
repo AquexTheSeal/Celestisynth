@@ -110,7 +110,7 @@ public class SolarisItem extends SwordItem implements CSWeapon {
                     }
                 }
             }
-            if (animationTimer > 0 && animationTimer < 35) {
+            if (animationTimer > 0 && animationTimer < 24) {
                 if (level instanceof ServerLevel) {
                     if (data.getInt(DIRECTION_INDEX_KEY) == 2) {
                         for (int i = 0; i < 10; i++) {
@@ -190,8 +190,8 @@ public class SolarisItem extends SwordItem implements CSWeapon {
 
     private void movePlayerInCircularMotion(Player player, int tick, boolean isRight) {
         double radius = 1.5;
-        double forwardX = -Math.sin(Math.toRadians(player.getYRot()));
-        double forwardZ = Math.cos(Math.toRadians(player.getYRot()));
+        double forwardX = Math.sin(Math.toRadians(player.getYRot()));
+        double forwardZ = -Math.cos(Math.toRadians(player.getYRot()));
         double perpendicularX = -forwardZ;
         double perpendicularZ = forwardX;
         double angle = (tick - 45) / 25.0 * Math.PI * 2.0;
