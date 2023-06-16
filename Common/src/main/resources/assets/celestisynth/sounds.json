@@ -1,0 +1,56 @@
+{
+  "cs_step": {
+    "subtitle": "subtitles.celestisynth.cs_step",
+    "sounds": [
+      "celestisynth:cs_step"
+    ]
+  },
+  "solaris_1": {
+    "subtitle": "subtitles.celestisynth.solaris_1",
+    "sounds": [
+      "celestisynth:solaris_1"
+    ]
+  },
+  "solaris_2": {
+    "subtitle": "subtitles.celestisynth.solaris_2",
+    "sounds": [
+      "celestisynth:solaris_2"
+    ]
+  },
+  "solaris_3": {
+    "subtitle": "subtitles.celestisynth.solaris_3",
+    "sounds": [
+      "celestisynth:solaris_3"
+    ]
+  },
+  "solaris_4": {
+    "subtitle": "subtitles.celestisynth.solaris_4",
+    "sounds": [
+      "celestisynth:solaris_4"
+    ]
+  },
+  "solaris_5": {
+    "subtitle": "subtitles.celestisynth.solaris_5",
+    "sounds": [
+      "celestisynth:solaris_5"
+    ]
+  },
+  "solaris_6": {
+    "subtitle": "subtitles.celestisynth.solaris_6",
+    "sounds": [
+      "celestisynth:solaris_6"
+    ]
+  },
+  "cs_wind_strike": {
+    "subtitle": "subtitles.celestisynth.cs_wind_strike",
+    "sounds": [
+      "celestisynth:cs_wind_strike"
+    ]
+  },
+  "cs_whirlwind": {
+    "subtitle": "subtitles.celestisynth.cs_whirlwind",
+    "sounds": [
+      "celestisynth:cs_whirlwind"
+    ]
+  }
+}
