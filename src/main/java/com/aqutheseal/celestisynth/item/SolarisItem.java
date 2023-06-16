@@ -67,10 +67,10 @@ public class SolarisItem extends SwordItem implements CSWeapon {
             if (player.isShiftKeyDown()) {
                 itemTag.putInt(DIRECTION_INDEX_KEY, 2);
                 itemTag.putFloat(HEAD_ROT_LOCK_KEY, player.getYRot());
-                player.getCooldowns().addCooldown(itemstack.getItem(), 160);
+                player.getCooldowns().addCooldown(itemstack.getItem(), 130);
             } else {
                 itemTag.putInt(DIRECTION_INDEX_KEY, player.getRandom().nextInt(2));
-                player.getCooldowns().addCooldown(itemstack.getItem(), 100);
+                player.getCooldowns().addCooldown(itemstack.getItem(), 70);
             }
         }
         return InteractionResultHolder.success(itemstack);
@@ -101,7 +101,7 @@ public class SolarisItem extends SwordItem implements CSWeapon {
             }
             int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
             data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
-            if (animationTimer == 22) {
+            if (animationTimer == 13) {
                 player.playSound(CSSoundRegistry.CS_STEP.get());
                 for (int i = 0; i < 15; i++) {
                     Random rand = new Random();
@@ -123,7 +123,7 @@ public class SolarisItem extends SwordItem implements CSWeapon {
                 player.setDeltaMovement(0, 0, 0);
                 player.hurtMarked = true;
 
-            } else if (animationTimer > 35 && animationTimer < 60) {
+            } else if (animationTimer > 23 && animationTimer < 60) {
                 BlockPos blockPosForAttack = player.blockPosition();
                 boolean isStraight = data.getInt(DIRECTION_INDEX_KEY) == 2;
                 int range = isStraight ? 7 : 4;

@@ -327,7 +327,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
 
     public void addComboPoint(ItemStack itemStack, Player player) {
         CompoundTag data1 = itemStack.getOrCreateTagElement(CS_EXTRAS_ELEMENT);
-        if (data1.getInt(BB_COMBO_POINTS) < 10) {
+        if (data1.getInt(BB_COMBO_POINTS) < 15) {
             player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
             data1.putInt(BB_COMBO_POINTS, data1.getInt(BB_COMBO_POINTS) + 1);
         } else {
@@ -350,7 +350,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
         if (event.getSource().is(DamageTypeTags.IS_FALL)) {
             event.setCanceled(true);
         } else {
-            event.setAmount(event.getAmount() * 2F);
+            event.setAmount(event.getAmount() * 2.3F);
         }
     }
 

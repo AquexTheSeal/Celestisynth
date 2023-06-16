@@ -69,7 +69,7 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
                     AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_CRESCENTIA_STRIKE);
                 }
             }
-            player.getCooldowns().addCooldown(itemstack.getItem(), itemTag.getBoolean(IS_RANGED_KEY) ? 40 : 120);
+            player.getCooldowns().addCooldown(itemstack.getItem(), itemTag.getBoolean(IS_RANGED_KEY) ? 40 : 100);
         }
         return InteractionResultHolder.success(itemstack);
     }
@@ -148,8 +148,7 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
         CompoundTag data = itemStack.getOrCreateTagElement("csController");
 
         data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
-        //player.setDeltaMovement(0, 0, 0);
-        if (animationTimer >= 27 && animationTimer <= 70) {
+        if (animationTimer >= 15 && animationTimer <= 60) {
             double range = 7.0;
             double rangeSq = Mth.square(range);
             List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range).move(calculateXLook(player), 0, calculateZLook(player)));
@@ -181,7 +180,7 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
             float offZ = random.nextFloat() * 12 - 6;
             createCrescentiaFirework(itemStack, level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, false, animationTimer);
         }
-        if (animationTimer >= 80) {
+        if (animationTimer >= 70) {
             data.putInt(ANIMATION_TIMER_KEY, 0);
             data.putBoolean(ANIMATION_BEGUN_KEY, false);
         }

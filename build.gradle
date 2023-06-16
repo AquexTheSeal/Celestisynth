@@ -20,7 +20,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.19.4-1.0.0-beta-v3'
+version = '1.19.4-1.0.0-beta-v5'
 group = 'com.yourname.celestisynth'
 archivesBaseName = 'celestisynth'
 
