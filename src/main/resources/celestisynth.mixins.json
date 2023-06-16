@@ -4,9 +4,13 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "celestisynth.refmap.json",
   "mixins": [
+    "InventoryMixin",
     "ServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "MinecraftMixin"
+  ]
 }

@@ -9,7 +9,6 @@ import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
@@ -164,14 +163,6 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
 
         if (data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (entity instanceof Player player) {
-                if (player.getMainHandItem() != itemStack) {
-                    player.getInventory().selected = itemSlot;
-                }
-                if (level.isClientSide()) {
-                    if (Minecraft.getInstance().screen != null) {
-                        Minecraft.getInstance().screen = null;
-                    }
-                }
                 int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
                 data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
                 switch (data.getInt(ATTACK_INDEX)) {

@@ -39,8 +39,8 @@ public class CSEffect extends Entity implements GeoEntity {
     private static final EntityDataAccessor<Integer> FRAME_LEVEL = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_X = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_Z = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
+    public final RawAnimation RAW_ANIM = RawAnimation.begin();
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    public Player owner;
     public Entity toFollow;
     public int lifespan;
     public int frameTimer;
@@ -163,10 +163,10 @@ public class CSEffect extends Entity implements GeoEntity {
 
     private PlayState predicate(AnimationState<?> state) {
         if (getEffectType() != null) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlayAndHold(getEffectType().getAnimation().getAnimationString()));
+            state.getController().setAnimation(RAW_ANIM.thenPlayAndHold(getEffectType().getAnimation().getAnimationString()));
         } else {
             Celestisynth.LOGGER.warn("EffectType for CSEffect is null!");
-            state.getController().setAnimation(RawAnimation.begin().thenPlayAndHold("animation.cs_effect.spin"));
+            state.getController().setAnimation(RAW_ANIM.thenPlayAndHold("animation.cs_effect.spin"));
         }
         return PlayState.CONTINUE;
     }

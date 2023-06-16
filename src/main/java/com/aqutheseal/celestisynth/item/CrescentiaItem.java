@@ -8,7 +8,6 @@ import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.google.common.collect.Lists;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundEvents;
@@ -90,14 +89,6 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
 
         if (data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (entity instanceof Player player) {
-                if (player.getMainHandItem() != itemStack) {
-                    player.getInventory().selected = itemSlot;
-                }
-                if (level.isClientSide()) {
-                    if (Minecraft.getInstance().screen != null) {
-                        Minecraft.getInstance().screen = null;
-                    }
-                }
                 int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
                 data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
                 if (!data.getBoolean(IS_RANGED_KEY)) {

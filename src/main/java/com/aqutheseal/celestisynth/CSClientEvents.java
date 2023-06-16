@@ -4,6 +4,7 @@ import com.aqutheseal.celestisynth.item.helpers.CSRarityTypes;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -12,6 +13,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -22,6 +24,24 @@ import java.util.ListIterator;
 
 @Mod.EventBusSubscriber(modid = Celestisynth.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class CSClientEvents {
+
+    @SubscribeEvent
+    public static void onScreenRender(ScreenEvent.Opening event) {
+        if (Minecraft.getInstance().player != null) {
+            ItemStack itemR = Minecraft.getInstance().player.getMainHandItem();
+            ItemStack itemL = Minecraft.getInstance().player.getOffhandItem();
+            if (itemR.getItem() instanceof CSWeapon) {
+                if (itemR.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
+                    event.setCanceled(true);
+                }
+            }
+            if (itemL.getItem() instanceof CSWeapon) {
+                if (itemL.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
+                    event.setCanceled(true);
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onTooltipColor(RenderTooltipEvent.Color event) {
