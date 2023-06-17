@@ -1,13 +1,12 @@
 package com.aqutheseal.celestisynth;
 
 import com.aqutheseal.celestisynth.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Celestisynth {
 
-	public static final String MODID = "celestisynth";
+	public static final String MODID = "assets/celestisynth";
 	public static final String MOD_NAME = "Celestisynth";
 	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 

@@ -7,6 +7,7 @@
 
   "block.celestisynth.solar_crystal": "Solar Crystal",
   "block.celestisynth.lunar_stone": "Lunar Stone",
+  "block.celestisynth.zephyr_deposit": "Zephyr Deposit",
 
   "------------------- SOLARIS ------------------":  "",
 
@@ -43,10 +44,10 @@
   "item.celestisynth.breezebreaker": "Breezebreaker",
 
   "item.celestisynth.breezebreaker.passive_1": "Agile",
-  "item.celestisynth.breezebreaker.passive_desc_1": "The player gains a huge jump boost and fall damage immunity while holding the item, but takes double damage from all the other damage sources.",
+  "item.celestisynth.breezebreaker.passive_desc_1": "The player gains a huge jump boost and fall damage immunity while holding the item, but takes 2.3x damage from all the other damage sources.",
 
   "item.celestisynth.breezebreaker.passive_2": "Benevolent Soul",
-  "item.celestisynth.breezebreaker.passive_desc_2": "Every 10 skill casts activate or deactivate this passive. While active, the player gains a speed boost and reduces skill cooldowns by half.",
+  "item.celestisynth.breezebreaker.passive_desc_2": "Every 15 skill casts activate or deactivate this passive. While active, the player gains a speed boost and reduces skill cooldowns by half. The effect wears off after 8 seconds.",
 
   "item.celestisynth.breezebreaker.skill_1": "Galestorm",
   "item.celestisynth.breezebreaker.condition_1": "Activate: Right-click",
