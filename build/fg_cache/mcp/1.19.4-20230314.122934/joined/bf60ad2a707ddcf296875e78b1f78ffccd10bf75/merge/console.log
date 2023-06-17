@@ -1,0 +1,6 @@
+JVM:         C:\Users\USER\.jdks\corretto-17.0.3\bin\java.exe
+JVM Args:    
+Run Args:    "--client", "C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\stripClient\output.jar", "--server", "C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\stripServer\output.jar", "--ann", "1.19.4", "--output", "C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\merge\output.jar", "--inject", "false"
+Classpath:   C:\Users\USER\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\mergetool\1.1.5\mergetool-1.1.5-fatjar.jar
+Working Dir: C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\merge
+Main Class:  net.minecraftforge.mergetool.ConsoleMerger

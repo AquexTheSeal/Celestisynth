@@ -1,0 +1,6 @@
+JVM:         C:\Users\USER\.jdks\corretto-17.0.3\bin\java.exe
+JVM Args:    
+Run Args:    "--inJar", "C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\rename\output.jar", "--outJar", "C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\AccessTransformer\output.jar", "--atFile", "C:\Users\USER\Desktop\mc projects\Celestisynth\src\main\resources\META-INF\accesstransformer.cfg", "--atFile", "C:\PROGRA~1\KMSpico\temp\FG_ats_15318907206570367452.cfg"
+Classpath:   C:\Users\USER\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\accesstransformers\8.0.7\accesstransformers-8.0.7-fatjar.jar
+Working Dir: C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\AccessTransformer
+Main Class:  net.minecraftforge.accesstransformer.TransformerProcessor
