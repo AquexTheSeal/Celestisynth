@@ -6,7 +6,6 @@ import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.common.item.helpers.CSUtilityFunctions;
 import com.aqutheseal.celestisynth.common.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.common.sound.CSSounds;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -66,10 +65,10 @@ public class SolarisItem extends SwordItem implements CSWeapon {
             if (player.isShiftKeyDown()) {
                 itemTag.putInt(DIRECTION_INDEX_KEY, 2);
                 itemTag.putFloat(HEAD_ROT_LOCK_KEY, player.getYRot());
-                player.getCooldowns().addCooldown(itemstack.getItem(), 160);
+                player.getCooldowns().addCooldown(itemstack.getItem(), 130);
             } else {
                 itemTag.putInt(DIRECTION_INDEX_KEY, player.getRandom().nextInt(2));
-                player.getCooldowns().addCooldown(itemstack.getItem(), 100);
+                player.getCooldowns().addCooldown(itemstack.getItem(), 70);
             }
         }
         return InteractionResultHolder.success(itemstack);
@@ -90,17 +89,10 @@ public class SolarisItem extends SwordItem implements CSWeapon {
         }
 
         if (entity instanceof Player player && data.getBoolean(ANIMATION_BEGUN_KEY)) {
-            if (player.getMainHandItem() != itemStack) {
-                player.getInventory().selected = itemSlot;
-            }
-            if (level.isClientSide()) {
-                if (Minecraft.getInstance().screen != null) {
-                    Minecraft.getInstance().screen = null;
-                }
-            }
+
             int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
             data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
-            if (animationTimer == 22) {
+            if (animationTimer == 13) {
                 player.playSound(CSSounds.CS_STEP.get());
                 for (int i = 0; i < 15; i++) {
                     Random rand = new Random();
@@ -109,7 +101,7 @@ public class SolarisItem extends SwordItem implements CSWeapon {
                     }
                 }
             }
-            if (animationTimer > 0 && animationTimer < 35) {
+            if (animationTimer > 0 && animationTimer < 24) {
                 if (level instanceof ServerLevel) {
                     if (data.getInt(DIRECTION_INDEX_KEY) == 2) {
                         for (int i = 0; i < 10; i++) {
@@ -122,15 +114,14 @@ public class SolarisItem extends SwordItem implements CSWeapon {
                 player.setDeltaMovement(0, 0, 0);
                 player.hurtMarked = true;
 
-            } else if (animationTimer > 35 && animationTimer < 60) {
+            } else if (animationTimer > 23 && animationTimer < 60) {
                 BlockPos blockPosForAttack = player.blockPosition();
                 boolean isStraight = data.getInt(DIRECTION_INDEX_KEY) == 2;
                 int range = isStraight ? 7 : 4;
                 List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
                 for (LivingEntity target : entities) {
                     if (target != player && !player.isAlliedTo(target) && target.isAlive()) {
-                        //constantAttack(player, target, (isStraight ? CSConfig.COMMON.solarisShiftSkillDmg.get() : CSConfig.COMMON.solarisSkillDmg.get()) + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.5F));
-                        constantAttack(player, target, ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.5F));
+                        constantAttack(player, target, (isStraight ? 1.5F : 1.0F) + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.5F));
                         target.setSecondsOnFire(5);
                     }
                 }
@@ -190,8 +181,8 @@ public class SolarisItem extends SwordItem implements CSWeapon {
 
     private void movePlayerInCircularMotion(Player player, int tick, boolean isRight) {
         double radius = 1.5;
-        double forwardX = -Math.sin(Math.toRadians(player.getYRot()));
-        double forwardZ = Math.cos(Math.toRadians(player.getYRot()));
+        double forwardX = Math.sin(Math.toRadians(player.getYRot()));
+        double forwardZ = -Math.cos(Math.toRadians(player.getYRot()));
         double perpendicularX = -forwardZ;
         double perpendicularZ = forwardX;
         double angle = (tick - 45) / 25.0 * Math.PI * 2.0;

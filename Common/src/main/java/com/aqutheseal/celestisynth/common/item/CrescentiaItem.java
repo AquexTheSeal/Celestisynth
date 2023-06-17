@@ -7,7 +7,6 @@ import com.aqutheseal.celestisynth.common.entity.CrescentiaRanged;
 import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.common.item.helpers.CSWeapon;
 import com.google.common.collect.Lists;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundEvents;
@@ -67,7 +66,7 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
                     AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_CRESCENTIA_STRIKE);
                 }
             }
-            player.getCooldowns().addCooldown(itemstack.getItem(), itemTag.getBoolean(IS_RANGED_KEY) ? 40 : 120);
+            player.getCooldowns().addCooldown(itemstack.getItem(), itemTag.getBoolean(IS_RANGED_KEY) ? 40 : 100);
         }
         return InteractionResultHolder.success(itemstack);
     }
@@ -88,14 +87,6 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
 
         if (data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (entity instanceof Player player) {
-                if (player.getMainHandItem() != itemStack) {
-                    player.getInventory().selected = itemSlot;
-                }
-                if (level.isClientSide()) {
-                    if (Minecraft.getInstance().screen != null) {
-                        Minecraft.getInstance().screen = null;
-                    }
-                }
                 int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
                 data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
                 if (!data.getBoolean(IS_RANGED_KEY)) {
@@ -146,16 +137,14 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
         CompoundTag data = itemStack.getOrCreateTagElement("csController");
 
         data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
-        //player.setDeltaMovement(0, 0, 0);
-        if (animationTimer >= 27 && animationTimer <= 70) {
+        if (animationTimer >= 15 && animationTimer <= 60) {
             double range = 7.0;
             double rangeSq = Mth.square(range);
             List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range).move(calculateXLook(player), 0, calculateZLook(player)));
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
-                        //constantAttack(player, target, CSConfig.COMMON.crescentiaSkillDmg.get() + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
-                        constantAttack(player, target, ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
+                        constantAttack(player, target, 1.3F + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack) / 2.2F));
                         target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                     }
                 }
@@ -180,7 +169,7 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
             float offZ = random.nextFloat() * 12 - 6;
             createCrescentiaFirework(itemStack, level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, false, animationTimer);
         }
-        if (animationTimer >= 80) {
+        if (animationTimer >= 70) {
             data.putInt(ANIMATION_TIMER_KEY, 0);
             data.putBoolean(ANIMATION_BEGUN_KEY, false);
         }
@@ -211,12 +200,14 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
         }
     }
 
-    /*public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
+    /*
+    public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
         LivingEntity entity = event.getEntity();
         CompoundTag tagR = mainHandItem.getItem().getShareTag(entity.getMainHandItem());
         CompoundTag tagL = offHandItem.getItem().getShareTag(entity.getOffhandItem());
         if ((tagR != null && (tagR.getBoolean(ANIMATION_BEGUN_KEY)) || (tagL != null && (tagL.getBoolean(ANIMATION_BEGUN_KEY))))) {
             event.setAmount(event.getAmount() * 0.7F);
         }
-    }*/
+    }
+    */
 }

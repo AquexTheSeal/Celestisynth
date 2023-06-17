@@ -4,9 +4,11 @@
   "package": "com.aqutheseal.celestisynth.common.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "InventoryMixin",
     "ServerPlayerMixin"
   ],
   "client": [
+    "MinecraftMixin"
   ],
   "server": [
   ],

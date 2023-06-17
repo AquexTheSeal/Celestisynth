@@ -8,11 +8,9 @@ import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.common.item.helpers.CSUtilityFunctions;
 import com.aqutheseal.celestisynth.common.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.common.sound.CSSounds;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -162,14 +160,6 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
 
         if (data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (entity instanceof Player player) {
-                if (player.getMainHandItem() != itemStack) {
-                    player.getInventory().selected = itemSlot;
-                }
-                if (level.isClientSide()) {
-                    if (Minecraft.getInstance().screen != null) {
-                        Minecraft.getInstance().screen = null;
-                    }
-                }
                 int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
                 data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
                 switch (data.getInt(ATTACK_INDEX)) {
@@ -213,8 +203,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
-                        //constantAttack(player, target, CSConfig.COMMON.breezebreakerSkillDmg.get() + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
-                        constantAttack(player, target, ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
+                        constantAttack(player, target, 10.0F + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
                         target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 1));
                         sendExpandingParticles(level, ParticleTypes.POOF, target.blockPosition().above(), 15, 0);
                     }
@@ -273,8 +262,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
             sendExpandingParticles(level, ParticleTypes.CAMPFIRE_COSY_SMOKE, player.blockPosition(), 45, 0.2F);
 
             if (getLookAtEntity(player, 12) instanceof LivingEntity living) {
-                //constantAttack(player, living, CSConfig.COMMON.breezebreakerSprintSkillDmg.get() + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
-                constantAttack(player, living, ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
+                constantAttack(player, living, 11F + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
                 living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 2));
                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
                 sendExpandingParticles(level, ParticleTypes.FIREWORK, player.blockPosition().above(), 45, 0);
@@ -305,8 +293,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
-                        //constantAttack(player, target, CSConfig.COMMON.breezebreakerSprintSkillDmg.get() + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
-                        constantAttack(player, target, ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
+                        constantAttack(player, target, 7.0F + ((float) EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
                         target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 1));
                         sendExpandingParticles(level, ParticleTypes.POOF, target.blockPosition().above(), 45, 0);
                     }
@@ -328,7 +315,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
 
     public void addComboPoint(ItemStack itemStack, Player player) {
         CompoundTag data1 = itemStack.getOrCreateTagElement(CS_EXTRAS_ELEMENT);
-        if (data1.getInt(BB_COMBO_POINTS) < 10) {
+        if (data1.getInt(BB_COMBO_POINTS) < 15) {
             player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
             data1.putInt(BB_COMBO_POINTS, data1.getInt(BB_COMBO_POINTS) + 1);
         } else {
@@ -346,14 +333,16 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
         return originalValue;
     }
 
-    /*@Override
+    /*
+    @Override
     public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
         if (event.getSource().is(DamageTypeTags.IS_FALL)) {
             event.setCanceled(true);
         } else {
-            event.setAmount(event.getAmount() * 2F);
+            event.setAmount(event.getAmount() * 2.3F);
         }
-    }*/
+    }
+     */
 
     @Override
     public int getUseDuration(@NotNull ItemStack stack) {

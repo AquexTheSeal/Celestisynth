@@ -3,7 +3,6 @@ package com.aqutheseal.celestisynth.client;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.client.animation.CSAnimator;
 import com.aqutheseal.celestisynth.common.item.CSItems;
-import com.aqutheseal.celestisynth.common.item.SolarisItem;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
