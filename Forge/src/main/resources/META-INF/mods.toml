@@ -1,0 +1,25 @@
+modLoader="javafml"
+loaderVersion="[45,)"
+license="All rights reserved"
+issueTrackerURL="https://github.com/AquexTheSeal/Celestisynth/issues"
+[[mods]]
+modId="celestisynth"
+version="${file.jarVersion}"
+displayName="Celestisynth"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/celestisynth"
+logoFile="icon.png"
+authors="aqutheseal"
+description='''
+'''
+[[dependencies.celestisynth]]
+modId="forge"
+mandatory=true
+versionRange="[45,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.celestisynth]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.19.4,)"
+ordering="NONE"
+side="BOTH"

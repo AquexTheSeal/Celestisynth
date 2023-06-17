@@ -1,9 +1,0 @@
-JVM:         C:\Users\USER\.jdks\corretto-17.0.3\bin\java.exe
-JVM Args:    
-Run Args:    "--strip", "--input", "C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\AccessTransformer\output.jar", "--output", "C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\SideStripper\output.jar", "--data", "C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\SideStripper\string_data.sas"
-Classpath:   C:\Users\USER\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\mergetool\1.1.6\mergetool-1.1.6-fatjar.jar
-Working Dir: C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\SideStripper
-Main Class:  net.minecraftforge.mergetool.ConsoleMerger
-Input:  C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\AccessTransformer\output.jar
-Output: C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\SideStripper\output.jar
-Data:   C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\mcp\1.19.4-20230314.122934\joined\bf60ad2a707ddcf296875e78b1f78ffccd10bf75\SideStripper\string_data.sas

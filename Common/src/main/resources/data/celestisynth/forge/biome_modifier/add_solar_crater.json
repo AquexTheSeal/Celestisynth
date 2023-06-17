@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_nether",
+  "features": "celestisynth:solar_crater",
+  "step": "surface_structures"
+}

@@ -1,7 +1,0 @@
-Java Launcher: C:\Users\USER\.jdks\corretto-17.0.3\bin\java.exe
-Arguments: '--inJar, C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\net\minecraftforge\forge\1.19.4-45.0.64\forge-1.19.4-45.0.64-injected.jar, --outJar, C:\Users\USER\Desktop\mc projects\Celestisynth\build\fg_cache\net\minecraftforge\forge\1.19.4-45.0.64_mapped_official_1.19.4\forge-1.19.4-45.0.64_mapped_official_1.19.4.jar, --logFile, accesstransform.log, --atFile, C:\Users\USER\Desktop\mc projects\Celestisynth\src\main\resources\META-INF\accesstransformer.cfg, --atFile, C:\Users\USER\Desktop\mc projects\Celestisynth\build\_atJar_4\parent_at.cfg'
-Classpath:
- - C:\Users\USER\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\accesstransformers\8.0.7\accesstransformers-8.0.7-fatjar.jar
-Working directory: C:\Users\USER\Desktop\mc projects\Celestisynth\build\_atJar_4
-Main class: net.minecraftforge.accesstransformer.TransformerProcessor
-====================================

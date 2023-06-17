@@ -1,0 +1,70 @@
+{
+  "tab.celestisynth.celestisynth_tab": "Celestisynth",
+  "item.celestisynth.shift_notice": "[Hold SHIFT to view descriptions]",
+  "item.celestisynth.passive_notice": "PASSIVES:",
+  "item.celestisynth.skill_notice": "SKILLS:",
+  "item.celestisynth.celestial_tier": "CELESTIAL GRADE",
+
+  "block.celestisynth.solar_crystal": "Solar Crystal",
+  "block.celestisynth.lunar_stone": "Lunar Stone",
+
+  "------------------- SOLARIS ------------------":  "",
+
+  "item.celestisynth.solaris": "Solaris",
+
+  "item.celestisynth.solaris.passive_1": "Ember's Blessing",
+  "item.celestisynth.solaris.passive_desc_1": "The player gains fire immunity while holding the item - normal attacks with this item sets the target on fire for a few seconds.",
+
+  "item.celestisynth.solaris.skill_1": "Spinning Flames - Full Round",
+  "item.celestisynth.solaris.condition_1": "Activate: Right-click",
+  "item.celestisynth.solaris.desc_1": "Perform a graceful spin, inflicting damage and burning nearby entities.",
+
+  "item.celestisynth.solaris.skill_2": "Spinning Flames - Soul Straight Dash",
+  "item.celestisynth.solaris.condition_2": "Activate: Right-click while holding SHIFT",
+  "item.celestisynth.solaris.desc_2": "Dash forward, striking and temporarily igniting entities in your path.",
+
+  "------------------- CRESCENTIA ------------------":  "",
+
+  "item.celestisynth.crescentia": "Crescentia",
+
+  "item.celestisynth.crescentia.passive_1": "Heavy-Hitter",
+  "item.celestisynth.crescentia.passive_desc_1": "The player gains a level of damage resistance while holding the item - normal attacks with this item slows down the target for a few seconds.",
+
+  "item.celestisynth.crescentia.skill_1": "Lunar Celebration Barrage",
+  "item.celestisynth.crescentia.condition_1": "Activate: Right-click",
+  "item.celestisynth.crescentia.desc_1": "- Unleash a dazzling barrage of strikes on nearby entities, accompanied by a mesmerizing firework display.",
+
+  "item.celestisynth.crescentia.skill_2": "Dragon Crescent Boom",
+  "item.celestisynth.crescentia.condition_2": "Activate: Right-click while holding SHIFT",
+  "item.celestisynth.crescentia.desc_2": "Unleash a long-ranged barrage of slashes, cutting through any entity in its path.",
+
+  "------------------- BREEZEBREAKER ------------------":  "",
+
+  "item.celestisynth.breezebreaker": "Breezebreaker",
+
+  "item.celestisynth.breezebreaker.passive_1": "Agile",
+  "item.celestisynth.breezebreaker.passive_desc_1": "The player gains a huge jump boost and fall damage immunity while holding the item, but takes double damage from all the other damage sources.",
+
+  "item.celestisynth.breezebreaker.passive_2": "Benevolent Soul",
+  "item.celestisynth.breezebreaker.passive_desc_2": "Every 10 skill casts activate or deactivate this passive. While active, the player gains a speed boost and reduces skill cooldowns by half.",
+
+  "item.celestisynth.breezebreaker.skill_1": "Galestorm",
+  "item.celestisynth.breezebreaker.condition_1": "Activate: Right-click",
+  "item.celestisynth.breezebreaker.desc_1": "Unleashes a powerful wind slash that inflicts tremendous damage upon impact.",
+
+  "item.celestisynth.breezebreaker.skill_2": "Dual Galestorm",
+  "item.celestisynth.breezebreaker.condition_2": "Activate: Hold Right-click for more than 0.5 seconds",
+  "item.celestisynth.breezebreaker.desc_2": "Executes Galestorm twice consecutively, overwhelming foes with a relentless onslaught of wind slashes.",
+
+  "item.celestisynth.breezebreaker.skill_3": "Full-Force Whirlwind Extravagance",
+  "item.celestisynth.breezebreaker.condition_3": "Activate: Right-click while holding SHIFT",
+  "item.celestisynth.breezebreaker.desc_3": "Summons a destructive tornado that slices through any entities unfortunate enough to cross its path.",
+
+  "item.celestisynth.breezebreaker.skill_4": "Roar of the Wind",
+  "item.celestisynth.breezebreaker.condition_4": "Activate: Right-click while sprinting",
+  "item.celestisynth.breezebreaker.desc_4": "Swiftly dashes forward, inflicting massive damage to the first entity it encounters along the way.",
+
+  "item.celestisynth.breezebreaker.skill_5": "Zephyr's Death Wheel",
+  "item.celestisynth.breezebreaker.condition_5": "Activate: Right-click while in mid-air",
+  "item.celestisynth.breezebreaker.desc_5": "Creates a towering vertical wheel of wind around the player, obliterating nearby entities with its devastating force."
+}
