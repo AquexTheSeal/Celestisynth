@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.entity;
 
 import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.item.CrescentiaItem;
 import com.aqutheseal.celestisynth.common.item.helpers.CSWeapon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

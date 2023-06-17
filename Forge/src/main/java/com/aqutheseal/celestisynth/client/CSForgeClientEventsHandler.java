@@ -3,6 +3,7 @@ package com.aqutheseal.celestisynth.client;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.client.animation.CSAnimator;
 import com.aqutheseal.celestisynth.common.item.CSItems;
+import com.aqutheseal.celestisynth.common.item.SolarisItem;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -28,8 +29,5 @@ public class CSForgeClientEventsHandler {
                     new ResourceLocation(Celestisynth.MODID, "soul"), (stack, level, living, id) ->
                             living != null && stack.getOrCreateTagElement("csController").getInt(SolarisItem.DIRECTION_INDEX_KEY) == 2 ? 1.0F : 0.0F);
         });
-    }
-    @SubscribeEvent
-    public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
     }
 }

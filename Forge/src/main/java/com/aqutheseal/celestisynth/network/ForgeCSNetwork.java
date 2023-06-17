@@ -2,7 +2,6 @@ package com.aqutheseal.celestisynth.network;
 
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.packet.network.CSNetwork;
-import com.aqutheseal.celestisynth.common.packet.network.CSSpawnParticlePacket;
 import com.aqutheseal.celestisynth.network.animation.SetAnimationServerPacket;
 import com.aqutheseal.celestisynth.network.animation.SetAnimationToAllPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +17,7 @@ public class ForgeCSNetwork extends CSNetwork {
 
     private static int packetId = 0;
 
-    public void register() {
+    public static void register() {
         SimpleChannel network = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(Celestisynth.MODID, "messages")).networkProtocolVersion(() -> "1.0").clientAcceptedVersions(s -> true).serverAcceptedVersions(s -> true).simpleChannel();
         INSTANCE = network;
 
@@ -45,11 +44,11 @@ public class ForgeCSNetwork extends CSNetwork {
         INSTANCE.sendToServer(message);
     }
 
-    public <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
+    public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
 
-    public <MSG> void sendToPlayersNearby(MSG message, ServerPlayer player) {
+    public static <MSG> void sendToPlayersNearby(MSG message, ServerPlayer player) {
         INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> player), message);
     }
 

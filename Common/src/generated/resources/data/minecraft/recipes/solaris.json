@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "i": {
+      "item": "minecraft:iron_sword"
+    },
+    "n": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "s": {
+      "item": "celestisynth:solar_crystal"
+    }
+  },
+  "pattern": [
+    "sns",
+    "sns",
+    " i "
+  ],
+  "result": {
+    "item": "celestisynth:solaris"
+  },
+  "show_notification": true
+}

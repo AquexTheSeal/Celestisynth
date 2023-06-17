@@ -18,6 +18,10 @@ public class CSFeatures {
             () -> new LunarCraterFeature(NoneFeatureConfiguration.CODEC)
     );
 
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> ZEPHYR_DEPOSIT = FEATURES.register("zephyr_deposit",
+            () -> new ZephyrDepositFeature(NoneFeatureConfiguration.CODEC)
+    );
+
     public static void init(){
 
     }

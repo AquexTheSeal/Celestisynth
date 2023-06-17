@@ -15,7 +15,7 @@ public class CSEffectModel extends GeoModel<CSEffect> {
     @Override
     public ResourceLocation getTextureResource(CSEffect animatable) {
         if (animatable.getEffectType().getFrames() > 0) {
-            return new ResourceLocation(Celestisynth.MODID, "textures/entity/" + animatable.getEffectType().getTexture() + "_" + animatable.getFrameLevel() + ".png");
+            return new ResourceLocation(Celestisynth.MODID, "textures/entity/" + animatable.getEffectType().getTexture() + "/" + animatable.getEffectType().getTexture() + "_" + animatable.getFrameLevel() + ".png");
         } else {
             return new ResourceLocation(Celestisynth.MODID, "textures/entity/" + animatable.getEffectType().getTexture() + ".png");
         }
