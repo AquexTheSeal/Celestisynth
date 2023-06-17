@@ -1,9 +1,9 @@
 {
-  "tab.celestisynth.celestisynth_tab": "天神造物",
+  "tab.celestisynth.celestisynth_tab": "天神剑技",
   "item.celestisynth.shift_notice": "[按住 SHIFT 以查看描述]",
   "item.celestisynth.passive_notice": "被动技能：",
   "item.celestisynth.skill_notice": "主动技能：",
-  "item.celestisynth.celestial_tier": "天神所造",
+  "item.celestisynth.celestial_tier": "天神造物",
 
   "block.celestisynth.solar_crystal": "日曜结晶",
   "block.celestisynth.lunar_stone": "月明净石",
