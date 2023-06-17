@@ -1,7 +1,7 @@
 package com.aqutheseal.celestisynth.registry.datagen;
 
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -12,8 +12,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class CSBlockstateProvider extends BlockStateProvider {
     private static final ResourceLocation RENDER_TYPE_CUTOUT = new ResourceLocation("cutout");
 
-    public CSBlockstateProvider(PackOutput output, String modid, ExistingFileHelper exFileHelper) {
-        super(output, modid, exFileHelper);
+    public CSBlockstateProvider(DataGenerator gen, String modid, ExistingFileHelper exFileHelper) {
+        super(gen, modid, exFileHelper);
     }
 
     @Override

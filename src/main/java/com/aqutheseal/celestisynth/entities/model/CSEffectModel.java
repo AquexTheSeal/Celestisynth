@@ -3,9 +3,9 @@ package com.aqutheseal.celestisynth.entities.model;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class CSEffectModel extends GeoModel<CSEffect> {
+public class CSEffectModel extends AnimatedGeoModel<CSEffect> {
 
     @Override
     public ResourceLocation getModelResource(CSEffect animatable) {

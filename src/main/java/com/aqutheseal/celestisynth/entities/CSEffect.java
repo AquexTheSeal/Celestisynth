@@ -5,7 +5,6 @@ import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -15,20 +14,21 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CSEffect extends Entity implements GeoEntity {
+public class CSEffect extends Entity implements IAnimatable {
     public CSEffect(EntityType<? extends CSEffect> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
         this.noCulling = true;
@@ -39,8 +39,7 @@ public class CSEffect extends Entity implements GeoEntity {
     private static final EntityDataAccessor<Integer> FRAME_LEVEL = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_X = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_Z = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
-    public final RawAnimation RAW_ANIM = RawAnimation.begin();
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public Entity toFollow;
     public int lifespan;
     public int frameTimer;
@@ -157,16 +156,21 @@ public class CSEffect extends Entity implements GeoEntity {
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
-    private PlayState predicate(AnimationState<?> state) {
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
+    }
+
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (getEffectType() != null) {
-            state.getController().setAnimation(RAW_ANIM.thenPlayAndHold(getEffectType().getAnimation().getAnimationString()));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(getEffectType().getAnimation().getAnimationString(), ILoopType.EDefaultLoopTypes.LOOP));
         } else {
             Celestisynth.LOGGER.warn("EffectType for CSEffect is null!");
-            state.getController().setAnimation(RAW_ANIM.thenPlayAndHold("animation.cs_effect.spin"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cs_effect.spin", ILoopType.EDefaultLoopTypes.LOOP));
         }
         return PlayState.CONTINUE;
     }
@@ -197,11 +201,6 @@ public class CSEffect extends Entity implements GeoEntity {
         this.entityData.define(FRAME_LEVEL, 1);
         this.entityData.define(SET_ROT_X, 0);
         this.entityData.define(SET_ROT_Z, 0);
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
     }
 
     @Override
@@ -237,9 +236,8 @@ public class CSEffect extends Entity implements GeoEntity {
         return CSEffectTypes.SOLARIS_BLITZ;
     }
 
-
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

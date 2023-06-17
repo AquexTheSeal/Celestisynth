@@ -12,10 +12,10 @@ import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -338,7 +338,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
 
     @Override
     public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
-        if (event.getSource().is(DamageTypeTags.IS_FALL)) {
+        if (event.getSource() == DamageSource.FALL) {
             event.setCanceled(true);
         } else {
             event.setAmount(event.getAmount() * 2.3F);

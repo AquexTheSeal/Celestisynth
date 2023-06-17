@@ -19,7 +19,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
-import software.bernie.geckolib.GeckoLib;
+import software.bernie.geckolib3.GeckoLib;
 
 @Mod(Celestisynth.MODID)
 public class Celestisynth {
@@ -37,6 +37,8 @@ public class Celestisynth {
         CSBlockRegistry.BLOCKS.register(modEventBus);
         CSSoundRegistry.SOUND_EVENTS.register(modEventBus);
         CSFeatureRegistry.FEATURES.register(modEventBus);
+        CSFeatureRegistry.CONFIGURED_FEATURES.register(modEventBus);
+        CSFeatureRegistry.PLACED_FEATURES.register(modEventBus);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
                 modEventBus.addListener(CSAnimator::registerAnimationLayer)
         );
@@ -56,10 +58,10 @@ public class Celestisynth {
         DataGenerator dataGenerator = event.getGenerator();
         final ExistingFileHelper efh = event.getExistingFileHelper();
         if (event.includeServer()) {
-            dataGenerator.addProvider(true, new CSBlockModelProvider(dataGenerator.getPackOutput(), MODID, efh));
-            dataGenerator.addProvider(true, new CSBlockstateProvider(dataGenerator.getPackOutput(), MODID, efh));
-            dataGenerator.addProvider(true, new CSItemModelProvider(dataGenerator.getPackOutput(), MODID, efh));
-            dataGenerator.addProvider(true, new CSRecipeProvider(dataGenerator.getPackOutput()));
+            dataGenerator.addProvider(true, new CSBlockModelProvider(dataGenerator, MODID, efh));
+            dataGenerator.addProvider(true, new CSBlockstateProvider(dataGenerator, MODID, efh));
+            dataGenerator.addProvider(true, new CSItemModelProvider(dataGenerator, MODID, efh));
+            dataGenerator.addProvider(true, new CSRecipeProvider(dataGenerator));
             // dataGenerator.addProvider(true, new CSSoundProvider(dataGenerator.getPackOutput(), MODID, efh));
         }
     }

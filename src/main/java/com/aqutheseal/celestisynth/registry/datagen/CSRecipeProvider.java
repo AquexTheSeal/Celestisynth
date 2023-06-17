@@ -2,9 +2,8 @@ package com.aqutheseal.celestisynth.registry.datagen;
 
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.Items;
@@ -14,13 +13,13 @@ import java.util.function.Consumer;
 
 public class CSRecipeProvider extends RecipeProvider {
 
-    public CSRecipeProvider(PackOutput packOutput) {
-        super(packOutput);
+    public CSRecipeProvider(DataGenerator p_125973_) {
+        super(p_125973_);
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CSItemRegistry.SOLARIS.get())
+    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shaped(CSItemRegistry.SOLARIS.get())
                 .pattern("sns")
                 .pattern("sns")
                 .pattern(" i ")
@@ -30,7 +29,7 @@ public class CSRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CSBlockRegistry.SOLAR_CRYSTAL.get()))
                 .save(consumer, "solaris");
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CSItemRegistry.CRESCENTIA.get())
+        ShapedRecipeBuilder.shaped(CSItemRegistry.CRESCENTIA.get())
                 .pattern("lnl")
                 .pattern("l n")
                 .pattern("i  ")
@@ -40,7 +39,7 @@ public class CSRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CSBlockRegistry.LUNAR_STONE.get()))
                 .save(consumer, "crescentia");
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CSItemRegistry.BREEZEBREAKER.get())
+        ShapedRecipeBuilder.shaped(CSItemRegistry.BREEZEBREAKER.get())
                 .pattern(" nz")
                 .pattern("znn")
                 .pattern("iz ")

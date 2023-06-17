@@ -1,19 +1,7 @@
 package com.aqutheseal.celestisynth.entities.renderlayer;
 
-import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.entities.CSEffect;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.GeoRenderer;
-import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
-
-public class CSEffectGlowLayer extends GeoRenderLayer<CSEffect> {
+public class CSEffectGlowLayer /*extends GeoRenderLayer<CSEffect>*/ {
+    /**
     public CSEffectGlowLayer(GeoRenderer<CSEffect> entityRendererIn) {
         super(entityRendererIn);
     }
@@ -28,8 +16,8 @@ public class CSEffectGlowLayer extends GeoRenderLayer<CSEffect> {
         poseStack.scale(f, f, f);
 
         if (animatable.getEffectType().isRotateRandomly()) {
-            poseStack.mulPose(Axis.XP.rotationDegrees(animatable.getRotationX()));
-            poseStack.mulPose(Axis.ZP.rotationDegrees(animatable.getRotationZ()));
+            poseStack.mulPose(Vector3f.XP.rotationDegrees(animatable.getRotationX()));
+            poseStack.mulPose(Vector3f.ZP.rotationDegrees(animatable.getRotationZ()));
         }
         poseStack.popPose();
 
@@ -45,4 +33,5 @@ public class CSEffectGlowLayer extends GeoRenderLayer<CSEffect> {
             return new ResourceLocation(Celestisynth.MODID, "textures/entity/" + animatable.getEffectType().getTexture() + ".png");
         }
     }
+    */
 }

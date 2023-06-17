@@ -3,7 +3,7 @@ package com.aqutheseal.celestisynth.registry.datagen;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DiggerItem;
@@ -20,8 +20,8 @@ import java.util.Collection;
 
 public class CSItemModelProvider extends ItemModelProvider {
 
-    public CSItemModelProvider(PackOutput output, String modid, ExistingFileHelper existingFileHelper) {
-        super(output, modid, existingFileHelper);
+    public CSItemModelProvider(DataGenerator generator, String modid, ExistingFileHelper existingFileHelper) {
+        super(generator, modid, existingFileHelper);
     }
 
     @Override

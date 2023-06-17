@@ -5,12 +5,14 @@ import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -65,7 +68,7 @@ public class BreezebreakerTornado extends Entity {
                 if (target != player && target.isAlive()) {
                     target.invulnerableTime = 0;
                     target.hurtMarked = true;
-                    target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.breezebreakerShiftSkillDmg.get());
+                    target.hurt(DamageSource.playerAttack(player), CSConfig.COMMON.breezebreakerShiftSkillDmg.get());
                     target.setDeltaMovement(target.getDeltaMovement().add(0, 0.05 - (target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue() * 0.001), 0));
                 }
             }
@@ -152,6 +155,11 @@ public class BreezebreakerTornado extends Entity {
         tag.putFloat("cs.angleAddX", getAddAngleX());
         tag.putFloat("cs.angleAddY", getAddAngleY());
         tag.putFloat("cs.angleAddZ", getAddAngleZ());
+    }
+
+    @Override
+    public Packet<?> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public void setOwnerUuid(@Nullable UUID ownerUuid) {

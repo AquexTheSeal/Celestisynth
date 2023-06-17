@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -58,7 +59,7 @@ public interface CSWeapon {
         double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
         target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
         target.invulnerableTime = 0;
-        target.hurt(holder.damageSources().playerAttack(holder), damage);
+        target.hurt(DamageSource.playerAttack(holder), damage);
         target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
     }
 

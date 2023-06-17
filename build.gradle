@@ -20,7 +20,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.19.4-1.0.0-beta-v7'
+version = '1.19.2-1.0.0-beta-v1'
 group = 'com.yourname.celestisynth'
 archivesBaseName = 'celestisynth'
 
@@ -28,7 +28,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'official', version: '1.19.4'
+    mappings channel: 'official', version: '1.19.2'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -132,18 +132,18 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.4-45.0.64'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.2.14'
 
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19.4:4.1.3')
-    implementation fg.deobf("curse.maven:playeranimator-658587:4446525")
-    implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:4534645")
-    implementation fg.deobf("curse.maven:cloth-config-348521:4440461")
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.40')
+    implementation fg.deobf("curse.maven:playeranimator-658587:4418149")
+    implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:4534619")
+    implementation fg.deobf("curse.maven:cloth-config-348521:3972423")
 
     //implementation fg.deobf("curse.maven:rubidium-574856:4448053")
     //implementation fg.deobf("curse.maven:oculus-581495:4451142")
 
-    implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4531203")
-    implementation fg.deobf("curse.maven:citadel-331936:4556622")
+    implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4502227")
+    implementation fg.deobf("curse.maven:citadel-331936:4556677")
 }
 
 jar {

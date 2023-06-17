@@ -6,6 +6,7 @@ import com.aqutheseal.celestisynth.item.CrescentiaItem;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,6 +15,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -24,8 +26,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -74,7 +78,7 @@ public class CrescentiaRanged extends Entity {
                     double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
                     target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
                     target.invulnerableTime = 0;
-                    target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.crescentiaShiftSkillDmg.get());
+                    target.hurt(DamageSource.playerAttack(player), CSConfig.COMMON.crescentiaShiftSkillDmg.get());
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                     target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
                 }
@@ -106,7 +110,7 @@ public class CrescentiaRanged extends Entity {
         }
 
         if (tickCount == 100 || !getLevel().getBlockState(newPos).isAir()) {
-            level.explode(player, newX, newY, newZ, 3.0F, Level.ExplosionInteraction.MOB);
+            level.explode(player, newX, newY, newZ, 3.0F, Explosion.BlockInteraction.DESTROY);
             CrescentiaItem.createCrescentiaFirework(stack, level, player, newX, newY, newZ, true, tickCount);
             this.remove(RemovalReason.DISCARDED);
         }
@@ -163,6 +167,11 @@ public class CrescentiaRanged extends Entity {
         tag.putFloat("cs.angleAddX", getAddAngleX());
         tag.putFloat("cs.angleAddY", getAddAngleY());
         tag.putFloat("cs.angleAddZ", getAddAngleZ());
+    }
+
+    @Override
+    public Packet<?> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public void setOwnerUuid(@Nullable UUID ownerUuid) {

@@ -3,9 +3,8 @@ package com.aqutheseal.celestisynth.entities.helper;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 public enum CSEffectTypes {
 
@@ -146,12 +145,12 @@ public enum CSEffectTypes {
         }
     }
 
-    public static void setSpecialProperties(PoseStack poseStack, CSEffect animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public static void setSpecialProperties(CSEffect animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         switch (animatable.getEffectType()) {
             case CRESCENTIA_STRIKE, CRESCENTIA_STRIKE_INVERTED, CRESCENTIA_THROW, CRESCENTIA_THROW_INVERTED ->
-                    poseStack.mulPose(Axis.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 90.0F) - 45.0F));
+                    poseStack.mulPose(Vector3f.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 90.0F) - 45.0F));
             case BREEZEBREAKER_SLASH, BREEZEBREAKER_SLASH_INVERTED ->
-                    poseStack.mulPose(Axis.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
+                    poseStack.mulPose(Vector3f.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
             default -> {
             }
         }

@@ -41,6 +41,6 @@ public class CSBlockRegistry {
     }
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
-        return CSItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return CSItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(CSCreativeTabRegistry.CELESTISYNTH)));
     }
 }
