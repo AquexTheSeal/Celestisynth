@@ -47,7 +47,7 @@
   "item.celestisynth.breezebreaker.passive_desc_1": "使用者在手持此物时得到强力的跳跃提升并免疫摔落伤害，然而同时来自其它攻击源的伤害增至原来的 2.3 倍。",
 
   "item.celestisynth.breezebreaker.passive_2": "善息之灵",
-  "item.celestisynth.breezebreaker.passive_desc_2": "每放出 15 次主动技能都会激活或禁用此项被动。激活状态下，使用者将获得跳跃提升，且技能冷却时间减半。此效果会在 8 秒钟后消失。",
+  "item.celestisynth.breezebreaker.passive_desc_2": "每放出 15 次主动技能都会激活或禁用此项被动。激活状态下，使用者将获得速度提升，且技能冷却时间减半。此效果会在 8 秒钟后消失。",
 
   "item.celestisynth.breezebreaker.skill_1": "暴风之袭",
   "item.celestisynth.breezebreaker.condition_1": "激活方式：右键单击",
