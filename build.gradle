@@ -2,10 +2,12 @@ buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://repo.spongepowered.org/maven' }
+        maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
         classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
@@ -19,16 +21,21 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '1.19.2-1.0.0-beta-v1'
-group = 'com.yourname.celestisynth'
+mixin {
+    add sourceSets.main, "celestisynth.refmap.json"
+}
+
+version = '1.19.2-1.0.0-beta-v2'
+group = 'com.aqutheseal.celestisynth'
 archivesBaseName = 'celestisynth'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'official', version: '1.19.2'
+    mappings channel: 'parchment', version: '2022.11.27-1.19.2'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -144,6 +151,8 @@ dependencies {
 
     implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4502227")
     implementation fg.deobf("curse.maven:citadel-331936:4556677")
+
+    annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 }
 
 jar {
@@ -155,7 +164,8 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "aqutheseal",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"            : "celestisynth.mixins.json"
         ])
     }
 }

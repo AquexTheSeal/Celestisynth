@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class CSCreativeTabRegistry {
 
-    public static final CreativeModeTab CELESTISYNTH = new CreativeModeTab(".celestisynth.celestisynth_tab") {
+    public static final CreativeModeTab CELESTISYNTH = new CreativeModeTab("celestisynth.celestisynth_tab") {
 
         @Override
         public ItemStack makeIcon() {
