@@ -1,0 +1,71 @@
+{
+  "itemGroup.celestisynth.celestisynth_tab": "天神剑技",
+  "item.celestisynth.shift_notice": "[按住 SHIFT 以查看描述]",
+  "item.celestisynth.passive_notice": "被动技能：",
+  "item.celestisynth.skill_notice": "主动技能：",
+  "item.celestisynth.celestial_tier": "天神造物",
+
+  "block.celestisynth.solar_crystal": "日曜结晶",
+  "block.celestisynth.lunar_stone": "月明净石",
+  "block.celestisynth.zephyr_deposit": "风啸沉淀",
+
+  "------------------- SOLARIS ------------------":  "",
+
+  "item.celestisynth.solaris": "炎日",
+
+  "item.celestisynth.solaris.passive_1": "余烬之祝",
+  "item.celestisynth.solaris.passive_desc_1": "使用者在手持此物时免疫火焰 - 普通攻击会使攻击对象着火。",
+
+  "item.celestisynth.solaris.skill_1": "烈焰圆舞 - 红镜之圆",
+  "item.celestisynth.solaris.condition_1": "激活方式：右键单击",
+  "item.celestisynth.solaris.desc_1": "使出优雅的回旋斩击，造成伤害的同时点燃周围实体。",
+
+  "item.celestisynth.solaris.skill_2": "烈焰圆舞 - 灼骨直照",
+  "item.celestisynth.solaris.condition_2": "激活方式：按住 SHIFT 并右键单击",
+  "item.celestisynth.solaris.desc_2": "向前冲刺, 撞击并暂时引燃其路径上的实体。",
+
+  "------------------- CRESCENTIA ------------------":  "",
+
+  "item.celestisynth.crescentia": "初月",
+
+  "item.celestisynth.crescentia.passive_1": "引力重击",
+  "item.celestisynth.crescentia.passive_desc_1": "使用者在手持此物时得到一级的抗性提升 - 普通攻击会使攻击对象减速几秒。",
+
+  "item.celestisynth.crescentia.skill_1": "月庆之幕",
+  "item.celestisynth.crescentia.condition_1": "激活方式：右键单击",
+  "item.celestisynth.crescentia.desc_1": "- 对周围实体释放绚丽的弹幕攻击，伴随着迷人的烟花展。",
+
+  "item.celestisynth.crescentia.skill_2": "新月龙吟",
+  "item.celestisynth.crescentia.condition_2": "激活方式：按住 SHIFT 并右键单击",
+  "item.celestisynth.crescentia.desc_2": "释放远距离的劈砍，切开其路径上的一切实体。",
+
+  "------------------- BREEZEBREAKER ------------------":  "",
+
+  "item.celestisynth.breezebreaker": "肆风",
+
+  "item.celestisynth.breezebreaker.passive_1": "迅敏之风",
+  "item.celestisynth.breezebreaker.passive_desc_1": "使用者在手持此物时得到强力的跳跃提升并免疫摔落伤害，然而同时来自其它攻击源的伤害增至原来的 2.3 倍。",
+
+  "item.celestisynth.breezebreaker.passive_2": "善息之灵",
+  "item.celestisynth.breezebreaker.passive_desc_2": "每放出 15 次主动技能都会激活或禁用此项被动。激活状态下，使用者将获得速度提升，且技能冷却时间减半。此效果会在 8 秒钟后消失。",
+
+  "item.celestisynth.breezebreaker.skill_1": "暴风之袭",
+  "item.celestisynth.breezebreaker.condition_1": "激活方式：右键单击",
+  "item.celestisynth.breezebreaker.desc_1": "释放强大的风力斩击，通过冲袭造成惊人的伤害。",
+
+  "item.celestisynth.breezebreaker.skill_2": "暴风双袭",
+  "item.celestisynth.breezebreaker.condition_2": "激活方式：按住右键超过 0.5 秒",
+  "item.celestisynth.breezebreaker.desc_2": "连续放出两次暴风之袭，用无情肆虐的狂风席卷敌人。",
+
+  "item.celestisynth.breezebreaker.skill_3": "激厉旋风",
+  "item.celestisynth.breezebreaker.condition_3": "激活方式：按住 SHIFT 并右键单击",
+  "item.celestisynth.breezebreaker.desc_3": "召唤毁灭性的龙卷风，撕碎未能侥幸逃出其路径上的一切实体。",
+
+  "item.celestisynth.breezebreaker.skill_4": "劲风怒号",
+  "item.celestisynth.breezebreaker.condition_4": "激活方式：冲刺时右键单击",
+  "item.celestisynth.breezebreaker.desc_4": "迅速向前冲刺，对遇到的第一个实体造成巨量伤害。",
+
+  "item.celestisynth.breezebreaker.skill_5": "疾落死轮",
+  "item.celestisynth.breezebreaker.condition_5": "激活方式：腾空时右键单击",
+  "item.celestisynth.breezebreaker.desc_5": "在使用者周围产生竖直的强力风轮, 通过其骇人的力量抹除周围的实体。"
+}
