@@ -1,5 +1,5 @@
 {
-  "tab.celestisynth.celestisynth_tab": "天神剑技",
+  "itemGroup.celestisynth.celestisynth_tab": "天神剑技",
   "item.celestisynth.shift_notice": "[按住 SHIFT 以查看描述]",
   "item.celestisynth.passive_notice": "被动技能：",
   "item.celestisynth.skill_notice": "主动技能：",

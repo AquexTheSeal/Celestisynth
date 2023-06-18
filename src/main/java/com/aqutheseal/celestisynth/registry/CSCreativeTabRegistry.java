@@ -19,7 +19,7 @@ public class CSCreativeTabRegistry {
     public static void registerCreativeTab(CreativeModeTabEvent.Register event) {
         CELESTISYNTH_TAB = event.registerCreativeModeTab(new ResourceLocation(Celestisynth.MODID, "celestisynth_tab"), builder -> builder
                 .icon(() -> new ItemStack(CSItemRegistry.SOLARIS.get()))
-                .title(Component.translatable("tab.celestisynth.celestisynth_tab"))
+                .title(Component.translatable("itemGroup.celestisynth.celestisynth_tab"))
         );
     }
 
