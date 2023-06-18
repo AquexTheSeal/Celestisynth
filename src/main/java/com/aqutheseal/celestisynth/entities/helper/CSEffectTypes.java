@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 public enum CSEffectTypes {
 
     // Weapons
-    SOLARIS_BLITZ("solaris_spin", Model.FLAT, Animation.SPIN_20, 11, 2, 2.5, true, true, false),
-    SOLARIS_BLITZ_SOUL("solaris_spin_soul", Model.FLAT, Animation.SPIN_20, 11, 2, 3.5, true, true, false),
+    SOLARIS_BLITZ("solaris_spin", Model.FLAT, Animation.SPIN_15, 0, 0, 2.5, true, true, false),
+    SOLARIS_BLITZ_SOUL("solaris_spin_soul", Model.FLAT, Animation.SPIN_15, 0, 0, 3.5, true, true, false),
     SOLARIS_AIR("solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 2.5, true, true, false),
     SOLARIS_AIR_LARGE("solaris_air_large", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 3.5, true, true, false),
     SOLARIS_AIR_FLAT("solaris_air_flat", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 1.5, false, true, false),
