@@ -163,10 +163,10 @@ public class CSEffect extends Entity implements GeoEntity {
 
     private PlayState predicate(AnimationState<?> state) {
         if (getEffectType() != null) {
-            state.getController().setAnimation(RAW_ANIM.thenPlayAndHold(getEffectType().getAnimation().getAnimationString()));
+            state.getController().setAnimation(RAW_ANIM.thenPlay(getEffectType().getAnimation().getAnimationString()));
         } else {
             Celestisynth.LOGGER.warn("EffectType for CSEffect is null!");
-            state.getController().setAnimation(RAW_ANIM.thenPlayAndHold("animation.cs_effect.spin"));
+            state.getController().setAnimation(RAW_ANIM.thenPlay("animation.cs_effect.spin"));
         }
         return PlayState.CONTINUE;
     }

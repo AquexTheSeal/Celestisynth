@@ -68,6 +68,7 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
                     AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_CRESCENTIA_STRIKE);
                 }
             }
+            useAndDamageItem(itemstack, level, player, 4);
             player.getCooldowns().addCooldown(itemstack.getItem(), itemTag.getBoolean(IS_RANGED_KEY) ? 40 : 100);
         }
         return InteractionResultHolder.success(itemstack);

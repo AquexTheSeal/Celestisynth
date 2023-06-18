@@ -24,7 +24,9 @@ public enum CSEffectTypes {
     BREEZEBREAKER_SLASH("breezebreaker_slash", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 3, false, true, true),
     BREEZEBREAKER_SLASH_INVERTED("breezebreaker_slash_inverted", "breezebreaker_slash", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 3, false, true, true),
     BREEZEBREAKER_WHEEL("breezebreaker_slash_vertical", "breezebreaker_wheel", Model.FLAT_VERTICAL_FRONTFACE, Animation.SWEEP_RTOL, 0, 0, 4, false, true, false),
-    BREEZEBREAKER_DASH("breezebreaker_dash", Model.CROSS, Animation.STRETCH, 0, 0, 3, false, true, false);
+    BREEZEBREAKER_DASH("breezebreaker_dash", Model.CROSS, Animation.STRETCH, 0, 0, 3, false, true, false),
+    BREEZEBREAKER_DASH_2("breezebreaker_dash_2", Model.FLAT_VERTICAL_SIDEFACE, Animation.NONE_15, 0, 0, 4, false, true, false),
+    BREEZEBREAKER_DASH_3("breezebreaker_dash_3", "breezebreaker_dash_2", Model.FLAT_VERTICAL_SIDEFACE, Animation.NONE_10, 0, 0, 2, false, true, false);
 
     final String name;
     final String texture;

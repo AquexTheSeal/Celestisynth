@@ -4,6 +4,7 @@ import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -70,8 +71,16 @@ public interface CSWeapon {
 
     default void setDeltaPlayer(Player player, Vec3 vec) {
         player.hurtMarked = true;
-        player.setDeltaMovement(vec.x, vec.y, vec.z);
-        player.hasImpulse = true;
+        player.setDeltaMovement(vec);
+    }
+
+    default void useAndDamageItem(ItemStack pStack, Level pLevel, Player player, int damageAmount) {
+        if (!pLevel.isClientSide) {
+            pStack.hurtAndBreak(damageAmount, player, (p_43388_) -> {
+                p_43388_.broadcastBreakEvent(player.getUsedItemHand());
+            });
+        }
+        player.awardStat(Stats.ITEM_USED.get(pStack.getItem()));
     }
 
     default void sendExpandingParticles(Level level, ParticleType<?> particleType, double x, double y, double z, int amount, float expansionMultiplier) {
