@@ -9,6 +9,7 @@ import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
@@ -22,10 +23,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -96,6 +94,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
                     }
                     itemTag.putBoolean(IS_SHIFT_RIGHT, shouldShiftRight);
                 }
+                useAndDamageItem(itemstack, level, player, 3);
                 player.getCooldowns().addCooldown(itemstack.getItem(), buffStateModified(itemstack, 35));
                 return InteractionResultHolder.success(itemstack);
             }
@@ -104,6 +103,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
                 addComboPoint(itemstack, player);
                 itemTag.putInt(ATTACK_INDEX, ATTACK_SPRINT);
                 AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SPRINT_ATTACK);
+                useAndDamageItem(itemstack, level, player, 5);
                 player.getCooldowns().addCooldown(itemstack.getItem(), buffStateModified(itemstack, 15));
                 return InteractionResultHolder.success(itemstack);
             }
@@ -112,6 +112,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
                 addComboPoint(itemstack, player);
                 itemTag.putInt(ATTACK_INDEX, ATTACK_MIDAIR);
                 AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_JUMP_ATTACK);
+                useAndDamageItem(itemstack, level, player, 2);
                 player.getCooldowns().addCooldown(itemstack.getItem(), buffStateModified(itemstack, 40));
                 return InteractionResultHolder.success(itemstack);
             }
@@ -147,6 +148,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
                     default -> throw new IllegalStateException("Unexpected value: " + itemTag.getInt(ATTACK_INDEX));
                 };
 
+                useAndDamageItem(itemstack, level, player, 1);
                 player.getCooldowns().addCooldown(itemstack.getItem(), cooldown);
             }
         }
@@ -264,18 +266,34 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
         if (animationTimer == 10) {
             sendExpandingParticles(level, ParticleTypes.CAMPFIRE_COSY_SMOKE, player.blockPosition(), 45, 0.2F);
 
-            if (getLookAtEntity(player, 12) instanceof LivingEntity living) {
-                constantAttack(player, living, CSConfig.COMMON.breezebreakerSprintSkillDmg.get() + ((float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack)));
+            LivingEntity living = getLookAtEntity(player, 16) instanceof LivingEntity ? (LivingEntity) getLookAtEntity(player, 16) : null;
+            if (living != null) {
+                float attackDamage = CSConfig.COMMON.breezebreakerSprintSkillDmg.get() + (float) EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, itemStack);
+                constantAttack(player, living, attackDamage);
                 living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 2));
                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
-                sendExpandingParticles(level, ParticleTypes.FIREWORK, player.blockPosition().above(), 45, 0);
+                sendExpandingParticles(level, ParticleTypes.FIREWORK, player.blockPosition().above(), 45, 0.2F);
             }
 
             double speed = 7;
-            Vec3 delta = player.getDeltaMovement().add(new Vec3(calculateXLook(player) * speed, 0, calculateZLook(player) * speed));
-            this.setDeltaPlayer(player, delta);
-            sendExpandingParticles(level, ParticleTypes.POOF, player.blockPosition().above(), 45, 2);
-            CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_DASH, (delta.x()) * 2, 0, (delta.z()) * 2);
+            Vec3 delta;
+            for (float distii = 0; distii < speed; distii += 0.25F) {
+                BlockPos newPos = new BlockPos(player.getX() + calculateXLook(player) * distii, player.getY(), player.getZ() + calculateZLook(player) * distii);
+                if (!level.isEmptyBlock(newPos)) {
+                    speed = distii;
+                    break;
+                }
+            }
+            delta = new Vec3(calculateXLook(player) * speed, 0, calculateZLook(player) * speed);
+            player.moveTo(player.getX() + calculateXLook(player) * speed, player.getY(), player.getZ() + calculateZLook(player) * speed);
+
+            double[] multipliers = {2, 1.5, 1, 0.5, 0};
+            CSEffectTypes[] effectTypes = {CSEffectTypes.BREEZEBREAKER_DASH, CSEffectTypes.BREEZEBREAKER_DASH_2, CSEffectTypes.BREEZEBREAKER_DASH_3, CSEffectTypes.BREEZEBREAKER_DASH_3, CSEffectTypes.BREEZEBREAKER_DASH_3};
+            for (int i = 0; i < multipliers.length; i++) {
+                int yOffset = i > 1 ? 1 : 0;
+                CSEffect.createInstance(player, null, effectTypes[i], delta.x() * multipliers[i], yOffset, delta.z() * multipliers[i]);
+            }
+
             player.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
             player.playSound(CSSoundRegistry.CS_IMPACT_HIT.get(), 1.0F, 1.0F);
             player.playSound(CSSoundRegistry.CS_STEP.get(), 1.0F, 1.0F);

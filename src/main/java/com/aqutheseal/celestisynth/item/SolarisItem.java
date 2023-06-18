@@ -66,9 +66,11 @@ public class SolarisItem extends SwordItem implements CSWeapon {
             if (player.isShiftKeyDown()) {
                 itemTag.putInt(DIRECTION_INDEX_KEY, 2);
                 itemTag.putFloat(HEAD_ROT_LOCK_KEY, player.getYRot());
+                useAndDamageItem(itemstack, level, player, 2);
                 player.getCooldowns().addCooldown(itemstack.getItem(), 130);
             } else {
                 itemTag.putInt(DIRECTION_INDEX_KEY, player.getRandom().nextInt(2));
+                useAndDamageItem(itemstack, level, player, 3);
                 player.getCooldowns().addCooldown(itemstack.getItem(), 70);
             }
         }
