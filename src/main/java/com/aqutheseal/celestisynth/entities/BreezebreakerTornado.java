@@ -65,7 +65,7 @@ public class BreezebreakerTornado extends Entity {
                 if (target != player && target.isAlive()) {
                     target.invulnerableTime = 0;
                     target.hurtMarked = true;
-                    target.hurt(player.damageSources().playerAttack(player), CSConfig.COMMON.breezebreakerShiftSkillDmg.get());
+                    target.hurt(player.damageSources().indirectMagic(player, player), CSConfig.COMMON.breezebreakerShiftSkillDmg.get());
                     target.setDeltaMovement(target.getDeltaMovement().add(0, 0.05 - (target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue() * 0.001), 0));
                 }
             }
