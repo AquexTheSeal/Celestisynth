@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -56,12 +57,21 @@ public interface CSWeapon {
         entity.playSound(randomSound, 0.55F, 0.5F + new Random().nextFloat());
     }
 
-    default void constantAttack(Player holder, LivingEntity target, float damage) {
+    default void constantAttack(Player holder, LivingEntity target, float damage, boolean isBlockable) {
         double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
         target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100);
         target.invulnerableTime = 0;
-        target.hurt(DamageSource.playerAttack(holder), damage);
+        if (isBlockable && target.getUseItem().getItem() instanceof ShieldItem) {
+            target.hurt(DamageSource.playerAttack(holder), damage);
+        } else if (!isBlockable) {
+            target.hurt(DamageSource.indirectMagic(holder, holder), damage);
+        }
+        target.doEnchantDamageEffects(holder, target);
         target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
+    }
+
+    default void constantAttack(Player holder, LivingEntity target, float damage) {
+        constantAttack(holder, target, damage, false);
     }
 
     default void setDeltaPlayer(Player player, double x, double y, double z) {

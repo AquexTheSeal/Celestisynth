@@ -27,7 +27,7 @@ mixin {
     add sourceSets.main, "celestisynth.refmap.json"
 }
 
-version = '1.19.2-1.0.0-beta-v4'
+version = '1.19.2-1.0.0-beta-v5'
 group = 'com.aqutheseal.celestisynth'
 archivesBaseName = 'celestisynth'
 

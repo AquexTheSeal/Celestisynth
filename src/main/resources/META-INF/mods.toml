@@ -9,16 +9,12 @@ version="${file.jarVersion}" #mandatory
 # A display name for the mod
 displayName="Celestisynth" #mandatory
 logoFile="celestisynth.png"
-credits="Thanks for this example mod goes to Java"
-authors="Love, Cheese and small house plants"
+authors="AquTheSeal"
 
 description='''
-This is a long form description of the mod. You can write whatever you want here
-
-Have some lorem ipsum.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis lacinia magna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed sagittis luctus odio eu tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque volutpat ligula eget lacus auctor sagittis. In hac habitasse platea dictumst. Nunc gravida elit vitae sem vehicula efficitur. Donec mattis ipsum et arcu lobortis, eleifend sagittis sem rutrum. Cras pharetra quam eget posuere fermentum. Sed id tincidunt justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Celestisynth is a Minecraft mod that focuses in adding brand-new and unique weapons with special abilities for you to play around with!
 '''
+
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.celestisynth]] #optional
 # the modid of the dependency
