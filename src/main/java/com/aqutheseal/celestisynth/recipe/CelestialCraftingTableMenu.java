@@ -1,4 +1,4 @@
-package com.aqutheseal.celestisynth.menu;
+package com.aqutheseal.celestisynth.recipe;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -6,11 +6,11 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.level.block.Block;
 
-public class AquCraftingTableMenu extends CraftingMenu {
+public class CelestialCraftingTableMenu extends CraftingMenu {
     private final Block table;
     private final ContainerLevelAccess pos;
 
-    public AquCraftingTableMenu(int id, Inventory playerInv, ContainerLevelAccess worldPos, Block workbench) {
+    public CelestialCraftingTableMenu(int id, Inventory playerInv, ContainerLevelAccess worldPos, Block workbench) {
         super(id, playerInv, worldPos);
         this.table = workbench;
         this.pos = worldPos;
