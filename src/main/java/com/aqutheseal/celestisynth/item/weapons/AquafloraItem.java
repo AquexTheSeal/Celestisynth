@@ -1,6 +1,5 @@
 package com.aqutheseal.celestisynth.item.weapons;
 
-import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.CSEffect;
@@ -22,15 +21,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class AquafloraItem extends SwordItem implements CSWeapon {
     public static final String CHECK_PASSIVE = "cs.checkPassiveIfBlooming";
@@ -92,11 +87,11 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
                             AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT);
                         }
                     }
-                    player.getCooldowns().addCooldown(this, CSConfig.COMMON.aquafloraBloomSkillCD.get());
+                    player.getCooldowns().addCooldown(this, CSConfig.COMMON.aquafloraSkillCD.get());
                 } else {
                     itemTag.putBoolean(ATTACK_BLOOMING, true);
                     AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_AQUAFLORA_ASSASSINATE);
-                    player.getCooldowns().addCooldown(this, CSConfig.COMMON.aquafloraSkillCD.get());
+                    player.getCooldowns().addCooldown(this, CSConfig.COMMON.aquafloraBloomSkillCD.get());
                 }
                 useAndDamageItem(itemstack, level, player, 2);
             }
