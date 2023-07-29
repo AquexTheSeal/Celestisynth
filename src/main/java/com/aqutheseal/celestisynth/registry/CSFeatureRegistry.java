@@ -4,6 +4,7 @@ import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.world.feature.LunarCraterFeature;
 import com.aqutheseal.celestisynth.world.feature.SolarCraterFeature;
 import com.aqutheseal.celestisynth.world.feature.ZephyrDepositFeature;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -68,9 +69,9 @@ public class CSFeatureRegistry {
 
     public static final RegistryObject<PlacedFeature> ZEPHYR_DEPOSIT_PLACED = PLACED_FEATURES.register("zephyr_deposit_placed",
             () -> new PlacedFeature(CSFeatureRegistry.ZEPHYR_DEPOSIT_CONFIGURED.getHolder().get(),
-                    List.of(RarityFilter.onAverageOnceEvery(6),
-                            HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.absolute(150), VerticalAnchor.absolute(320))),
-                            EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), MatchingBlockTagPredicate.ONLY_IN_AIR_PREDICATE, 12),
+                    List.of(RarityFilter.onAverageOnceEvery(7),
+                            HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.absolute(100), VerticalAnchor.absolute(320))),
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(CSBlockRegistry.SOLAR_CRYSTAL.get().defaultBlockState(), BlockPos.ZERO)),
                             BiomeFilter.biome()
                     )
             )

@@ -52,5 +52,17 @@
     "sounds": [
       "celestisynth:cs_whirlwind"
     ]
+  },
+  "cs_loud_impact": {
+    "subtitle": "subtitles.celestisynth.cs_loud_impact",
+    "sounds": [
+      "celestisynth:cs_loud_impact"
+    ]
+  },
+  "cs_bling": {
+    "subtitle": "subtitles.celestisynth.cs_bling",
+    "sounds": [
+      "celestisynth:cs_bling"
+    ]
   }
 }

@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffects;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.util.Color;
@@ -36,11 +37,11 @@ public class CSEffectRenderer extends GeoProjectilesRenderer<CSEffect> {
     public void renderEarly(CSEffect animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         float lerpBodyRot = Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot()) - 165;
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f - lerpBodyRot));
-
         if (animatable.getEffectType().isRotateRandomly() && !animatable.getEffectType().hasSpecialProperties()) {
             poseStack.mulPose(Vector3f.XP.rotationDegrees(animatable.getRotationX()));
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(animatable.getRotationZ()));
         }
+
         CSEffectTypes.setSpecialProperties(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 
         super.renderEarly(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -55,12 +56,12 @@ public class CSEffectRenderer extends GeoProjectilesRenderer<CSEffect> {
         setCurrentModelRenderCycle(EModelRenderCycle.INITIAL);
         poseStack.pushPose();
         //poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTick, animatable.yRotO, animatable.getYRot()) - 90));
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTick, animatable.xRotO, animatable.getXRot())));
+        //poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTick, animatable.xRotO, animatable.getXRot())));
 
         AnimationEvent<CSEffect> predicate = new AnimationEvent<>(animatable, 0, 0, partialTick,
                 false, Collections.singletonList(new EntityModelData()));
 
-        modelProvider.setLivingAnimations(animatable, getInstanceId(animatable), predicate); // TODO change to setCustomAnimations in 1.20+
+        modelProvider.setLivingAnimations(animatable, getInstanceId(animatable), predicate);
         RenderSystem.setShaderTexture(0, getTextureLocation(animatable));
 
         Color renderColor = getRenderColor(animatable, partialTick, poseStack, bufferSource, null, packedLight);
@@ -84,23 +85,23 @@ public class CSEffectRenderer extends GeoProjectilesRenderer<CSEffect> {
     @Override
     public float getHeightScale(CSEffect entity) {
         float f = (float) animatable.getEffectType().getScale();
-        return super.getHeightScale(entity) * f;
+        return super.getHeightScale(entity) * animatable.getCustomizableSize() * f;
     }
 
     @Override
     public float getWidthScale(CSEffect animatable) {
          float f = (float) animatable.getEffectType().getScale();
-        return super.getWidthScale(animatable) * f;
+        return super.getWidthScale(animatable) * animatable.getCustomizableSize() * f;
     }
 
     @Override
     public RenderType getRenderType(CSEffect animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, ResourceLocation texture) {
-        return RenderType.entityTranslucentEmissive(texture);
+        return RenderType.entityTranslucent(texture);
     }
 
     @Override
     protected int getBlockLightLevel(CSEffect p_114496_, BlockPos p_114497_) {
-        return 15;
+        return 12;
     }
 
     @Override

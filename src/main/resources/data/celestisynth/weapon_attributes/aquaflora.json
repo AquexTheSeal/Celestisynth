@@ -1,0 +1,68 @@
+{
+  "parent": "bettercombat:sword",
+  "attributes": {
+    "attack_range": 4.5,
+    "attacks": [
+      {
+        "hitbox": "HORIZONTAL_PLANE",
+        "damage_multiplier": 1.5,
+        "angle": 80,
+        "upswing": 0.5,
+        "animation": "bettercombat:two_handed_slash_horizontal_left",
+        "swing_sound": {
+          "id": "bettercombat:katana_slash"
+        }
+      },
+      {
+        "hitbox": "HORIZONTAL_PLANE",
+        "damage_multiplier": 1.1,
+        "angle": 80,
+        "upswing": 0.5,
+        "animation": "bettercombat:dual_handed_slash_cross",
+        "swing_sound": {
+          "id": "bettercombat:scythe_slash"
+        }
+      },
+      {
+        "hitbox": "FORWARD_BOX",
+        "damage_multiplier": 1.2,
+        "angle": 0,
+        "upswing": 0.5,
+        "animation": "bettercombat:two_handed_stab_left",
+        "swing_sound": {
+          "id": "bettercombat:rapier_stab"
+        }
+      },
+      {
+        "hitbox": "HORIZONTAL_PLANE",
+        "damage_multiplier": 1.1,
+        "angle": 80,
+        "upswing": 0.5,
+        "animation": "bettercombat:two_handed_slash_horizontal_right",
+        "swing_sound": {
+          "id": "bettercombat:katana_slash"
+        }
+      },
+      {
+        "hitbox": "FORWARD_BOX",
+        "damage_multiplier": 1.3,
+        "angle": 0,
+        "upswing": 0.5,
+        "animation": "bettercombat:two_handed_stab_right",
+        "swing_sound": {
+          "id": "bettercombat:rapier_stab"
+        }
+      },
+      {
+        "hitbox": "HORIZONTAL_PLANE",
+        "damage_multiplier": 1.5,
+        "angle": 80,
+        "upswing": 0.5,
+        "animation": "bettercombat:dual_handed_slash_cross",
+        "swing_sound": {
+          "id": "bettercombat:scythe_slash"
+        }
+      }
+    ]
+  }
+}

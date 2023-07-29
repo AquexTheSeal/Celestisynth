@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 300,
+  "experience": 0.45,
+  "ingredient": {
+    "item": "celestisynth:celestial_core"
+  },
+  "result": "celestisynth:celestial_core_heated"
+}

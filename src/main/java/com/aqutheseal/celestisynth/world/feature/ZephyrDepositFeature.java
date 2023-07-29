@@ -1,10 +1,12 @@
 package com.aqutheseal.celestisynth.world.feature;
 
+import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -23,19 +25,10 @@ public class ZephyrDepositFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos pos = context.origin();
 
         boolean large = randomsource.nextInt(5) == 0;
-        int tipMin = (int) ((large ? 25 : 10) * 0.4);
-        int tipRand = (int) ((large ? 35 : 20) * 0.2);
+        int tipMin = (int) ((large ? 25 : 10) * 0.6);
+        int tipRand = (int) ((large ? 35 : 20) * 0.3);
         int radiusMin = large ? 5 : 3;
         int radiusRand = large ? 3 : 1;
-
-        pos = new BlockPos(pos.getX(), 2, pos.getZ());
-        while (worldgenlevel.isEmptyBlock(pos) && pos.getY() < 100) {
-            pos = pos.above();
-        }
-
-        if (worldgenlevel.getBlockState(pos.below()).isAir()) {
-            return false;
-        }
 
         int tip = tipMin + worldgenlevel.getRandom().nextInt(tipRand);
         int topX = worldgenlevel.getRandom().nextInt(tip) - tip / 2;
@@ -47,7 +40,7 @@ public class ZephyrDepositFeature extends Feature<NoneFeatureConfiguration> {
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 double fromCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
-                if(fromCenter <= radius) {
+                if (fromCenter <= radius) {
                     Vec3 from = new Vec3(pos.getX() + x, pos.getY(), pos.getZ() + z);
 
                     if(worldgenlevel.getBlockState(posFromVec(from).below()).isAir()) {
@@ -60,12 +53,36 @@ public class ZephyrDepositFeature extends Feature<NoneFeatureConfiguration> {
 
                     for (double i = 0; i < distance; i++) {
                         BlockPos targetPos = posFromVec(current);
-                        worldgenlevel.setBlock(targetPos, CSBlockRegistry.ZEPHYR_DEPOSIT.get().defaultBlockState(), 3);
+                        if (i > 0 && i < distance / 1.3) {
+                            int roll = randomsource.nextInt(3);
+                            if (roll == 0) {
+                                worldgenlevel.setBlock(targetPos, Blocks.DEEPSLATE.defaultBlockState(), 3);
+                            } else if (roll == 1) {
+                                worldgenlevel.setBlock(targetPos, Blocks.STONE.defaultBlockState(), 3);
+                            } else if (roll == 2) {
+                                worldgenlevel.setBlock(targetPos, CSBlockRegistry.ZEPHYR_DEPOSIT.get().defaultBlockState(), 3);
+                            }
+                        } else {
+                            worldgenlevel.setBlock(targetPos, CSBlockRegistry.ZEPHYR_DEPOSIT.get().defaultBlockState(), 3);
+                        }
+                        if (i <= 0) {
+                            BlockPos getFromTarget = targetPos;
+                            while (worldgenlevel.isEmptyBlock(getFromTarget.below())) {
+                                if (randomsource.nextBoolean()) {
+                                    worldgenlevel.setBlock(getFromTarget, Blocks.STONE.defaultBlockState(), 3);
+                                } else {
+                                    worldgenlevel.setBlock(getFromTarget, Blocks.DEEPSLATE.defaultBlockState(), 3);
+                                }
+                                getFromTarget = getFromTarget.below();
+                            }
+                        }
                         current = current.add(per);
                     }
                 }
             }
         }
+
+        Celestisynth.LOGGER.info("DEPOSIT GENERATED AT: " + pos.getX() + " " + pos.getY() + " " + pos.getZ());
         return true;
     }
 

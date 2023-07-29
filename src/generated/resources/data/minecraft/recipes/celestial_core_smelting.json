@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 600,
+  "experience": 0.25,
+  "ingredient": {
+    "item": "celestisynth:celestial_core"
+  },
+  "result": "celestisynth:celestial_core_heated"
+}

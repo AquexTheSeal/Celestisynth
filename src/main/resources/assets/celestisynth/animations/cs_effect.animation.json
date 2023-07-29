@@ -33,7 +33,7 @@
 							"easing": "easeInOutCirc"
 						},
 						"1.0": {
-							"vector": [0, 30, 0],
+							"vector": [0, 54, 0],
 							"easing": "easeInOutCirc"
 						}
 					},
@@ -42,7 +42,7 @@
 							"vector": [1, 0, 1]
 						},
 						"0.2083": {
-							"vector": [1, 1, 1],
+							"vector": [1, 2.5, 1],
 							"easing": "easeInOutCirc"
 						},
 						"0.9583": {
@@ -91,6 +91,22 @@
 				"bone": {
 					"rotation": {
 						"vector": [0, "math.sin(query.anim_time * 90) * 5", 0]
+					}
+				}
+			}
+		},
+		"animation.cs_effect.slow_rotation": {
+			"loop": true,
+			"animation_length": 8,
+			"bones": {
+				"bone": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"8.0": {
+							"vector": [0, 360, 0]
+						}
 					}
 				}
 			}
@@ -171,6 +187,75 @@
 						"0.5": {
 							"vector": [1, 1, 1],
 							"easing": "easeOutQuad"
+						}
+					}
+				}
+			}
+		},
+		"animation.cs_effect.goo": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"bone": {
+					"rotation": {
+						"vector": ["math.sin(query.anim_time * 180) * 15", "math.cos(query.anim_time * 180) * 15", 0]
+					},
+					"position": {
+						"vector": ["math.cos(query.anim_time * 180) * 3", 0, "math.sin(query.anim_time * 180) * 3"]
+					},
+					"scale": {
+						"vector": [1, 1, "1 + (math.cos(query.anim_time * 180) * 0.2)"]
+					}
+				}
+			}
+		},
+		"animation.cs_effect.expand": {
+			"animation_length": 1,
+			"bones": {
+				"bone": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, -180, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [1, 1, 1]
+						}
+					}
+				}
+			}
+		},
+		"animation.cs_effect.slash": {
+			"animation_length": 1,
+			"bones": {
+				"bone": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, -135]
+						},
+						"0.75": {
+							"vector": [0, 0, 135],
+							"easing": "easeOutCirc"
+						},
+						"1.0": {
+							"vector": [0, 0, 135],
+							"easing": "easeOutCirc"
+						}
+					},
+					"scale": {
+						"0.75": {
+							"vector": [1, 1, 1]
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInCirc"
 						}
 					}
 				}

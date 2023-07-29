@@ -3,7 +3,7 @@
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 6
+      "chance": 10
     },
     {
       "type": "minecraft:in_square"
@@ -16,7 +16,7 @@
           "absolute": 320
         },
         "min_inclusive": {
-          "absolute": 150
+          "absolute": 100
         }
       }
     },
@@ -27,7 +27,7 @@
         "blocks": "minecraft:air"
       },
       "direction_of_search": "down",
-      "max_steps": 12,
+      "max_steps": 6,
       "target_condition": {
         "type": "minecraft:solid"
       }

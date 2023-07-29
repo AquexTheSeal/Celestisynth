@@ -1,7 +1,7 @@
 {
   "parent": "bettercombat:sword",
   "attributes": {
-    "attack_range": 4.5,
+    "attack_range": 3.5,
     "attacks": [
       {
         "hitbox": "HORIZONTAL_PLANE",
@@ -10,7 +10,7 @@
         "upswing": 0.2,
         "animation": "bettercombat:two_handed_slash_horizontal_left",
         "swing_sound": {
-          "id": "bettercombat:rapier_slash"
+          "id": "bettercombat:katana_slash"
         }
       },
       {
@@ -20,7 +20,7 @@
         "upswing": 0.2,
         "animation": "bettercombat:two_handed_slash_horizontal_right",
         "swing_sound": {
-          "id": "bettercombat:rapier_slash"
+          "id": "bettercombat:katana_slash"
         }
       }
     ]

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "minecraft:ghast_tear"
+  },
+  "base": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "result": {
+    "item": "celestisynth:supernal_netherite_ingot"
+  }
+}

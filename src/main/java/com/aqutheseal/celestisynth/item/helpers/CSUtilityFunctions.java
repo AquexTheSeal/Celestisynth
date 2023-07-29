@@ -1,7 +1,7 @@
 package com.aqutheseal.celestisynth.item.helpers;
 
 import com.aqutheseal.celestisynth.network.CSNetwork;
-import com.aqutheseal.celestisynth.network.CSSpawnParticlePacket;
+import com.aqutheseal.celestisynth.network.util.CSSpawnParticlePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleType;

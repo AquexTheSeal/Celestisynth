@@ -1,31 +1,121 @@
 package com.aqutheseal.celestisynth.entities.helper;
 
+import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.entities.CSEffect;
+import com.github.alexthe666.citadel.animation.Animation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.util.Mth;
+import net.minecraftforge.common.IExtensibleEnum;
 
 public enum CSEffectTypes {
 
     // Weapons
-    SOLARIS_BLITZ("solaris_spin", Model.FLAT, Animation.SPIN_15, 0, 0, 2.5, true, true, false),
-    SOLARIS_BLITZ_SOUL("solaris_spin_soul", Model.FLAT, Animation.SPIN_15, 0, 0, 3.5, true, true, false),
-    SOLARIS_AIR("solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 2.5, true, true, false),
-    SOLARIS_AIR_LARGE("solaris_air_large", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 3.5, true, true, false),
-    SOLARIS_AIR_FLAT("solaris_air_flat", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 1.5, false, true, false),
-    SOLARIS_AIR_MEDIUM_FLAT("solaris_air_medium_flat", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 2.5, false, true, false),
-    SOLARIS_AIR_LARGE_FLAT("solaris_air_large_flat", "solaris_air", Model.FLAT, Animation.SPIN_20, 0, 0, 3.5, false, true, false),
-    CRESCENTIA_STRIKE("crescentia_strike", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 2.5, false, false, true),
-    CRESCENTIA_STRIKE_INVERTED("crescentia_strike_inverted", "crescentia_strike", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 2.5, false, false, true),
-    CRESCENTIA_THROW("crescentia_throw", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 3, false, true, true),
-    CRESCENTIA_THROW_INVERTED("crescentia_throw_inverted", "crescentia_throw", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 3, false, true, true),
-    BREEZEBREAKER_SLASH("breezebreaker_slash", Model.FLAT, Animation.SWEEP_RTOL, 0, 0, 3, false, true, true),
-    BREEZEBREAKER_SLASH_INVERTED("breezebreaker_slash_inverted", "breezebreaker_slash", Model.FLAT, Animation.SWEEP_LTOR, 0, 0, 3, false, true, true),
-    BREEZEBREAKER_WHEEL("breezebreaker_slash_vertical", "breezebreaker_wheel", Model.FLAT_VERTICAL_FRONTFACE, Animation.SWEEP_RTOL, 0, 0, 4, false, true, false),
-    BREEZEBREAKER_DASH("breezebreaker_dash", Model.CROSS, Animation.STRETCH, 0, 0, 3, false, true, false),
-    BREEZEBREAKER_DASH_2("breezebreaker_dash_2", Model.FLAT_VERTICAL_SIDEFACE, Animation.NONE_15, 0, 0, 4, false, true, false),
-    BREEZEBREAKER_DASH_3("breezebreaker_dash_3", "breezebreaker_dash_2", Model.FLAT_VERTICAL_SIDEFACE, Animation.NONE_10, 0, 0, 2, false, true, false);
+    SOLARIS_BLITZ("solaris_spin", Model.FLAT, Animation.SPIN_15,
+            0, 0, 2.5, true, true, false)
+    ,
+    SOLARIS_BLITZ_SOUL("solaris_spin_soul", Model.FLAT, Animation.SPIN_15,
+            0, 0, 3.5, true, true, false)
+    ,
+    SOLARIS_AIR("solaris_air", Model.FLAT, Animation.SPIN_20,
+            0, 0, 2.5, true, true, false)
+    ,
+    SOLARIS_AIR_LARGE("solaris_air_large", "solaris_air", Model.FLAT, Animation.SPIN_20,
+            0, 0, 3.5, true, true, false)
+    ,
+    SOLARIS_AIR_FLAT("solaris_air_flat", "solaris_air", Model.FLAT, Animation.SPIN_20,
+            0, 0, 1.5, false, true, false)
+    ,
+    SOLARIS_AIR_MEDIUM_FLAT("solaris_air_medium_flat", "solaris_air", Model.FLAT, Animation.SPIN_20,
+            0, 0, 2.5, false, true, false)
+    ,
+    SOLARIS_AIR_LARGE_FLAT("solaris_air_large_flat", "solaris_air", Model.FLAT, Animation.SPIN_20,
+            0, 0, 3.5, false, true, false)
+    ,
+    CRESCENTIA_STRIKE("crescentia_strike", Model.FLAT, Animation.create("none12", "animation.cs_effect.none", 12),
+            6, 2, 3.5, false, true, true)
+    ,
+    CRESCENTIA_STRIKE_INVERTED("crescentia_strike_inverted", "crescentia_strike", Model.FLAT_INVERTED, Animation.create("none12", "animation.cs_effect.none", 12),
+            6, 2, 3.5, false, true, true)
+    ,
+    CRESCENTIA_THROW("crescentia_throw", Model.FLAT, Animation.SWEEP_RTOL,
+            0, 0, 3, false, true, true)
+    ,
+    CRESCENTIA_THROW_INVERTED("crescentia_throw_inverted", "crescentia_throw", Model.FLAT, Animation.SWEEP_LTOR,
+            0, 0, 3, false, true, true)
+    ,
+    BREEZEBREAKER_SLASH("breezebreaker_slash", Model.FLAT, Animation.SWEEP_RTOL,
+            0, 0, 3, false, true, true)
+    ,
+    BREEZEBREAKER_SLASH_INVERTED("breezebreaker_slash_inverted", "breezebreaker_slash", Model.FLAT, Animation.SWEEP_LTOR,
+            0, 0, 3, false, true, true)
+    ,
+    BREEZEBREAKER_WHEEL("breezebreaker_slash_vertical", "breezebreaker_wheel", Model.FLAT_VERTICAL_FRONTFACE, Animation.SWEEP_RTOL,
+            0, 0, 4, false, true, false)
+    ,
+    BREEZEBREAKER_DASH("breezebreaker_dash", Model.SIX_WAY_CROSS, Animation.STRETCH,
+            16, 2, 3, false, true, false)
+    ,
+    BREEZEBREAKER_DASH_2("breezebreaker_dash_2", Model.FLAT_VERTICAL_SIDEFACE, Animation.create("none15", "animation.cs_effect.none", 15),
+            0, 0, 4, false, true, false)
+    ,
+    BREEZEBREAKER_DASH_3("breezebreaker_dash_3", "breezebreaker_dash_2", Model.FLAT_VERTICAL_SIDEFACE, Animation.create("none10", "animation.cs_effect.none", 10),
+            0, 0, 2, false, true, false)
+    ,
+    POLTERGEIST_WARD("poltergeist_ward", Model.FLAT_VERTICAL_SIDEFACE, Animation.GOO,
+            0, 0, 1.2, false, false, false)
+    ,
+    POLTERGEIST_WARD_GROUND("poltergeist_ward_ground", Model.FLAT, Animation.SLOW_ROTATION,
+            0, 0, 1.55, false, false, false)
+    ,
+    POLTERGEIST_WARD_ABSORB("poltergeist_ward_absorb", Model.FLAT, Animation.SPIN_15,
+            0, 0, 4, false, true, false)
+    ,
+    POLTERGEIST_WARD_SUMMON_SMALL("poltergeist_ward_summon_small", "poltergeist_ward_summon", Model.WALL, Animation.ASCEND,
+            0, 0, 0.95, false, true, false)
+    ,
+    POLTERGEIST_WARD_SUMMON("poltergeist_ward_summon", Model.WALL, Animation.ASCEND,
+            0, 0, 1.3, false, true, false)
+    ,
+    POLTERGEIST_IMPACT_CRACK("poltergeist_impact_crack", Model.FLAT, Animation.create("none20", "animation.cs_effect.none", 20),
+            0, 0, 2.5, false, true, false)
+    ,
+    POLTERGEIST_IMPACT_CRACK_LARGE("poltergeist_impact_crack_large", "poltergeist_impact_crack", Model.FLAT, Animation.create("none20", "animation.cs_effect.none", 20),
+            0, 0, 4, false, true, false)
+    ,
+    POLTERGEIST_RETREAT("poltergeist_retreat", Model.FLAT_VERTICAL_SIDEFACE,  Animation.create("none25", "animation.cs_effect.none", 25),
+            0, 0, 2.25, false, true, false)
+    ,
+    AQUAFLORA_SLICE("aquaflora_slice", Model.FLAT, Animation.create("none6", "animation.cs_effect.none", 6),
+            6, 1, 1.2, false, false, false)
+    ,
+    AQUAFLORA_SLICE_INVERTED("aquaflora_slice_inverted", Model.FLAT, Animation.create("none6", "animation.cs_effect.none", 6),
+            6, 1, 1.2, false, false, false)
+    ,
+    AQUAFLORA_PIERCE_START("aquaflora_pierce_start", Model.FLAT_VERTICAL_SIDEFACE,  Animation.create("none12", "animation.cs_effect.none", 12),
+            6, 2, 1.5, false, false, true)
+    ,
+    AQUAFLORA_STAB("aquaflora_stab", Model.FLAT_VERTICAL_FRONTFACE,  Animation.create("none4", "animation.cs_effect.none", 4),
+            4, 1, 1.2, false, false, true)
+    ,
+    AQUAFLORA_FLOWER("aquaflora_flower", Model.FLAT, Animation.create("none10", "animation.cs_effect.none", 10),
+            4, 5, 3.5, false, true, false)
+    ,
+    AQUAFLORA_FLOWER_BIND("aquaflora_flower_bind", "aquaflora_pierce_start", Model.FLAT, Animation.create("none12", "animation.cs_effect.none", 12),
+            6, 2, 2 /* Special size property */, false, false, false)
+    ,
+    AQUAFLORA_BASH("aquaflora_bash", Model.FLAT_VERTICAL_SIDEFACE,  Animation.create("none12", "animation.cs_effect.none", 12),
+            6, 2, 1.75, false, true, false)
+    ,
+    AQUAFLORA_ASSASSINATE("aquaflora_assassinate", "aquaflora_bash", Model.FLAT_VERTICAL_SIDEFACE,  Animation.create("none12", "animation.cs_effect.none", 12),
+            6, 2, 2, true, true, false)
+    ,
+    AQUAFLORA_DASH("aquaflora_dash", "aquaflora_pierce_start", Model.FLAT, Animation.STRETCH,
+            6, 2, 2, false, true, false)
+    ;
 
     final String name;
     final String texture;
@@ -102,7 +192,8 @@ public enum CSEffectTypes {
         FLAT_VERTICAL_SIDEFACE("cs_effect_flat_vertical"),
         FLAT_VERTICAL_FRONTFACE("cs_effect_flat_vertical_side"),
         IMPACT("cs_effect_impact"),
-        CROSS("cs_effect_cross")
+        SIX_WAY_CROSS("cs_effect_cross"),
+        WALL("cs_effect_wall")
         ;
 
         final String modelString;
@@ -116,11 +207,7 @@ public enum CSEffectTypes {
         }
     }
 
-    public enum Animation {
-
-        NONE_10("animation.cs_effect.none", 10),
-        NONE_15("animation.cs_effect.none", 15),
-        NONE_20("animation.cs_effect.none", 20),
+    public enum Animation implements IExtensibleEnum {
         SPIN_15("animation.cs_effect.spin", 15),
         SPIN_20("animation.cs_effect.spin", 20),
         SMASH("animation.cs_effect.smash", 20),
@@ -128,7 +215,9 @@ public enum CSEffectTypes {
         SLOW_ROTATION("animation.cs_effect.slow_rotation", Integer.MAX_VALUE),
         SWEEP_RTOL("animation.cs_effect.sweep_rtol", 15),
         SWEEP_LTOR("animation.cs_effect.sweep_ltor", 15),
-        STRETCH("animation.cs_effect.stretch", 15);
+        STRETCH("animation.cs_effect.stretch", 15),
+        GOO("animation.cs_effect.goo", Integer.MAX_VALUE),
+        EXPAND("animation.cs_effect.expand", 10);
 
         final String animationString;
         final int lifespan;
@@ -145,14 +234,20 @@ public enum CSEffectTypes {
         public int getLifespan() {
             return lifespan;
         }
+
+        public static Animation create(String name, String animationString, int lifespan) {
+            throw new IllegalStateException("Enum not extended");
+        }
     }
 
     public static void setSpecialProperties(CSEffect animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        float lerpBodyRot = Mth.rotLerp(partialTick, animatable.xRotO, animatable.getXRot()) - 165;
+
         switch (animatable.getEffectType()) {
-            case CRESCENTIA_STRIKE, CRESCENTIA_STRIKE_INVERTED, CRESCENTIA_THROW, CRESCENTIA_THROW_INVERTED ->
-                    poseStack.mulPose(Vector3f.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 90.0F) - 45.0F));
-            case BREEZEBREAKER_SLASH, BREEZEBREAKER_SLASH_INVERTED ->
+            case CRESCENTIA_STRIKE, CRESCENTIA_STRIKE_INVERTED, CRESCENTIA_THROW, CRESCENTIA_THROW_INVERTED, BREEZEBREAKER_SLASH, BREEZEBREAKER_SLASH_INVERTED ->
                     poseStack.mulPose(Vector3f.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
+            case AQUAFLORA_PIERCE_START, AQUAFLORA_STAB ->
+                    poseStack.mulPose(Vector3f.XP.rotationDegrees(180f + lerpBodyRot));
             default -> {
             }
         }

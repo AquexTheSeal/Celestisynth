@@ -5,6 +5,10 @@
   "item.celestisynth.skill_notice": "SKILLS:",
   "item.celestisynth.celestial_tier": "CELESTIAL GRADE",
 
+  "item.celestisynth.celestial_core": "Celestial Core",
+  "item.celestisynth.celestial_core_heated": "Heated Celestial Core",
+  "item.celestisynth.supernal_netherite_ingot": "Supernal Netherite Ingot",
+  "item.celestisynth.lunar_scrap": "Lunar Scrap",
   "block.celestisynth.solar_crystal": "Solar Crystal",
   "block.celestisynth.lunar_stone": "Lunar Stone",
   "block.celestisynth.zephyr_deposit": "Zephyr Deposit",
@@ -67,5 +71,41 @@
 
   "item.celestisynth.breezebreaker.skill_5": "Zephyr's Death Wheel",
   "item.celestisynth.breezebreaker.condition_5": "Activate: Right-click while in mid-air",
-  "item.celestisynth.breezebreaker.desc_5": "Creates a towering vertical wheel of wind around the player, obliterating nearby entities with its devastating force."
+  "item.celestisynth.breezebreaker.desc_5": "Creates a towering vertical wheel of wind around the player, obliterating nearby entities with its devastating force.",
+
+  "------------------- POLTERGEIST ------------------":  "",
+
+  "item.celestisynth.poltergeist": "Poltergeist",
+
+  "item.celestisynth.poltergeist.passive_1": "Phantom Tag",
+  "item.celestisynth.poltergeist.passive_desc_1": "All skills of this weapon tags every affected entity with a Phantom Tag. Slain foes with the tag become monstrous Aberrants that draw in nearby entities for 5 seconds.",
+
+  "item.celestisynth.poltergeist.skill_1": "Cosmic Steel Annihilation",
+  "item.celestisynth.poltergeist.condition_1": "Activate: Right-click",
+  "item.celestisynth.poltergeist.desc_1": "Executes a mighty strike that inflicts significant harm over a broad range, devastating multiple adversaries. Delivering another crushing blow following a sequence of ten consecutive strikes generates an immense impact, summoning an Aberrant entity. The cooldown for this ability instantly resets when casted while airborne.",
+
+  "item.celestisynth.poltergeist.skill_2": "Barrier Call",
+  "item.celestisynth.poltergeist.condition_2": "Activate: Right-click while holding SHIFT",
+  "item.celestisynth.poltergeist.desc_2": "Creates a protective barrier capable of shattering any incoming projectiles while forcefully propelling the player backwards.",
+
+  "------------------- AQUAFLORA ------------------":  "",
+
+  "item.celestisynth.aquaflora": "Aquaflora",
+
+  "item.celestisynth.aquaflora.skill_1": "Petal Pierces",
+  "item.celestisynth.aquaflora.condition_1": "Activate: Right-click",
+  "item.celestisynth.aquaflora.desc_1": "Launches a series of attacks capable of penetrating a row of entities.",
+
+  "item.celestisynth.aquaflora.skill_2": "Blasting Off Together",
+  "item.celestisynth.aquaflora.condition_2": "Activate: Right-click while holding SHIFT",
+  "item.celestisynth.aquaflora.desc_2": "Uses a head-butt against a group of entities, pushing them away and inflicting significant damage. Activating this ability initiates the Blooming State, altering the weapon's skill set.",
+
+  "item.celestisynth.aquaflora.skill_3": "Exorbitant Slashing Frenzy",
+  "item.celestisynth.aquaflora.condition_3": "Activate: Right-click during Blooming State",
+  "item.celestisynth.aquaflora.desc_3": "During the execution of this skill, the player becomes immune to damage while delivering up to 20 individual attacks on entities within range. Dual wielding the same weapon enables the player to perform up to 40+ attacks, albeit with decreased damage.",
+
+  "item.celestisynth.aquaflora.skill_4": "Flowers Away",
+  "item.celestisynth.aquaflora.condition_4": "Activate: Right-click while holding SHIFT during Blooming State",
+  "item.celestisynth.aquaflora.desc_4": "The player executes a backward dash, leaving a floral effect that draws nearby entities toward it. This ability deactivates the Blooming State, resulting in a modification of the weapon's skill set."
+
 }

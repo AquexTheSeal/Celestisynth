@@ -1,0 +1,6 @@
+{
+  "parent": "celestisynth:item/large_axe",
+  "textures": {
+    "layer0": "celestisynth:item/poltergeist_haunted"
+  }
+}

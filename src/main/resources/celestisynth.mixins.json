@@ -5,12 +5,15 @@
   "refmap": "celestisynth.refmap.json",
   "mixins": [
     "InventoryMixin",
+    "LivingEntityMixin",
+    "PlayerMixin",
     "ServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
+    "EntityRendererMixin",
     "MinecraftMixin"
   ]
 }

@@ -1,13 +1,11 @@
-modLoader="javafml" #mandatory
-# A version range to match for said mod loader - for regular FML @Mod it will be the forge version
+modLoader="javafml"
 loaderVersion="[43,)"
-license="All rights reserved"
-[[mods]] #mandatory
-# The modid of the mod
-modId="celestisynth" #mandatory
-version="${file.jarVersion}" #mandatory
-# A display name for the mod
-displayName="Celestisynth" #mandatory
+license="Massachusetts Institute of Technology (MIT)"
+
+[[mods]]
+modId="celestisynth"
+version="${file.jarVersion}"
+displayName="Celestisynth"
 logoFile="celestisynth.png"
 authors="AquTheSeal"
 
@@ -15,23 +13,28 @@ description='''
 Celestisynth is a Minecraft mod that focuses in adding brand-new and unique weapons with special abilities for you to play around with!
 '''
 
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.celestisynth]] #optional
-# the modid of the dependency
-modId="forge" #mandatory
-# Does this dependency have to exist - if not, ordering below must be specified
-mandatory=true #mandatory
-# The version range of the dependency
-versionRange="[43,)" #mandatory
-# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+[[dependencies.celestisynth]]
+modId="forge"
+mandatory=true
+versionRange="[43,)"
 ordering="NONE"
-# Side this dependency is applied on - BOTH, CLIENT or SERVER
 side="BOTH"
-# Here's another dependency
+
 [[dependencies.celestisynth]]
 modId="minecraft"
 mandatory=true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
 versionRange="[1.19.2]"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies.celestisynth]]
+modId="playeranimator"
+mandatory=true
+versionRange="[1,)"
+ordering="AFTER"
+
+[[dependencies.celestisynth]]
+modId="geckolib3"
+mandatory=true
+versionRange="[3.1.40,)"
+ordering="AFTER"

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "x": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "y": {
+      "tag": "celestisynth:celestial_core_bases"
+    }
+  },
+  "pattern": [
+    " x ",
+    "xyx",
+    " x "
+  ],
+  "result": {
+    "item": "celestisynth:celestial_core"
+  }
+}

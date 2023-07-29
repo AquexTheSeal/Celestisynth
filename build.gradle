@@ -24,18 +24,18 @@ apply plugin: 'maven-publish'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 mixin {
-    add sourceSets.main, "celestisynth.refmap.json"
+    add sourceSets.main, "${project.modid}.refmap.json"
 }
 
-version = '1.19.2-1.0.0-beta-v5'
-group = 'com.aqutheseal.celestisynth'
-archivesBaseName = 'celestisynth'
+version = "${project.mc_ver}-1.0.0-beta-v5"
+group = 'com.aqutheseal.${project.modid}'
+archivesBaseName = "${project.modid}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'parchment', version: '2022.11.27-1.19.2'
+    mappings channel: 'parchment', version: "${project.parchment}-${project.mc_ver}"
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -47,12 +47,12 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            arg "-mixin.config=celestisynth.mixins.json"
+            arg "-mixin.config=${project.modid}.mixins.json"
             args '--username', 'AquDev####'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
-            property 'forge.enabledGameTestNamespaces', 'celestisynth'
+            property 'forge.enabledGameTestNamespaces', "${project.modid}"
 
             mods {
                 celestisynth {
@@ -68,11 +68,11 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            arg "-mixin.config=celestisynth.mixins.json"
+            arg "-mixin.config=${project.modid}.mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
-            property 'forge.enabledGameTestNamespaces', 'celestisynth'
+            property 'forge.enabledGameTestNamespaces', "${project.modid}"
 
             mods {
                 celestisynth {
@@ -88,9 +88,9 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            arg "-mixin.config=celestisynth.mixins.json"
+            arg "-mixin.config=${project.modid}.mixins.json"
 
-            property 'forge.enabledGameTestNamespaces', 'celestisynth'
+            property 'forge.enabledGameTestNamespaces', "${project.modid}"
 
             mods {
                 celestisynth {
@@ -106,9 +106,9 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            arg "-mixin.config=celestisynth.mixins.json"
+            arg "-mixin.config=${project.modid}.mixins.json"
 
-            args '--mod', 'celestisynth', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', "${project.modid}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 celestisynth {
@@ -126,30 +126,36 @@ sourceSets.main.resources {
 
 repositories {
     maven {
+        name "Geckolib Maven"
         url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
     }
     maven {
-        name "KosmX's maven"
+        name "KosmX's Maven"
         url 'https://maven.kosmx.dev/'
     }
     maven {
-        name = "CurseForge"
+        name = "CurseMaven Maven"
         url = "https://www.cursemaven.com"
     }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.2-43.2.14'
+    // TODO: Refractor and move some stuff to [gradle.properties]...
+
+    minecraft "net.minecraftforge:forge:${project.mc_ver}-${project.fg_ver}"
 
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.40')
     implementation fg.deobf("curse.maven:playeranimator-658587:4418149")
     implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:4534619")
     implementation fg.deobf("curse.maven:cloth-config-348521:3972423")
 
+    // EXTRA GOODS (Not going to use these for [gradle.properties] since I can just remove these anytime I want to.)
+
     //implementation fg.deobf("curse.maven:rubidium-574856:4448053")
     //implementation fg.deobf("curse.maven:oculus-581495:4451142")
-
-    implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4502227")
+    implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:4410143")
+    implementation fg.deobf("curse.maven:selene-499980:4620027")
+    implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4646625")
     implementation fg.deobf("curse.maven:citadel-331936:4556677")
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
@@ -158,14 +164,14 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "celestisynth",
+                "Specification-Title"     : "${project.modid}",
                 "Specification-Vendor"    : "aqutheseal",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "aqutheseal",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs"            : "celestisynth.mixins.json"
+                "MixinConfigs"            : "${project.modid}.mixins.json"
         ])
     }
 }
@@ -173,7 +179,7 @@ jar {
 jar.finalizedBy('reobfJar')
 
 mixin {
-    add sourceSets.main, "celestisynth.refmap.json"
+    add sourceSets.main, "${project.modid}.refmap.json"
 }
 
 publishing {

@@ -3,6 +3,9 @@ package com.aqutheseal.celestisynth.network;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.network.animation.SetAnimationServerPacket;
 import com.aqutheseal.celestisynth.network.animation.SetAnimationToAllPacket;
+import com.aqutheseal.celestisynth.network.util.ShakeScreenToAllPacket;
+import com.aqutheseal.celestisynth.network.util.CSSpawnParticlePacket;
+import com.aqutheseal.celestisynth.network.util.ShakeScreenServerPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -36,6 +39,18 @@ public class CSNetwork {
                 .decoder(SetAnimationServerPacket::new)
                 .encoder(SetAnimationServerPacket::toBytes)
                 .consumerMainThread(SetAnimationServerPacket::handle)
+                .add();
+
+        network.messageBuilder(ShakeScreenToAllPacket.class, packetId++, NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ShakeScreenToAllPacket::new)
+                .encoder(ShakeScreenToAllPacket::toBytes)
+                .consumerMainThread(ShakeScreenToAllPacket::handle)
+                .add();
+
+        network.messageBuilder(ShakeScreenServerPacket.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ShakeScreenServerPacket::new)
+                .encoder(ShakeScreenServerPacket::toBytes)
+                .consumerMainThread(ShakeScreenServerPacket::handle)
                 .add();
     }
 

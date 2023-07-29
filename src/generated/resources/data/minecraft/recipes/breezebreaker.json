@@ -1,12 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
   "key": {
     "i": {
-      "item": "minecraft:iron_sword"
+      "item": "celestisynth:celestial_core_heated"
     },
     "n": {
-      "item": "minecraft:netherite_ingot"
+      "item": "celestisynth:supernal_netherite_ingot"
     },
     "z": {
       "item": "celestisynth:zephyr_deposit"
@@ -19,6 +18,5 @@
   ],
   "result": {
     "item": "celestisynth:breezebreaker"
-  },
-  "show_notification": true
+  }
 }

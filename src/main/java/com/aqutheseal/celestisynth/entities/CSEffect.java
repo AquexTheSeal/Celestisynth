@@ -3,12 +3,15 @@ package com.aqutheseal.celestisynth.entities;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
+import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.players.OldUsersConverter;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -36,19 +39,27 @@ public class CSEffect extends Entity implements IAnimatable {
 
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<String> TYPE_ID = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> ANIMATION_ID = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> FRAME_LEVEL = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_X = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_Z = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
+     private static final EntityDataAccessor<Float> CUSTOMIZABLE_SIZE = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.FLOAT);
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    public CSEffectTypes lockedInEffect;
     public Entity toFollow;
     public int lifespan;
     public int frameTimer;
 
     public CSEffectTypes getEffectType() {
-        for (CSEffectTypes candids : CSEffectTypes.values()) {
-            if (candids.getName().equals(this.getTypeID())) {
-                return candids;
+        if (lockedInEffect == null) {
+            for (CSEffectTypes candids : CSEffectTypes.values()) {
+                if (candids.getName().equals(this.getTypeID())) {
+                    lockedInEffect = candids;
+                    return candids;
+                }
             }
+        } else {
+            return lockedInEffect;
         }
         return getDefaultEffect();
     }
@@ -63,6 +74,14 @@ public class CSEffect extends Entity implements IAnimatable {
 
     public void setTypeID(String value) {
         this.entityData.set(TYPE_ID, value);
+    }
+
+    public String getAnimationID() {
+        return this.entityData.get(ANIMATION_ID);
+    }
+
+    public void setAnimationID(String value) {
+        this.entityData.set(ANIMATION_ID, value);
     }
 
     public int getFrameLevel() {
@@ -87,6 +106,14 @@ public class CSEffect extends Entity implements IAnimatable {
 
     public int getRotationZ() {
         return this.entityData.get(SET_ROT_Z);
+    }
+
+    public float getCustomizableSize() {
+        return this.entityData.get(CUSTOMIZABLE_SIZE);
+    }
+
+    public void setCustomizableSize(float size) {
+        this.entityData.set(CUSTOMIZABLE_SIZE, size);
     }
 
     public void setOwnerUuid(@Nullable UUID ownerUuid) {
@@ -114,25 +141,22 @@ public class CSEffect extends Entity implements IAnimatable {
         if (owner == null) {
             return null;
         }
-
         CSEffect slash = CSEntityRegistry.CS_EFFECT.get().create(owner.level);
-
+        slash.setEffectType(effectTypes);
+        slash.setAnimationID(effectTypes.getAnimation().getAnimationString());
         if (toFollow != null) {
             slash.moveTo(toFollow.getX() + offsetX, (toFollow.getY() - 1.5) + offsetY, toFollow.getZ() + offsetZ);
         } else {
             slash.moveTo(owner.getX()  + offsetX, (owner.getY() - 1.5) + offsetY, owner.getZ() + offsetZ);
         }
-
         slash.setOwnerUuid(owner.getUUID());
         slash.setToFollow(toFollow);
-        slash.setEffectType(effectTypes);
         slash.setRandomRotation();
-
-        float offsetRot = -10 + owner.getRandom().nextInt(10);
-
-        slash.setYRot(owner.getYRot() + offsetRot);
+        slash.setXRot(owner.getXRot());
+        slash.xRotO = slash.getXRot();
+        slash.setYRot(owner.getYRot());
         slash.yRotO = slash.getYRot();
-        slash.setRot(slash.getYRot() + offsetRot, slash.getXRot());
+        slash.setRot(slash.getYRot(), slash.getXRot());
 
         return slash;
     }
@@ -152,6 +176,7 @@ public class CSEffect extends Entity implements IAnimatable {
         if (owner == null) return;
         CSEffect slash = getEffectInstance(owner, toFollow, effectTypes, xOffset, yOffset, zOffset);
         slash.setOwnerUuid(owner.getUUID());
+        slash.setToFollow(toFollow);
         owner.level.addFreshEntity(slash);
     }
 
@@ -166,11 +191,11 @@ public class CSEffect extends Entity implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (getEffectType() != null) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(getEffectType().getAnimation().getAnimationString(), ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+        if (getAnimationID() != null) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(getAnimationID(), ILoopType.EDefaultLoopTypes.LOOP));
         } else {
             Celestisynth.LOGGER.warn("EffectType for CSEffect is null!");
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cs_effect.spin", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cs_effect.spin", ILoopType.EDefaultLoopTypes.LOOP));
         }
         return PlayState.CONTINUE;
     }
@@ -181,16 +206,35 @@ public class CSEffect extends Entity implements IAnimatable {
             this.remove(RemovalReason.DISCARDED);
         }
 
+        ++frameTimer;
+        if (frameTimer >= (this.getEffectType().getFramesSpeed())) {
+            this.setFrameLevel(this.getFrameLevel() == this.getEffectType().getFrames() ? 1 : this.getFrameLevel() + 1);
+            frameTimer = 0;
+        }
+
+        if (tickCount == 1) {
+            if (getEffectType() == CSEffectTypes.POLTERGEIST_IMPACT_CRACK || getEffectType() == CSEffectTypes.POLTERGEIST_IMPACT_CRACK_LARGE) {
+                playSound(SoundEvents.END_GATEWAY_SPAWN, 1.0F, 1.75F);
+                playSound(CSSoundRegistry.CS_LOUD_IMPACT.get(), 1.5F, 1.0F);
+            }
+        }
+
+        if (toFollow != null) {
+            if (getEffectType() == CSEffectTypes.AQUAFLORA_FLOWER_BIND) {
+                this.setYRot(toFollow.getYRot());
+                this.yRotO = this.getYRot();
+                this.setRot(this.getYRot(), this.getXRot());
+                this.setCustomizableSize((float) (toFollow.getBbWidth() - (toFollow.getBbWidth() / 4.5)));
+                this.moveTo(toFollow.getX(), toFollow.getY() - getCustomizableSize(), toFollow.getZ());
+            }
+        }
+
         ++lifespan;
         if (lifespan >= this.getEffectType().getAnimation().getLifespan()) {
             this.setLifespan(0);
             this.remove(RemovalReason.DISCARDED);
         }
-        ++frameTimer;
-        if (frameTimer >= (this.getEffectType().getFramesSpeed() - 1)) {
-            this.setFrameLevel(this.getFrameLevel() == this.getEffectType().getFrames() ? 1 : this.getFrameLevel() + 1);
-            frameTimer = 0;
-        }
+
         super.tick();
     }
 
@@ -198,9 +242,11 @@ public class CSEffect extends Entity implements IAnimatable {
     protected void defineSynchedData() {
         this.entityData.define(OWNER_UUID, Optional.empty());
         this.entityData.define(TYPE_ID, "none");
+        this.entityData.define(ANIMATION_ID, "none");
         this.entityData.define(FRAME_LEVEL, 1);
         this.entityData.define(SET_ROT_X, 0);
         this.entityData.define(SET_ROT_Z, 0);
+        this.entityData.define(CUSTOMIZABLE_SIZE, 1F);
     }
 
     @Override
@@ -221,6 +267,7 @@ public class CSEffect extends Entity implements IAnimatable {
         }
         this.setLifespan(compoundNBT.getInt("lifespan"));
         this.setTypeID(compoundNBT.getString("typeId"));
+        this.setAnimationID(compoundNBT.getString("animationID"));
     }
 
     @Override
@@ -230,6 +277,7 @@ public class CSEffect extends Entity implements IAnimatable {
         }
         compoundNBT.putInt("lifespan", this.lifespan);
         compoundNBT.putString("typeId", this.getTypeID());
+        compoundNBT.putString("animationId", this.getAnimationID());
     }
 
     public CSEffectTypes getDefaultEffect() {

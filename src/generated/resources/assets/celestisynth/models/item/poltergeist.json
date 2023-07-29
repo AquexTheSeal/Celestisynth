@@ -1,0 +1,14 @@
+{
+  "parent": "celestisynth:item/large_axe",
+  "overrides": [
+    {
+      "model": "celestisynth:item/poltergeist_haunted",
+      "predicate": {
+        "celestisynth:haunted": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "celestisynth:item/poltergeist"
+  }
+}

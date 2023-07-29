@@ -10,7 +10,7 @@
         "upswing": 0.5,
         "animation": "bettercombat:two_handed_slash_horizontal_left",
         "swing_sound": {
-          "id": "bettercombat:rapier_slash"
+          "id": "bettercombat:scythe_slash"
         }
       },
       {
@@ -20,7 +20,7 @@
         "upswing": 0.5,
         "animation": "bettercombat:two_handed_slash_horizontal_right",
         "swing_sound": {
-          "id": "bettercombat:rapier_slash"
+          "id": "bettercombat:scythe_slash"
         }
       }
     ]
