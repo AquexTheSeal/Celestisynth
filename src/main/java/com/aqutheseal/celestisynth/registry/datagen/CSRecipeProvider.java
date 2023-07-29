@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.registry.datagen;
 
 import com.aqutheseal.celestisynth.Celestisynth;
+import com.aqutheseal.celestisynth.recipe.CelestialShapedRecipeBuilder;
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
 import net.minecraft.data.DataGenerator;
@@ -47,9 +48,9 @@ public class CSRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CSBlockRegistry.LUNAR_STONE.get())).save(consumer, "lunar_scrap_blasting");
 
         ShapelessRecipeBuilder.shapeless(CSItemRegistry.EYEBOMINATION.get()).requires(Items.ENDER_EYE, 4).requires(Items.BLAZE_POWDER)
-                .unlockedBy("has_item", has(Items.ENDER_EYE)).save(consumer, "celestial_core_dupe");
+                .unlockedBy("has_item", has(Items.ENDER_EYE)).save(consumer, "eyebomination");
 
-        ShapedRecipeBuilder.shaped(CSItemRegistry.SOLARIS.get())
+        CelestialShapedRecipeBuilder.shaped(CSItemRegistry.SOLARIS.get())
                 .pattern("sns")
                 .pattern("sis")
                 .pattern(" n ")
@@ -59,7 +60,7 @@ public class CSRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CSBlockRegistry.SOLAR_CRYSTAL.get()))
                 .save(consumer, "solaris");
 
-        ShapedRecipeBuilder.shaped(CSItemRegistry.CRESCENTIA.get())
+        CelestialShapedRecipeBuilder.shaped(CSItemRegistry.CRESCENTIA.get())
                 .pattern("lll")
                 .pattern("l l")
                 .pattern("nni")
@@ -69,7 +70,7 @@ public class CSRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CSBlockRegistry.LUNAR_STONE.get()))
                 .save(consumer, "crescentia");
 
-        ShapedRecipeBuilder.shaped(CSItemRegistry.BREEZEBREAKER.get())
+        CelestialShapedRecipeBuilder.shaped(CSItemRegistry.BREEZEBREAKER.get())
                 .pattern(" nz")
                 .pattern("znn")
                 .pattern("iz ")

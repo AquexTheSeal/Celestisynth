@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "celestisynth:shaped_celestial_crafting",
   "key": {
     "i": {
       "item": "celestisynth:celestial_core_heated"

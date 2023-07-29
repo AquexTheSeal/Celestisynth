@@ -39,6 +39,9 @@ public class Celestisynth {
         CSFeatureRegistry.FEATURES.register(modEventBus);
         CSFeatureRegistry.CONFIGURED_FEATURES.register(modEventBus);
         CSFeatureRegistry.PLACED_FEATURES.register(modEventBus);
+        CSRecipeRegistry.RECIPE_TYPES.register(modEventBus);
+        CSRecipeRegistry.RECIPE_SERIALIZERS.register(modEventBus);
+        CSRecipeRegistry.MENU_TYPES.register(modEventBus);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
                 modEventBus.addListener(CSAnimator::registerAnimationLayer)
         );
