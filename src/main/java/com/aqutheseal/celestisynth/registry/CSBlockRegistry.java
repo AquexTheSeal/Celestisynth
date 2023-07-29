@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.registry;
 
 import com.aqutheseal.celestisynth.Celestisynth;
+import com.aqutheseal.celestisynth.block.AquCraftingTable;
 import com.aqutheseal.celestisynth.block.SolarCrystalBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -31,6 +32,12 @@ public class CSBlockRegistry {
     public static final RegistryObject<Block> ZEPHYR_DEPOSIT = registerBlock("zephyr_deposit",
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_GREEN).sound(SoundType.GILDED_BLACKSTONE)
                     .requiresCorrectToolForDrops().strength(60.5F, 9.0F).lightLevel((a) -> 3)
+            )
+    );
+
+    public static final RegistryObject<Block> CRAFTING_TABLE = registerBlock("crafting_table",
+            () -> new AquCraftingTable(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_GREEN).sound(SoundType.GILDED_BLACKSTONE)
+                    .requiresCorrectToolForDrops().strength(1.0F, 5.0F)
             )
     );
 
