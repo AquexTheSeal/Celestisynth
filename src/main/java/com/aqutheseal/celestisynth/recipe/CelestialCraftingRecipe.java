@@ -6,6 +6,7 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,5 +25,10 @@ public interface CelestialCraftingRecipe extends Recipe<CraftingContainer> {
     @Override
     default RecipeType<?> getType() {
         return CSRecipeRegistry.CELESTIAL_CRAFTING_TYPE.get();
+    }
+
+    @Override
+    default RecipeSerializer<?> getSerializer() {
+        return CSRecipeRegistry.SHAPED_CELESTIAL_CRAFTING.get();
     }
 }

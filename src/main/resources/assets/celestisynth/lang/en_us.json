@@ -8,10 +8,15 @@
   "item.celestisynth.celestial_core": "Celestial Core",
   "item.celestisynth.celestial_core_heated": "Heated Celestial Core",
   "item.celestisynth.supernal_netherite_ingot": "Supernal Netherite Ingot",
+  "item.celestisynth.celestial_netherite_ingot": "Celestial Netherite Ingot",
   "item.celestisynth.lunar_scrap": "Lunar Scrap",
   "block.celestisynth.solar_crystal": "Solar Crystal",
   "block.celestisynth.lunar_stone": "Lunar Stone",
   "block.celestisynth.zephyr_deposit": "Zephyr Deposit",
+  "item.celestisynth.eyebomination": "Eyebomination",
+
+  "block.celestisynth.celestial_crafting_table": "Celestial Workbench",
+  "gui.celestisynth.celestial_crafting": "Celestial Workbench",
 
   "------------------- SOLARIS ------------------":  "",
 

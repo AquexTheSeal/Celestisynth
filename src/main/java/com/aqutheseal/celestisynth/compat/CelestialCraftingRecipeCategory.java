@@ -1,120 +1,74 @@
 package com.aqutheseal.celestisynth.compat;
 
 import com.aqutheseal.celestisynth.recipe.CelestialCraftingRecipe;
-import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.extensions.IExtendableRecipeCategory;
-import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
+import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.common.Constants;
-import mezz.jei.common.util.ErrorUtil;
-import mezz.jei.library.recipes.ExtendableRecipeCategoryHelper;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
-public class CelestialCraftingRecipeCategory implements IExtendableRecipeCategory<CelestialCraftingRecipe, ICraftingCategoryExtension> {
+public class CelestialCraftingRecipeCategory implements IRecipeCategory<CelestialCraftingRecipe> {
     public static final int width = 116;
     public static final int height = 54;
 
-    private final IDrawable background;
-    private final IDrawable icon;
-    private final Component localizedName;
-    private final ICraftingGridHelper craftingGridHelper;
-    private final ExtendableRecipeCategoryHelper<Recipe<?>, ICraftingCategoryExtension> extendableHelper = new ExtendableRecipeCategoryHelper<>(CelestialCraftingRecipe.class);
+    private final @NotNull Component localizedName;
+    private final @NotNull IDrawable background;
+    private final @NotNull IDrawable icon;
 
-    public CelestialCraftingRecipeCategory(IGuiHelper guiHelper) {
-        ResourceLocation location = Constants.RECIPE_GUI_VANILLA;
-        background = guiHelper.createDrawable(location, 0, 60, width, height);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(Blocks.CRAFTING_TABLE));
-        localizedName = Component.translatable("celestisynth");
-        craftingGridHelper = guiHelper.createCraftingGridHelper();
+    CelestialCraftingRecipeCategory(@NotNull IGuiHelper guiHelper) {
+        this.localizedName = Component.translatable(CSBlockRegistry.CELESTIAL_CRAFTING_TABLE.get().getDescriptionId());
+        this.background = guiHelper.createDrawable(Constants.RECIPE_GUI_VANILLA, 0, 60, width, height);
+        this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(CSBlockRegistry.CELESTIAL_CRAFTING_TABLE.get()));
     }
 
-    @Override
-    public RecipeType<CelestialCraftingRecipe> getRecipeType() {
-        return CSCompatJEI.CELESTIAL_CRAFTING;
-    }
-
-    @Override
-    public Component getTitle() {
-        return localizedName;
-    }
-
+    @NotNull
     @Override
     public IDrawable getBackground() {
         return background;
     }
 
+    @NotNull
     @Override
     public IDrawable getIcon() {
         return icon;
     }
 
     @Override
+    public @NotNull RecipeType<CelestialCraftingRecipe> getRecipeType() {
+        return CSCompatJEI.CELESTIAL_CRAFTING;
+    }
+
+    @NotNull
+    @Override
+    public Component getTitle() {
+        return localizedName;
+    }
+
+    @Override
     public void setRecipe(IRecipeLayoutBuilder builder, CelestialCraftingRecipe recipe, IFocusGroup focuses) {
-        ICraftingCategoryExtension recipeExtension = this.extendableHelper.getRecipeExtension(recipe);
-        recipeExtension.setRecipe(builder, craftingGridHelper, focuses);
-    }
+        ItemStack resultItem = recipe.getResultItem();
 
-    @Override
-    public void draw(CelestialCraftingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
-        ICraftingCategoryExtension extension = this.extendableHelper.getRecipeExtension(recipe);
-        int recipeWidth = this.getWidth();
-        int recipeHeight = this.getHeight();
-        extension.drawInfo(recipeWidth, recipeHeight, poseStack, mouseX, mouseY);
-    }
+        int width = getWidth();
+        int height = getHeight();
+        IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 19);
+        outputSlot.addIngredients(VanillaTypes.ITEM_STACK, List.of(resultItem));
 
-    @Override
-    public List<Component> getTooltipStrings(CelestialCraftingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        ICraftingCategoryExtension extension = this.extendableHelper.getRecipeExtension(recipe);
-        return extension.getTooltipStrings(mouseX, mouseY);
-    }
-
-    @Override
-    public boolean handleInput(CelestialCraftingRecipe recipe, double mouseX, double mouseY, InputConstants.Key input) {
-        ICraftingCategoryExtension extension = this.extendableHelper.getRecipeExtension(recipe);
-        return extension.handleInput(mouseX, mouseY, input);
-    }
-
-    @Override
-    public boolean isHandled(CelestialCraftingRecipe recipe) {
-        return this.extendableHelper.getOptionalRecipeExtension(recipe).isPresent();
-    }
-
-    @Override
-    public <R extends CelestialCraftingRecipe> void addCategoryExtension(Class<? extends R> recipeClass, Function<R, ? extends ICraftingCategoryExtension> extensionFactory) {
-        ErrorUtil.checkNotNull(recipeClass, "recipeClass");
-        ErrorUtil.checkNotNull(extensionFactory, "extensionFactory");
-        extendableHelper.addRecipeExtensionFactory(recipeClass, null, extensionFactory);
-    }
-
-    @Override
-    public <R extends CelestialCraftingRecipe> void addCategoryExtension(Class<? extends R> recipeClass, Predicate<R> extensionFilter, Function<R, ? extends ICraftingCategoryExtension> extensionFactory) {
-        ErrorUtil.checkNotNull(recipeClass, "recipeClass");
-        ErrorUtil.checkNotNull(extensionFilter, "extensionFilter");
-        ErrorUtil.checkNotNull(extensionFactory, "extensionFactory");
-        extendableHelper.addRecipeExtensionFactory(recipeClass, extensionFilter, extensionFactory);
-    }
-
-    @Override
-    public ResourceLocation getRegistryName(CelestialCraftingRecipe recipe) {
-        ErrorUtil.checkNotNull(recipe, "recipe");
-        return this.extendableHelper.getOptionalRecipeExtension(recipe)
-                .flatMap(extension -> Optional.ofNullable(extension.getRegistryName()))
-                .orElseGet(recipe::getId);
+        for (int y = 0; y < 3; ++y) {
+            for (int x = 0; x < 3; ++x) {
+                IRecipeSlotBuilder inputSlots = builder.addSlot(RecipeIngredientRole.INPUT, x * 18 + 1, y * 18 + 1);
+                inputSlots.addIngredients(recipe.getIngredients().get(y * 3 + x));
+            }
+        }
     }
 }

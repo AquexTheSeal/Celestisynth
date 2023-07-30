@@ -35,6 +35,7 @@ public class Celestisynth {
         CSEntityRegistry.ENTITY_TYPES.register(modEventBus);
         CSItemRegistry.ITEMS.register(modEventBus);
         CSBlockRegistry.BLOCKS.register(modEventBus);
+        CSBlockRegistry.TILE_ENTITIES.register(modEventBus);
         CSSoundRegistry.SOUND_EVENTS.register(modEventBus);
         CSFeatureRegistry.FEATURES.register(modEventBus);
         CSFeatureRegistry.CONFIGURED_FEATURES.register(modEventBus);

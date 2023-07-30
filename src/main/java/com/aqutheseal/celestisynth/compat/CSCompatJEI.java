@@ -49,7 +49,7 @@ public class CSCompatJEI implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(CSBlockRegistry.CRAFTING_TABLE.get()), CELESTIAL_CRAFTING);
+        registration.addRecipeCatalyst(new ItemStack(CSBlockRegistry.CELESTIAL_CRAFTING_TABLE.get()), CELESTIAL_CRAFTING);
     }
 
     @Override
@@ -57,6 +57,7 @@ public class CSCompatJEI implements IModPlugin {
         IGuiHelper helper = registration.getJeiHelpers().getGuiHelper();
         CategoryRecipeValidator<CelestialCraftingRecipe> validator = new CategoryRecipeValidator<>(new CelestialCraftingRecipeCategory(helper), registration.getIngredientManager(), 9);
         List<CelestialCraftingRecipe> craftingRecipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(CSRecipeRegistry.CELESTIAL_CRAFTING_TYPE.get());
+        Celestisynth.LOGGER.info("[CelestialCraftingRecipe] Celestial Crafting Recipe Size: " + craftingRecipes.size());
         registration.addRecipes(CELESTIAL_CRAFTING, craftingRecipes);
     }
 }

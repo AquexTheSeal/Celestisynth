@@ -34,6 +34,7 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
         this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
     }
 
+
     public CelestialCraftingMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
         super(CSRecipeRegistry.CELESTIAL_CRAFTING.get(), pContainerId);
         this.access = pAccess;
@@ -103,7 +104,7 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
     }
 
     public boolean stillValid(Player pPlayer) {
-        return stillValid(this.access, pPlayer, CSBlockRegistry.CRAFTING_TABLE.get());
+        return stillValid(this.access, pPlayer, CSBlockRegistry.CELESTIAL_CRAFTING_TABLE.get());
     }
 
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {

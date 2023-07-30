@@ -5,6 +5,7 @@ import com.aqutheseal.celestisynth.item.*;
 import com.aqutheseal.celestisynth.item.helpers.CSRarityTypes;
 import com.aqutheseal.celestisynth.item.weapons.*;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -13,9 +14,10 @@ import net.minecraftforge.registries.RegistryObject;
 public class CSItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Celestisynth.MODID);
 
-    public static final RegistryObject<Item> CELESTIAL_CORE = ITEMS.register("celestial_core", () -> new CelestialCoreItem(new Item.Properties().tab(CSCreativeTabRegistry.CELESTISYNTH)));
-    public static final RegistryObject<Item> CELESTIAL_CORE_HEATED = ITEMS.register("celestial_core_heated", () -> new CelestialCoreItem(new Item.Properties().tab(CSCreativeTabRegistry.CELESTISYNTH)));
-    public static final RegistryObject<Item> SUPERNAL_NETHERITE_INGOT = ITEMS.register("supernal_netherite_ingot", () -> new Item(new Item.Properties().tab(CSCreativeTabRegistry.CELESTISYNTH)));
+    public static final RegistryObject<Item> CELESTIAL_CORE = ITEMS.register("celestial_core", () -> new CelestialCoreItem(new Item.Properties().rarity(Rarity.UNCOMMON).tab(CSCreativeTabRegistry.CELESTISYNTH)));
+    public static final RegistryObject<Item> CELESTIAL_CORE_HEATED = ITEMS.register("celestial_core_heated", () -> new CelestialCoreItem(new Item.Properties().rarity(Rarity.UNCOMMON).tab(CSCreativeTabRegistry.CELESTISYNTH)));
+    public static final RegistryObject<Item> SUPERNAL_NETHERITE_INGOT = ITEMS.register("supernal_netherite_ingot", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON).tab(CSCreativeTabRegistry.CELESTISYNTH)));
+    public static final RegistryObject<Item> CELESTIAL_NETHERITE_INGOT = ITEMS.register("celestial_netherite_ingot", () -> new Item(new Item.Properties().rarity(Rarity.RARE).tab(CSCreativeTabRegistry.CELESTISYNTH)));
     public static final RegistryObject<Item> LUNAR_SCRAP = ITEMS.register("lunar_scrap", () -> new Item(new Item.Properties().tab(CSCreativeTabRegistry.CELESTISYNTH)));
     public static final RegistryObject<Item> EYEBOMINATION = ITEMS.register("eyebomination", () -> new Item(new Item.Properties().tab(CSCreativeTabRegistry.CELESTISYNTH)));
 

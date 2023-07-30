@@ -1,0 +1,7 @@
+{
+  "parent": "celestisynth:block/celestial_crafting_table",
+  "textures": {
+    "1": "celestisynth:block/celestial_crafting_table",
+    "particle": "celestisynth:block/celestial_crafting_table"
+  }
+}

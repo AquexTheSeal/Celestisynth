@@ -41,6 +41,20 @@ public class CSRecipeProvider extends RecipeProvider {
         UpgradeRecipeBuilder.smithing(
                 Ingredient.of(Items.NETHERITE_INGOT), Ingredient.of(Items.GHAST_TEAR), CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get())
                 .unlocks("has_item", has(Items.NETHERITE_INGOT)).save(consumer, "supernal_netherite_ingot_smithing");
+        UpgradeRecipeBuilder.smithing(
+                Ingredient.of(Items.NETHERITE_INGOT), Ingredient.of(CSItemRegistry.CELESTIAL_CORE.get()), CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get())
+                .unlocks("has_item", has(Items.NETHERITE_INGOT)).save(consumer, "supernal_netherite_ingot_smithing_from_core");
+
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get()), CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get(), 0.6F, 1000)
+                .unlockedBy("has_item", has(CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get())).save(consumer, "celestial_netherite_ingot_smelting");
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get()), CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get(), 0.75F, 500)
+                .unlockedBy("has_item", has(CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get())).save(consumer, "celestial_netherite_ingot_blasting");
+
+        ShapedRecipeBuilder.shaped(CSBlockRegistry.CELESTIAL_CRAFTING_TABLE.get())
+                .pattern("bnb").pattern("ncn").pattern("ooo")
+                .define('b', Ingredient.of(Items.NETHERITE_BLOCK)).define('n', Ingredient.of(CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get()))
+                .define('c', Ingredient.of(Items.CRAFTING_TABLE)).define('o', Ingredient.of(Items.OBSIDIAN))
+                .unlockedBy("has_item", has(CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get())).save(consumer, "celestial_crafting_table");
 
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(CSBlockRegistry.LUNAR_STONE.get()), CSItemRegistry.LUNAR_SCRAP.get(), 0.15F, 200)
                 .unlockedBy("has_item", has(CSBlockRegistry.LUNAR_STONE.get())).save(consumer, "lunar_scrap_smelting");
@@ -79,6 +93,28 @@ public class CSRecipeProvider extends RecipeProvider {
                 .define('i', Ingredient.of(CSItemRegistry.CELESTIAL_CORE_HEATED.get()))
                 .unlockedBy("has_item", has(CSBlockRegistry.LUNAR_STONE.get()))
                 .save(consumer, "breezebreaker");
+
+        CelestialShapedRecipeBuilder.shaped(CSItemRegistry.POLTERGEIST.get())
+                .pattern("eee")
+                .pattern("ean")
+                .pattern(" ni")
+                .define('e', Ingredient.of(CSItemRegistry.EYEBOMINATION.get()))
+                .define('a', Ingredient.of(Items.NETHERITE_AXE))
+                .define('n', Ingredient.of(CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get()))
+                .define('i', Ingredient.of(CSItemRegistry.CELESTIAL_CORE_HEATED.get()))
+                .unlockedBy("has_item", has(CSItemRegistry.EYEBOMINATION.get()))
+                .save(consumer, "poltergeist");
+
+        CelestialShapedRecipeBuilder.shaped(CSItemRegistry.AQUAFLORA.get())
+                .pattern("efi")
+                .pattern("fif")
+                .pattern("nfe")
+                .define('f', Ingredient.of(ItemTags.FLOWERS))
+                .define('e', Ingredient.of(Items.LILY_PAD))
+                .define('n', Ingredient.of(CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get()))
+                .define('i', Ingredient.of(CSItemRegistry.CELESTIAL_CORE_HEATED.get()))
+                .unlockedBy("has_item", has(Items.LILY_PAD))
+                .save(consumer, "aquaflora");
     }
 
     public TagKey<Item> csItemTag(String name) {

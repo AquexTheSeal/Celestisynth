@@ -1,24 +1,24 @@
 package com.aqutheseal.celestisynth;
 
+import com.aqutheseal.celestisynth.block.render.CelestialCraftingTableTileRenderer;
 import com.aqutheseal.celestisynth.entities.renderer.CSEffectRenderer;
 import com.aqutheseal.celestisynth.entities.renderer.NullRenderer;
+import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.item.weapons.PoltergeistItem;
 import com.aqutheseal.celestisynth.item.weapons.SolarisItem;
-import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.recipe.CelestialCraftingMenu;
 import com.aqutheseal.celestisynth.recipe.CelestialCraftingScreen;
+import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
 import com.aqutheseal.celestisynth.registry.CSRecipeRegistry;
-import com.aqutheseal.celestisynth.registry.datagen.CSRecipeProvider;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -32,6 +32,8 @@ public class CSClientRegistries {
         event.registerEntityRenderer(CSEntityRegistry.CRESCENTIA_RANGED.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityRegistry.BREEZEBREAKER_TORNADO.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityRegistry.POLTERGEIST_WARD.get(), NullRenderer::new);
+
+        event.registerBlockEntityRenderer(CSBlockRegistry.CELESTIAL_CRAFTING_TABLE_TILE.get(), CelestialCraftingTableTileRenderer::new);
     }
 
     @SubscribeEvent

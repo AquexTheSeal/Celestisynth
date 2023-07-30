@@ -61,6 +61,9 @@ public class CSConfig {
             crescentiaDmg = baseDamage(builder, "crescentia", 8);
             builder.pop();
 
+            builder.comment("Some attacks deal a specified amount of damage FOR EVERY HIT, so be careful as you tweak these values!");
+            builder.comment(" ");
+
             builder.push("Value Modifiers - Solaris");
             solarisSkillDmg = skillDamage(builder, "solaris", "Spinning Flames - Full Round", 1.0);
             solarisShiftSkillDmg = skillDamage(builder, "solaris", "Spinning Flames - Soul Straight Dash [Shift]", 1.5);
@@ -87,16 +90,16 @@ public class CSConfig {
             builder.pop();
 
             builder.push("Value Modifiers - Poltergeist");
-            poltergeistSkillDmg = skillDamage(builder, "Poltergeist", "Cosmic Steel Annihilation", 17.5);
+            poltergeistSkillDmg = skillDamage(builder, "Poltergeist", "Cosmic Steel Annihilation", 20.5);
             poltergeistShiftSkillDmg = skillDamage(builder, "Poltergeist", "Barrier Call", 10.0);
             poltergeistSkillCD = skillCooldown(builder, "Poltergeist", "Cosmic Steel Annihilation", 200);
             poltergeistShiftSkillCD = skillCooldown(builder, "Poltergeist", "Barrier Call", 10);
             builder.pop();
 
             builder.push("Value Modifiers - Aquaflora");
-            aquafloraSkillDmg = skillDamage(builder, "Aquaflora", "Petal Pierces", 0.85);
+            aquafloraSkillDmg = skillDamage(builder, "Aquaflora", "Petal Pierces", 0.35);
             aquafloraShiftSkillDmg = skillDamage(builder, "Aquaflora", "Blasting Off Together", 10.0);
-            aquafloraBloomSkillDmg = skillDamage(builder, "Aquaflora", "Exorbitant Slashing Frenzy", 5.0);
+            aquafloraBloomSkillDmg = skillDamage(builder, "Aquaflora", "Exorbitant Slashing Frenzy", 1.5);
             aquafloraBloomShiftSkillDmg = skillDamage(builder, "Aquaflora", "Flowers Away", 0.0);
             aquafloraSkillCD = skillCooldown(builder, "Aquaflora", "Petal Pierces", 60);
             aquafloraShiftSkillCD = skillCooldown(builder, "Aquaflora", "Blasting Off Together", 40);
