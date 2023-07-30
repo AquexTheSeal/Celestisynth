@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "celestisynth:celestial_core"
+  },
+  "base": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "result": {
+    "item": "celestisynth:supernal_netherite_ingot"
+  }
+}

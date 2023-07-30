@@ -65,8 +65,8 @@ public class CSConfig {
             builder.comment(" ");
 
             builder.push("Value Modifiers - Solaris");
-            solarisSkillDmg = skillDamage(builder, "solaris", "Spinning Flames - Full Round", 1.0);
-            solarisShiftSkillDmg = skillDamage(builder, "solaris", "Spinning Flames - Soul Straight Dash [Shift]", 1.5);
+            solarisSkillDmg = skillDamage(builder, "solaris", "Spinning Flames - Full Round", 0.85);
+            solarisShiftSkillDmg = skillDamage(builder, "solaris", "Spinning Flames - Soul Straight Dash [Shift]", 1.2);
             solarisSkillCD = skillCooldown(builder, "solaris", "Spinning Flames - Full Round", 70);
             solarisShiftSkillCD = skillCooldown(builder, "solaris", "Spinning Flames - Soul Straight Dash [Shift]", 130);
             builder.pop();
@@ -79,10 +79,10 @@ public class CSConfig {
             builder.pop();
 
             builder.push("Value Modifiers - Breezebreaker");
-            breezebreakerSkillDmg = skillDamage(builder, "breezebreaker", "Galestorm + Dual Galestorm", 10.0);
-            breezebreakerShiftSkillDmg = skillDamage(builder, "breezebreaker", "Full-Force Whirlwind Extravagance [Shift]", 1.5);
-            breezebreakerSprintSkillDmg = skillDamage(builder, "breezebreaker", "Roar of the Wind [Sprint]", 17.0);
-            breezebreakerMidairSkillDmg = skillDamage(builder, "breezebreaker", "Zephyr's Death Wheel [Mid-air]", 7.0);
+            breezebreakerSkillDmg = skillDamage(builder, "breezebreaker", "Galestorm + Dual Galestorm", 7.0);
+            breezebreakerShiftSkillDmg = skillDamage(builder, "breezebreaker", "Full-Force Whirlwind Extravagance [Shift]", 0.85);
+            breezebreakerSprintSkillDmg = skillDamage(builder, "breezebreaker", "Roar of the Wind [Sprint]", 11.5);
+            breezebreakerMidairSkillDmg = skillDamage(builder, "breezebreaker", "Zephyr's Death Wheel [Mid-air]", 8.0);
             breezebreakerSkillCD = skillCooldown(builder, "breezebreaker", "Galestorm + Dual Galestorm", 15);
             breezebreakerShiftSkillCD = skillCooldown(builder, "breezebreaker", "Full-Force Whirlwind Extravagance [Shift]", 35);
             breezebreakerSprintSkillCD = skillCooldown(builder, "breezebreaker", "Roar of the Wind [Sprint]", 15);
@@ -98,8 +98,8 @@ public class CSConfig {
 
             builder.push("Value Modifiers - Aquaflora");
             aquafloraSkillDmg = skillDamage(builder, "Aquaflora", "Petal Pierces", 0.35);
-            aquafloraShiftSkillDmg = skillDamage(builder, "Aquaflora", "Blasting Off Together", 10.0);
-            aquafloraBloomSkillDmg = skillDamage(builder, "Aquaflora", "Exorbitant Slashing Frenzy", 1.5);
+            aquafloraShiftSkillDmg = skillDamage(builder, "Aquaflora", "Blasting Off Together", 7.0);
+            aquafloraBloomSkillDmg = skillDamage(builder, "Aquaflora", "Exorbitant Slashing Frenzy", 1.15);
             aquafloraBloomShiftSkillDmg = skillDamage(builder, "Aquaflora", "Flowers Away", 0.0);
             aquafloraSkillCD = skillCooldown(builder, "Aquaflora", "Petal Pierces", 60);
             aquafloraShiftSkillCD = skillCooldown(builder, "Aquaflora", "Blasting Off Together", 40);

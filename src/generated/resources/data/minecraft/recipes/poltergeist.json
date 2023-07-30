@@ -1,0 +1,25 @@
+{
+  "type": "celestisynth:shaped_celestial_crafting",
+  "key": {
+    "a": {
+      "item": "minecraft:netherite_axe"
+    },
+    "e": {
+      "item": "celestisynth:eyebomination"
+    },
+    "i": {
+      "item": "celestisynth:celestial_core_heated"
+    },
+    "n": {
+      "item": "celestisynth:supernal_netherite_ingot"
+    }
+  },
+  "pattern": [
+    "eee",
+    "ean",
+    " ni"
+  ],
+  "result": {
+    "item": "celestisynth:poltergeist"
+  }
+}

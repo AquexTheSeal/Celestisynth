@@ -8,7 +8,7 @@ version="${file.jarVersion}"
 displayName="Celestisynth"
 logoFile="celestisynth.png"
 authors="AquTheSeal"
-credits="YeoXuHang"
+credits="AquTheSeal, YeoXuHang"
 
 description='''
 Celestisynth is a Minecraft mod that focuses in adding brand-new and unique weapons with special abilities for you to play around with!

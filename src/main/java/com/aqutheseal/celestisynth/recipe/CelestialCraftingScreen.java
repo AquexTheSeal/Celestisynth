@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCraftingMenu> implements RecipeUpdateListener {
 
-    private static final ResourceLocation CRAFTING_TABLE_LOCATION = new ResourceLocation(Celestisynth.MODID, "textures/gui/celestial_crafting_table.png");
+    private static final ResourceLocation CRAFTING_TABLE_LOCATION = new ResourceLocation(Celestisynth.MODID, "textures/gui/celestisynth.png");
     private static final ResourceLocation RECIPE_BUTTON_LOCATION = new ResourceLocation(Celestisynth.MODID, "textures/gui/celestial_recipe_button.png");
     private final RecipeBookComponent recipeBookComponent = new RecipeBookComponent();
     private boolean widthTooNarrow;

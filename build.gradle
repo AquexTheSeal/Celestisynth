@@ -27,8 +27,8 @@ mixin {
     add sourceSets.main, "${project.modid}.refmap.json"
 }
 
-version = "${project.mc_ver}-1.0.0-beta-v5"
-group = 'com.aqutheseal.${project.modid}'
+version = "${project.mc_ver}-1.0.0"
+group = "com.aqutheseal.${project.modid}"
 archivesBaseName = "${project.modid}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)

@@ -1,0 +1,25 @@
+{
+  "type": "celestisynth:shaped_celestial_crafting",
+  "key": {
+    "e": {
+      "item": "minecraft:lily_pad"
+    },
+    "f": {
+      "tag": "minecraft:flowers"
+    },
+    "i": {
+      "item": "celestisynth:celestial_core_heated"
+    },
+    "n": {
+      "item": "celestisynth:celestial_netherite_ingot"
+    }
+  },
+  "pattern": [
+    "efi",
+    "fif",
+    "nfe"
+  ],
+  "result": {
+    "item": "celestisynth:aquaflora"
+  }
+}

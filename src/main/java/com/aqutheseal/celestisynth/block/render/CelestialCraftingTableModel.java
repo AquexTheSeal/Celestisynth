@@ -18,6 +18,6 @@ public class CelestialCraftingTableModel extends AnimatedGeoModel<CelestialCraft
 
     @Override
     public ResourceLocation getTextureResource(CelestialCraftingTableTileEntity entity) {
-        return new ResourceLocation(Celestisynth.MODID, "textures/block/celestial_crafting_table.png");
+        return new ResourceLocation(Celestisynth.MODID, "textures/block/celestisynth.png");
     }
 }
