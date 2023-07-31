@@ -4,7 +4,10 @@ import com.aqutheseal.celestisynth.animation.CSAnimator;
 import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.network.CSNetwork;
 import com.aqutheseal.celestisynth.registry.*;
-import com.aqutheseal.celestisynth.registry.datagen.*;
+import com.aqutheseal.celestisynth.registry.datagen.CSBlockModelProvider;
+import com.aqutheseal.celestisynth.registry.datagen.CSBlockstateProvider;
+import com.aqutheseal.celestisynth.registry.datagen.CSItemModelProvider;
+import com.aqutheseal.celestisynth.registry.datagen.CSRecipeProvider;
 import com.mojang.logging.LogUtils;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.api.distmarker.Dist;
@@ -40,7 +43,7 @@ public class Celestisynth {
         CSFeatureRegistry.FEATURES.register(modEventBus);
         CSFeatureRegistry.CONFIGURED_FEATURES.register(modEventBus);
         CSFeatureRegistry.PLACED_FEATURES.register(modEventBus);
-        CSRecipeRegistry.RECIPE_TYPES.register(modEventBus);
+
         CSRecipeRegistry.RECIPE_SERIALIZERS.register(modEventBus);
         CSRecipeRegistry.MENU_TYPES.register(modEventBus);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->

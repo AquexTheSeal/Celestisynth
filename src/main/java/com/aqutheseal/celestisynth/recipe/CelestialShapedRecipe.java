@@ -17,8 +17,10 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -27,7 +29,7 @@ import net.minecraftforge.common.crafting.IShapedRecipe;
 import java.util.Map;
 import java.util.Set;
 
-public class CelestialShapedRecipe implements CelestialCraftingRecipe, IShapedRecipe<CraftingContainer> {
+public class CelestialShapedRecipe implements CraftingRecipe, CelestialCraftingRecipe, IShapedRecipe<CraftingContainer> {
 
     static int MAX_WIDTH = 3;
     static int MAX_HEIGHT = 3;
@@ -59,6 +61,11 @@ public class CelestialShapedRecipe implements CelestialCraftingRecipe, IShapedRe
 
     public RecipeSerializer<?> getSerializer() {
         return CSRecipeRegistry.SHAPED_CELESTIAL_CRAFTING.get();
+    }
+
+    @Override
+    public RecipeType<CelestialCraftingRecipe> getType() {
+        return CSRecipeRegistry.CELESTIAL_CRAFTING_TYPE.get();
     }
 
     public String getGroup() {

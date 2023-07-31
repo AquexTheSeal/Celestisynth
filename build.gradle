@@ -138,10 +138,12 @@ repositories {
         url = "https://www.cursemaven.com"
     }
     maven {
-        name "progwm's Maven"
-        url "https://dvs1.progwml6.com/files/maven"
+        // location of the maven that hosts JEI files
+        name = "Progwml6's Maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
+        // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
@@ -159,12 +161,15 @@ dependencies {
 
     implementation fg.deobf("mezz.jei:jei-${project.mc_ver}-forge:11.6.0.1016")
 
+    compileOnly fg.deobf("mezz.jei:jei-${project.mc_ver}-forge-api:11.6.0.1016")
+    runtimeOnly fg.deobf("mezz.jei:jei-${project.mc_ver}-forge:11.6.0.1016")
+
     // EXTRA GOODS (Not going to use these for [gradle.properties] since I can just remove these anytime I want to.)
 
     //implementation fg.deobf("curse.maven:rubidium-574856:4448053")
     //implementation fg.deobf("curse.maven:oculus-581495:4451142")
-    implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:4410143")
-    implementation fg.deobf("curse.maven:selene-499980:4620027")
+    //implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:4410143")
+    //implementation fg.deobf("curse.maven:selene-499980:4620027")
     implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4646625")
     implementation fg.deobf("curse.maven:citadel-331936:4556677")
 
