@@ -1,36 +1,56 @@
 package com.aqutheseal.celestisynth.recipe;
 
-import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.registry.CSRecipeRegistry;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.IShapedRecipe;
+import net.minecraft.world.item.crafting.*;
 
-import java.util.Map;
-import java.util.Set;
+public class CelestialShapedRecipe extends ShapedRecipe implements CelestialCraftingRecipe {
 
-public class CelestialShapedRecipe implements CraftingRecipe, CelestialCraftingRecipe, IShapedRecipe<CraftingContainer> {
+    public CelestialShapedRecipe(ResourceLocation pId, String pGroup, int pWidth, int pHeight, NonNullList<Ingredient> pRecipeItems, ItemStack pResult) {
+        super(pId, pGroup, pWidth, pHeight, pRecipeItems, pResult);
+    }
 
+    public RecipeSerializer<?> getSerializer() {
+        return CSRecipeRegistry.SHAPED_CELESTIAL_CRAFTING.get();
+    }
+
+    @Override
+    public RecipeType<CelestialCraftingRecipe> getType() {
+        return CSRecipeRegistry.CELESTIAL_CRAFTING_TYPE.get();
+    }
+
+    public static class Serializer implements RecipeSerializer<CelestialShapedRecipe> {
+        @Override
+        public CelestialShapedRecipe fromJson(ResourceLocation pRecipeId, JsonObject pJson) {
+            RecipeSerializer<?> serializer = new ShapedRecipe.Serializer();
+            ShapedRecipe fromJson = (ShapedRecipe) serializer.fromJson(pRecipeId, pJson);
+            return new CelestialShapedRecipe(pRecipeId, fromJson.getGroup(), fromJson.getWidth(), fromJson.getHeight(), fromJson.getIngredients(), fromJson.getResultItem());
+        }
+
+        @Override
+        public CelestialShapedRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
+            RecipeSerializer<?> serializer = new ShapedRecipe.Serializer();
+            ShapedRecipe fromNetwork = (ShapedRecipe) serializer.fromNetwork(pRecipeId, pBuffer);
+            return new CelestialShapedRecipe(pRecipeId, fromNetwork.getGroup(), fromNetwork.getWidth(), fromNetwork.getHeight(), fromNetwork.getIngredients(), fromNetwork.getResultItem());
+        }
+
+        @Override
+        public void toNetwork(FriendlyByteBuf pBuffer, CelestialShapedRecipe pRecipe) {
+            pBuffer.writeVarInt(pRecipe.getWidth());
+            pBuffer.writeVarInt(pRecipe.getHeight());
+            pBuffer.writeUtf(pRecipe.getGroup());
+            for(Ingredient ingredient : pRecipe.getIngredients()) {
+                ingredient.toNetwork(pBuffer);
+            }
+            pBuffer.writeItem(pRecipe.getResultItem());
+        }
+    }
+
+    /**
     static int MAX_WIDTH = 3;
     static int MAX_HEIGHT = 3;
 
@@ -325,4 +345,5 @@ public class CelestialShapedRecipe implements CraftingRecipe, CelestialCraftingR
             pBuffer.writeItem(pRecipe.result);
         }
     }
+    **/
 }

@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth.recipe;
 
+import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
 import com.aqutheseal.celestisynth.registry.CSRecipeRegistry;
@@ -71,6 +72,7 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
                 }
             }
 
+            Celestisynth.LOGGER.info("ITEM CRAFTED!");
             pResult.setItem(0, itemstack);
             pMenu.setRemoteSlot(0, itemstack);
             serverplayer.connection.send(new ClientboundContainerSetSlotPacket(pMenu.containerId, pMenu.incrementStateId(), 0, itemstack));
@@ -146,6 +148,7 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
                 return ItemStack.EMPTY;
             }
 
+            Celestisynth.LOGGER.info("CRAFTED!");
             slot.onTake(pPlayer, itemstack1);
             if (pIndex == 0) {
                 pPlayer.drop(itemstack1, false);

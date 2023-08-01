@@ -39,7 +39,7 @@ public class CSBlockRegistry {
 
     public static final RegistryObject<Block> CELESTIAL_CRAFTING_TABLE = registerBlock("celestial_crafting_table",
             () -> new CelestialCraftingTable(BlockBehaviour.Properties.of(Material.HEAVY_METAL, MaterialColor.TERRACOTTA_LIGHT_BLUE).sound(SoundType.NETHERITE_BLOCK)
-                    .noOcclusion().requiresCorrectToolForDrops().strength(60.5F, 9.0F)
+                    .noOcclusion().requiresCorrectToolForDrops().strength(60.5F, 9.0F).lightLevel((a) -> 7)
             )
     );
 
