@@ -5,10 +5,7 @@ import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DiggerItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -16,9 +13,12 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class CSItemModelProvider extends ItemModelProvider {
+    private static List<RegistryObject<Item>> excemptions = new ArrayList<>();
 
     public CSItemModelProvider(DataGenerator generator, String modid, ExistingFileHelper existingFileHelper) {
         super(generator, modid, existingFileHelper);
@@ -26,10 +26,11 @@ public class CSItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        excemptions.add(CSItemRegistry.SOLARIS);
+        excemptions.add(CSItemRegistry.CRESCENTIA);
+
         this.defaultItem(CSItemRegistry.ITEMS.getEntries());
 
-        //this.csSinglePredicatedModel(CSItemRegistry.SOLARIS, "item/long_blade", csLoc("soul"), "item/long_blade");
-        //this.csCustomModel(CSItemRegistry.CRESCENTIA, getCSLoc("item/long_blade"));
         this.csCustomModel(CSItemRegistry.BREEZEBREAKER, getCSLoc("item/long_blade"));
         this.csSinglePredicatedModel(CSItemRegistry.POLTERGEIST, "item/large_axe", csLoc("haunted"), "item/large_axe");
         this.csSinglePredicatedModel(CSItemRegistry.AQUAFLORA, "item/long_blade", csLoc("blooming"), "item/long_blade");
@@ -41,6 +42,11 @@ public class CSItemModelProvider extends ItemModelProvider {
 
     public void defaultItem(Collection<RegistryObject<Item>> items) {
         for (RegistryObject<Item> item : items) {
+
+            if (excemptions.contains(item)) {
+                return;
+            }
+
             String name = item.getId().getPath();
             Item getItem = item.get();
             ResourceLocation datagenLoc = new ResourceLocation(Celestisynth.MODID, "item/" + name);

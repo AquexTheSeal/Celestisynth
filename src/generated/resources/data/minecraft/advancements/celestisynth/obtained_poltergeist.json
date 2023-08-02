@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:celestisynth/placed_celestial_table",
+  "criteria": {
+    "obtained_poltergeist": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "celestisynth:poltergeist"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.celestisynth.obtained_poltergeist.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "celestisynth:poltergeist",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.celestisynth.obtained_poltergeist.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained_poltergeist"
+    ]
+  ]
+}

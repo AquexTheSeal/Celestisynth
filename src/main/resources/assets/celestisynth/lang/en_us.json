@@ -21,6 +21,8 @@
   "------------------- SOLARIS ------------------":  "",
 
   "item.celestisynth.solaris": "Solaris",
+  "advancements.celestisynth.obtained_solaris.title": "A million degrees above",
+  "advancements.celestisynth.obtained_solaris.description": "Obtain a Solaris",
 
   "item.celestisynth.solaris.passive_1": "Ember's Blessing",
   "item.celestisynth.solaris.passive_desc_1": "The player gains fire immunity while holding the item - normal attacks with this item sets the target on fire for a few seconds.",
@@ -36,6 +38,8 @@
   "------------------- CRESCENTIA ------------------":  "",
 
   "item.celestisynth.crescentia": "Crescentia",
+  "advancements.celestisynth.obtained_crescentia.title": "Beautiful Fireworks",
+  "advancements.celestisynth.obtained_crescentia.description": "Obtain a Crescentia",
 
   "item.celestisynth.crescentia.passive_1": "Heavy-Hitter",
   "item.celestisynth.crescentia.passive_desc_1": "The player gains a level of damage resistance while holding the item - normal attacks with this item slows down the target for a few seconds.",
@@ -51,6 +55,8 @@
   "------------------- BREEZEBREAKER ------------------":  "",
 
   "item.celestisynth.breezebreaker": "Breezebreaker",
+  "advancements.celestisynth.obtained_breezebreaker.title": "Swift and Sound",
+  "advancements.celestisynth.obtained_breezebreaker.description": "Obtain a Breezebreaker",
 
   "item.celestisynth.breezebreaker.passive_1": "Agile",
   "item.celestisynth.breezebreaker.passive_desc_1": "The player gains a huge jump boost and fall damage immunity while holding the item, but takes 2.3x damage from all the other damage sources.",
@@ -81,6 +87,8 @@
   "------------------- POLTERGEIST ------------------":  "",
 
   "item.celestisynth.poltergeist": "Poltergeist",
+  "advancements.celestisynth.obtained_poltergeist.title": "A Haunted Axe",
+  "advancements.celestisynth.obtained_poltergeist.description": "Obtain a Poltergeist",
 
   "item.celestisynth.poltergeist.passive_1": "Phantom Tag",
   "item.celestisynth.poltergeist.passive_desc_1": "All skills of this weapon tags every affected entity with a Phantom Tag. Slain foes with the tag become monstrous Aberrants that draw in nearby entities for 5 seconds.",
@@ -96,6 +104,8 @@
   "------------------- AQUAFLORA ------------------":  "",
 
   "item.celestisynth.aquaflora": "Aquaflora",
+  "advancements.celestisynth.obtained_aquaflora.title": "When the flowers bloom that day",
+  "advancements.celestisynth.obtained_aquaflora.description": "Obtain an Aquaflora",
 
   "item.celestisynth.aquaflora.skill_1": "Petal Pierces",
   "item.celestisynth.aquaflora.condition_1": "Activate: Right-click",
@@ -111,6 +121,16 @@
 
   "item.celestisynth.aquaflora.skill_4": "Flowers Away",
   "item.celestisynth.aquaflora.condition_4": "Activate: Right-click while holding SHIFT during Blooming State",
-  "item.celestisynth.aquaflora.desc_4": "The player executes a backward dash, leaving a floral effect that draws nearby entities toward it. This ability deactivates the Blooming State, resulting in a modification of the weapon's skill set."
+  "item.celestisynth.aquaflora.desc_4": "The player executes a backward dash, leaving a floral effect that draws nearby entities toward it. This ability deactivates the Blooming State, resulting in a modification of the weapon's skill set.",
 
+  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ADVANCEMENTS [NON-WEAPONS] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>":  "",
+
+  "advancements.celestisynth.obtained_core.title": "Onto a Majestic Journey!",
+  "advancements.celestisynth.obtained_core.description": "Craft a Celestial Core",
+  "advancements.celestisynth.obtained_supernal_ingot.title": "Oh no, not another Netherite!",
+  "advancements.celestisynth.obtained_supernal_ingot.description": "Obtain a Supernal Netherite Ingot",
+  "advancements.celestisynth.obtained_celestial_ingot.title": "Perhaps, this one's different?",
+  "advancements.celestisynth.obtained_celestial_ingot.description": "Obtain a Celestial Netherite Ingot",
+  "advancements.celestisynth.placed_celestial_table.title": "Leveling Further and Beyond",
+  "advancements.celestisynth.placed_celestial_table.description": "Place a Celestial Crafting Table"
 }

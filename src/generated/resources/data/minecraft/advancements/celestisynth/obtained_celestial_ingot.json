@@ -1,0 +1,37 @@
+{
+  "parent": "minecraft:celestisynth/obtained_supernal_ingot",
+  "criteria": {
+    "obtained_celestial_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "celestisynth:celestial_netherite_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.celestisynth.obtained_celestial_ingot.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "celestisynth:celestial_netherite_ingot"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.celestisynth.obtained_celestial_ingot.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained_celestial_ingot"
+    ]
+  ]
+}

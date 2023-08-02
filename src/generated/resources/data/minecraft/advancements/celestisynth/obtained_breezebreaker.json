@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:celestisynth/placed_celestial_table",
+  "criteria": {
+    "obtained_breezebreaker": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "celestisynth:breezebreaker"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.celestisynth.obtained_breezebreaker.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "celestisynth:breezebreaker",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.celestisynth.obtained_breezebreaker.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained_breezebreaker"
+    ]
+  ]
+}

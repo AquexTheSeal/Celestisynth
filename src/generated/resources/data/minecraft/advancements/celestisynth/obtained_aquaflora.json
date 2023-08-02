@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:celestisynth/placed_celestial_table",
+  "criteria": {
+    "obtained_aquaflora": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "celestisynth:aquaflora"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.celestisynth.obtained_aquaflora.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "celestisynth:aquaflora",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.celestisynth.obtained_aquaflora.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained_aquaflora"
+    ]
+  ]
+}

@@ -1,18 +1,15 @@
-// 1.19.2	2023-07-30T13:51:00.0099061	Item Models: celestisynth
+// 1.19.2	2023-08-01T20:52:37.2760781	Item Models: celestisynth
 7cb8da26f6bcca49f3c7918cde0c229694a3df14 assets/celestisynth/models/item/aquaflora.json
 14b6d2ff354f84b628f404523e086d2bd10712d3 assets/celestisynth/models/item/aquaflora_blooming.json
 716b8a3037dfb142f24fb6cfbc9a0eca668214c9 assets/celestisynth/models/item/breezebreaker.json
 895a727be030a8e9ed3af3419ee5fd0dfff4ae0b assets/celestisynth/models/item/celestial_core.json
 1eca25b258e7ef396110701a40cbbcc4d0ecaa2c assets/celestisynth/models/item/celestial_core_heated.json
 ff4f859ffb01df6bbe2c9449944d3cd907747157 assets/celestisynth/models/item/celestial_netherite_ingot.json
-f8f60e9b956369170eef7c48296d99f80485d853 assets/celestisynth/models/item/crescentia.json
 d4f5402a3800dde0a56764a64d90c27d2cf252ed assets/celestisynth/models/item/eyebomination.json
 df6d1e7ed43cbb2b8c02f9325575d0c83b4c8429 assets/celestisynth/models/item/lunar_scrap.json
 438f25333e156f19e0d44f0b316d49cb7bb6e10f assets/celestisynth/models/item/lunar_stone.json
 ed1eaf5dabd0acb7027526bcf4c04da48d5d2f0f assets/celestisynth/models/item/poltergeist.json
 507eb0b2f6f2e7d15fd511b639b03ce97e82c258 assets/celestisynth/models/item/poltergeist_haunted.json
-99c7e293830f99d85633159d5a6f378b5466f1b2 assets/celestisynth/models/item/solaris.json
-3bf4cf51588e09c1d7c500701bad5f7f768dce53 assets/celestisynth/models/item/solaris_soul.json
 3b400f85d9a80d8ceee08fcae843deb5b27cee4f assets/celestisynth/models/item/solar_crystal.json
 79f131dc30891ca8121f90275847c7fc59e2df77 assets/celestisynth/models/item/supernal_netherite_ingot.json
 bece30b3667cd821d64b7cabb3323d1d1a75d4af assets/celestisynth/models/item/zephyr_deposit.json

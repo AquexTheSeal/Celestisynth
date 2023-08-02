@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:celestisynth/obtained_celestial_ingot",
+  "criteria": {
+    "placed_celestial_table": {
+      "conditions": {
+        "block": "celestisynth:celestial_crafting_table"
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.celestisynth.placed_celestial_table.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "celestisynth:celestial_crafting_table"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.celestisynth.placed_celestial_table.title"
+    }
+  },
+  "requirements": [
+    [
+      "placed_celestial_table"
+    ]
+  ]
+}
