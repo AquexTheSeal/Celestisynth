@@ -2,6 +2,7 @@ package com.aqutheseal.celestisynth;
 
 import com.aqutheseal.celestisynth.animation.CSAnimator;
 import com.aqutheseal.celestisynth.config.CSConfig;
+import com.aqutheseal.celestisynth.events.CSRecipeBookTypeEvent;
 import com.aqutheseal.celestisynth.network.CSNetwork;
 import com.aqutheseal.celestisynth.registry.*;
 import com.aqutheseal.celestisynth.registry.datagen.*;
@@ -32,6 +33,7 @@ public class Celestisynth {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CSConfig.CLIENT_SPEC, "celestisynth/client.toml");
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.register(this);
         CSEntityRegistry.ENTITY_TYPES.register(modEventBus);
         CSItemRegistry.ITEMS.register(modEventBus);
         CSBlockRegistry.BLOCKS.register(modEventBus);
@@ -48,8 +50,7 @@ public class Celestisynth {
         );
         modEventBus.addListener(this::registerPackets);
         modEventBus.addListener(this::gatherData);
-        modEventBus.register(this);
-
+        modEventBus.addListener(CSRecipeBookTypeEvent::registerEvent);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.register(this);
     }

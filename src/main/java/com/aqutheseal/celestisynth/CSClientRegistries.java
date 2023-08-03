@@ -7,7 +7,6 @@ import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.item.weapons.PoltergeistItem;
 import com.aqutheseal.celestisynth.item.weapons.SolarisItem;
-import com.aqutheseal.celestisynth.recipe.CelestialCraftingMenu;
 import com.aqutheseal.celestisynth.recipe.CelestialCraftingScreen;
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
@@ -18,7 +17,6 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -51,12 +49,5 @@ public class CSClientRegistries {
 
             MenuScreens.register(CSRecipeRegistry.CELESTIAL_CRAFTING.get(), CelestialCraftingScreen::new);
         });
-    }
-
-    @SubscribeEvent
-    public static void registerRecipeBooks(RegisterRecipeBookCategoriesEvent event) {
-        event.registerBookCategories(CelestialCraftingMenu.CELESTIAL_CRAFTING, CelestialCraftingMenu.CELESTIAL_CRAFTING_CATEGORIES);
-        event.registerAggregateCategory(CelestialCraftingMenu.CELESTIAL_CRAFTING_SEARCH, CelestialCraftingMenu.CELESTIAL_CRAFTING_CATEGORIES);
-        event.registerRecipeCategoryFinder(CSRecipeRegistry.CELESTIAL_CRAFTING_TYPE.get(), rc -> CelestialCraftingMenu.CELESTIAL_WEAPONS);
     }
 }
