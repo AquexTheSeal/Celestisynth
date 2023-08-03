@@ -1,17 +1,13 @@
 package com.aqutheseal.celestisynth.item.helpers;
 
-import com.aqutheseal.celestisynth.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
-import com.aqutheseal.celestisynth.network.CSNetwork;
-import com.aqutheseal.celestisynth.network.util.ShakeScreenServerPacket;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -187,8 +183,8 @@ public interface CSWeapon {
     }
 
     default void shakeScreens(Player target, int duration, int startFadingOut, float intensity) {
-        if (target instanceof PlayerMixinSupport pms) {
-            CSNetwork.sendToServer(new ShakeScreenServerPacket(target.getId(), duration, startFadingOut, intensity));
+        if (target != null) {
+            //CSNetwork.sendToServer(new ShakeScreenServerPacket(target.getUUID(), duration, startFadingOut, intensity));
         }
     }
 

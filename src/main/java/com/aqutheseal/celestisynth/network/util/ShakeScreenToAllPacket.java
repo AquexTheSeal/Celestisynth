@@ -5,15 +5,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public class ShakeScreenToAllPacket {
-    private final int playerId;
+    private final UUID playerId;
     private final int duration;
     private final int fadeOutStart;
     private final float intensity;
 
-    public ShakeScreenToAllPacket(int playerId, int duration, int fadeOutStart, float intensity) {
+    public ShakeScreenToAllPacket(UUID playerId, int duration, int fadeOutStart, float intensity) {
         this.playerId = playerId;
        this.duration = duration;
        this.fadeOutStart = fadeOutStart;
@@ -21,14 +22,14 @@ public class ShakeScreenToAllPacket {
     }
 
     public ShakeScreenToAllPacket(FriendlyByteBuf buf) {
-        this.playerId = buf.readInt();
+        this.playerId = buf.readUUID();
         this.duration = buf.readInt();
         this.fadeOutStart = buf.readInt();
         this.intensity = buf.readFloat();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeInt(playerId);
+        buf.writeUUID(playerId);
         buf.writeInt(duration);
         buf.writeInt(fadeOutStart);
         buf.writeFloat(intensity);
@@ -38,7 +39,7 @@ public class ShakeScreenToAllPacket {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             Minecraft instance = Minecraft.getInstance();
-            var player = instance.level.getEntity(playerId);
+            var player = instance.level.getPlayerByUUID(playerId);
             if (player instanceof PlayerMixinSupport pms) {
                 pms.setScreenShakeDuration(duration);
                 pms.setScreenShakeFadeoutBegin(fadeOutStart);

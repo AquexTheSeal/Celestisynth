@@ -9,8 +9,6 @@ import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
-import com.github.L_Ender.cataclysm.client.render.entity.RendererLaser_Beam;
-import com.github.L_Ender.cataclysm.entity.projectile.Laser_Beam_Entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;

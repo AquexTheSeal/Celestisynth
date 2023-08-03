@@ -161,9 +161,6 @@ dependencies {
 
     implementation fg.deobf("mezz.jei:jei-${project.mc_ver}-forge:11.6.0.1016")
 
-    compileOnly fg.deobf("mezz.jei:jei-${project.mc_ver}-forge-api:11.6.0.1016")
-    runtimeOnly fg.deobf("mezz.jei:jei-${project.mc_ver}-forge:11.6.0.1016")
-
     // EXTRA GOODS (Not going to use these for [gradle.properties] since I can just remove these anytime I want to.)
 
     //implementation fg.deobf("curse.maven:rubidium-574856:4448053")

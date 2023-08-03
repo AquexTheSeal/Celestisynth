@@ -1,12 +1,9 @@
 package com.aqutheseal.celestisynth.entities.helper;
 
-import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.entities.CSEffect;
-import com.github.alexthe666.citadel.animation.Animation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
 import net.minecraftforge.common.IExtensibleEnum;
