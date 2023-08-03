@@ -13,11 +13,7 @@ import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
-import net.bettercombat.forge.PlatformImpl;
-import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ModCheck;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.IExtensibleEnum;
 import net.minecraftforge.fml.ModList;
@@ -26,54 +22,6 @@ import javax.annotation.Nullable;
 
 public class AnimationManager {
     public static int animIndex;
-
-    public enum AnimationsList implements IExtensibleEnum {
-        CLEAR(null),
-        ANIM_SOLARIS_SPIN("cs_solaris_spin"),
-        ANIM_CRESCENTIA_STRIKE("cs_crescentia_strike"),
-        ANIM_CRESCENTIA_THROW("cs_crescentia_throw"),
-        ANIM_BREEZEBREAKER_NORMAL_SINGLE("cs_breezebreaker_normal_single"),
-        ANIM_BREEZEBREAKER_NORMAL_DOUBLE("cs_breezebreaker_normal_double"),
-        ANIM_BREEZEBREAKER_SHIFT_RIGHT("cs_breezebreaker_shift_right"),
-        ANIM_BREEZEBREAKER_SHIFT_LEFT("cs_breezebreaker_shift_left"),
-        ANIM_BREEZEBREAKER_JUMP("cs_breezebreaker_jump"),
-        ANIM_BREEZEBREAKER_JUMP_ATTACK("cs_breezebreaker_jump_attack"),
-        ANIM_BREEZEBREAKER_SPRINT_ATTACK("cs_breezebreaker_sprint_attack"),
-        ANIM_POLTERGEIST_SMASH("cs_poltergeist_smash"),
-        ANIM_POLTERGEIST_RETREAT("cs_poltergeist_retreat"),
-        ANIM_AQUAFLORA_PIERCE_RIGHT("cs_aquaflora_pierce_right"),
-        ANIM_AQUAFLORA_PIERCE_LEFT("cs_aquaflora_pierce_left"),
-        ANIM_AQUAFLORA_BASH("cs_aquaflora_bash"),
-        ANIM_AQUAFLORA_ASSASSINATE("cs_aquaflora_assassinate");
-
-        final @Nullable String path;
-        final int id;
-
-        AnimationsList(@Nullable String file) {
-            path = file;
-            id = animIndex++;
-        }
-
-        public @Nullable KeyframeAnimation getAnimation() {
-            if (getPath() != null) {
-                return PlayerAnimationRegistry.getAnimation(new ResourceLocation(Celestisynth.MODID, getPath()));
-            } else {
-                return null;
-            }
-        }
-
-        public @Nullable String getPath() {
-            return path;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public static AnimationsList create(String name, String file) {
-            throw new IllegalStateException("Enum not extended");
-        }
-    }
 
     public static void playAnimation(Level level, AnimationsList animation) {
         if (level.isClientSide()) {
@@ -123,5 +71,53 @@ public class AnimationManager {
             }
         }
         throw new IllegalStateException("Animation ID is invalid: " + id);
+    }
+
+    public enum AnimationsList implements IExtensibleEnum {
+        CLEAR(null),
+        ANIM_SOLARIS_SPIN("cs_solaris_spin"),
+        ANIM_CRESCENTIA_STRIKE("cs_crescentia_strike"),
+        ANIM_CRESCENTIA_THROW("cs_crescentia_throw"),
+        ANIM_BREEZEBREAKER_NORMAL_SINGLE("cs_breezebreaker_normal_single"),
+        ANIM_BREEZEBREAKER_NORMAL_DOUBLE("cs_breezebreaker_normal_double"),
+        ANIM_BREEZEBREAKER_SHIFT_RIGHT("cs_breezebreaker_shift_right"),
+        ANIM_BREEZEBREAKER_SHIFT_LEFT("cs_breezebreaker_shift_left"),
+        ANIM_BREEZEBREAKER_JUMP("cs_breezebreaker_jump"),
+        ANIM_BREEZEBREAKER_JUMP_ATTACK("cs_breezebreaker_jump_attack"),
+        ANIM_BREEZEBREAKER_SPRINT_ATTACK("cs_breezebreaker_sprint_attack"),
+        ANIM_POLTERGEIST_SMASH("cs_poltergeist_smash"),
+        ANIM_POLTERGEIST_RETREAT("cs_poltergeist_retreat"),
+        ANIM_AQUAFLORA_PIERCE_RIGHT("cs_aquaflora_pierce_right"),
+        ANIM_AQUAFLORA_PIERCE_LEFT("cs_aquaflora_pierce_left"),
+        ANIM_AQUAFLORA_BASH("cs_aquaflora_bash"),
+        ANIM_AQUAFLORA_ASSASSINATE("cs_aquaflora_assassinate");
+
+        final @Nullable String path;
+        final int id;
+
+        AnimationsList(@Nullable String file) {
+            path = file;
+            id = animIndex++;
+        }
+
+        public static AnimationsList create(String name, String file) {
+            throw new IllegalStateException("Enum not extended");
+        }
+
+        public @Nullable KeyframeAnimation getAnimation() {
+            if (getPath() != null) {
+                return PlayerAnimationRegistry.getAnimation(new ResourceLocation(Celestisynth.MODID, getPath()));
+            } else {
+                return null;
+            }
+        }
+
+        public @Nullable String getPath() {
+            return path;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 }

@@ -1,10 +1,8 @@
 package com.aqutheseal.celestisynth.recipe;
 
+import com.aqutheseal.celestisynth.events.CSRecipeBookTypeEvent;
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
-import com.aqutheseal.celestisynth.registry.CSItemRegistry;
 import com.aqutheseal.celestisynth.registry.CSRecipeRegistry;
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -17,14 +15,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
 import java.util.Optional;
 
 public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
-    public static final RecipeBookType CELESTIAL_CRAFTING = RecipeBookType.create("celestial_crafting");
-    public static final RecipeBookCategories CELESTIAL_CRAFTING_SEARCH = RecipeBookCategories.create("celestial_crafting", new ItemStack(CSItemRegistry.CELESTIAL_CORE.get()));
-    public static final RecipeBookCategories CELESTIAL_WEAPONS = RecipeBookCategories.create("celestial_weapons", new ItemStack(CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get()));
-    public static final List<RecipeBookCategories> CELESTIAL_CRAFTING_CATEGORIES = ImmutableList.of(CELESTIAL_CRAFTING_SEARCH, CELESTIAL_WEAPONS);
+    //public static final RecipeBookType CELESTIAL_CRAFTING = RecipeBookType.create("celestial_crafting");
+    //public static final RecipeBookCategories CELESTIAL_CRAFTING_SEARCH = RecipeBookCategories.create("celestial_crafting", new ItemStack(CSItemRegistry.CELESTIAL_CORE.get()));
+    //public static final RecipeBookCategories CELESTIAL_WEAPONS = RecipeBookCategories.create("celestial_weapons", new ItemStack(CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get()));
+    //public static final List<RecipeBookCategories> CELESTIAL_CRAFTING_CATEGORIES = ImmutableList.of(CELESTIAL_CRAFTING_SEARCH, CELESTIAL_WEAPONS);
 
     private final ContainerLevelAccess access;
     private final Player player;
@@ -51,31 +48,27 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
             }
         });
 
-        for(int i = 0; i < 3; ++i) {
-            for(int j = 0; j < 3; ++j) {
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 3; ++j) {
                 this.addSlot(new Slot(this.craftSlots, j + i * 3, 30 + j * 18, 17 + i * 18));
             }
         }
 
-        for(int k = 0; k < 3; ++k) {
-            for(int i1 = 0; i1 < 9; ++i1) {
+        for (int k = 0; k < 3; ++k) {
+            for (int i1 = 0; i1 < 9; ++i1) {
                 this.addSlot(new Slot(pPlayerInventory, i1 + k * 9 + 9, 8 + i1 * 18, 84 + k * 18));
             }
         }
 
-        for(int l = 0; l < 9; ++l) {
+        for (int l = 0; l < 9; ++l) {
             this.addSlot(new Slot(pPlayerInventory, l, 8 + l * 18, 142));
         }
 
     }
 
-    public void addCraftedEffect(Player player) {
-        player.playSound(SoundEvents.PLAYER_LEVELUP, 1.0F, 0.1F);
-    }
-
     protected static void slotChangedCraftingGrid(AbstractContainerMenu pMenu, Level pLevel, Player pPlayer, CraftingContainer pContainer, ResultContainer pResult) {
         if (!pLevel.isClientSide) {
-            ServerPlayer serverplayer = (ServerPlayer)pPlayer;
+            ServerPlayer serverplayer = (ServerPlayer) pPlayer;
             ItemStack itemstack = ItemStack.EMPTY;
             Optional<CelestialCraftingRecipe> optional = pLevel.getServer().getRecipeManager().getRecipeFor(CSRecipeRegistry.CELESTIAL_CRAFTING_TYPE.get(), pContainer, pLevel);
             if (optional.isPresent()) {
@@ -89,6 +82,10 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
             pMenu.setRemoteSlot(0, itemstack);
             serverplayer.connection.send(new ClientboundContainerSetSlotPacket(pMenu.containerId, pMenu.incrementStateId(), 0, itemstack));
         }
+    }
+
+    public void addCraftedEffect(Player player) {
+        player.playSound(SoundEvents.PLAYER_LEVELUP, 1.0F, 0.1F);
     }
 
     public void slotsChanged(Container pInventory) {
@@ -190,7 +187,7 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
     }
 
     public RecipeBookType getRecipeBookType() {
-        return CELESTIAL_CRAFTING;
+        return CSRecipeBookTypeEvent.CELESTIAL_CRAFTING;
     }
 
     public boolean shouldMoveToInventory(int pSlotIndex) {
