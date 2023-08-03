@@ -11,7 +11,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -221,11 +220,7 @@ public class CSEffect extends Entity implements IAnimatable {
 
         if (toFollow != null) {
             if (getEffectType() == CSEffectTypes.AQUAFLORA_FLOWER_BIND) {
-                this.setYRot(toFollow.getYRot());
-                this.yRotO = this.getYRot();
-                this.setRot(this.getYRot(), this.getXRot());
-                this.setCustomizableSize((float) (toFollow.getBbWidth() - (toFollow.getBbWidth() / 4.5)));
-                this.moveTo(toFollow.getX(), toFollow.getY() - getCustomizableSize(), toFollow.getZ());
+                calculateCustomizableSize((float) (toFollow.getBbWidth() - (toFollow.getBbWidth() / 4.5)), -getCustomizableSize());
             }
         }
 
@@ -236,6 +231,14 @@ public class CSEffect extends Entity implements IAnimatable {
         }
 
         super.tick();
+    }
+
+    public void calculateCustomizableSize(float size, double yOff) {
+        this.setYRot(toFollow.getYRot());
+        this.yRotO = this.getYRot();
+        this.setRot(this.getYRot(), this.getXRot());
+        this.setCustomizableSize(size);
+        this.moveTo(toFollow.getX(), toFollow.getY() + yOff, toFollow.getZ());
     }
 
     @Override

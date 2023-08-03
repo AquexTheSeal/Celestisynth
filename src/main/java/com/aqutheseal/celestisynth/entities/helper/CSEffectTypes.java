@@ -32,10 +32,10 @@ public enum CSEffectTypes {
     SOLARIS_AIR_LARGE_FLAT("solaris_air_large_flat", "solaris_air", Model.FLAT, Animation.SPIN_20,
             0, 0, 3.5, false, true, false)
     ,
-    CRESCENTIA_STRIKE("crescentia_strike", Model.FLAT, Animation.create("none12", "animation.cs_effect.none", 12),
+    CRESCENTIA_STRIKE("crescentia_strike", Model.FLAT, noneTo(12),
             6, 2, 3.5, false, true, true)
     ,
-    CRESCENTIA_STRIKE_INVERTED("crescentia_strike_inverted", "crescentia_strike", Model.FLAT_INVERTED, Animation.create("none12", "animation.cs_effect.none", 12),
+    CRESCENTIA_STRIKE_INVERTED("crescentia_strike_inverted", "crescentia_strike", Model.FLAT_INVERTED, noneTo(12),
             6, 2, 3.5, false, true, true)
     ,
     CRESCENTIA_THROW("crescentia_throw", Model.FLAT, Animation.SWEEP_RTOL,
@@ -56,10 +56,10 @@ public enum CSEffectTypes {
     BREEZEBREAKER_DASH("breezebreaker_dash", Model.SIX_WAY_CROSS, Animation.STRETCH,
             16, 2, 3, false, true, false)
     ,
-    BREEZEBREAKER_DASH_2("breezebreaker_dash_2", Model.FLAT_VERTICAL_SIDEFACE, Animation.create("none15", "animation.cs_effect.none", 15),
+    BREEZEBREAKER_DASH_2("breezebreaker_dash_2", Model.FLAT_VERTICAL_SIDEFACE, noneTo(15),
             0, 0, 4, false, true, false)
     ,
-    BREEZEBREAKER_DASH_3("breezebreaker_dash_3", "breezebreaker_dash_2", Model.FLAT_VERTICAL_SIDEFACE, Animation.create("none10", "animation.cs_effect.none", 10),
+    BREEZEBREAKER_DASH_3("breezebreaker_dash_3", "breezebreaker_dash_2", Model.FLAT_VERTICAL_SIDEFACE, noneTo(10),
             0, 0, 2, false, true, false)
     ,
     POLTERGEIST_WARD("poltergeist_ward", Model.FLAT_VERTICAL_SIDEFACE, Animation.GOO,
@@ -77,38 +77,38 @@ public enum CSEffectTypes {
     POLTERGEIST_WARD_SUMMON("poltergeist_ward_summon", Model.WALL, Animation.ASCEND,
             0, 0, 1.3, false, true, false)
     ,
-    POLTERGEIST_IMPACT_CRACK("poltergeist_impact_crack", Model.FLAT, Animation.create("none20", "animation.cs_effect.none", 20),
+    POLTERGEIST_IMPACT_CRACK("poltergeist_impact_crack", Model.FLAT, noneTo(20),
             0, 0, 2.5, false, true, false)
     ,
-    POLTERGEIST_IMPACT_CRACK_LARGE("poltergeist_impact_crack_large", "poltergeist_impact_crack", Model.FLAT, Animation.create("none20", "animation.cs_effect.none", 20),
+    POLTERGEIST_IMPACT_CRACK_LARGE("poltergeist_impact_crack_large", "poltergeist_impact_crack", Model.FLAT, noneTo(20),
             0, 0, 4, false, true, false)
     ,
-    POLTERGEIST_RETREAT("poltergeist_retreat", Model.FLAT_VERTICAL_SIDEFACE,  Animation.create("none25", "animation.cs_effect.none", 25),
+    POLTERGEIST_RETREAT("poltergeist_retreat", Model.FLAT_VERTICAL_SIDEFACE,  noneTo(15),
             0, 0, 2.25, false, true, false)
     ,
-    AQUAFLORA_SLICE("aquaflora_slice", Model.FLAT, Animation.create("none6", "animation.cs_effect.none", 6),
+    AQUAFLORA_SLICE("aquaflora_slice", Model.FLAT, noneTo(6),
             6, 1, 1.2, false, false, false)
     ,
-    AQUAFLORA_SLICE_INVERTED("aquaflora_slice_inverted", Model.FLAT, Animation.create("none6", "animation.cs_effect.none", 6),
+    AQUAFLORA_SLICE_INVERTED("aquaflora_slice_inverted", Model.FLAT, noneTo(6),
             6, 1, 1.2, false, false, false)
     ,
-    AQUAFLORA_PIERCE_START("aquaflora_pierce_start", Model.FLAT_VERTICAL_SIDEFACE,  Animation.create("none12", "animation.cs_effect.none", 12),
+    AQUAFLORA_PIERCE_START("aquaflora_pierce_start", Model.FLAT_VERTICAL_SIDEFACE,  noneTo(12),
             6, 2, 1.5, false, false, true)
     ,
-    AQUAFLORA_STAB("aquaflora_stab", Model.FLAT_VERTICAL_FRONTFACE,  Animation.create("none4", "animation.cs_effect.none", 4),
+    AQUAFLORA_STAB("aquaflora_stab", Model.FLAT_VERTICAL_FRONTFACE,  noneTo(4),
             4, 1, 1.2, false, false, true)
     ,
-    AQUAFLORA_FLOWER("aquaflora_flower", Model.FLAT, Animation.create("none10", "animation.cs_effect.none", 10),
+    AQUAFLORA_FLOWER("aquaflora_flower", Model.FLAT, noneTo(10),
             4, 5, 3.5, false, true, false)
     ,
-    AQUAFLORA_FLOWER_BIND("aquaflora_flower_bind", "aquaflora_pierce_start", Model.FLAT, Animation.create("none12", "animation.cs_effect.none", 12),
+    AQUAFLORA_FLOWER_BIND("aquaflora_flower_bind", "aquaflora_pierce_start", Model.FLAT, noneTo(12),
             6, 2, 2 /* Special size property */, false, false, false)
     ,
-    AQUAFLORA_BASH("aquaflora_bash", Model.FLAT_VERTICAL_SIDEFACE,  Animation.create("none12", "animation.cs_effect.none", 12),
+    AQUAFLORA_BASH("aquaflora_bash", Model.FLAT_VERTICAL_SIDEFACE,  noneTo(12),
             6, 2, 1.75, false, true, false)
     ,
-    AQUAFLORA_ASSASSINATE("aquaflora_assassinate", "aquaflora_bash", Model.FLAT_VERTICAL_SIDEFACE,  Animation.create("none12", "animation.cs_effect.none", 12),
-            6, 2, 2, true, true, false)
+    AQUAFLORA_ASSASSINATE("aquaflora_assassinate", "aquaflora_bash", Model.FLAT,  noneTo(12),
+            6, 2, 3, false, true, false)
     ,
     AQUAFLORA_DASH("aquaflora_dash", "aquaflora_pierce_start", Model.FLAT, Animation.STRETCH,
             6, 2, 2, false, true, false)
@@ -140,6 +140,10 @@ public enum CSEffectTypes {
 
     CSEffectTypes(String texture, Model model, Animation animation, int frames, int framesSpeed, double scale, boolean rotateRandomly, boolean fadeOut, boolean specialProperties) {
         this(texture, texture, model, animation, frames, framesSpeed, scale, rotateRandomly, fadeOut, specialProperties);
+    }
+    
+    public static Animation noneTo(int duration){
+        return Animation.create("none" + duration, "animation.cs_effect.none", duration);
     }
 
     public String getName() {

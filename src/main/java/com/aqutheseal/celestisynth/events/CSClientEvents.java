@@ -106,7 +106,7 @@ public class CSClientEvents {
         if (itemStack.getItem() instanceof AquafloraItem) {
             CompoundTag tagElement = itemStack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
             if (tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraItem.ATTACK_BLOOMING)) {
-                event.setFOV(150);
+                event.setFOV(140);
             }
         }
     }

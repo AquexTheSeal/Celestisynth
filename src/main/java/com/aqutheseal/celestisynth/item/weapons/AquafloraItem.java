@@ -193,11 +193,11 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
 
             CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_DASH, 0, 0.55, 0);
             player.moveTo(target.blockPosition().offset(oX, 1, oZ), player.getYRot(), player.getXRot());
-            CSEffect.createInstance(player, target, CSEffectTypes.AQUAFLORA_FLOWER_BIND);
-            CSEffect.createInstance(player, target, CSEffectTypes.AQUAFLORA_ASSASSINATE, 0, 1, 0);
+            CSEffect.createInstance(player, target, CSEffectTypes.AQUAFLORA_ASSASSINATE, 0, -0.2, 0);
             player.playSound(CSSoundRegistry.CS_BLING.get(), 0.15F, 0.5F);
             playRandomBladeSound(player, 4);
-            hurtNoKB(player, target, (float) (CSConfig.COMMON.aquafloraBloomSkillDmg.get() * (checkDualWield(player, AquafloraItem.class) ? 0.55 : 1)) + getSharpnessValue(itemStack, 0.75F));
+            double dualWieldMultiplier = checkDualWield(player, AquafloraItem.class) ? 0.52 : 1;
+            hurtNoKB(player, target, (float) (CSConfig.COMMON.aquafloraBloomSkillDmg.get() * dualWieldMultiplier) + getSharpnessValue(itemStack, (float) (0.65 * dualWieldMultiplier)));
             createAquafloraFirework(itemStack, level, player, target.getX(), target.getY() + 1, target.getZ());
         }
         if (animationTimer >= 120) {

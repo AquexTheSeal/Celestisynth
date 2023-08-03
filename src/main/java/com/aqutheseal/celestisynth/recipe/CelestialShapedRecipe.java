@@ -27,7 +27,6 @@ public class CelestialShapedRecipe extends ShapedRecipe implements CelestialCraf
     }
 
     public static class Serializer implements RecipeSerializer<CelestialShapedRecipe> {
-        // Taken from Vanilla Shaped Recipe Serializer since they basically have the exact same method.
         RecipeSerializer<ShapedRecipe> serializer = new ShapedRecipe.Serializer();
         public Serializer() {
         }
