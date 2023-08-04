@@ -27,25 +27,24 @@ public class CelestialShapedRecipe extends ShapedRecipe implements CelestialCraf
     }
 
     public static class Serializer implements RecipeSerializer<CelestialShapedRecipe> {
-        RecipeSerializer<ShapedRecipe> serializer = new ShapedRecipe.Serializer();
         public Serializer() {
         }
 
         @Override
         public CelestialShapedRecipe fromJson(ResourceLocation pRecipeId, JsonObject pJson) {
-            ShapedRecipe fromJson = serializer.fromJson(pRecipeId, pJson);
+            ShapedRecipe fromJson = SHAPED_RECIPE.fromJson(pRecipeId, pJson);
             return new CelestialShapedRecipe(pRecipeId, fromJson.getGroup(), fromJson.getWidth(), fromJson.getHeight(), fromJson.getIngredients(), fromJson.getResultItem());
         }
 
         @Override
         public CelestialShapedRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
-            ShapedRecipe fromNetwork = serializer.fromNetwork(pRecipeId, pBuffer);
+            ShapedRecipe fromNetwork = SHAPED_RECIPE.fromNetwork(pRecipeId, pBuffer);
             return new CelestialShapedRecipe(pRecipeId, fromNetwork.getGroup(), fromNetwork.getWidth(), fromNetwork.getHeight(), fromNetwork.getIngredients(), fromNetwork.getResultItem());
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf pBuffer, CelestialShapedRecipe pRecipe) {
-            serializer.toNetwork(pBuffer, pRecipe);
+            SHAPED_RECIPE.toNetwork(pBuffer, pRecipe);
         }
     }
 }
