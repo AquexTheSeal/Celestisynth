@@ -29,7 +29,7 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class CelestialCraftingTable extends Block implements EntityBlock {
-    private static final Component CONTAINER_TITLE = Component.translatable(Celestisynth.MODID,"container.crafting");
+    private static final Component CONTAINER_TITLE = Component.translatable("gui." + Celestisynth.MODID + ".celestial_crafting"); //Component.translatable(Celestisynth.MODID,"container.crafting");
 
     public CelestialCraftingTable(BlockBehaviour.Properties pProperties) {
         super(pProperties);
