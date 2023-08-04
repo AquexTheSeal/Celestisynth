@@ -50,6 +50,7 @@ public class Celestisynth {
         );
         modEventBus.addListener(this::registerPackets);
         modEventBus.addListener(this::gatherData);
+        CSRecipeBookTypeEvent.staticInit();
         modEventBus.addListener(CSRecipeBookTypeEvent::registerEvent);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.register(this);

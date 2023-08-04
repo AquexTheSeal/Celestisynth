@@ -15,6 +15,8 @@ import java.util.List;
  *
  * @see net.minecraft.stats.RecipeBookSettings#read(FriendlyByteBuf)
  * @see net.minecraft.stats.RecipeBookSettings#write(FriendlyByteBuf)
+ *
+ * @author KhanhTypo
  */
 public final class CSRecipeBookTypeEvent {
     public static final RecipeBookType CELESTIAL_CRAFTING = RecipeBookType.create("celestial_crafting");
@@ -31,4 +33,11 @@ public final class CSRecipeBookTypeEvent {
         event.registerRecipeCategoryFinder(CSRecipeRegistry.CELESTIAL_CRAFTING_TYPE.get(), recipe -> celestialWeapons);
         event.registerAggregateCategory(celestialCraftingSearch, celestialList);
     }
+
+    /**
+     * The static constants above must be called and assigned in both client and server side. Therefore, add the event listener above in the lamba
+     * expression will ONLY makes both the static constants and the method be called IN CLIENT, but in server : this entier class, including methods and
+     * static constants will be ignored -> sided mismatch -> server sync failed
+     */
+    public static void staticInit() {}
 }

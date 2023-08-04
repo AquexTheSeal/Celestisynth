@@ -18,11 +18,6 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
-    //public static final RecipeBookType CELESTIAL_CRAFTING = RecipeBookType.create("celestial_crafting");
-    //public static final RecipeBookCategories CELESTIAL_CRAFTING_SEARCH = RecipeBookCategories.create("celestial_crafting", new ItemStack(CSItemRegistry.CELESTIAL_CORE.get()));
-    //public static final RecipeBookCategories CELESTIAL_WEAPONS = RecipeBookCategories.create("celestial_weapons", new ItemStack(CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get()));
-    //public static final List<RecipeBookCategories> CELESTIAL_CRAFTING_CATEGORIES = ImmutableList.of(CELESTIAL_CRAFTING_SEARCH, CELESTIAL_WEAPONS);
-
     private final ContainerLevelAccess access;
     private final Player player;
 
