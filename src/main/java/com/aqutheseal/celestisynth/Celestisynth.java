@@ -48,16 +48,23 @@ public class Celestisynth {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
                 modEventBus.addListener(CSAnimator::registerAnimationLayer)
         );
+
         modEventBus.addListener(this::registerPackets);
         modEventBus.addListener(this::gatherData);
-        CSRecipeBookTypeEvent.staticInit();
-        modEventBus.addListener(CSRecipeBookTypeEvent::registerEvent);
+
+        this.registerRecipeBookType(modEventBus);
+
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.register(this);
     }
 
     private void registerPackets(FMLCommonSetupEvent event) {
         CSNetwork.register();
+    }
+
+    private void registerRecipeBookType(IEventBus modEventBus) {
+        CSRecipeBookTypeEvent.staticInit();
+        modEventBus.addListener(CSRecipeBookTypeEvent::registerEvent);
     }
 
     private void gatherData(final GatherDataEvent event) {

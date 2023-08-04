@@ -2,6 +2,8 @@ package com.aqutheseal.celestisynth.item.helpers;
 
 import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
+import com.aqutheseal.celestisynth.network.CSNetwork;
+import com.aqutheseal.celestisynth.network.util.ShakeScreenServerPacket;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -184,7 +186,7 @@ public interface CSWeapon {
 
     default void shakeScreens(Player target, int duration, int startFadingOut, float intensity) {
         if (target != null) {
-            //CSNetwork.sendToServer(new ShakeScreenServerPacket(target.getUUID(), duration, startFadingOut, intensity));
+            CSNetwork.sendToServer(new ShakeScreenServerPacket(target.getUUID(), duration, startFadingOut, intensity));
         }
     }
 
