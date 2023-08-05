@@ -19,7 +19,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -30,8 +29,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public interface CSWeapon {
 
@@ -171,7 +173,7 @@ public interface CSWeapon {
         Vec3 vec1 = player.getViewVector(1);
         Vec3 targetVec = vec.add(vec1.x * range, vec1.y * range, vec1.z * range);
         AABB aabb = player.getBoundingBox().expandTowards(vec1.scale(range)).inflate(4.0D, 4.0D, 4.0D);
-        EntityHitResult result = ProjectileUtil.getEntityHitResult(player, vec, targetVec, aabb,(entity) -> !entity.isSpectator(), distance);
+        EntityHitResult result = expandedHitResult(player, vec, targetVec, aabb, (entity) -> !entity.isSpectator(), distance);
         return result != null ? result.getEntity() : null;
     }
 
@@ -200,5 +202,42 @@ public interface CSWeapon {
 
     default double calculateZLook(Player player) {
         return Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
+    }
+
+    @Nullable
+    public static EntityHitResult expandedHitResult(Entity pShooter, Vec3 pStartVec, Vec3 pEndVec, AABB pBoundingBox, Predicate<Entity> pFilter, double pDistance) {
+        Level level = pShooter.level;
+        double d0 = pDistance;
+        Entity entity = null;
+        Vec3 vec3 = null;
+
+        for(Entity entity1 : level.getEntities(pShooter, pBoundingBox, pFilter)) {
+            AABB aabb = entity1.getBoundingBox().inflate((double)entity1.getPickRadius() + 1.5);
+            Optional<Vec3> optional = aabb.clip(pStartVec, pEndVec);
+            if (aabb.contains(pStartVec)) {
+                if (d0 >= 0.0D) {
+                    entity = entity1;
+                    vec3 = optional.orElse(pStartVec);
+                    d0 = 0.0D;
+                }
+            } else if (optional.isPresent()) {
+                Vec3 vec31 = optional.get();
+                double d1 = pStartVec.distanceToSqr(vec31);
+                if (d1 < d0 || d0 == 0.0D) {
+                    if (entity1.getRootVehicle() == pShooter.getRootVehicle() && !entity1.canRiderInteract()) {
+                        if (d0 == 0.0D) {
+                            entity = entity1;
+                            vec3 = vec31;
+                        }
+                    } else {
+                        entity = entity1;
+                        vec3 = vec31;
+                        d0 = d1;
+                    }
+                }
+            }
+        }
+
+        return entity == null ? null : new EntityHitResult(entity, vec3);
     }
 }

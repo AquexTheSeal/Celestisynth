@@ -9,6 +9,7 @@ import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import com.google.common.collect.Lists;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -150,17 +151,18 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
 
     public void tickBloomNormal(ItemStack itemStack, Level level, Player player, int animationTimer) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        Options options = Minecraft.getInstance().options;
         if (animationTimer == 1) {
             if (level.isClientSide()) {
                 data.putFloat(INITIAL_VIEW_ANGLE, player.getXRot());
-                data.putInt(INITIAL_PERSPECTIVE, Minecraft.getInstance().options.getCameraType().ordinal());
+                data.putInt(INITIAL_PERSPECTIVE, options.getCameraType().ordinal());
             }
         }
 
         if (animationTimer >= 1) {
             player.setXRot(90);
             if (level.isClientSide()) {
-                Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK);
+                options.setCameraType(CameraType.THIRD_PERSON_BACK);
             }
         }
 
@@ -174,7 +176,7 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
                 data.putBoolean(ANIMATION_BEGUN_KEY, false);
                 if (level.isClientSide()) {
                     player.setXRot(data.getFloat(INITIAL_VIEW_ANGLE));
-                    Minecraft.getInstance().options.setCameraType(CameraType.values()[data.getInt(INITIAL_PERSPECTIVE)]);
+                    options.setCameraType(CameraType.values()[data.getInt(INITIAL_PERSPECTIVE)]);
                 }
                 return;
             }
@@ -205,7 +207,7 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
             data.putBoolean(ANIMATION_BEGUN_KEY, false);
             if (level.isClientSide()) {
                 player.setXRot(data.getFloat(INITIAL_VIEW_ANGLE));
-                Minecraft.getInstance().options.setCameraType(CameraType.values()[data.getInt(INITIAL_PERSPECTIVE)]);
+                options.setCameraType(CameraType.values()[data.getInt(INITIAL_PERSPECTIVE)]);
             }
         }
     }
