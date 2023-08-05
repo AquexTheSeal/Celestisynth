@@ -64,5 +64,18 @@
     "sounds": [
       "celestisynth:cs_bling"
     ]
+  },
+  "cs_laser_shoot": {
+    "subtitle": "subtitles.celestisynth.laser_shoot",
+    "sounds": [
+      "celestisynth:rainfall_serenity_shoot-01",
+      "celestisynth:rainfall_serenity_shoot-02",
+      "celestisynth:rainfall_serenity_shoot-03",
+      "celestisynth:rainfall_serenity_shoot-04",
+      "celestisynth:rainfall_serenity_shoot-05",
+      "celestisynth:rainfall_serenity_shoot-06",
+      "celestisynth:rainfall_serenity_shoot-07",
+      "celestisynth:rainfall_serenity_shoot-08"
+    ]
   }
 }
