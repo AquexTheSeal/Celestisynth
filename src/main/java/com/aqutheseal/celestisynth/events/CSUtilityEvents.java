@@ -4,9 +4,9 @@ import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.LivingMixinSupport;
 import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.entities.SkillCastPoltergeistWard;
+import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.item.weapons.BreezebreakerItem;
-import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,8 +37,6 @@ public class CSUtilityEvents {
             cs.onPlayerHurt(event, itemR, itemL);
         }
     }
-
-
 
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {

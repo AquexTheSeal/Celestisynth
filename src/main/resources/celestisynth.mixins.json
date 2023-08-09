@@ -4,7 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "celestisynth.refmap.json",
   "mixins": [
-    "BowItemMixin",
+    "AbstractArrowMixin",
     "InventoryMixin",
     "LivingEntityMixin",
     "PlayerMixin",

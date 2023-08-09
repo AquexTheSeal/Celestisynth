@@ -116,10 +116,19 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
         }
     }
 
+    @Override
+    public void resetExtraValues(ItemStack stack, Player player) {
+        CompoundTag data = stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+        if (player.level.isClientSide()) {
+            player.setXRot(data.getFloat(AquafloraItem.INITIAL_VIEW_ANGLE));
+            Minecraft.getInstance().options.setCameraType(CameraType.values()[data.getInt(AquafloraItem.INITIAL_PERSPECTIVE)]);
+        }
+    }
+
     public void tickNormal(ItemStack itemStack, Level level, Player player, int animationTimer) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         if (animationTimer == 1) {
-            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_PIERCE_START, calculateXLook(player) * 2, 1.3 + (calculateYLook(player) * 3), calculateZLook(player) * 2);
+            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_PIERCE_START, calculateZLook(player) * 4, 0.5 + (calculateYLook(player, 2)), calculateXLook(player) * 4);
             player.playSound(CSSoundRegistry.CS_BLING.get(), 0.15F, 0.5F);
             if (level.isClientSide()) {
                 shakeScreens(player, 15, 5, 0.02F);
@@ -127,7 +136,7 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
         }
         if (animationTimer >= 0 && animationTimer <= 15) {
             player.playSound(CSSoundRegistry.CS_AIR_SWING.get(), 0.25F, 1.3F + level.random.nextFloat());
-            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_STAB, -0.5 + level.random.nextDouble() + calculateXLook(player) * 2, 2.2 + (-0.5 + level.random.nextDouble()) + (calculateYLook(player) * 3), -0.5 + level.random.nextDouble() + calculateZLook(player) * 2);
+            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_STAB, -0.5 + level.random.nextDouble() + calculateXLook(player) * 3, (-0.5 + level.random.nextDouble()) + (0.5 + (calculateYLook(player, 2))), -0.5 + level.random.nextDouble() + calculateZLook(player) * 3);
             List<Entity> entities = iterateEntities(level, createAABB(player.blockPosition().offset(calculateXLook(player) * 4.5, 1 + (calculateYLook(player) * 4.5), calculateZLook(player) * 4.5), 2));
             entities.addAll(iterateEntities(level, createAABB(player.blockPosition().offset(calculateXLook(player) * 3, 1 + (calculateYLook(player) * 3), calculateZLook(player) * 3), 2)));
             entities.addAll(iterateEntities(level, createAABB(player.blockPosition().offset(calculateXLook(player) * 1.5, 1 + (calculateYLook(player) * 1.5), calculateZLook(player) * 1.5), 2)));
@@ -231,7 +240,7 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
             player.setDeltaMovement(player.getDeltaMovement().subtract(calculateXLook(player) * check, 0, calculateZLook(player) * check));
         } else {
             AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_AQUAFLORA_BASH);
-            List<Entity> entities = iterateEntities(level, createAABB(player.blockPosition().offset(calculateXLook(player) * 3, 1 + (calculateYLook(player) * 3), calculateZLook(player) * 3), 3));
+            List<Entity> entities = iterateEntities(level, createAABB(player.blockPosition().offset(calculateXLook(player) * 4, 2 + (calculateYLook(player) * 3), calculateZLook(player) * 4), 3));
             player.playSound(SoundEvents.WITHER_BREAK_BLOCK, 0.7F, 1.5F);
             CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_BASH, calculateXLook(player) * 2, 1.5, calculateZLook(player) * 2);
             for (Entity entityBatch : entities) {

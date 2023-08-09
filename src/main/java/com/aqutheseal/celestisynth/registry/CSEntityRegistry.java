@@ -26,7 +26,7 @@ public class CSEntityRegistry {
     );
 
     public static final RegistryObject<EntityType<UtilRainfallArrow>> RAINFALL_ARROW = ENTITY_TYPES.register("rainfall_arrow", () -> EntityType.Builder.<UtilRainfallArrow>of(UtilRainfallArrow::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build(new ResourceLocation(Celestisynth.MODID, "rainfall_arrow").toString())
+            .sized(0.5F, 0.5F).clientTrackingRange(32).updateInterval(20).build(new ResourceLocation(Celestisynth.MODID, "rainfall_arrow").toString())
     );
 
 }
