@@ -1,13 +1,11 @@
 package com.aqutheseal.celestisynth.entities;
 
 import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
-import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.item.weapons.RainfallSerenityItem;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
 import com.aqutheseal.celestisynth.registry.CSParticleRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -98,16 +96,16 @@ public class UtilRainfallArrow extends AbstractArrow implements IAnimatable {
                                 target.setSecondsOnFire(2);
                             }
                             target.hurt(DamageSource.indirectMagic(this, this.getOwner() != null ? this.getOwner() : null), 2);
+                            target.invulnerableTime = 0;
                         }
                     }
                 }
-                if (pResult instanceof EntityHitResult ehr) {
+                if (pResult instanceof EntityHitResult) {
                     setPierceLevel((byte) (getPierceLevel() + 1));
-                    CSWeapon.disableRunningWeapon(ehr.getEntity());
                 }
                 this.playSound(SoundEvents.ENDER_EYE_DEATH, 1.0F, 1.0F + random.nextFloat());
-                int amount = 90;
-                float expansionMultiplier = 0.35F;
+                int amount = 60;
+                float expansionMultiplier = 0.65F;
                 for (int e = 0; e < amount; e++) {
                     Random random = new Random();
                     double theta = random.nextDouble() * 2 * Math.PI;
@@ -116,7 +114,6 @@ public class UtilRainfallArrow extends AbstractArrow implements IAnimatable {
                     float offY = (float) (Math.sin(phi) * Math.sin(theta)) * expansionMultiplier;
                     float offZ = (float) Math.cos(phi) * expansionMultiplier;
                     CSUtilityFunctions.sendParticles(level, CSParticleRegistry.RAINFALL_ENERGY.get(), hitPos.getX(), hitPos.getY(), hitPos.getZ(), 0, offX, offY, offZ);
-                    CSUtilityFunctions.sendParticles(level, ParticleTypes.CAMPFIRE_COSY_SMOKE, hitPos.getX(), hitPos.getY(), hitPos.getZ(), 0, offX / 3, offY / 6, offZ / 3);
                 }
             }
         }

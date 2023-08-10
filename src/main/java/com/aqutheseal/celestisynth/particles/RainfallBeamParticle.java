@@ -8,18 +8,16 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class RainfallEnergyParticle extends SimpleAnimatedParticle {
-    protected float rotSpeed;
-    protected float startQuadSize;
+public class RainfallBeamParticle extends SimpleAnimatedParticle {
+    private final float rotSpeed;
 
-    RainfallEnergyParticle(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, SpriteSet pSprites) {
+    RainfallBeamParticle(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, SpriteSet pSprites) {
         super(pLevel, pX, pY, pZ, pSprites, 0.0F);
         this.xd = pXSpeed;
         this.yd = pYSpeed;
         this.zd = pZSpeed;
-        this.lifetime = 20;
-        this.rotSpeed = ((float)Math.random() - 0.5F) * 0.3F;
-        this.startQuadSize = 1.5F;
+        this.lifetime = 10;
+        this.rotSpeed = ((float)Math.random() - 0.5F) * 0.5F;
         this.setFadeColor(15916745);
         this.setSpriteFromAge(pSprites);
     }
@@ -27,22 +25,19 @@ public class RainfallEnergyParticle extends SimpleAnimatedParticle {
     @Override
     public void tick() {
         super.tick();
+        float startQuadSize = 1.0F;
         float endQuadSize = 0.0F;
 
         if (this.age < this.lifetime) {
             float progress = (float) this.age / this.lifetime;
             this.quadSize = startQuadSize + progress * (endQuadSize - startQuadSize);
-            changeAlpha(quadSize);
+            this.alpha = Mth.clamp(quadSize, 0, 1.0F);
         } else {
             this.quadSize = endQuadSize;
         }
 
         this.oRoll = this.roll;
         this.roll += (float)Math.PI * this.rotSpeed * 2.0F;
-    }
-
-    public void changeAlpha(float value) {
-        this.alpha = Mth.clamp(value, 0, 1.0F);
     }
 
     @Override
@@ -57,32 +52,14 @@ public class RainfallEnergyParticle extends SimpleAnimatedParticle {
 
     @OnlyIn(Dist.CLIENT)
     public static class Provider implements ParticleProvider<SimpleParticleType> {
-        protected final SpriteSet sprites;
+        private final SpriteSet sprites;
 
         public Provider(SpriteSet pSprites) {
             this.sprites = pSprites;
         }
 
         public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            return new RainfallEnergyParticle(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed, this.sprites);
-        }
-    }
-
-    public static class Small extends RainfallEnergyParticle {
-        Small(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, SpriteSet pSprites) {
-            super(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed, pSprites);
-            this.rotSpeed = ((float)Math.random() - 0.5F) * 0.15F;
-            this.startQuadSize = 0.7F;
-        }
-
-        @OnlyIn(Dist.CLIENT)
-        public static class Provider extends RainfallEnergyParticle.Provider {
-
-            public Provider(SpriteSet pSprites) { super(pSprites); }
-
-            public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-                return new Small(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed, this.sprites);
-            }
+            return new RainfallBeamParticle(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed, this.sprites);
         }
     }
 }

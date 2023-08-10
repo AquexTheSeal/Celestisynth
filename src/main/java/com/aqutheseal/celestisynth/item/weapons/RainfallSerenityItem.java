@@ -82,8 +82,10 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
             float f = getPowerForTime(i);
             if (!((double)f < 0.1D)) {
                 CSEffect.createInstance(player, null, CSEffectTypes.RAINFALL_SHOOT, calculateXLook(player) * 2, 0.5 + (calculateYLook(player, 5) * 1), calculateZLook(player) * 2);
-                player.setDeltaMovement(player.getDeltaMovement().subtract(calculateXLook(player) * 0.5, 0, calculateZLook(player) * 0.5));
-                int amount = 125;
+                if (f == 1.0F) {
+                    player.setDeltaMovement(player.getDeltaMovement().subtract(calculateXLook(player) * 0.5, 0, calculateZLook(player) * 0.5));
+                }
+                int amount = 50;
                 float expansionMultiplier = 0.5F;
                 for (int e = 0; e < amount; e++) {
                     Random random = new Random();
@@ -101,8 +103,8 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
                         angles.add(-15.0F);
                         angles.add(15.0F);
                     } else {
-                        angles.add(-10.0F);
-                        angles.add(10.0F);
+                        angles.add(-45.0F);
+                        angles.add(45.0F);
                     }
                 }
                 for (float angle : angles) {
@@ -148,7 +150,7 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
                     });
                 }
 
-                pLevel.playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundRegistry.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (pLevel.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+                pLevel.playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundRegistry.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 0.7F * f, 1.0F / (pLevel.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
                 player.awardStat(Stats.ITEM_USED.get(this));
             }
