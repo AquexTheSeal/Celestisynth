@@ -20,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSupport {
     @Shadow public abstract Inventory getInventory();
-
     public final String
             SCREENSHAKE_DURATION = "cs.screenShakeDuration",
             SCREENSHAKE_FADEOUTBEGIN = "cs.screenShakeFadeoutStart",

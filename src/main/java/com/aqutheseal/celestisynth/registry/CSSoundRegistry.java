@@ -22,4 +22,6 @@ public class CSSoundRegistry {
     public static final RegistryObject<SoundEvent> CS_WHIRLWIND = SOUND_EVENTS.register("cs_whirlwind", () -> new SoundEvent(new ResourceLocation(Celestisynth.MODID, "cs_whirlwind")));
     public static final RegistryObject<SoundEvent> CS_LOUD_IMPACT = SOUND_EVENTS.register("cs_loud_impact", () -> new SoundEvent(new ResourceLocation(Celestisynth.MODID, "cs_loud_impact")));
     public static final RegistryObject<SoundEvent> CS_BLING = SOUND_EVENTS.register("cs_bling", () -> new SoundEvent(new ResourceLocation(Celestisynth.MODID, "cs_bling")));
+    public static final RegistryObject<SoundEvent> CS_LASER_SHOOT = SOUND_EVENTS.register("cs_laser_shoot", () -> new SoundEvent(new ResourceLocation(Celestisynth.MODID, "cs_laser_shoot")));
+
 }

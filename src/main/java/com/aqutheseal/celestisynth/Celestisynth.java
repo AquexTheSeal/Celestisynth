@@ -2,7 +2,7 @@ package com.aqutheseal.celestisynth;
 
 import com.aqutheseal.celestisynth.animation.CSAnimator;
 import com.aqutheseal.celestisynth.config.CSConfig;
-import com.aqutheseal.celestisynth.events.CSRecipeBookTypeEvent;
+import com.aqutheseal.celestisynth.events.CSRecipeBookTypeEvents;
 import com.aqutheseal.celestisynth.network.CSNetwork;
 import com.aqutheseal.celestisynth.registry.*;
 import com.aqutheseal.celestisynth.registry.datagen.*;
@@ -37,6 +37,7 @@ public class Celestisynth {
         CSEntityRegistry.ENTITY_TYPES.register(modEventBus);
         CSItemRegistry.ITEMS.register(modEventBus);
         CSBlockRegistry.BLOCKS.register(modEventBus);
+        CSParticleRegistry.PARTICLE_TYPES.register(modEventBus);
         CSBlockRegistry.TILE_ENTITIES.register(modEventBus);
         CSSoundRegistry.SOUND_EVENTS.register(modEventBus);
         CSFeatureRegistry.FEATURES.register(modEventBus);
@@ -63,8 +64,8 @@ public class Celestisynth {
     }
 
     private void registerRecipeBookType(IEventBus modEventBus) {
-        CSRecipeBookTypeEvent.staticInit();
-        modEventBus.addListener(CSRecipeBookTypeEvent::registerEvent);
+        CSRecipeBookTypeEvents.staticInit();
+        modEventBus.addListener(CSRecipeBookTypeEvents::registerEvent);
     }
 
     private void gatherData(final GatherDataEvent event) {

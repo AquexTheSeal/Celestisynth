@@ -1,25 +1,20 @@
 package com.aqutheseal.celestisynth.item.helpers;
 
 import com.aqutheseal.celestisynth.animation.AnimationManager;
-import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.network.CSNetwork;
 import com.aqutheseal.celestisynth.network.util.ShakeScreenServerPacket;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
-import net.minecraft.client.CameraType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -30,8 +25,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public interface CSWeapon {
 
@@ -58,6 +56,21 @@ public interface CSWeapon {
 
     default boolean hasPassive() {
         return false;
+    }
+
+    static void disableRunningWeapon(Entity entity) {
+        if (entity instanceof Player player) {
+            AnimationManager.playAnimation(entity.level, AnimationManager.AnimationsList.CLEAR);
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (player.getItemBySlot(slot).getItem() instanceof CSWeapon cs) {
+                    CompoundTag data = player.getItemBySlot(slot).getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+                    CompoundTag dataAlt = player.getItemBySlot(slot).getOrCreateTagElement(CSWeapon.CS_EXTRAS_ELEMENT);
+                    data.getAllKeys().clear();
+                    dataAlt.getAllKeys().clear();
+                    cs.resetExtraValues(player.getItemBySlot(slot), player);
+                }
+            }
+        }
     }
 
     default void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
@@ -145,24 +158,7 @@ public interface CSWeapon {
         return weapon.isInstance(player.getMainHandItem().getItem()) && (weapon.isInstance(player.getOffhandItem().getItem()));
     }
 
-    static void disableRunningWeapon(Entity entity) {
-        if (entity instanceof Player player) {
-            AnimationManager.playAnimation(entity.level, AnimationManager.AnimationsList.CLEAR);
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if (player.getItemBySlot(slot).getItem() instanceof CSWeapon) {
-                    CompoundTag data = player.getItemBySlot(slot).getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-                    CompoundTag dataAlt = player.getItemBySlot(slot).getOrCreateTagElement(CSWeapon.CS_EXTRAS_ELEMENT);
-                    data.getAllKeys().clear();
-                    dataAlt.getAllKeys().clear();
-                    if (player.getItemBySlot(slot).getItem() instanceof AquafloraItem) {
-                        if (player.level.isClientSide()) {
-                            player.setXRot(data.getFloat(AquafloraItem.INITIAL_VIEW_ANGLE));
-                            Minecraft.getInstance().options.setCameraType(CameraType.values()[data.getInt(AquafloraItem.INITIAL_PERSPECTIVE)]);
-                        }
-                    }
-                }
-            }
-        }
+    default void resetExtraValues(ItemStack stack, Player player) {
     }
 
     default Entity getLookAtEntity(Player player, double range) {
@@ -171,7 +167,7 @@ public interface CSWeapon {
         Vec3 vec1 = player.getViewVector(1);
         Vec3 targetVec = vec.add(vec1.x * range, vec1.y * range, vec1.z * range);
         AABB aabb = player.getBoundingBox().expandTowards(vec1.scale(range)).inflate(4.0D, 4.0D, 4.0D);
-        EntityHitResult result = ProjectileUtil.getEntityHitResult(player, vec, targetVec, aabb,(entity) -> !entity.isSpectator(), distance);
+        EntityHitResult result = expandedHitResult(player, vec, targetVec, aabb, (entity) -> !entity.isSpectator(), distance);
         return result != null ? result.getEntity() : null;
     }
 
@@ -191,14 +187,60 @@ public interface CSWeapon {
     }
 
     default double calculateXLook(Player player) {
-        return -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
+        return player.getLookAngle().x();
+    }
+
+    default double calculateYLook(Player player, double yMult) {
+        double y = player.getLookAngle().y();
+        if (y > 0) {
+            return y * yMult;
+        } else {
+            return y * 0.5;
+        }
     }
 
     default double calculateYLook(Player player) {
-        return -Mth.sin(player.getXRot() * ((float) Math.PI / 180F));
+        return player.getLookAngle().y();
     }
 
     default double calculateZLook(Player player) {
-        return Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
+        return player.getLookAngle().z();
+    }
+
+    @Nullable
+    public static EntityHitResult expandedHitResult(Entity pShooter, Vec3 pStartVec, Vec3 pEndVec, AABB pBoundingBox, Predicate<Entity> pFilter, double pDistance) {
+        Level level = pShooter.level;
+        double d0 = pDistance;
+        Entity entity = null;
+        Vec3 vec3 = null;
+
+        for(Entity entity1 : level.getEntities(pShooter, pBoundingBox, pFilter)) {
+            AABB aabb = entity1.getBoundingBox().inflate((double)entity1.getPickRadius() + 1.5);
+            Optional<Vec3> optional = aabb.clip(pStartVec, pEndVec);
+            if (aabb.contains(pStartVec)) {
+                if (d0 >= 0.0D) {
+                    entity = entity1;
+                    vec3 = optional.orElse(pStartVec);
+                    d0 = 0.0D;
+                }
+            } else if (optional.isPresent()) {
+                Vec3 vec31 = optional.get();
+                double d1 = pStartVec.distanceToSqr(vec31);
+                if (d1 < d0 || d0 == 0.0D) {
+                    if (entity1.getRootVehicle() == pShooter.getRootVehicle() && !entity1.canRiderInteract()) {
+                        if (d0 == 0.0D) {
+                            entity = entity1;
+                            vec3 = vec31;
+                        }
+                    } else {
+                        entity = entity1;
+                        vec3 = vec31;
+                        d0 = d1;
+                    }
+                }
+            }
+        }
+
+        return entity == null ? null : new EntityHitResult(entity, vec3);
     }
 }

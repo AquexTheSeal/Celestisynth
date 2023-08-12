@@ -3,7 +3,6 @@ package com.aqutheseal.celestisynth.events;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
 import com.aqutheseal.celestisynth.registry.CSRecipeRegistry;
 import net.minecraft.client.RecipeBookCategories;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
@@ -11,14 +10,9 @@ import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
 import java.util.List;
 
 /**
- * Attempt 1 to fix server sync problem
- *
- * @see net.minecraft.stats.RecipeBookSettings#read(FriendlyByteBuf)
- * @see net.minecraft.stats.RecipeBookSettings#write(FriendlyByteBuf)
- *
  * @author KhanhTypo
  */
-public final class CSRecipeBookTypeEvent {
+public final class CSRecipeBookTypeEvents {
     public static final RecipeBookType CELESTIAL_CRAFTING = RecipeBookType.create("celestial_crafting");
 
     /**
@@ -35,8 +29,8 @@ public final class CSRecipeBookTypeEvent {
     }
 
     /**
-     * The static constants above must be called and assigned in both client and server side. Therefore, add the event listener above in the lamba
-     * expression will ONLY makes both the static constants and the method be called IN CLIENT, but in server : this entier class, including methods and
+     * The static constants above must be called and assigned in both client and server side. Therefore, add the event listener above in the lambda
+     * expression will ONLY make both the static constants and the method be called IN CLIENT, but in server : this entire class, including methods and
      * static constants will be ignored -> sided mismatch -> server sync failed
      */
     public static void staticInit() {}

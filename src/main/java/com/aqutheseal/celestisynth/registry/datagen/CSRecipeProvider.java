@@ -91,7 +91,7 @@ public class CSRecipeProvider extends RecipeProvider {
                 .define('z', Ingredient.of(CSBlockRegistry.ZEPHYR_DEPOSIT.get()))
                 .define('n', Ingredient.of(CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get()))
                 .define('i', Ingredient.of(CSItemRegistry.CELESTIAL_CORE_HEATED.get()))
-                .unlockedBy("has_item", has(CSBlockRegistry.LUNAR_STONE.get()))
+                .unlockedBy("has_item", has(CSBlockRegistry.ZEPHYR_DEPOSIT.get()))
                 .save(consumer, "breezebreaker");
 
         CelestialShapedRecipeBuilder.shaped(CSItemRegistry.POLTERGEIST.get())

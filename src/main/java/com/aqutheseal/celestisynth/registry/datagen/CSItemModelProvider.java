@@ -28,10 +28,10 @@ public class CSItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         excemptions.add(CSItemRegistry.SOLARIS);
         excemptions.add(CSItemRegistry.CRESCENTIA);
+        excemptions.add(CSItemRegistry.BREEZEBREAKER);
 
         this.defaultItem(CSItemRegistry.ITEMS.getEntries());
 
-        this.csCustomModel(CSItemRegistry.BREEZEBREAKER, getCSLoc("item/long_blade"));
         this.csSinglePredicatedModel(CSItemRegistry.POLTERGEIST, "item/large_axe", csLoc("haunted"), "item/large_axe");
         this.csSinglePredicatedModel(CSItemRegistry.AQUAFLORA, "item/long_blade", csLoc("blooming"), "item/long_blade");
 

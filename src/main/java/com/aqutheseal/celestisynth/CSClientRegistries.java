@@ -3,9 +3,11 @@ package com.aqutheseal.celestisynth;
 import com.aqutheseal.celestisynth.block.render.CelestialCraftingTableTileRenderer;
 import com.aqutheseal.celestisynth.entities.renderer.CSEffectRenderer;
 import com.aqutheseal.celestisynth.entities.renderer.NullRenderer;
+import com.aqutheseal.celestisynth.entities.renderer.RainfallArrowRenderer;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.item.weapons.PoltergeistItem;
+import com.aqutheseal.celestisynth.item.weapons.RainfallSerenityItem;
 import com.aqutheseal.celestisynth.item.weapons.SolarisItem;
 import com.aqutheseal.celestisynth.recipe.CelestialCraftingScreen;
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
@@ -31,6 +33,8 @@ public class CSClientRegistries {
         event.registerEntityRenderer(CSEntityRegistry.BREEZEBREAKER_TORNADO.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityRegistry.POLTERGEIST_WARD.get(), NullRenderer::new);
 
+        event.registerEntityRenderer(CSEntityRegistry.RAINFALL_ARROW.get(), RainfallArrowRenderer::new);
+
         event.registerBlockEntityRenderer(CSBlockRegistry.CELESTIAL_CRAFTING_TABLE_TILE.get(), CelestialCraftingTableTileRenderer::new);
     }
 
@@ -46,6 +50,16 @@ public class CSClientRegistries {
             ItemProperties.register(CSItemRegistry.AQUAFLORA.get(),
                     new ResourceLocation(Celestisynth.MODID, "blooming"), (stack, level, living, id) ->
                             living != null && stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(AquafloraItem.CHECK_PASSIVE) ? 1.0F : 0.0F);
+
+            ItemProperties.register(CSItemRegistry.RAINFALL_SERENITY.get(), new ResourceLocation("pull"), (stack, level, living, id) -> {
+                if (living == null) {
+                    return 0.0F;
+                } else {
+                    return living.getUseItem() != stack ? 0.0F : (float)(stack.getUseDuration() - living.getUseItemRemainingTicks()) / RainfallSerenityItem.SPEED;
+                }
+            });
+            ItemProperties.register(CSItemRegistry.RAINFALL_SERENITY.get(), new ResourceLocation("pulling"), (stack, level, living, id) ->
+                    living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0F : 0.0F);
 
             MenuScreens.register(CSRecipeRegistry.CELESTIAL_CRAFTING.get(), CelestialCraftingScreen::new);
         });

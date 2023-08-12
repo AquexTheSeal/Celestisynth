@@ -1,10 +1,7 @@
 package com.aqutheseal.celestisynth.registry;
 
 import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.entities.SkillCastBreezebreakerTornado;
-import com.aqutheseal.celestisynth.entities.CSEffect;
-import com.aqutheseal.celestisynth.entities.SkillCastCrescentiaRanged;
-import com.aqutheseal.celestisynth.entities.SkillCastPoltergeistWard;
+import com.aqutheseal.celestisynth.entities.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -27,4 +24,9 @@ public class CSEntityRegistry {
     public static final RegistryObject<EntityType<SkillCastPoltergeistWard>> POLTERGEIST_WARD = ENTITY_TYPES.register("poltergeist_ward", () -> EntityType.Builder.of(SkillCastPoltergeistWard::new, MobCategory.MISC)
             .sized(0.5F, 0.5F).clientTrackingRange(16).build(new ResourceLocation(Celestisynth.MODID, "poltergeist_ward").toString())
     );
+
+    public static final RegistryObject<EntityType<UtilRainfallArrow>> RAINFALL_ARROW = ENTITY_TYPES.register("rainfall_arrow", () -> EntityType.Builder.<UtilRainfallArrow>of(UtilRainfallArrow::new, MobCategory.MISC)
+            .sized(0.5F, 0.5F).clientTrackingRange(32).updateInterval(20).build(new ResourceLocation(Celestisynth.MODID, "rainfall_arrow").toString())
+    );
+
 }

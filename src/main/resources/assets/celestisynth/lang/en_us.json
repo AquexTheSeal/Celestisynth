@@ -123,6 +123,10 @@
   "item.celestisynth.aquaflora.condition_4": "Activate: Right-click while holding SHIFT during Blooming State",
   "item.celestisynth.aquaflora.desc_4": "The player executes a backward dash, leaving a floral effect that draws nearby entities toward it. This ability deactivates the Blooming State, resulting in a modification of the weapon's skill set.",
 
+  "------------------- RAINFALL_SERENITY ------------------":  "",
+
+  "item.celestisynth.rainfall_serenity": "Rainfall Serenity",
+
   "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ADVANCEMENTS [NON-WEAPONS] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>":  "",
 
   "advancements.celestisynth.obtained_core.title": "Onto a Majestic Journey!",

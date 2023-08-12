@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.recipe;
 
-import com.aqutheseal.celestisynth.events.CSRecipeBookTypeEvent;
+import com.aqutheseal.celestisynth.events.CSRecipeBookTypeEvents;
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.aqutheseal.celestisynth.registry.CSRecipeRegistry;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
@@ -182,7 +182,7 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
     }
 
     public RecipeBookType getRecipeBookType() {
-        return CSRecipeBookTypeEvent.CELESTIAL_CRAFTING;
+        return CSRecipeBookTypeEvents.CELESTIAL_CRAFTING;
     }
 
     public boolean shouldMoveToInventory(int pSlotIndex) {
