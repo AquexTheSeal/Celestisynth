@@ -18,14 +18,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCraftingMenu> implements RecipeUpdateListener {
-
     private static final ResourceLocation CRAFTING_TABLE_LOCATION = new ResourceLocation(Celestisynth.MODID, "textures/gui/celestial_crafting_table.png");
     private static final ResourceLocation RECIPE_BUTTON_LOCATION = new ResourceLocation(Celestisynth.MODID, "textures/gui/celestial_recipe_button.png");
     private final RecipeBookComponent recipeBookComponent = new RecipeBookComponent();
     private boolean widthTooNarrow;
 
     public CelestialCraftingScreen(CelestialCraftingMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, Component.translatable("gui." + Celestisynth.MODID + ".celestial_crafting"));
+        super(pMenu, pPlayerInventory, pTitle);
     }
 
     protected void init() {
@@ -36,7 +35,7 @@ public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCr
         this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, RECIPE_BUTTON_LOCATION, (p_98484_) -> {
             this.recipeBookComponent.toggleVisibility();
             this.leftPos = this.recipeBookComponent.updateScreenPosition(this.width, this.imageWidth);
-            ((ImageButton)p_98484_).setPosition(this.leftPos + 5, this.height / 2 - 49);
+            ((ImageButton) p_98484_).setPosition(this.leftPos + 5, this.height / 2 - 49);
         }));
         this.addWidget(this.recipeBookComponent);
         this.setInitialFocus(this.recipeBookComponent);
@@ -67,9 +66,31 @@ public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCr
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, CRAFTING_TABLE_LOCATION);
-        int i = this.leftPos;
-        int j = (this.height - this.imageHeight) / 2;
-        this.blit(pPoseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        //int i = //this.leftPos;
+        //int j = //(this.height - this.imageHeight) / 2;
+        this.blit(pPoseStack, super.leftPos, super.topPos, 0, 0, this.imageWidth, this.imageHeight);
+
+        //EXPERIMENTAL FEATURE - Currently only support Minecraft default Latin/English alphabet / font with NO Forced Unicode Mode
+
+        //calculating top left of the label
+        final int topLeftX = super.leftPos + super.titleLabelX - 6;
+        final int topLeftY = super.topPos + super.titleLabelY - 4;
+
+        //calculating text length
+        final int stringWidth = super.font.width(super.title);
+
+        //calculating top right of the label
+        final int topRightX = topLeftX + 9 + stringWidth;
+
+        //render text border left
+        super.blit(pPoseStack, topLeftX, topLeftY, 176, 0, 3, 14);
+
+        //render text border
+        //blit(pPoseStack, super.leftPos + super.titleLabelX, super.topPos + super.titleLabelY, 180, 0, 1, 14, stringWidth, 14);
+        super.blit(pPoseStack, topLeftX + 3, topLeftY, 0, 205, stringWidth + 6, 14);
+
+        //render text border right
+        super.blit(pPoseStack, topRightX, topLeftY, 182, 0, 3, 14);
     }
 
     protected boolean isHovering(int pX, int pY, int pWidth, int pHeight, double pMouseX, double pMouseY) {
@@ -86,7 +107,7 @@ public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCr
     }
 
     protected boolean hasClickedOutside(double pMouseX, double pMouseY, int pGuiLeft, int pGuiTop, int pMouseButton) {
-        boolean flag = pMouseX < (double)pGuiLeft || pMouseY < (double)pGuiTop || pMouseX >= (double)(pGuiLeft + this.imageWidth) || pMouseY >= (double)(pGuiTop + this.imageHeight);
+        boolean flag = pMouseX < (double) pGuiLeft || pMouseY < (double) pGuiTop || pMouseX >= (double) (pGuiLeft + this.imageWidth) || pMouseY >= (double) (pGuiTop + this.imageHeight);
         return this.recipeBookComponent.hasClickedOutside(pMouseX, pMouseY, this.leftPos, this.topPos, this.imageWidth, this.imageHeight, pMouseButton) && flag;
     }
 
@@ -101,7 +122,7 @@ public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCr
 
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        this.font.draw(pPoseStack, this.title, (float)this.titleLabelX, (float)this.titleLabelY, 0);
+        this.font.draw(pPoseStack, this.title, (float) this.titleLabelX, (float) this.titleLabelY, 0);
     }
 
     public void removed() {
