@@ -40,6 +40,7 @@ public class CSCommonRegistries {
     @SubscribeEvent
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
         event.register(CSParticleRegistry.RAINFALL_BEAM.get(), RainfallBeamParticle.Provider::new);
+        event.register(CSParticleRegistry.RAINFALL_BEAM_QUASAR.get(), RainfallBeamParticle.Quasar.Provider::new);
         event.register(CSParticleRegistry.RAINFALL_ENERGY.get(), RainfallEnergyParticle.Provider::new);
         event.register(CSParticleRegistry.RAINFALL_ENERGY_SMALL.get(), RainfallEnergyParticle.Small.Provider::new);
     }

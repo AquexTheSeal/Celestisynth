@@ -1,16 +1,20 @@
 package com.aqutheseal.celestisynth.entities;
 
+import com.aqutheseal.celestisynth.Celestisynth;
+import com.aqutheseal.celestisynth.LivingMixinSupport;
 import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
 import com.aqutheseal.celestisynth.item.weapons.RainfallSerenityItem;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
 import com.aqutheseal.celestisynth.registry.CSParticleRegistry;
+import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -40,6 +44,7 @@ public class UtilRainfallArrow extends AbstractArrow implements IAnimatable {
     private static final EntityDataAccessor<Boolean> IS_STRONG = SynchedEntityData.defineId(UtilRainfallArrow.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_FLAMING = SynchedEntityData.defineId(UtilRainfallArrow.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<BlockPos> ORIGIN = SynchedEntityData.defineId(UtilRainfallArrow.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Boolean> SHOULD_IMBUE_QUASAR = SynchedEntityData.defineId(UtilRainfallArrow.class, EntityDataSerializers.BOOLEAN);
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private final RainfallSerenityItem rawRainfallItem = (RainfallSerenityItem) CSItemRegistry.RAINFALL_SERENITY.get();
 
@@ -55,27 +60,33 @@ public class UtilRainfallArrow extends AbstractArrow implements IAnimatable {
         super(CSEntityRegistry.RAINFALL_ARROW.get(), pShooter, pLevel);
     }
 
+    public void createLaser(Vec3 from, Vec3 to, boolean isMainArrow, boolean strictLoading) {
+        double distance = from.distanceTo(to);
+        Vec3 direction = to.subtract(from).normalize();
+        for (double i = 0; i <= distance; i += 0.1) {
+            Vec3 particlePos = from.add(direction.scale(i));
+            if (strictLoading) {
+                if (!level.isLoaded(new BlockPos(particlePos))) {
+                    return;
+                }
+            }
+            var particle = isMainArrow ? CSParticleRegistry.RAINFALL_BEAM.get() : CSParticleRegistry.RAINFALL_BEAM_QUASAR.get();
+            CSUtilityFunctions.sendParticles(level, particle, particlePos.x, particlePos.y, particlePos.z, 1, 0, 0, 0);
+        }
+    }
+
     @Override
     public void tick() {
         super.tick();
-
         if (isStrong()) {
-            if (tickCount == 2) {
+            if (tickCount == 1) {
                 Vec3 from = new Vec3(getOrigin().getX(), getOrigin().getY(), getOrigin().getZ());
                 Vec3 to = new Vec3(getX(), getY(), getZ());
-                double distance = from.distanceTo(to);
-                Vec3 direction = to.subtract(from).normalize();
-                for (double i = 0; i <= distance; i += 0.1) {
-                    Vec3 particlePos = from.add(direction.scale(i));
-
-                    if (!shouldRenderAtSqrDistance(distance)) return;
-
-                    CSUtilityFunctions.sendParticles(level, CSParticleRegistry.RAINFALL_BEAM.get(), particlePos.x, particlePos.y, particlePos.z, 1, 0, 0, 0);
-                }
+                createLaser(from, to, true, true);
             }
         }
 
-        if (tickCount > 2) {
+        if (tickCount > 1) {
             this.remove(RemovalReason.DISCARDED);
         }
     }
@@ -100,8 +111,43 @@ public class UtilRainfallArrow extends AbstractArrow implements IAnimatable {
                         }
                     }
                 }
-                if (pResult instanceof EntityHitResult) {
+                if (pResult instanceof EntityHitResult ehr) {
                     setPierceLevel((byte) (getPierceLevel() + 1));
+                    for (Entity imbueSource : rawRainfallItem.iterateEntities(level, rawRainfallItem.createAABB(hitPos, 24))) {
+                        if (imbueSource instanceof LivingMixinSupport lms && getOwner() instanceof Player player && lms.getQuasarImbued() != null) {
+                            Vec3 from = new Vec3(imbueSource.getX(), imbueSource.getY() + 1.5, imbueSource.getZ());
+                            Vec3 to = new Vec3(ehr.getEntity().getX(), ehr.getEntity().getY() + 1.5F, ehr.getEntity().getZ());
+                            createLaser(from, to, false, false);
+
+                            if (!level.isClientSide()) {
+                                UtilRainfallArrow rainfallArrow = new UtilRainfallArrow(level, player);
+                                rainfallArrow.setOwner(player);
+                                rainfallArrow.moveTo(imbueSource.position());
+                                rainfallArrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                                rainfallArrow.setOrigin(new BlockPos(imbueSource.getX(), imbueSource.getY() + 1.5, imbueSource.getZ()));
+                                rainfallArrow.setPierceLevel((byte) 3);
+                                rainfallArrow.setBaseDamage(getBaseDamage() / 2);
+                                rainfallArrow.setImbueQuasar(false);
+
+                                double d0 = ehr.getEntity().getY() + (double) 1.5F;
+                                double d1 = ehr.getEntity().getX() - imbueSource.getX();
+                                double d2 = d0 - imbueSource.getY() + 1.5F;
+                                double d3 = ehr.getEntity().getZ() - imbueSource.getZ();
+                                rainfallArrow.shoot(d1, d2, d3, 3.0F, 0);
+                                if (level.addFreshEntity(rainfallArrow)) {
+                                    Celestisynth.LOGGER.info("Created Arrow!");
+                                }
+                            }
+
+                            level.playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundRegistry.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 0.7f, 2.0F);
+                            lms.setQuasarImbued(null);
+                        }
+                    }
+                    if (isImbueQuasar() && getOwner() instanceof Player player) {
+                        if (ehr.getEntity() instanceof LivingMixinSupport lms) {
+                            lms.setQuasarImbued(player);
+                        }
+                    }
                 }
                 this.playSound(SoundEvents.ENDER_EYE_DEATH, 1.0F, 1.0F + random.nextFloat());
                 int amount = 60;
@@ -147,6 +193,7 @@ public class UtilRainfallArrow extends AbstractArrow implements IAnimatable {
         this.entityData.define(IS_STRONG, false);
         this.entityData.define(IS_FLAMING, false);
         this.entityData.define(ORIGIN, BlockPos.ZERO);
+        this.entityData.define(SHOULD_IMBUE_QUASAR, false);
     }
 
     public boolean isStrong() {
@@ -171,6 +218,14 @@ public class UtilRainfallArrow extends AbstractArrow implements IAnimatable {
 
     public void setOrigin(BlockPos origin) {
         this.entityData.set(ORIGIN, origin);
+    }
+
+    public boolean isImbueQuasar() {
+        return this.entityData.get(SHOULD_IMBUE_QUASAR);
+    }
+
+    public void setImbueQuasar(boolean imbueAllow) {
+        this.entityData.set(SHOULD_IMBUE_QUASAR, imbueAllow);
     }
 
     @Override

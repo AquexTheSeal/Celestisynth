@@ -55,20 +55,20 @@ public class CrescentiaItem extends SwordItem implements CSWeapon {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand interactionHand) {
         ItemStack itemstack = player.getItemInHand(interactionHand);
-        CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
-        if (!player.getCooldowns().isOnCooldown(itemstack.getItem()) && !itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
-            itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
-            itemTag.putBoolean(IS_RANGED_KEY, player.isShiftKeyDown());
+        if (!player.getCooldowns().isOnCooldown(itemstack.getItem()) && !data.getBoolean(ANIMATION_BEGUN_KEY)) {
+            data.putBoolean(ANIMATION_BEGUN_KEY, true);
+            data.putBoolean(IS_RANGED_KEY, player.isShiftKeyDown());
             if (level.isClientSide()) {
-                if (itemTag.getBoolean(IS_RANGED_KEY)) {
+                if (data.getBoolean(IS_RANGED_KEY)) {
                     AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_CRESCENTIA_THROW);
                 } else {
                     AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_CRESCENTIA_STRIKE);
                 }
             }
             useAndDamageItem(itemstack, level, player, 4);
-            player.getCooldowns().addCooldown(itemstack.getItem(), itemTag.getBoolean(IS_RANGED_KEY) ? CSConfig.COMMON.crescentiaShiftSkillCD.get() : CSConfig.COMMON.crescentiaSkillCD.get());
+            player.getCooldowns().addCooldown(itemstack.getItem(), data.getBoolean(IS_RANGED_KEY) ? CSConfig.COMMON.crescentiaShiftSkillCD.get() : CSConfig.COMMON.crescentiaSkillCD.get());
         }
         return InteractionResultHolder.success(itemstack);
     }

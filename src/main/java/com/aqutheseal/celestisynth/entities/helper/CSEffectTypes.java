@@ -250,7 +250,9 @@ public enum CSEffectTypes {
         switch (animatable.getEffectType()) {
             case CRESCENTIA_STRIKE, CRESCENTIA_STRIKE_INVERTED, CRESCENTIA_THROW, CRESCENTIA_THROW_INVERTED, BREEZEBREAKER_SLASH, BREEZEBREAKER_SLASH_INVERTED ->
                     poseStack.mulPose(Vector3f.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
-            case AQUAFLORA_PIERCE_START, AQUAFLORA_STAB, RAINFALL_SHOOT ->
+            case AQUAFLORA_PIERCE_START, AQUAFLORA_STAB ->
+                    poseStack.mulPose(Vector3f.XP.rotationDegrees(180f + lerpBodyRot));
+            case RAINFALL_SHOOT ->
                     poseStack.mulPose(Vector3f.XP.rotationDegrees(180f + lerpBodyRot - 15f));
             default -> {
             }

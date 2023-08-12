@@ -23,7 +23,11 @@ import java.util.UUID;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingMixinSupport {
     private static final EntityDataAccessor<Optional<UUID>> PHANTOM_TAG_BY = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> QUASAR_IMBUED_BY = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Integer> QUASAR_TARGET = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.INT);
     public int tagTimer;
+    public int quasarTimer;
+    public int quasarTargetTimer;
 
     public LivingEntityMixin(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -36,35 +40,32 @@ public abstract class LivingEntityMixin extends Entity implements LivingMixinSup
         } else {
             setPhantomTagger(null);
         }
+        if (quasarTimer > 0) {
+            quasarTimer--;
+        } else {
+            setQuasarImbued(null);
+        }
     }
 
     @Inject(method = "defineSynchedData", at = @At(value = "HEAD"))
     public void defineSynchedData(CallbackInfo ci) {
         this.entityData.define(PHANTOM_TAG_BY, Optional.empty());
+        this.entityData.define(QUASAR_IMBUED_BY, Optional.empty());
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At(value = "HEAD"))
     protected void readAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
-        UUID uuid;
-        if (tag.hasUUID("Owner")) {
-            uuid = tag.getUUID("Owner");
-        } else {
-            String s = tag.getString("Owner");
-            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
-        }
-        if (uuid != null) {
-            try {
-                this.setPhantomTagFrom(uuid);
-            } catch (Throwable throwable) {
-                throw new IllegalStateException("...Phantom Tag got no goddamn owner.");
-            }
-        }
+        readTag(tag, "PhantomTag", PHANTOM_TAG_BY);
+        readTag(tag, "QuasarImbued", QUASAR_IMBUED_BY);
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At(value = "HEAD"))
     protected void addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
         if (this.getPhantomTagFrom() != null) {
-            tag.putUUID("Owner", getPhantomTagFrom());
+            tag.putUUID("QuasarImbued", getPhantomTagFrom());
+        }
+        if (this.getQuasarImbuedFrom() != null) {
+            tag.putUUID("QuasarImbued", getQuasarImbuedFrom());
         }
     }
 
@@ -92,5 +93,48 @@ public abstract class LivingEntityMixin extends Entity implements LivingMixinSup
     @Nullable
     public UUID getPhantomTagFrom() {
         return this.entityData.get(PHANTOM_TAG_BY).orElse(null);
+    }
+
+    public @Nullable Player getQuasarImbued() {
+        if (getQuasarImbuedFrom() != null) {
+            return level.getPlayerByUUID(getQuasarImbuedFrom());
+        } else {
+            return null;
+        }
+    }
+
+    public void setQuasarImbued(@Nullable Player imbuedTo) {
+        if (imbuedTo != null) {
+            setQuasarImbuedFrom(imbuedTo.getUUID());
+        } else {
+            setQuasarImbuedFrom(null);
+        }
+    }
+
+    public void setQuasarImbuedFrom(@Nullable UUID imbuedFrom) {
+        this.entityData.set(QUASAR_IMBUED_BY, Optional.ofNullable(imbuedFrom));
+        quasarTimer = 60;
+    }
+
+    @Nullable
+    public UUID getQuasarImbuedFrom() {
+        return this.entityData.get(QUASAR_IMBUED_BY).orElse(null);
+    }
+
+    private void readTag(CompoundTag tag, String tagName, EntityDataAccessor<Optional<UUID>> data) {
+        UUID uuid;
+        if (tag.hasUUID(tagName)) {
+            uuid = tag.getUUID(tagName);
+        } else {
+            String s = tag.getString(tagName);
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+        }
+        if (uuid != null) {
+            try {
+                this.entityData.set(data, Optional.ofNullable(uuid));
+            } catch (Throwable throwable) {
+                throw new IllegalStateException("..." + tagName + " got no goddamn owner.");
+            }
+        }
     }
 }

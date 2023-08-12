@@ -66,23 +66,23 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
 
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
-        if (!player.getCooldowns().isOnCooldown(itemstack.getItem()) && !itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
+        if (!player.getCooldowns().isOnCooldown(itemstack.getItem()) && !data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (player.isShiftKeyDown() && player.isOnGround()) {
                 boolean isMainHandBreezebreaker = player.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof BreezebreakerItem;
                 boolean isOffHandBreezebreaker = player.getItemBySlot(EquipmentSlot.OFFHAND).getItem() instanceof BreezebreakerItem;
 
-                itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
+                data.putBoolean(ANIMATION_BEGUN_KEY, true);
                 addComboPoint(itemstack, player);
-                itemTag.putInt(ATTACK_INDEX, ATTACK_SHIFT);
+                data.putInt(ATTACK_INDEX, ATTACK_SHIFT);
 
                 if (hand == InteractionHand.MAIN_HAND && !isOffHandBreezebreaker) {
                     AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_RIGHT);
-                    itemTag.putBoolean(IS_SHIFT_RIGHT, true);
+                    data.putBoolean(IS_SHIFT_RIGHT, true);
                 } else if (hand == InteractionHand.OFF_HAND && !isMainHandBreezebreaker) {
                     AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_LEFT);
-                    itemTag.putBoolean(IS_SHIFT_RIGHT, false);
+                    data.putBoolean(IS_SHIFT_RIGHT, false);
                 } else if (isMainHandBreezebreaker || isOffHandBreezebreaker) {
                     boolean shouldShiftRight = level.random.nextBoolean();
                     if (shouldShiftRight) {
@@ -90,25 +90,25 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
                     } else {
                         AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_LEFT);
                     }
-                    itemTag.putBoolean(IS_SHIFT_RIGHT, shouldShiftRight);
+                    data.putBoolean(IS_SHIFT_RIGHT, shouldShiftRight);
                 }
                 useAndDamageItem(itemstack, level, player, 3);
                 player.getCooldowns().addCooldown(itemstack.getItem(), buffStateModified(itemstack, CSConfig.COMMON.breezebreakerShiftSkillCD.get()));
                 return InteractionResultHolder.success(itemstack);
             }
             if (player.isSprinting() && player.isOnGround()) {
-                itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
+                data.putBoolean(ANIMATION_BEGUN_KEY, true);
                 addComboPoint(itemstack, player);
-                itemTag.putInt(ATTACK_INDEX, ATTACK_SPRINT);
+                data.putInt(ATTACK_INDEX, ATTACK_SPRINT);
                 AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SPRINT_ATTACK);
                 useAndDamageItem(itemstack, level, player, 5);
                 player.getCooldowns().addCooldown(itemstack.getItem(), buffStateModified(itemstack, CSConfig.COMMON.breezebreakerSprintSkillCD.get()));
                 return InteractionResultHolder.success(itemstack);
             }
             if (!player.isOnGround()) {
-                itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
+                data.putBoolean(ANIMATION_BEGUN_KEY, true);
                 addComboPoint(itemstack, player);
-                itemTag.putInt(ATTACK_INDEX, ATTACK_MIDAIR);
+                data.putInt(ATTACK_INDEX, ATTACK_MIDAIR);
                 AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_JUMP_ATTACK);
                 useAndDamageItem(itemstack, level, player, 2);
                 player.getCooldowns().addCooldown(itemstack.getItem(), buffStateModified(itemstack, CSConfig.COMMON.breezebreakerMidairSkillCD.get()));
@@ -116,7 +116,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
             }
         }
 
-        if (player.getCooldowns().isOnCooldown(itemstack.getItem()) || itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
+        if (player.getCooldowns().isOnCooldown(itemstack.getItem()) || data.getBoolean(ANIMATION_BEGUN_KEY)) {
             return InteractionResultHolder.fail(itemstack);
         } else {
             player.startUsingItem(hand);
@@ -125,24 +125,24 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
     }
 
     public void releaseUsing(ItemStack itemstack, @NotNull Level level, @NotNull LivingEntity entity, int i) {
-        CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
         if (entity instanceof Player player) {
             int dur = this.getUseDuration(itemstack) - i;
             if (dur >= 0) {
-                itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
+                data.putBoolean(ANIMATION_BEGUN_KEY, true);
                 addComboPoint(itemstack, player);
                 if (dur < 10) {
                     AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_NORMAL_SINGLE);
-                    itemTag.putInt(ATTACK_INDEX, ATTACK_NORMAL_SINGLE);
+                    data.putInt(ATTACK_INDEX, ATTACK_NORMAL_SINGLE);
                 } else {
                     AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_NORMAL_DOUBLE);
-                    itemTag.putInt(ATTACK_INDEX, ATTACK_NORMAL_DOUBLE);
+                    data.putInt(ATTACK_INDEX, ATTACK_NORMAL_DOUBLE);
                 }
 
-                int cooldown = switch (itemTag.getInt(ATTACK_INDEX)) {
+                int cooldown = switch (data.getInt(ATTACK_INDEX)) {
                     case ATTACK_NORMAL_SINGLE, ATTACK_NORMAL_DOUBLE -> buffStateModified(itemstack, CSConfig.COMMON.breezebreakerSkillCD.get());
-                    default -> throw new IllegalStateException("Unexpected value: " + itemTag.getInt(ATTACK_INDEX));
+                    default -> throw new IllegalStateException("Unexpected value: " + data.getInt(ATTACK_INDEX));
                 };
 
                 useAndDamageItem(itemstack, level, player, 1);

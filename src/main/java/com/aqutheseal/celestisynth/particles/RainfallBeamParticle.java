@@ -52,7 +52,7 @@ public class RainfallBeamParticle extends SimpleAnimatedParticle {
 
     @OnlyIn(Dist.CLIENT)
     public static class Provider implements ParticleProvider<SimpleParticleType> {
-        private final SpriteSet sprites;
+        protected final SpriteSet sprites;
 
         public Provider(SpriteSet pSprites) {
             this.sprites = pSprites;
@@ -60,6 +60,22 @@ public class RainfallBeamParticle extends SimpleAnimatedParticle {
 
         public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
             return new RainfallBeamParticle(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed, this.sprites);
+        }
+    }
+
+    public static class Quasar extends RainfallBeamParticle {
+        Quasar(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, SpriteSet pSprites) {
+            super(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed, pSprites);
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        public static class Provider extends RainfallBeamParticle.Provider {
+
+            public Provider(SpriteSet pSprites) { super(pSprites); }
+
+            public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+                return new Quasar(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed, this.sprites);
+            }
         }
     }
 }

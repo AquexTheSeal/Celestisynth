@@ -59,23 +59,23 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         boolean checkMain = player.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof AquafloraItem;
         boolean checkOff = player.getItemBySlot(EquipmentSlot.OFFHAND).getItem() instanceof AquafloraItem;
 
-        if (!player.getCooldowns().isOnCooldown(this) && !itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
-            itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
+        if (!player.getCooldowns().isOnCooldown(this) && !data.getBoolean(ANIMATION_BEGUN_KEY)) {
+            data.putBoolean(ANIMATION_BEGUN_KEY, true);
             if (player.isShiftKeyDown()) {
                 onShiftSkill(itemstack, level, player);
                 useAndDamageItem(itemstack, level, player, 3);
-                if (!itemTag.getBoolean(CHECK_PASSIVE)) {
+                if (!data.getBoolean(CHECK_PASSIVE)) {
                     player.getCooldowns().addCooldown(this, CSConfig.COMMON.aquafloraBloomShiftSkillCD.get());
                 } else {
                     player.getCooldowns().addCooldown(this, CSConfig.COMMON.aquafloraShiftSkillCD.get());
                 }
             } else {
-                if (!itemTag.getBoolean(CHECK_PASSIVE)) {
-                    itemTag.putBoolean(ATTACK_BLOOMING, false);
+                if (!data.getBoolean(CHECK_PASSIVE)) {
+                    data.putBoolean(ATTACK_BLOOMING, false);
                     if (hand == InteractionHand.MAIN_HAND && !checkOff) {
                         AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT);
                     } else if (hand == InteractionHand.OFF_HAND && !checkMain) {
@@ -90,7 +90,7 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
                     }
                     player.getCooldowns().addCooldown(this, CSConfig.COMMON.aquafloraSkillCD.get());
                 } else {
-                    itemTag.putBoolean(ATTACK_BLOOMING, true);
+                    data.putBoolean(ATTACK_BLOOMING, true);
                     AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_AQUAFLORA_ASSASSINATE);
                     player.getCooldowns().addCooldown(this, CSConfig.COMMON.aquafloraBloomSkillCD.get());
                 }

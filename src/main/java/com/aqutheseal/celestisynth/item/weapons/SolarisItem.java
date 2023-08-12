@@ -54,20 +54,20 @@ public class SolarisItem extends SwordItem implements CSWeapon {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack itemstack = player.getItemInHand(interactionHand);
-        CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
-        if (!player.getCooldowns().isOnCooldown(itemstack.getItem()) && !itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
+        if (!player.getCooldowns().isOnCooldown(itemstack.getItem()) && !data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (level.isClientSide()) {
                 AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_SOLARIS_SPIN);
             }
-            itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
+            data.putBoolean(ANIMATION_BEGUN_KEY, true);
             if (player.isShiftKeyDown()) {
-                itemTag.putInt(DIRECTION_INDEX_KEY, 2);
-                itemTag.putFloat(HEAD_ROT_LOCK_KEY, player.getYRot());
+                data.putInt(DIRECTION_INDEX_KEY, 2);
+                data.putFloat(HEAD_ROT_LOCK_KEY, player.getYRot());
                 useAndDamageItem(itemstack, level, player, 2);
                 player.getCooldowns().addCooldown(itemstack.getItem(), CSConfig.COMMON.solarisShiftSkillCD.get());
             } else {
-                itemTag.putInt(DIRECTION_INDEX_KEY, player.getRandom().nextInt(2));
+                data.putInt(DIRECTION_INDEX_KEY, player.getRandom().nextInt(2));
                 useAndDamageItem(itemstack, level, player, 3);
                 player.getCooldowns().addCooldown(itemstack.getItem(), CSConfig.COMMON.solarisSkillCD.get());
             }

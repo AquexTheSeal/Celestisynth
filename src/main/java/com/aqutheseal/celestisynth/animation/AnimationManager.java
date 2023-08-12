@@ -41,7 +41,7 @@ public class AnimationManager {
         boolean isFirstPersonModelLoaded = ModList.get().isLoaded("firstpersonmod");
 
         if (animation == null) {
-            layer.setAnimation(null);
+            layer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(3, Ease.OUTCIRC), null);
         } else {
             if (CSAnimator.animationData.containsValue(layer)) {
                 layer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(3, Ease.OUTCIRC), new KeyframeAnimationPlayer(animation)
@@ -49,7 +49,7 @@ public class AnimationManager {
                         .setFirstPersonConfiguration(new FirstPersonConfiguration()
                                 .setShowRightArm(!isFirstPersonModelLoaded && CSConfig.CLIENT.showRightArmOnAnimate.get()).setShowRightItem(!isFirstPersonModelLoaded)
                                 .setShowLeftArm(!isFirstPersonModelLoaded && CSConfig.CLIENT.showLeftArmOnAnimate.get()).setShowLeftItem(!isFirstPersonModelLoaded)
-                        ), true
+                        ), false
                 );
             }
             if (CSAnimator.otherAnimationData.containsValue(layer)) {
@@ -58,7 +58,7 @@ public class AnimationManager {
                         .setFirstPersonConfiguration(new FirstPersonConfiguration()
                                 .setShowRightArm(!isFirstPersonModelLoaded && CSConfig.CLIENT.showRightArmOnAnimate.get()).setShowRightItem(!isFirstPersonModelLoaded)
                                 .setShowLeftArm(!isFirstPersonModelLoaded && CSConfig.CLIENT.showLeftArmOnAnimate.get()).setShowLeftItem(!isFirstPersonModelLoaded)
-                        ), true
+                        ), false
                 );
             }
         }
@@ -90,7 +90,9 @@ public class AnimationManager {
         ANIM_AQUAFLORA_PIERCE_RIGHT("cs_aquaflora_pierce_right"),
         ANIM_AQUAFLORA_PIERCE_LEFT("cs_aquaflora_pierce_left"),
         ANIM_AQUAFLORA_BASH("cs_aquaflora_bash"),
-        ANIM_AQUAFLORA_ASSASSINATE("cs_aquaflora_assassinate");
+        ANIM_AQUAFLORA_ASSASSINATE("cs_aquaflora_assassinate"),
+        ANIM_RAINFALL_AIM_LEFT("cs_rainfall_aim_left"),
+        ANIM_RAINFALL_AIM_RIGHT("cs_rainfall_aim_right");
 
         final @Nullable String path;
         final int id;

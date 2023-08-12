@@ -56,18 +56,18 @@ public class PoltergeistItem extends AxeItem implements CSWeapon {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand interactionHand) {
         ItemStack itemstack = player.getItemInHand(interactionHand);
-        CompoundTag itemTag = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
 
-        if (!player.getCooldowns().isOnCooldown(this) && !itemTag.getBoolean(ANIMATION_BEGUN_KEY)) {
-            itemTag.putBoolean(ANIMATION_BEGUN_KEY, true);
-            itemTag.putBoolean(IS_RETREAT_KEY, player.isShiftKeyDown());
-            if (itemTag.getBoolean(IS_RETREAT_KEY)) {
+        if (!player.getCooldowns().isOnCooldown(this) && !data.getBoolean(ANIMATION_BEGUN_KEY)) {
+            data.putBoolean(ANIMATION_BEGUN_KEY, true);
+            data.putBoolean(IS_RETREAT_KEY, player.isShiftKeyDown());
+            if (data.getBoolean(IS_RETREAT_KEY)) {
                 AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_POLTERGEIST_RETREAT);
             } else {
                 AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_POLTERGEIST_SMASH);
             }
             useAndDamageItem(itemstack, level, player, 5);
-            player.getCooldowns().addCooldown(this, itemTag.getBoolean(IS_RETREAT_KEY) ? CSConfig.COMMON.poltergeistShiftSkillCD.get() : CSConfig.COMMON.poltergeistSkillCD.get());
+            player.getCooldowns().addCooldown(this, data.getBoolean(IS_RETREAT_KEY) ? CSConfig.COMMON.poltergeistShiftSkillCD.get() : CSConfig.COMMON.poltergeistSkillCD.get());
         }
         return InteractionResultHolder.success(itemstack);
     }
