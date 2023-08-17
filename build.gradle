@@ -27,7 +27,7 @@ mixin {
     add sourceSets.main, "${project.modid}.refmap.json"
 }
 
-version = "${project.mc_ver}-1.0.1"
+version = "${project.mc_ver}-1.1.0"
 group = "com.aqutheseal.${project.modid}"
 archivesBaseName = "${project.modid}"
 
@@ -173,8 +173,8 @@ dependencies {
 
     // EXTRA GOODS (Not going to use these for [gradle.properties] since I can just remove these anytime I want to.)
 
-    implementation fg.deobf("curse.maven:rubidium-574856:4568727")
-    implementation fg.deobf("curse.maven:oculus-581495:4578731")
+    //implementation fg.deobf("curse.maven:rubidium-574856:4568727")
+    //implementation fg.deobf("curse.maven:oculus-581495:4578731")
     implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:4410143")
     implementation fg.deobf("curse.maven:selene-499980:4620027")
     implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4646625")

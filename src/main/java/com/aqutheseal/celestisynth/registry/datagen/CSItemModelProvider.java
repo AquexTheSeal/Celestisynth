@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class CSItemModelProvider extends ItemModelProvider {
-    private static List<RegistryObject<Item>> excemptions = new ArrayList<>();
+    private static final List<RegistryObject<Item>> exemptions = new ArrayList<>();
 
     public CSItemModelProvider(DataGenerator generator, String modid, ExistingFileHelper existingFileHelper) {
         super(generator, modid, existingFileHelper);
@@ -26,9 +26,9 @@ public class CSItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        excemptions.add(CSItemRegistry.SOLARIS);
-        excemptions.add(CSItemRegistry.CRESCENTIA);
-        excemptions.add(CSItemRegistry.BREEZEBREAKER);
+        exemptions.add(CSItemRegistry.SOLARIS);
+        exemptions.add(CSItemRegistry.CRESCENTIA);
+        exemptions.add(CSItemRegistry.BREEZEBREAKER);
 
         this.defaultItem(CSItemRegistry.ITEMS.getEntries());
 
@@ -43,7 +43,7 @@ public class CSItemModelProvider extends ItemModelProvider {
     public void defaultItem(Collection<RegistryObject<Item>> items) {
         for (RegistryObject<Item> item : items) {
 
-            if (excemptions.contains(item)) {
+            if (exemptions.contains(item)) {
                 return;
             }
 

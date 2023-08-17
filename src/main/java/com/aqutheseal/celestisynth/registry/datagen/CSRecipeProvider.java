@@ -12,6 +12,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.brewing.VanillaBrewingRecipe;
 
 import java.util.function.Consumer;
 
@@ -52,7 +53,7 @@ public class CSRecipeProvider extends RecipeProvider {
 
         ShapedRecipeBuilder.shaped(CSBlockRegistry.CELESTIAL_CRAFTING_TABLE.get())
                 .pattern("bnb").pattern("ncn").pattern("ooo")
-                .define('b', Ingredient.of(Items.NETHERITE_BLOCK)).define('n', Ingredient.of(CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get()))
+                .define('b', Ingredient.of(Items.NETHERITE_INGOT)).define('n', Ingredient.of(CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get()))
                 .define('c', Ingredient.of(Items.CRAFTING_TABLE)).define('o', Ingredient.of(Items.OBSIDIAN))
                 .unlockedBy("has_item", has(CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get())).save(consumer, "celestial_crafting_table");
 
@@ -115,6 +116,18 @@ public class CSRecipeProvider extends RecipeProvider {
                 .define('i', Ingredient.of(CSItemRegistry.CELESTIAL_CORE_HEATED.get()))
                 .unlockedBy("has_item", has(Items.LILY_PAD))
                 .save(consumer, "aquaflora");
+
+        CelestialShapedRecipeBuilder.shaped(CSItemRegistry.RAINFALL_SERENITY.get())
+                .pattern("nfs")
+                .pattern("ibs")
+                .pattern("nfs")
+                .define('b', Ingredient.of(Items.BOW))
+                .define('n', Ingredient.of(CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get()))
+                .define('f', Ingredient.of(CSItemRegistry.STARSTRUCK_FEATHER.get()))
+                .define('s', Ingredient.of(CSItemRegistry.STARSTRUCK_SCRAP.get()))
+                .define('i', Ingredient.of(CSItemRegistry.CELESTIAL_CORE_HEATED.get()))
+                .unlockedBy("has_item", has(CSItemRegistry.STARSTRUCK_FEATHER.get()))
+                .save(consumer, "rainfall_serenity");
     }
 
     public TagKey<Item> csItemTag(String name) {

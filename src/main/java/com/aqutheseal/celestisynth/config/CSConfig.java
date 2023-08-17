@@ -55,6 +55,10 @@ public class CSConfig {
         public final ForgeConfigSpec.ConfigValue<Integer> aquafloraBloomSkillCD;
         public final ForgeConfigSpec.ConfigValue<Integer> aquafloraBloomShiftSkillCD;
 
+        public final ForgeConfigSpec.ConfigValue<Double> rainfallSerenityArrowDmg;
+        public final ForgeConfigSpec.ConfigValue<Double> rainfallSerenityQuasarArrowDmg;
+        public final ForgeConfigSpec.ConfigValue<Double> rainfallSerenityDrawSpeed;
+
         protected CSCommonConfig(ForgeConfigSpec.Builder builder) {
             builder.push("Base Damage Modifications (Temporarily Unusable)");
             solarisDmg = baseDamage(builder, "solaris", 7);
@@ -105,6 +109,15 @@ public class CSConfig {
             aquafloraShiftSkillCD = skillCooldown(builder, "Aquaflora", "Blasting Off Together", 40);
             aquafloraBloomSkillCD = skillCooldown(builder, "Aquaflora", "Exorbitant Slashing Frenzy", 180);
             aquafloraBloomShiftSkillCD = skillCooldown(builder, "Aquaflora", "Flowers Away", 40);
+            builder.pop();
+
+            builder.push("Value Modifiers - Rainfall Serenity");
+            rainfallSerenityArrowDmg = builder.comment("Define how much damage does the Rainfall Serenity's Arrow deal.")
+                    .defineInRange("Damage: Rainfall Serenity Arrow", 4.0, 0, 1000);
+            rainfallSerenityQuasarArrowDmg = builder.comment("Define how much damage does the Rainfall Serenity's Arrow from Quasar Link deal.")
+                    .defineInRange("Damage: Rainfall Serenity Arrow (Quasar)", 2.0, 0, 1000);
+            rainfallSerenityDrawSpeed = builder.comment("Define how much damage does the Rainfall Serenity's Arrow from Quasar Link deal.")
+                    .defineInRange("Extra: Rainfall Serenity Draw Speed", 7.5, 0, 1000);
             builder.pop();
         }
 

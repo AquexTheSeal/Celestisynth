@@ -1,7 +1,7 @@
 package com.aqutheseal.celestisynth.entities;
 
-import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.LivingMixinSupport;
+import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
 import com.aqutheseal.celestisynth.item.weapons.RainfallSerenityItem;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
@@ -113,34 +113,35 @@ public class UtilRainfallArrow extends AbstractArrow implements IAnimatable {
                 }
                 if (pResult instanceof EntityHitResult ehr) {
                     setPierceLevel((byte) (getPierceLevel() + 1));
-                    for (Entity imbueSource : rawRainfallItem.iterateEntities(level, rawRainfallItem.createAABB(hitPos, 24))) {
-                        if (imbueSource instanceof LivingMixinSupport lms && getOwner() instanceof Player player && lms.getQuasarImbued() != null) {
-                            Vec3 from = new Vec3(imbueSource.getX(), imbueSource.getY() + 1.5, imbueSource.getZ());
-                            Vec3 to = new Vec3(ehr.getEntity().getX(), ehr.getEntity().getY() + 1.5F, ehr.getEntity().getZ());
-                            createLaser(from, to, false, false);
+                    if (random.nextInt(4) == 1) {
+                        for (Entity imbueSource : rawRainfallItem.iterateEntities(level, rawRainfallItem.createAABB(hitPos, 24))) {
+                            if (imbueSource instanceof LivingMixinSupport lms && getOwner() instanceof Player player && lms.getQuasarImbued() != null && imbueSource != ehr.getEntity()) {
+                                ehr.getEntity().invulnerableTime = 0;
+                                Vec3 from = new Vec3(imbueSource.getX(), imbueSource.getY() + 1.5, imbueSource.getZ());
+                                Vec3 to = new Vec3(ehr.getEntity().getX(), ehr.getEntity().getY() + 1.5F, ehr.getEntity().getZ());
+                                createLaser(from, to, false, false);
 
-                            if (!level.isClientSide()) {
-                                UtilRainfallArrow rainfallArrow = new UtilRainfallArrow(level, player);
-                                rainfallArrow.setOwner(player);
-                                rainfallArrow.moveTo(imbueSource.position());
-                                rainfallArrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-                                rainfallArrow.setOrigin(new BlockPos(imbueSource.getX(), imbueSource.getY() + 1.5, imbueSource.getZ()));
-                                rainfallArrow.setPierceLevel((byte) 3);
-                                rainfallArrow.setBaseDamage(getBaseDamage() / 2);
-                                rainfallArrow.setImbueQuasar(false);
+                                if (!level.isClientSide()) {
+                                    UtilRainfallArrow rainfallArrow = new UtilRainfallArrow(level, player);
+                                    rainfallArrow.setOwner(player);
+                                    rainfallArrow.moveTo(imbueSource.position());
+                                    rainfallArrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                                    rainfallArrow.setOrigin(new BlockPos(imbueSource.getX(), imbueSource.getY() + 1.5, imbueSource.getZ()));
+                                    rainfallArrow.setPierceLevel((byte) 3);
+                                    rainfallArrow.setBaseDamage(CSConfig.COMMON.rainfallSerenityQuasarArrowDmg.get());
+                                    rainfallArrow.setImbueQuasar(false);
 
-                                double d0 = ehr.getEntity().getY() + (double) 1.5F;
-                                double d1 = ehr.getEntity().getX() - imbueSource.getX();
-                                double d2 = d0 - imbueSource.getY() + 1.5F;
-                                double d3 = ehr.getEntity().getZ() - imbueSource.getZ();
-                                rainfallArrow.shoot(d1, d2, d3, 3.0F, 0);
-                                if (level.addFreshEntity(rainfallArrow)) {
-                                    Celestisynth.LOGGER.info("Created Arrow!");
+                                    double d0 = ehr.getEntity().getY() + (double) 1.5F;
+                                    double d1 = ehr.getEntity().getX() - imbueSource.getX();
+                                    double d2 = d0 - imbueSource.getY() + 1.5F;
+                                    double d3 = ehr.getEntity().getZ() - imbueSource.getZ();
+                                    rainfallArrow.shoot(d1, d2, d3, 3.0F, 0);
+                                    level.addFreshEntity(rainfallArrow);
                                 }
-                            }
 
-                            level.playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundRegistry.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 0.7f, 2.0F);
-                            lms.setQuasarImbued(null);
+                                level.playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundRegistry.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 0.7f, 2.0F);
+                                lms.setQuasarImbued(null);
+                            }
                         }
                     }
                     if (isImbueQuasar() && getOwner() instanceof Player player) {

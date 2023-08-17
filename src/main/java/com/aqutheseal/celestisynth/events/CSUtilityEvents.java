@@ -2,21 +2,28 @@ package com.aqutheseal.celestisynth.events;
 
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.LivingMixinSupport;
+import com.aqutheseal.celestisynth.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.entities.SkillCastPoltergeistWard;
+import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.item.weapons.BreezebreakerItem;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
+import com.aqutheseal.celestisynth.registry.CSParticleRegistry;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = Celestisynth.MODID)
@@ -35,6 +42,23 @@ public class CSUtilityEvents {
         }
         if (itemR.getItem() instanceof CSWeapon cs && itemL.getItem() instanceof CSWeapon) {
             cs.onPlayerHurt(event, itemR, itemL);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingTick(LivingEvent.LivingTickEvent event) {
+        if (event.getEntity() instanceof LivingMixinSupport lms) {
+            if (lms.getQuasarImbued() != null) {
+                double radius = 0.5 + event.getEntity().getBbWidth();
+                double speed = 0.1;
+                double offX = radius * Math.sin(speed * event.getEntity().tickCount);
+                double offY = -Math.sin(event.getEntity().tickCount) * 0.2;
+                double offZ = radius * Math.cos(speed * event.getEntity().tickCount);
+                CSUtilityFunctions.sendParticles(event.getEntity().level, CSParticleRegistry.RAINFALL_ENERGY_SMALL.get(),
+                        event.getEntity().getX() + offX, event.getEntity().getY() + offY + 1, event.getEntity().getZ() + offZ,
+                        0, 0, 0, 0
+                );
+            }
         }
     }
 
@@ -72,6 +96,13 @@ public class CSUtilityEvents {
                 }
                 player.setDeltaMovement(entity.getDeltaMovement().multiply(3, 2.3, 3));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.side == LogicalSide.CLIENT && event.player.level.isClientSide() && event.player instanceof PlayerMixinSupport pms) {
+            pms.setCameraAngleOrdinal(Minecraft.getInstance().options.getCameraType().ordinal());
         }
     }
 

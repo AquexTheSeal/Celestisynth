@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth.item.weapons;
 
+import com.aqutheseal.celestisynth.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.CSEffect;
@@ -7,9 +8,7 @@ import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import com.google.common.collect.Lists;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -119,16 +118,14 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
     @Override
     public void resetExtraValues(ItemStack stack, Player player) {
         CompoundTag data = stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-        if (player.level.isClientSide()) {
-            player.setXRot(data.getFloat(AquafloraItem.INITIAL_VIEW_ANGLE));
-            Minecraft.getInstance().options.setCameraType(CameraType.values()[data.getInt(AquafloraItem.INITIAL_PERSPECTIVE)]);
-        }
+        player.setXRot(data.getFloat(AquafloraItem.INITIAL_VIEW_ANGLE));
+        setCameraAngle(player, data.getInt(AquafloraItem.INITIAL_PERSPECTIVE));
     }
 
     public void tickNormal(ItemStack itemStack, Level level, Player player, int animationTimer) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         if (animationTimer == 1) {
-            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_PIERCE_START, calculateZLook(player) * 4, 0.5 + (calculateYLook(player, 2)), calculateXLook(player) * 4);
+            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_PIERCE_START, calculateXLook(player) * 3, 1.5 + calculateYLook(player) * 3, calculateZLook(player) * 3);
             player.playSound(CSSoundRegistry.CS_BLING.get(), 0.15F, 0.5F);
             if (level.isClientSide()) {
                 shakeScreens(player, 15, 5, 0.02F);
@@ -136,7 +133,7 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
         }
         if (animationTimer >= 0 && animationTimer <= 15) {
             player.playSound(CSSoundRegistry.CS_AIR_SWING.get(), 0.25F, 1.3F + level.random.nextFloat());
-            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_STAB, -0.5 + level.random.nextDouble() + calculateXLook(player) * 3, (-0.5 + level.random.nextDouble()) + (0.5 + (calculateYLook(player, 2))), -0.5 + level.random.nextDouble() + calculateZLook(player) * 3);
+            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_STAB, -0.5 + level.random.nextDouble() + calculateXLook(player) * 3, (-0.5 + level.random.nextDouble()) + (2 + calculateYLook(player) * 3), -0.5 + level.random.nextDouble() + calculateZLook(player) * 3);
             List<Entity> entities = iterateEntities(level, createAABB(player.blockPosition().offset(calculateXLook(player) * 4.5, 1 + (calculateYLook(player) * 4.5), calculateZLook(player) * 4.5), 2));
             entities.addAll(iterateEntities(level, createAABB(player.blockPosition().offset(calculateXLook(player) * 3, 1 + (calculateYLook(player) * 3), calculateZLook(player) * 3), 2)));
             entities.addAll(iterateEntities(level, createAABB(player.blockPosition().offset(calculateXLook(player) * 1.5, 1 + (calculateYLook(player) * 1.5), calculateZLook(player) * 1.5), 2)));
@@ -160,19 +157,18 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
 
     public void tickBloomNormal(ItemStack itemStack, Level level, Player player, int animationTimer) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
-        Options options = Minecraft.getInstance().options;
         if (animationTimer == 1) {
-            if (level.isClientSide()) {
-                data.putFloat(INITIAL_VIEW_ANGLE, player.getXRot());
-                data.putInt(INITIAL_PERSPECTIVE, options.getCameraType().ordinal());
+            if (player instanceof PlayerMixinSupport pms) {
+                if (player.level.isClientSide()) {
+                    pms.setCameraAngleOrdinal(Minecraft.getInstance().options.getCameraType().ordinal());
+                }
             }
+            data.putFloat(INITIAL_VIEW_ANGLE, player.getXRot());
         }
 
         if (animationTimer >= 1) {
             player.setXRot(90);
-            if (level.isClientSide()) {
-                options.setCameraType(CameraType.THIRD_PERSON_BACK);
-            }
+            setCameraAngle(player, 1);
         }
 
         if (animationTimer >= 15 && animationTimer % (checkDualWield(player, AquafloraItem.class) ? 2 : 5) == 0) {
@@ -183,10 +179,8 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
                 AnimationManager.playAnimation(level, AnimationManager.AnimationsList.CLEAR);
                 data.putInt(ANIMATION_TIMER_KEY, 0);
                 data.putBoolean(ANIMATION_BEGUN_KEY, false);
-                if (level.isClientSide()) {
-                    player.setXRot(data.getFloat(INITIAL_VIEW_ANGLE));
-                    options.setCameraType(CameraType.values()[data.getInt(INITIAL_PERSPECTIVE)]);
-                }
+                player.setXRot(data.getFloat(INITIAL_VIEW_ANGLE));
+                setCameraAngle(player, data.getInt(INITIAL_PERSPECTIVE));
                 return;
             }
 
@@ -214,10 +208,8 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
         if (animationTimer >= 120) {
             data.putInt(ANIMATION_TIMER_KEY, 0);
             data.putBoolean(ANIMATION_BEGUN_KEY, false);
-            if (level.isClientSide()) {
-                player.setXRot(data.getFloat(INITIAL_VIEW_ANGLE));
-                options.setCameraType(CameraType.values()[data.getInt(INITIAL_PERSPECTIVE)]);
-            }
+            player.setXRot(data.getFloat(INITIAL_VIEW_ANGLE));
+            setCameraAngle(player, data.getInt(AquafloraItem.INITIAL_PERSPECTIVE));
         }
     }
 

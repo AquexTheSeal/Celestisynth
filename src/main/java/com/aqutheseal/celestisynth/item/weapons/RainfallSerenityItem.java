@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.item.weapons;
 
 import com.aqutheseal.celestisynth.animation.AnimationManager;
+import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.aqutheseal.celestisynth.entities.UtilRainfallArrow;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
@@ -19,8 +20,8 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -33,7 +34,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
-public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeapon {
+public class RainfallSerenityItem extends BowItem implements CSWeapon {
     public static float SPEED = 7.5F;
 
     public RainfallSerenityItem(Properties pProperties) {
@@ -41,8 +42,18 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
     }
 
     @Override
-    public int getSkillsAmount() {
+    public boolean hasPassive() {
+        return true;
+    }
+
+    @Override
+    public int getPassiveAmount() {
         return 1;
+    }
+
+    @Override
+    public int getSkillsAmount() {
+        return 2;
     }
 
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
@@ -55,9 +66,9 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
         pPlayer.startUsingItem(pHand);
         data.putBoolean(ANIMATION_BEGUN_KEY, true);
         if (pHand == InteractionHand.MAIN_HAND) {
-            AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_RIGHT);
+            AnimationManager.playAnimation(pLevel, AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_RIGHT);
         } else {
-            AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_LEFT);
+            AnimationManager.playAnimation(pLevel, AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_LEFT);
         }
 
 
@@ -70,7 +81,7 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
         if (player.getUsedItemHand() == InteractionHand.MAIN_HAND) {
             player.setYBodyRot(player.getYRot() - 45);
         } else {
-            player.setYBodyRot(player.getYRot() + 80);
+            player.setYBodyRot(player.getYRot() + 90);
         }
     }
 
@@ -78,12 +89,12 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
         if (pEntityLiving instanceof Player player) {
             CompoundTag data = pStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
             int i = this.getUseDuration(pStack) - pTimeLeft;
-            float f = getPowerForTime(i);
+            float f = getPowerForTime(pStack, i);
 
-            AnimationManager.playAnimation(AnimationManager.AnimationsList.CLEAR);
+            AnimationManager.playAnimation(pLevel, AnimationManager.AnimationsList.CLEAR);
             data.putBoolean(ANIMATION_BEGUN_KEY, false);
 
-            if (!((double)f < 0.1D)) {
+            if (!((double)f < 1.0D)) {
                 if (f == 1.0F) {
                     CSEffect.createInstance(player, null, CSEffectTypes.RAINFALL_SHOOT, calculateXLook(player) * 2, 0.5 + (calculateYLook(player, 5) * 1), calculateZLook(player) * 2);
                     player.setDeltaMovement(player.getDeltaMovement().subtract(calculateXLook(player) * 0.5, 0, calculateZLook(player) * 0.5));
@@ -116,10 +127,11 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
                 for (float angle : angles) {
                     if (!pLevel.isClientSide) {
                         UtilRainfallArrow rainfallArrow = new UtilRainfallArrow(pLevel, player);
+                        rainfallArrow = (UtilRainfallArrow) customArrow(rainfallArrow);
                         rainfallArrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                         rainfallArrow.setOrigin(new BlockPos(player.getX(), player.getY() + 1.5, player.getZ()));
                         rainfallArrow.setPierceLevel((byte) 3);
-                        rainfallArrow.setBaseDamage(6 * (pLevel.random.nextDouble() * 3));
+                        rainfallArrow.setBaseDamage(CSConfig.COMMON.rainfallSerenityArrowDmg.get() + (pLevel.random.nextDouble() * 3));
                         rainfallArrow.setImbueQuasar(true);
 
                         Vec3 vec31 = pEntityLiving.getUpVector(1.0F);
@@ -137,6 +149,11 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
                         int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, pStack);
                         if (j > 0) {
                             rainfallArrow.setBaseDamage(rainfallArrow.getBaseDamage() + j);
+                        }
+
+                        int p = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, pStack);
+                        if (p > 0) {
+                            rainfallArrow.setBaseDamage(rainfallArrow.getBaseDamage() + (p * 1.75));
                         }
 
                         int m = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, pStack);
@@ -170,12 +187,18 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
     }
 
     @Override
+    public AbstractArrow customArrow(AbstractArrow arrow) {
+        return super.customArrow(arrow);
+    }
+
+    @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         List<Enchantment> enchantments = new ArrayList<>();
         enchantments.add(Enchantments.POWER_ARROWS);
         enchantments.add(Enchantments.PUNCH_ARROWS);
         enchantments.add(Enchantments.FLAMING_ARROWS);
         enchantments.add(Enchantments.MULTISHOT);
+        enchantments.add(Enchantments.PIERCING);
 
          if (enchantments.contains(enchantment)) {
              return true;
@@ -183,8 +206,13 @@ public class RainfallSerenityItem extends ProjectileWeaponItem implements CSWeap
         return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
-    public static float getPowerForTime(int pCharge) {
-        float f = (float)pCharge / SPEED;
+    public float getDrawSpeed(ItemStack stack) {
+        float i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, stack);
+        return (float) (double) CSConfig.COMMON.rainfallSerenityDrawSpeed.get() + i * 5;
+    }
+
+    public static float getPowerForTime(ItemStack stack, int pCharge) {
+        float f = (float)pCharge / ((RainfallSerenityItem) stack.getItem()).getDrawSpeed(stack);
         f = (f * f + f * 2.0F) / 3.0F;
         if (f > 1.0F) {
             f = 1.0F;

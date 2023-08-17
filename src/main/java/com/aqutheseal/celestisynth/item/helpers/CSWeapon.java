@@ -2,6 +2,7 @@ package com.aqutheseal.celestisynth.item.helpers;
 
 import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.network.CSNetwork;
+import com.aqutheseal.celestisynth.network.util.ChangeCameraTypePacket;
 import com.aqutheseal.celestisynth.network.util.ShakeScreenServerPacket;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.BlockPos;
@@ -69,6 +70,9 @@ public interface CSWeapon {
                     dataAlt.getAllKeys().clear();
                     cs.resetExtraValues(player.getItemBySlot(slot), player);
                 }
+            }
+            if (player.isUsingItem()) {
+                player.releaseUsingItem();
             }
         }
     }
@@ -205,6 +209,12 @@ public interface CSWeapon {
 
     default double calculateZLook(Player player) {
         return player.getLookAngle().z();
+    }
+
+    default void setCameraAngle(Player player, int ordinal) {
+        if (!player.level.isClientSide()) {
+            CSNetwork.sendToAll(new ChangeCameraTypePacket(player.getId(), ordinal));
+        }
     }
 
     @Nullable

@@ -37,13 +37,15 @@ public class CSAnimator {
             double yAng = player.getXRot();
             double yBelow0Modifier = yAng > 0 ? 0 : 1;
             if (player.getUseItem().getItem() instanceof RainfallSerenityItem) {
-                float isMain = player.getUsedItemHand() == InteractionHand.MAIN_HAND ? -1 : 1;
+                boolean checkHand = player.getUsedItemHand() == InteractionHand.MAIN_HAND;
+                float isMain = checkHand ? -1 : 1;
                 if (partName.equals("rightArm") || partName.equals("leftArm")) {
                     if (FirstPersonMode.isFirstPersonPass()) {
                         zRotMod = (float) Math.toRadians(yAng) * isMain;
-                        xMod = (float) (3 + Math.toRadians(yAng) * 6) * -isMain;
+                        double v = 3 + Math.toRadians(yAng * -isMain) * 6;
+                        xMod = (float) v;
                         yMod = (float) (6.0f + Math.sin(Math.toRadians(yAng)) * yBelow0Modifier * 12.0f);
-                        zMod = (float) (3 + Math.toRadians(yAng) * 6) * -isMain;
+                        zMod = checkHand ? (float) v : 12.0F;
                     } else {
                         zRotMod = (float) Math.toRadians(yAng) * isMain;
                     }

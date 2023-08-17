@@ -14,6 +14,8 @@
   "block.celestisynth.lunar_stone": "Lunar Stone",
   "block.celestisynth.zephyr_deposit": "Zephyr Deposit",
   "item.celestisynth.eyebomination": "Eyebomination",
+  "item.celestisynth.starstruck_scrap": "Starstruck Scrap",
+  "item.celestisynth.starstruck_feather": "Starstruck Feather",
 
   "block.celestisynth.celestial_crafting_table": "Celestial Workbench",
   "gui.celestisynth.celestial_crafting": "Celestial Workbench",
@@ -126,6 +128,19 @@
   "------------------- RAINFALL_SERENITY ------------------":  "",
 
   "item.celestisynth.rainfall_serenity": "Rainfall Serenity",
+  "advancements.celestisynth.obtained_rainfall_serenity.title": "Beyond the Earth's Atmosphere",
+  "advancements.celestisynth.obtained_rainfall_serenity.description": "Obtain a Rainfall Serenity",
+
+  "item.celestisynth.rainfall_serenity.passive_1": "",
+  "item.celestisynth.rainfall_serenity.passive_desc_1": "",
+
+  "item.celestisynth.rainfall_serenity.skill_1": "Eons, and eons through the sky",
+  "item.celestisynth.rainfall_serenity.condition_1": "Activate: Fully charged bow",
+  "item.celestisynth.rainfall_serenity.desc_1": "When the bow is released, it emits a laser that can pierce unlimited enemies, marking each with a \"Quasar Mark\" for 5 seconds. This mark can trigger nearby entities to shoot lasers at the marked target.",
+
+  "item.celestisynth.rainfall_serenity.skill_2": "Quasar Link",
+  "item.celestisynth.rainfall_serenity.condition_2": "Activate: Hit Entity with weapon",
+  "item.celestisynth.rainfall_serenity.desc_2": "When the laser strikes a target entity, there is a 25% probability that all surrounding entities marked with the Quasar Mark will immediately direct their own laser towards the originally hit entity.",
 
   "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ADVANCEMENTS [NON-WEAPONS] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>":  "",
 

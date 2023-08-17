@@ -54,12 +54,12 @@ public class CSFeatureRegistry {
 
     public static final RegistryObject<PlacedFeature> SOLAR_CRATER_PLACED = PLACED_FEATURES.register("solar_crater_placed",
             () -> new PlacedFeature(CSFeatureRegistry.SOLAR_CRATER_CONFIGURED.getHolder().get(),
-                    List.of(RarityFilter.onAverageOnceEvery(50), CountOnEveryLayerPlacement.of(1), BiomeFilter.biome()))
+                    List.of(RarityFilter.onAverageOnceEvery(85), CountOnEveryLayerPlacement.of(1), BiomeFilter.biome()))
     );
 
     public static final RegistryObject<PlacedFeature> LUNAR_CRATER_PLACED = PLACED_FEATURES.register("lunar_crater_placed",
             () -> new PlacedFeature(CSFeatureRegistry.LUNAR_CRATER_CONFIGURED.getHolder().get(),
-                    List.of(RarityFilter.onAverageOnceEvery(13),
+                    List.of(RarityFilter.onAverageOnceEvery(17),
                             HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.aboveBottom(0), VerticalAnchor.absolute(30))),
                             EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), MatchingBlockTagPredicate.ONLY_IN_AIR_PREDICATE, 12),
                             BiomeFilter.biome()

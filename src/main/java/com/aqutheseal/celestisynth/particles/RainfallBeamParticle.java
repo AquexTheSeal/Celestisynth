@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth.particles;
 
+import com.aqutheseal.celestisynth.CSClientRegistries;
 import com.aqutheseal.celestisynth.CSCommonRegistries;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -42,7 +43,7 @@ public class RainfallBeamParticle extends SimpleAnimatedParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return CSCommonRegistries.PARTICLE_SHEET_TRANSLUCENT_LIT;
+        return CSClientRegistries.PARTICLE_SHEET_TRANSLUCENT_LIT;
     }
 
     public void move(double pX, double pY, double pZ) {

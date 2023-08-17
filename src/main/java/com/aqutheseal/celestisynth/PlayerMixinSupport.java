@@ -22,4 +22,8 @@ public interface PlayerMixinSupport {
 
     @OnlyIn(Dist.CLIENT)
     void setScreenShakeIntensity(float intensity);
+
+    int getCameraAngleOrdinal();
+
+    void setCameraAngleOrdinal(int ordinal);
 }

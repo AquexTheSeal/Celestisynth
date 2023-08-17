@@ -145,7 +145,7 @@ public class PoltergeistItem extends AxeItem implements CSWeapon {
             double range = (!forceCreateImpact && !player.isOnGround()) ? 4 : isGiantImpact ? 4 : 6.5;
             for (Entity entityBatch : iterateEntities(level, createAABB(player.blockPosition().offset(xx, 1, zz), range))) {
                 if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
-                    hurtNoKB(player, target, isGiantImpact ? (float) (double) CSConfig.COMMON.poltergeistSkillDmg.get() : 12 + getSharpnessValue(itemStack, 1.2F));
+                    hurtNoKB(player, target, isGiantImpact ? (float) (double) CSConfig.COMMON.poltergeistSkillDmg.get() : (float) (CSConfig.COMMON.poltergeistSkillDmg.get() + 4) + getSharpnessValue(itemStack, 1.2F));
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
                     target.hurtMarked = true;
                     target.setDeltaMovement((target.getX() - (player.getX() + xx)) / 4, (target.getY() - player.getY()) / 4, (target.getZ() - (player.getZ() + zz)) / 4);

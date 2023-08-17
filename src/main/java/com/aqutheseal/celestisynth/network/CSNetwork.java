@@ -4,6 +4,7 @@ import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.network.animation.SetAnimationServerPacket;
 import com.aqutheseal.celestisynth.network.animation.SetAnimationToAllPacket;
 import com.aqutheseal.celestisynth.network.util.CSSpawnParticlePacket;
+import com.aqutheseal.celestisynth.network.util.ChangeCameraTypePacket;
 import com.aqutheseal.celestisynth.network.util.ShakeScreenServerPacket;
 import com.aqutheseal.celestisynth.network.util.ShakeScreenToAllPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -51,6 +52,12 @@ public class CSNetwork {
                 .decoder(ShakeScreenServerPacket::new)
                 .encoder(ShakeScreenServerPacket::toBytes)
                 .consumerMainThread(ShakeScreenServerPacket::handle)
+                .add();
+
+        network.messageBuilder(ChangeCameraTypePacket.class, packetId++, NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ChangeCameraTypePacket::new)
+                .encoder(ChangeCameraTypePacket::toBytes)
+                .consumerMainThread(ChangeCameraTypePacket::handle)
                 .add();
     }
 

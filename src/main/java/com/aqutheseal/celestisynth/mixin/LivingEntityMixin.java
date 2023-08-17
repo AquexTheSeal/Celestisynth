@@ -1,6 +1,8 @@
 package com.aqutheseal.celestisynth.mixin;
 
 import com.aqutheseal.celestisynth.LivingMixinSupport;
+import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
+import com.aqutheseal.celestisynth.registry.CSParticleRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -33,8 +35,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingMixinSup
         super(pEntityType, pLevel);
     }
 
-    @Inject(method = "aiStep", at = @At(value = "HEAD"))
-    public void aiStep(CallbackInfo ci) {
+    @Inject(method = "tick", at = @At(value = "HEAD"))
+    public void tick(CallbackInfo ci) {
         if (tagTimer > 0) {
             tagTimer--;
         } else {
@@ -113,7 +115,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingMixinSup
 
     public void setQuasarImbuedFrom(@Nullable UUID imbuedFrom) {
         this.entityData.set(QUASAR_IMBUED_BY, Optional.ofNullable(imbuedFrom));
-        quasarTimer = 60;
+        quasarTimer = 100;
     }
 
     @Nullable

@@ -2,6 +2,10 @@ package com.aqutheseal.celestisynth.mixin;
 
 import com.aqutheseal.celestisynth.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,9 +21,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSupport {
     @Shadow public abstract Inventory getInventory();
+
+    private static final EntityDataAccessor<Integer> CAMERA_ANGLE_ORDINAL = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
     public final String
             SCREENSHAKE_DURATION = "cs.screenShakeDuration",
             SCREENSHAKE_FADEOUTBEGIN = "cs.screenShakeFadeoutStart",
@@ -44,8 +52,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSup
         return false;
     }
 
+    @Inject(method = "defineSynchedData", at = @At(value = "HEAD"))
+    public void defineSynchedData(CallbackInfo ci) {
+        this.entityData.define(CAMERA_ANGLE_ORDINAL, 0);
+    }
+
     @Inject(method = "tick", at = @At(value = "TAIL"))
-    public void tick(CallbackInfo ci) {
+    public void tickTail(CallbackInfo ci) {
         if (level.isClientSide()) {
             if (getScreenShakeDuration() > 0) {
                 if (getScreenShakeIntensity() > 1.0f) {
@@ -93,5 +106,15 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSup
     @OnlyIn(Dist.CLIENT)
     public void setScreenShakeIntensity(float intensity) {
         getPersistentData().putFloat(SCREENSHAKE_INTENSITY, intensity);
+    }
+
+    @Override
+    public int getCameraAngleOrdinal() {
+        return entityData.get(CAMERA_ANGLE_ORDINAL);
+    }
+
+    @Override
+    public void setCameraAngleOrdinal(int ordinal) {
+        entityData.set(CAMERA_ANGLE_ORDINAL, ordinal);
     }
 }

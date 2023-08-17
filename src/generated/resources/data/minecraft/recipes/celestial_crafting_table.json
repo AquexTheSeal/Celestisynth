@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "b": {
-      "item": "minecraft:netherite_block"
+      "item": "minecraft:netherite_ingot"
     },
     "c": {
       "item": "minecraft:crafting_table"
