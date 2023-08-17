@@ -1,0 +1,28 @@
+{
+  "type": "celestisynth:shaped_celestial_crafting",
+  "key": {
+    "b": {
+      "item": "minecraft:bow"
+    },
+    "f": {
+      "item": "celestisynth:starstruck_feather"
+    },
+    "i": {
+      "item": "celestisynth:celestial_core_heated"
+    },
+    "n": {
+      "item": "celestisynth:celestial_netherite_ingot"
+    },
+    "s": {
+      "item": "celestisynth:starstruck_scrap"
+    }
+  },
+  "pattern": [
+    "nfs",
+    "ibs",
+    "nfs"
+  ],
+  "result": {
+    "item": "celestisynth:rainfall_serenity"
+  }
+}
