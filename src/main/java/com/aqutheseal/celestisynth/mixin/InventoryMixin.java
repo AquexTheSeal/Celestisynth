@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.mixin;
 
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,8 +33,11 @@ public abstract class InventoryMixin {
     public void cancelCI(CallbackInfo ci) {
         ItemStack selected = getSelected();
         if (selected.getItem() instanceof CSWeapon) {
-            if (selected.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
-                ci.cancel();
+            CompoundTag tag = selected.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+            if (tag != null) {
+                if (tag.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
+                    ci.cancel();
+                }
             }
         }
     }
