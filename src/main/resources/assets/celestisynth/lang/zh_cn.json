@@ -5,13 +5,26 @@
   "item.celestisynth.skill_notice": "主动技能：",
   "item.celestisynth.celestial_tier": "天神造物",
 
+  "item.celestisynth.celestial_core": "天神核心",
+  "item.celestisynth.celestial_core_heated": "活跃的天神核心",
+  "item.celestisynth.supernal_netherite_ingot": "神圣的下界合金锭",
+  "item.celestisynth.celestial_netherite_ingot": "天界合金锭",
+  "item.celestisynth.lunar_scrap": "净月精华",
   "block.celestisynth.solar_crystal": "日曜结晶",
   "block.celestisynth.lunar_stone": "月明净石",
   "block.celestisynth.zephyr_deposit": "风啸沉淀",
+  "item.celestisynth.eyebomination": "魔眼燃石",
+  "item.celestisynth.starstruck_scrap": "星耀残料",
+  "item.celestisynth.starstruck_feather": "星耀羽毛",
 
-  "------------------- SOLARIS ------------------":  "",
+  "block.celestisynth.celestial_crafting_table": "天界工作台",
+  "gui.celestisynth.celestial_crafting": "天界工作台",
+
+  "------------------- SOLARIS ------------------": "",
 
   "item.celestisynth.solaris": "炎日",
+  "advancements.celestisynth.obtained_solaris.title": "炎至百万度",
+  "advancements.celestisynth.obtained_solaris.description": "获得神剑炎日",
 
   "item.celestisynth.solaris.passive_1": "余烬之祝",
   "item.celestisynth.solaris.passive_desc_1": "使用者在手持此物时免疫火焰 - 普通攻击会使攻击对象着火。",
@@ -24,9 +37,11 @@
   "item.celestisynth.solaris.condition_2": "激活方式：按住 SHIFT 并右键单击",
   "item.celestisynth.solaris.desc_2": "向前冲刺, 撞击并暂时引燃其路径上的实体。",
 
-  "------------------- CRESCENTIA ------------------":  "",
+  "------------------- CRESCENTIA ------------------": "",
 
   "item.celestisynth.crescentia": "初月",
+  "advancements.celestisynth.obtained_crescentia.title": "绮丽之烟火",
+  "advancements.celestisynth.obtained_crescentia.description": "获得初月",
 
   "item.celestisynth.crescentia.passive_1": "引力重击",
   "item.celestisynth.crescentia.passive_desc_1": "使用者在手持此物时得到一级的抗性提升 - 普通攻击会使攻击对象减速几秒。",
@@ -39,9 +54,11 @@
   "item.celestisynth.crescentia.condition_2": "激活方式：按住 SHIFT 并右键单击",
   "item.celestisynth.crescentia.desc_2": "释放远距离的劈砍，切开其路径上的一切实体。",
 
-  "------------------- BREEZEBREAKER ------------------":  "",
+  "------------------- BREEZEBREAKER ------------------": "",
 
   "item.celestisynth.breezebreaker": "肆风",
+  "advancements.celestisynth.obtained_breezebreaker.title": "迅疾而声厉",
+  "advancements.celestisynth.obtained_breezebreaker.description": "获得肆风",
 
   "item.celestisynth.breezebreaker.passive_1": "迅敏之风",
   "item.celestisynth.breezebreaker.passive_desc_1": "使用者在手持此物时得到强力的跳跃提升并免疫摔落伤害，然而同时来自其它攻击源的伤害增至原来的 2.3 倍。",
@@ -67,5 +84,72 @@
 
   "item.celestisynth.breezebreaker.skill_5": "疾落死轮",
   "item.celestisynth.breezebreaker.condition_5": "激活方式：腾空时右键单击",
-  "item.celestisynth.breezebreaker.desc_5": "在使用者周围产生竖直的强力风轮, 通过其骇人的力量抹除周围的实体。"
+  "item.celestisynth.breezebreaker.desc_5": "在使用者周围产生竖直的强力风轮, 通过其骇人的力量抹除周围的实体。",
+
+  "------------------- POLTERGEIST ------------------": "",
+
+  "item.celestisynth.poltergeist": "嚎鬼",
+  "advancements.celestisynth.obtained_poltergeist.title": "鬼啸神嚎之斧",
+  "advancements.celestisynth.obtained_poltergeist.description": "获得嚎鬼",
+
+  "item.celestisynth.poltergeist.passive_1": "恶鬼凝视",
+  "item.celestisynth.poltergeist.passive_desc_1": "恶鬼会凝视所有被这把武器技能伤害的敌人，杀死被恶鬼凝视的敌人则会召唤多目恶鬼，在5秒内持续拉取并伤害附近的敌人。",
+
+  "item.celestisynth.poltergeist.skill_1": "炼狱湮灭",
+  "item.celestisynth.poltergeist.condition_1": "激活方式: 单击右键",
+  "item.celestisynth.poltergeist.desc_1": "进行一次湮灭重击，对范围内敌人造成巨大伤害，在使用十次湮灭炼狱后会睁开鬼眼，强化下次湮灭，并直接召唤出恶鬼。在空中使用湮灭会重置此技能冷却。",
+
+  "item.celestisynth.poltergeist.skill_2": "生者勿进",
+  "item.celestisynth.poltergeist.condition_2": "激活方式:按住SHIFT单击右键",
+  "item.celestisynth.poltergeist.desc_2": "向后闪避，并制造一个能够阻挡投射物的炼狱屏障。",
+
+  "------------------- AQUAFLORA ------------------": "",
+
+  "item.celestisynth.aquaflora": "莲华",
+  "advancements.celestisynth.obtained_aquaflora.title": "待那花开之日",
+  "advancements.celestisynth.obtained_aquaflora.description": "获得莲华",
+
+  "item.celestisynth.aquaflora.skill_1": "乱花葬",
+  "item.celestisynth.aquaflora.condition_1": "激活方式:单击右键",
+  "item.celestisynth.aquaflora.desc_1": "能够穿透前方一排实体进行狂风骤雨般的刺击。",
+
+  "item.celestisynth.aquaflora.skill_2": "回天璇",
+  "item.celestisynth.aquaflora.condition_2": "激活方式:按住SHIFT单击右键",
+  "item.celestisynth.aquaflora.desc_2": "伤害并推开前方所有实体。使用此技能会使莲华绽放，进入极诣姿态。",
+
+  "item.celestisynth.aquaflora.skill_3": "镜花水月",
+  "item.celestisynth.aquaflora.condition_3": "激活方式：极诣姿态下单击右键",
+  "item.celestisynth.aquaflora.desc_3": "对范围内实体进行最多20次伤害，双持此武器会使次数最多增加到40+次，但伤害有所降低。使用镜花水月人物会免疫伤害。",
+
+  "item.celestisynth.aquaflora.skill_4": "花舞游龙击",
+  "item.celestisynth.aquaflora.condition_4": "激活方式：在极诣状态下按住SHIFT单击鼠标右键",
+  "item.celestisynth.aquaflora.desc_4": "向后回避，在原地留下一个吸附附近实体的莲花。使用该技能会退出极诣姿态，回归莲华初始姿态。",
+
+  "------------------- RAINFALL_SERENITY ------------------": "",
+
+  "item.celestisynth.rainfall_serenity": "谧静星落",
+  "advancements.celestisynth.obtained_rainfall_serenity.title": "破越地球大气",
+  "advancements.celestisynth.obtained_rainfall_serenity.description": "获得谧静星落",
+
+  "item.celestisynth.rainfall_serenity.passive_1": "",
+  "item.celestisynth.rainfall_serenity.passive_desc_1": "",
+
+  "item.celestisynth.rainfall_serenity.skill_1": "穿越天际，亘古长存",
+  "item.celestisynth.rainfall_serenity.condition_1": "激活方式：拉满弓",
+  "item.celestisynth.rainfall_serenity.desc_1": "释放弓箭时，发射出一道可以穿透无限敌人数量的激光，并为每个敌人打上“类星体标记”，标记持续 5 秒。这个标记会触发附近的实体向被标记的目标发射激光。",
+
+  "item.celestisynth.rainfall_serenity.skill_2": "类星体标记",
+  "item.celestisynth.rainfall_serenity.condition_2": "激活方式：使用武器击中实体",
+  "item.celestisynth.rainfall_serenity.desc_2": "当激光击中目标实体时，周围所有被打上“类星体标记”的实体都会有 25% 的概率立即将自己的激光射向首个被击中的实体。",
+
+  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ADVANCEMENTS [NON-WEAPONS] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>": "",
+
+  "advancements.celestisynth.obtained_core.title": "迈向辉煌之旅！",
+  "advancements.celestisynth.obtained_core.description": "制作一个天神核心",
+  "advancements.celestisynth.obtained_supernal_ingot.title": "哦，不，不是另一个下界合金！",
+  "advancements.celestisynth.obtained_supernal_ingot.description": "获得一个神圣下界合金锭。",
+  "advancements.celestisynth.obtained_celestial_ingot.title": "也许，不尽相同？",
+  "advancements.celestisynth.obtained_celestial_ingot.description": "获得一个天界合金锭",
+  "advancements.celestisynth.placed_celestial_table.title": "进一步提高水平！",
+  "advancements.celestisynth.placed_celestial_table.description": "放置一个天界工作台"
 }
