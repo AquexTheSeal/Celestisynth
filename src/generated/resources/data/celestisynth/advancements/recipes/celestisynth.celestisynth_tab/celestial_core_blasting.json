@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:celestial_core_smelting"
+        "recipe": "celestisynth:celestial_core_blasting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:celestial_core_smelting"
+      "celestisynth:celestial_core_blasting"
     ]
   }
 }

@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:ender_eye"
+              "celestisynth:celestial_core"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:eyebomination"
+        "recipe": "celestisynth:celestial_core_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:eyebomination"
+      "celestisynth:celestial_core_smelting"
     ]
   }
 }

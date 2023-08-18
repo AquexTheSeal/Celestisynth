@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:lily_pad"
+              "minecraft:netherite_ingot"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:aquaflora"
+        "recipe": "celestisynth:supernal_netherite_ingot_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:aquaflora"
+      "celestisynth:supernal_netherite_ingot_smithing"
     ]
   }
 }

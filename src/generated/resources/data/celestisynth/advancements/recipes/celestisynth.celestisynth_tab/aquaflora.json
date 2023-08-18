@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "celestisynth:eyebomination"
+              "minecraft:lily_pad"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:poltergeist"
+        "recipe": "celestisynth:aquaflora"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:poltergeist"
+      "celestisynth:aquaflora"
     ]
   }
 }

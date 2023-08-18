@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:lunar_scrap_smelting"
+        "recipe": "celestisynth:lunar_scrap_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:lunar_scrap_smelting"
+      "celestisynth:lunar_scrap_smelting"
     ]
   }
 }

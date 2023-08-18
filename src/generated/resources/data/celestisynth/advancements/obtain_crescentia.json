@@ -1,12 +1,12 @@
 {
-  "parent": "minecraft:celestisynth/placed_celestial_table",
+  "parent": "celestisynth:place_celestial_table",
   "criteria": {
-    "obtained_aquaflora": {
+    "criteria": {
       "conditions": {
         "items": [
           {
             "items": [
-              "celestisynth:aquaflora"
+              "celestisynth:crescentia"
             ]
           }
         ]
@@ -17,22 +17,22 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.celestisynth.obtained_aquaflora.description"
+      "translate": "advancement.celestisynth.obtain_crescentia.description"
     },
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "celestisynth:aquaflora",
+      "item": "celestisynth:crescentia",
       "nbt": "{Damage:0}"
     },
-    "show_toast": false,
+    "show_toast": true,
     "title": {
-      "translate": "advancements.celestisynth.obtained_aquaflora.title"
+      "translate": "advancement.celestisynth.obtain_crescentia.title"
     }
   },
   "requirements": [
     [
-      "obtained_aquaflora"
+      "criteria"
     ]
   ]
 }

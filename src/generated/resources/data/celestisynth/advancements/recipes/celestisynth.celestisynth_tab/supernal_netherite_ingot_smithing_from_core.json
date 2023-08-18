@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "celestisynth:supernal_netherite_ingot"
+              "minecraft:netherite_ingot"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:celestial_netherite_ingot_blasting"
+        "recipe": "celestisynth:supernal_netherite_ingot_smithing_from_core"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:celestial_netherite_ingot_blasting"
+      "celestisynth:supernal_netherite_ingot_smithing_from_core"
     ]
   }
 }

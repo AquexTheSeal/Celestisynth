@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:netherite_ingot"
+              "celestisynth:eyebomination"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:supernal_netherite_ingot_smithing"
+        "recipe": "celestisynth:poltergeist"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:supernal_netherite_ingot_smithing"
+      "celestisynth:poltergeist"
     ]
   }
 }

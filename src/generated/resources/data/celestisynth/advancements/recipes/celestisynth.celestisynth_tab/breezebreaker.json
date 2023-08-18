@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "celestisynth:lunar_stone"
+              "celestisynth:zephyr_deposit"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crescentia"
+        "recipe": "celestisynth:breezebreaker"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:crescentia"
+      "celestisynth:breezebreaker"
     ]
   }
 }

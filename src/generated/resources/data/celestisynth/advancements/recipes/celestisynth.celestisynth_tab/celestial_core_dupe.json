@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "celestisynth:starstruck_feather"
+              "celestisynth:celestial_core_heated"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:rainfall_serenity"
+        "recipe": "celestisynth:celestial_core_dupe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:rainfall_serenity"
+      "celestisynth:celestial_core_dupe"
     ]
   }
 }
