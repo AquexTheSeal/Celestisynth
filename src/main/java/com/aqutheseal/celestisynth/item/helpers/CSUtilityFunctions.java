@@ -25,6 +25,10 @@ public class CSUtilityFunctions {
         return i;
     }
 
+    public static <T extends ParticleType<?>> int sendParticle(Level world, T pType, double pPosX, double pPosY, double pPosZ) {
+        return sendParticles(world, pType, pPosX, pPosY, pPosZ, 0, 0, 0, 0);
+    }
+
     public static <T extends ParticleType<?>> int sendParticles(Level world, T pType, double pPosX, double pPosY, double pPosZ, int pParticleCount, double pXSpeed, double pYSpeed, double pZSpeed) {
         if (!world.isClientSide()) {
             return sendParticles((ServerLevel) world, pType, pPosX, pPosY, pPosZ, pParticleCount, 0, 0, 0, pXSpeed, pYSpeed, pZSpeed);

@@ -228,14 +228,4 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
     public UseAnim getUseAnimation(ItemStack pStack) {
         return UseAnim.NONE;
     }
-
-    @Override
-    public Predicate<ItemStack> getAllSupportedProjectiles() {
-        return null;
-    }
-
-    @Override
-    public int getDefaultProjectileRange() {
-        return 15;
-    }
 }

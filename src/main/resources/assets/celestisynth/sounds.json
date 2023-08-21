@@ -1,71 +1,77 @@
 {
-  "cs_step": {
-    "subtitle": "subtitles.celestisynth.cs_step",
+  "step": {
+    "subtitle": "subtitles.celestisynth.step",
     "sounds": [
       "celestisynth:cs_step"
     ]
   },
-  "solaris_1": {
-    "subtitle": "subtitles.celestisynth.solaris_1",
+  "hop": {
+    "subtitle": "subtitles.celestisynth.hop",
+    "sounds": [
+      "celestisynth:hop"
+    ]
+  },
+  "sword_swing": {
+    "subtitle": "subtitles.celestisynth.sword_swing",
     "sounds": [
       "celestisynth:solaris_1"
     ]
   },
-  "solaris_2": {
-    "subtitle": "subtitles.celestisynth.solaris_2",
+  "sword_swing_fire": {
+    "subtitle": "subtitles.celestisynth.sword_swing_fire",
     "sounds": [
       "celestisynth:solaris_2"
     ]
   },
-  "solaris_3": {
-    "subtitle": "subtitles.celestisynth.solaris_3",
+  "air_swing": {
+    "subtitle": "subtitles.celestisynth.air_swing",
     "sounds": [
       "celestisynth:solaris_3"
     ]
   },
-  "solaris_4": {
-    "subtitle": "subtitles.celestisynth.solaris_4",
+  "impact_hit": {
+    "subtitle": "subtitles.celestisynth.impact_hit",
     "sounds": [
       "celestisynth:solaris_4"
     ]
   },
-  "solaris_5": {
-    "subtitle": "subtitles.celestisynth.solaris_5",
+  "sword_clash": {
+    "subtitle": "subtitles.celestisynth.sword_clash",
     "sounds": [
       "celestisynth:solaris_5"
     ]
   },
-  "solaris_6": {
-    "subtitle": "subtitles.celestisynth.solaris_6",
+  "fire_shoot": {
+    "subtitle": "subtitles.celestisynth.fire_shoot",
     "sounds": [
       "celestisynth:solaris_6"
     ]
   },
-  "cs_wind_strike": {
-    "subtitle": "subtitles.celestisynth.cs_wind_strike",
+  "wind_strike": {
+    "subtitle": "subtitles.celestisynth.wind_strike",
     "sounds": [
       "celestisynth:cs_wind_strike"
     ]
   },
-  "cs_whirlwind": {
-    "subtitle": "subtitles.celestisynth.cs_whirlwind",
+  "whirlwind": {
+    "subtitle": "subtitles.celestisynth.whirlwind",
     "sounds": [
       "celestisynth:cs_whirlwind"
     ]
   },
-  "cs_loud_impact": {
-    "subtitle": "subtitles.celestisynth.cs_loud_impact",
+  "loud_impact": {
+    "subtitle": "subtitles.celestisynth.loud_impact",
     "sounds": [
       "celestisynth:cs_loud_impact"
     ]
   },
-  "cs_bling": {
-    "subtitle": "subtitles.celestisynth.cs_bling",
+  "bling": {
+    "subtitle": "subtitles.celestisynth.bling",
     "sounds": [
       "celestisynth:cs_bling"
     ]
   },
-  "cs_laser_shoot": {
+  "laser_shoot": {
     "subtitle": "subtitles.celestisynth.laser_shoot",
     "sounds": [
       "celestisynth:rainfall_serenity_shoot-01",

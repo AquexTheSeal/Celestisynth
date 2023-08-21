@@ -9,6 +9,7 @@ import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.item.weapons.PoltergeistItem;
 import com.aqutheseal.celestisynth.item.weapons.RainfallSerenityItem;
 import com.aqutheseal.celestisynth.item.weapons.SolarisItem;
+import com.aqutheseal.celestisynth.particles.BreezebrokenParticle;
 import com.aqutheseal.celestisynth.particles.RainfallBeamParticle;
 import com.aqutheseal.celestisynth.particles.RainfallEnergyParticle;
 import com.aqutheseal.celestisynth.recipe.CelestialCraftingScreen;
@@ -93,6 +94,7 @@ public class CSClientRegistries {
 
     @SubscribeEvent
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
+        event.register(CSParticleRegistry.BREEZEBROKEN.get(), BreezebrokenParticle.Provider::new);
         event.register(CSParticleRegistry.RAINFALL_BEAM.get(), RainfallBeamParticle.Provider::new);
         event.register(CSParticleRegistry.RAINFALL_BEAM_QUASAR.get(), RainfallBeamParticle.Quasar.Provider::new);
         event.register(CSParticleRegistry.RAINFALL_ENERGY.get(), RainfallEnergyParticle.Provider::new);

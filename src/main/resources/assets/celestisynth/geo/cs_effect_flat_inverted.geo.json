@@ -14,7 +14,7 @@
 				{
 					"name": "bone",
 					"pivot": [0, 13, 0],
-					"rotation": [-180, 0, 0],
+					"rotation": [0, 0, -180],
 					"cubes": [
 						{
 							"origin": [-24, 13, -24],
