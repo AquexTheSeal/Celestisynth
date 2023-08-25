@@ -125,7 +125,7 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
     public void tickNormal(ItemStack itemStack, Level level, Player player, int animationTimer) {
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         if (animationTimer == 1) {
-            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_PIERCE_START, calculateXLook(player) * 3, 1.5 + calculateYLook(player) * 3, calculateZLook(player) * 3);
+            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_PIERCE_START, calculateXLook(player) * 3, 1.2 + calculateYLook(player) * 3, calculateZLook(player) * 3);
             player.playSound(CSSoundRegistry.CS_BLING.get(), 0.15F, 0.5F);
             if (level.isClientSide()) {
                 shakeScreens(player, 15, 5, 0.02F);

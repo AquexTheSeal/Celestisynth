@@ -57,12 +57,12 @@ public class CSEffectRenderer extends SilencedRotationProjectileRenderer<CSEffec
 
     @Override
     protected int getBlockLightLevel(CSEffect p_114496_, BlockPos p_114497_) {
-        return 12;
+        return 15;
     }
 
     @Override
     protected int getSkyLightLevel(CSEffect p_114509_, BlockPos p_114510_) {
-        return 15;
+        return 7;
     }
 
     @Override

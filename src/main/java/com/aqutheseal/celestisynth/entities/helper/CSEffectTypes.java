@@ -44,14 +44,17 @@ public enum CSEffectTypes {
     CRESCENTIA_THROW_INVERTED("crescentia_throw_inverted", "crescentia_throw", Model.FLAT, Animation.SWEEP_LTOR,
             0, 0, 3, false, true, true)
     ,
-    BREEZEBREAKER_SLASH("breezebreaker_slash", Model.FLAT, Animation.SWEEP_RTOL,
-            0, 0, 3, false, true, true)
+    BREEZEBREAKER_SLASH("breezebreaker_slash", Model.FLAT, noneTo(10),
+            5, 2, 3, false, false, true)
     ,
-    BREEZEBREAKER_SLASH_INVERTED("breezebreaker_slash_inverted", "breezebreaker_slash", Model.FLAT, Animation.SWEEP_LTOR,
-            0, 0, 3, false, true, true)
+    BREEZEBREAKER_SLASH_INVERTED("breezebreaker_slash_inverted", "breezebreaker_slash", Model.FLAT_INVERTED, noneTo(10),
+            5, 2, 3, false, false, true)
     ,
-    BREEZEBREAKER_WHEEL("breezebreaker_slash_vertical", "breezebreaker_wheel", Model.FLAT_VERTICAL_FRONTFACE, Animation.SWEEP_RTOL,
-            0, 0, 4, false, true, false)
+    BREEZEBREAKER_WHEEL("breezebreaker_wheel", Model.FLAT_VERTICAL_FRONTFACE, noneTo(12),
+            6, 2, 4, false, false, false)
+    ,
+    BREEZEBREAKER_WHEEL_IMPACT("breezebreaker_wheel_impact", Model.FLAT_VERTICAL_SIDEFACE,  noneTo(12),
+            6, 2, 2, false, false, true)
     ,
     BREEZEBREAKER_DASH("breezebreaker_dash", Model.SIX_WAY_CROSS, Animation.STRETCH,
             16, 2, 3, false, true, false)
@@ -195,7 +198,6 @@ public enum CSEffectTypes {
         FLAT_INVERTED("cs_effect_flat_inverted"),
         FLAT_VERTICAL_SIDEFACE("cs_effect_flat_vertical"),
         FLAT_VERTICAL_FRONTFACE("cs_effect_flat_vertical_side"),
-        IMPACT("cs_effect_impact"),
         SIX_WAY_CROSS("cs_effect_cross"),
         WALL("cs_effect_wall")
         ;
@@ -214,15 +216,12 @@ public enum CSEffectTypes {
     public enum Animation implements IExtensibleEnum {
         SPIN_15("animation.cs_effect.spin", 15),
         SPIN_20("animation.cs_effect.spin", 20),
-        SMASH("animation.cs_effect.smash", 20),
         ASCEND("animation.cs_effect.ascend", 20),
         SLOW_ROTATION("animation.cs_effect.slow_rotation", Integer.MAX_VALUE),
         SWEEP_RTOL("animation.cs_effect.sweep_rtol", 15),
         SWEEP_LTOR("animation.cs_effect.sweep_ltor", 15),
         STRETCH("animation.cs_effect.stretch", 15),
-        GOO("animation.cs_effect.goo", Integer.MAX_VALUE),
-        EXPAND("animation.cs_effect.expand", 10);
-
+        GOO("animation.cs_effect.goo", Integer.MAX_VALUE);
         final String animationString;
         final int lifespan;
 
@@ -250,7 +249,7 @@ public enum CSEffectTypes {
         switch (animatable.getEffectType()) {
             case CRESCENTIA_STRIKE, CRESCENTIA_STRIKE_INVERTED, CRESCENTIA_THROW, CRESCENTIA_THROW_INVERTED, BREEZEBREAKER_SLASH, BREEZEBREAKER_SLASH_INVERTED ->
                     poseStack.mulPose(Vector3f.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
-            case AQUAFLORA_PIERCE_START, AQUAFLORA_STAB ->
+            case BREEZEBREAKER_WHEEL_IMPACT, AQUAFLORA_PIERCE_START, AQUAFLORA_STAB ->
                     poseStack.mulPose(Vector3f.XP.rotationDegrees(180f + lerpBodyRot));
             case RAINFALL_SHOOT ->
                     poseStack.mulPose(Vector3f.XP.rotationDegrees(180f + lerpBodyRot - 15f));

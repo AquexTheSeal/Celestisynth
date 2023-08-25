@@ -77,7 +77,7 @@ public class Celestisynth {
             dataGenerator.addProvider(true, new CSItemModelProvider(dataGenerator, MODID, efh));
             dataGenerator.addProvider(true, new CSRecipeProvider(dataGenerator));
             dataGenerator.addProvider(true, new CSAdvancementProvider(dataGenerator, efh));
-            // dataGenerator.addProvider(true, new CSSoundProvider(dataGenerator.getPackOutput(), MODID, efh));
+            //dataGenerator.addProvider(true, new CSSoundProvider(dataGenerator, MODID, efh));
         }
     }
 }

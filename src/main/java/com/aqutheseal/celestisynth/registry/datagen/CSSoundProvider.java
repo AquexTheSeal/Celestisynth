@@ -3,14 +3,16 @@ package com.aqutheseal.celestisynth.registry.datagen;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.SoundDefinition;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
 import net.minecraftforge.registries.RegistryObject;
 
 public class CSSoundProvider extends SoundDefinitionsProvider {
 
-    protected CSSoundProvider(DataGenerator generator, String modId, ExistingFileHelper helper) {
+    public CSSoundProvider(DataGenerator generator, String modId, ExistingFileHelper helper) {
         super(generator, modId, helper);
     }
 

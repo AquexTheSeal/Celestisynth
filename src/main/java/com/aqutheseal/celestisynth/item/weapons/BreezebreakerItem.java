@@ -8,6 +8,7 @@ import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
+import com.aqutheseal.celestisynth.registry.CSParticleRegistry;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -177,13 +178,12 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
         if (data1.getBoolean(AT_BUFF_STATE)) {
             if (entity instanceof Player player) {
                 player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, 1));
-                for (int i = 0; i < 45; i++) {
-                    Vec3 lookDirection = player.getLookAngle().normalize();
-                    double offX = lookDirection.x() * -1;
-                    double offY = lookDirection.y() * -1;
-                    double offZ = lookDirection.z() * -1;
-                    CSUtilityFunctions.sendParticles(level, ParticleTypes.POOF, entity.getX(), entity.getY() + 1, entity.getZ(), 0, offX, offY, offZ);
-                }
+                double radius = 1.5 + player.getBbWidth();
+                double speed = 0.5;
+                double offX = radius * Math.sin(speed * player.tickCount);
+                double offY = player.getBbHeight() / 2;
+                double offZ = radius * Math.cos(speed * player.tickCount);
+                CSUtilityFunctions.sendParticle(level, CSParticleRegistry.BREEZEBROKEN.get(), player.getX() + offX, player.getY() + offY, player.getZ() + offZ);
             }
 
             data1.putInt(BUFF_STATE_LIMITER, data1.getInt(BUFF_STATE_LIMITER) + 1);
@@ -212,10 +212,11 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
             }
 
             player.playSound(CSSoundRegistry.CS_WIND_STRIKE.get());
-            if (data.getInt(ATTACK_INDEX) == ATTACK_NORMAL_SINGLE) {
+            if (animationTimer == 6) {
                 CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_SLASH, calculateXLook(player), 0, calculateZLook(player));
                 player.playSound(CSSoundRegistry.CS_AIR_SWING.get(), 1.0F, 1.0F);
-            } else if (data.getInt(ATTACK_INDEX) == ATTACK_NORMAL_DOUBLE) {
+            }
+            if (data.getInt(ATTACK_INDEX) == ATTACK_NORMAL_DOUBLE && animationTimer == 11) {
                 CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_SLASH_INVERTED, calculateXLook(player), 0, calculateZLook(player));
                 player.playSound(CSSoundRegistry.CS_AIR_SWING.get(), 1.0F, 2.0F);
             }
@@ -318,6 +319,7 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
             }
 
             CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_WHEEL, 0, -1, 0);
+            CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_WHEEL_IMPACT, calculateXLook(player) * 3, 1.5 + calculateYLook(player) * 3, calculateZLook(player) * 3);
             player.playSound(CSSoundRegistry.CS_FIRE_SHOOT.get(), 1.0F, 1.0F);
             player.playSound(CSSoundRegistry.CS_AIR_SWING.get(), 1.0F, 1.0F);
             player.playSound(CSSoundRegistry.CS_WIND_STRIKE.get());
