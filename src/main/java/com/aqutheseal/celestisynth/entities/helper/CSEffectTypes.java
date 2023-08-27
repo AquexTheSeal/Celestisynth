@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
 import net.minecraftforge.common.IExtensibleEnum;
 
-public enum CSEffectTypes {
+public enum CSEffectTypes implements IExtensibleEnum {
 
     // Weapons
     SOLARIS_BLITZ("solaris_spin", Model.FLAT, Animation.SPIN_15,
@@ -190,6 +190,10 @@ public enum CSEffectTypes {
 
     public boolean hasSpecialProperties() {
         return specialProperties;
+    }
+
+    public static CSEffectTypes create(String name, String texture, Model model, Animation animation, int frames, int framesSpeed, double scale, boolean rotateRandomly, boolean fadeOut, boolean specialProperties) {
+        throw new IllegalStateException("Enum not extended");
     }
 
     public enum Model {

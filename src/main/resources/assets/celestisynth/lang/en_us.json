@@ -5,6 +5,12 @@
   "item.celestisynth.skill_notice": "SKILLS:",
   "item.celestisynth.celestial_tier": "CELESTIAL GRADE",
 
+  "item.celestisynth.armor_stun_immune": "> Immune to interruption while casting weapon skill",
+  "item.celestisynth.armor_damage_reflection_percent": "+%s% damage reflection to the attacker",
+  "item.celestisynth.armor_damage_reflection_addition": "+%s damage reflection to the attacker",
+  "item.celestisynth.armor_mob_effect_duration_multiplier": "x%s mob effect duration received",
+  "item.celestisynth.armor_skill_damage_multiplier": "x%s damage for weapon skills",
+
   "item.celestisynth.celestial_core": "Celestial Core",
   "item.celestisynth.celestial_core_heated": "Heated Celestial Core",
   "item.celestisynth.supernal_netherite_ingot": "Supernal Netherite Ingot",

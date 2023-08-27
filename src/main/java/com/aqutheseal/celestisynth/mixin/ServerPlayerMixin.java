@@ -3,6 +3,7 @@ package com.aqutheseal.celestisynth.mixin;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -27,8 +28,11 @@ public abstract class ServerPlayerMixin extends Player {
         Inventory inventory = this.getInventory();
         ItemStack selected = inventory.getSelected();
         if (selected.getItem() instanceof CSWeapon) {
-            if (selected.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
-                cir.setReturnValue(false);
+            CompoundTag tag = selected.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+            if (tag != null) {
+                if (tag.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
+                    cir.setReturnValue(false);
+                }
             }
         }
     }

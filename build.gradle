@@ -27,7 +27,7 @@ mixin {
     add sourceSets.main, "${project.modid}.refmap.json"
 }
 
-version = "${project.mc_ver}-1.1.1"
+version = "${project.mc_ver}-1.1.2"
 group = "com.aqutheseal.${project.modid}"
 archivesBaseName = "${project.modid}"
 

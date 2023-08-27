@@ -2,6 +2,8 @@ package com.aqutheseal.celestisynth.events;
 
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.PlayerMixinSupport;
+import com.aqutheseal.celestisynth.item.helpers.CSArmorItem;
+import com.aqutheseal.celestisynth.item.helpers.CSArmorProperties;
 import com.aqutheseal.celestisynth.item.helpers.CSRarityTypes;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
@@ -115,6 +117,34 @@ public class CSClientEvents {
     public static void onToolTipComponent(RenderTooltipEvent.GatherComponents event) {
         ItemStack stack = event.getItemStack();
         String name = ForgeRegistries.ITEMS.getKey(stack.getItem()).getPath();
+
+        if(!stack.isEmpty() && stack.getItem() instanceof CSArmorItem armor) {
+            List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
+            List<Either<FormattedText, TooltipComponent>> elementsToAdd = new ArrayList<>();
+            CSArmorProperties properties = armor.getArmorProperties();
+
+            if (properties.stunImmune) {
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.armor_stun_immune").withStyle(ChatFormatting.LIGHT_PURPLE)));
+            }
+            if (properties.damageReflectionPercent > 0) {
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.armor_damage_reflection_percent", properties.damageReflectionPercent).withStyle(ChatFormatting.LIGHT_PURPLE)));
+            }
+            if (properties.damageReflectionAddition > 0) {
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.armor_damage_reflection_addition", properties.damageReflectionAddition).withStyle(ChatFormatting.LIGHT_PURPLE)));
+            }
+            if (properties.mobEffectDurationMultiplier > 0) {
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.armor_mob_effect_duration_multiplier", properties.mobEffectDurationMultiplier).withStyle(ChatFormatting.LIGHT_PURPLE)));
+            }
+            if (properties.skillDamageMultiplier > 0) {
+                elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.armor_skill_damage_multiplier", properties.skillDamageMultiplier).withStyle(ChatFormatting.LIGHT_PURPLE)));
+            }
+
+            ListIterator<Either<FormattedText, TooltipComponent>> iterator = elementsToAdd.listIterator(elementsToAdd.size());
+            while (iterator.hasPrevious()) {
+                elements.add(1, iterator.previous());
+            }
+        }
+
         if(!stack.isEmpty() && stack.getItem() instanceof CSWeapon cs) {
             List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
             List<Either<FormattedText, TooltipComponent>> elementsToAdd = new ArrayList<>();
