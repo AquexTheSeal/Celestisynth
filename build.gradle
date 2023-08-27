@@ -171,6 +171,10 @@ dependencies {
 
     implementation fg.deobf("mezz.jei:jei-${project.mc_ver}-forge:11.6.0.1016")
 
+    runtimeOnly fg.deobf('curse.maven:ferritecore-429235:4117906')
+    runtimeOnly fg.deobf('curse.maven:shutup-experimental-settings-407174:3759881')
+    runtimeOnly fg.deobf('curse.maven:lazy-dfu-forge-460819:4327266')
+
     // EXTRA GOODS (Not going to use these for [gradle.properties] since I can just remove these anytime I want to.)
 
     implementation fg.deobf("curse.maven:rubidium-574856:4568727")

@@ -1,12 +1,12 @@
 {
-  "parent": "minecraft:celestisynth/placed_celestial_table",
+  "parent": "celestisynth:place_celestial_table",
   "criteria": {
-    "obtained_solaris": {
+    "criteria": {
       "conditions": {
         "items": [
           {
             "items": [
-              "celestisynth:solaris"
+              "celestisynth:breezebreaker"
             ]
           }
         ]
@@ -17,22 +17,22 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.celestisynth.obtained_solaris.description"
+      "translate": "advancement.celestisynth.obtain_breezebreaker.description"
     },
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "celestisynth:solaris",
+      "item": "celestisynth:breezebreaker",
       "nbt": "{Damage:0}"
     },
-    "show_toast": false,
+    "show_toast": true,
     "title": {
-      "translate": "advancements.celestisynth.obtained_solaris.title"
+      "translate": "advancement.celestisynth.obtain_breezebreaker.title"
     }
   },
   "requirements": [
     [
-      "obtained_solaris"
+      "criteria"
     ]
   ]
 }

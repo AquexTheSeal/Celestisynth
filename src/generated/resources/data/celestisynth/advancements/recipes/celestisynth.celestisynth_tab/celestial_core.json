@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "celestisynth:zephyr_deposit"
+              "minecraft:amethyst_shard"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:breezebreaker"
+        "recipe": "celestisynth:celestial_core"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:breezebreaker"
+      "celestisynth:celestial_core"
     ]
   }
 }

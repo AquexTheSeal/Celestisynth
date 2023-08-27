@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:celestial_crafting_table"
+        "recipe": "celestisynth:celestial_crafting_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:celestial_crafting_table"
+      "celestisynth:celestial_crafting_table"
     ]
   }
 }

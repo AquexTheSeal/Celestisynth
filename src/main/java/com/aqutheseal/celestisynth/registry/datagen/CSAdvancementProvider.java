@@ -4,7 +4,6 @@ import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSBlockRegistry;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;
@@ -19,9 +18,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class CSAdvancementProvider extends AdvancementProvider {
 
@@ -31,53 +29,35 @@ public class CSAdvancementProvider extends AdvancementProvider {
 
     @Override
     protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
-        Advancement obtained_core = Advancement.Builder.advancement().display(CSItemRegistry.CELESTIAL_CORE.get(),
-                        Component.translatable("advancements.celestisynth.obtained_core.title"),
-                        Component.translatable("advancements.celestisynth.obtained_core.description"),
-                        new ResourceLocation(Celestisynth.MODID, "textures/block/zephyr_deposit.png"),
-                        FrameType.TASK, false, true, false).addCriterion("obtained_core",
-                        InventoryChangeTrigger.TriggerInstance.hasItems(CSItemRegistry.CELESTIAL_CORE.get()))
-                .save(consumer, "celestisynth/root");
+        Advancement rootObtainedCore = Advancement.Builder.advancement().display(CSItemRegistry.CELESTIAL_CORE.get(), Component.translatable("advancements.celestisynth.obtained_core.title"), Component.translatable("advancements.celestisynth.obtained_core.description"), new ResourceLocation(Celestisynth.MODID, "textures/block/zephyr_deposit.png"), FrameType.TASK, false, true, false).addCriterion("obtained_core", InventoryChangeTrigger.TriggerInstance.hasItems(CSItemRegistry.CELESTIAL_CORE.get())).save(consumer, "celestisynth:root");
 
-        Advancement obtained_supernal_ingot =
-                simplified(consumer, "obtained_supernal_ingot", obtained_core, FrameType.TASK, false,
-                        InventoryChangeTrigger.TriggerInstance.hasItems(CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get()),  CSItemRegistry.SUPERNAL_NETHERITE_INGOT.get());
+        Advancement getSupernalIngot = this.obtainItem(consumer, rootObtainedCore, CSItemRegistry.SUPERNAL_NETHERITE_INGOT, FrameType.TASK, false);
 
-        Advancement obtained_celestial_ingot =
-                simplified(consumer, "obtained_celestial_ingot", obtained_supernal_ingot, FrameType.TASK, false,
-                        InventoryChangeTrigger.TriggerInstance.hasItems(CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get()),  CSItemRegistry.CELESTIAL_NETHERITE_INGOT.get());
+        Advancement obtainedCelestialIngot = this.obtainItem(consumer, getSupernalIngot, CSItemRegistry.CELESTIAL_NETHERITE_INGOT, FrameType.TASK, false);
 
-        Advancement placed_celestial_table =
-                simplified(consumer, "placed_celestial_table", obtained_celestial_ingot, FrameType.CHALLENGE, true,
-                        PlacedBlockTrigger.TriggerInstance.placedBlock(CSBlockRegistry.CELESTIAL_CRAFTING_TABLE.get()),  CSBlockRegistry.CELESTIAL_CRAFTING_TABLE.get());
+        Advancement placeCelestialTable = this.createAdvancement(consumer, obtainedCelestialIngot, "place_celestial_table", FrameType.CHALLENGE, true, CSBlockRegistry.CELESTIAL_CRAFTING_TABLE, PlacedBlockTrigger.TriggerInstance::placedBlock);
 
-        List<Pair<Advancement, Item>> weaponAdvancements = new ArrayList<>();
-        for (RegistryObject<Item> weapons : CSItemRegistry.ITEMS.getEntries()) {
-            if (weapons.get() instanceof CSWeapon) {
-                weaponAdvancements.add(Pair.of(byWeapon(consumer, placed_celestial_table, weapons), weapons.get()));
-            }
-        }
+        CSItemRegistry.ITEMS.getEntries().stream().filter(weapon -> weapon.get() instanceof CSWeapon)
+                .forEach(item -> this.obtainItem(consumer, placeCelestialTable, item, FrameType.GOAL, true));
     }
 
-    public Advancement getFromWeapon(List<Pair<Advancement, Item>> candidates, RegistryObject<Item> weapon) {
-        for (Pair<Advancement, Item> pairs : candidates) {
-            if (pairs.getSecond() == weapon.get()) {
-                return pairs.getFirst();
-            }
-        }
-        throw new IllegalStateException("Cannot find matching Advancement for weapon: " + weapon.getId().getPath());
+
+    private Advancement obtainItem(Consumer<Advancement> dataSaver, Advancement parent, RegistryObject<? extends Item> require, FrameType frameType, boolean toChat) {
+        return createAdvancement(dataSaver, parent, "obtain_" + require.getId().getPath(), frameType, toChat, require, InventoryChangeTrigger.TriggerInstance::hasItems);
     }
 
-    public Advancement byWeapon(Consumer<Advancement> consumer, Advancement parent, RegistryObject<Item> celestisynthWeapon) {
-        return simplified(consumer, "obtained_" + celestisynthWeapon.getId().getPath(), parent, FrameType.GOAL, true,
-                InventoryChangeTrigger.TriggerInstance.hasItems(celestisynthWeapon.get()), celestisynthWeapon.get());
+    private <ToCheck extends ItemLike, Trigger extends CriterionTriggerInstance> Advancement createAdvancement(Consumer<Advancement> consumer, Advancement parent, String saveName, FrameType frame, boolean toChat, RegistryObject<ToCheck> toCheck, Function<ToCheck, Trigger> triggerFactory) {
+        return createAdvancement(consumer, parent, saveName, toCheck.get(), frame, toChat, toCheck.get(), triggerFactory);
     }
 
-    public Advancement simplified(Consumer<Advancement> consumer, String title, Advancement parent, FrameType frameType, boolean announceToChat, CriterionTriggerInstance trigger, ItemLike display) {
-        return Advancement.Builder.advancement().parent(parent).display(display,
-                        Component.translatable("advancements.celestisynth." + title + ".title"),
-                        Component.translatable("advancements.celestisynth." + title + ".description"), null,
-                        frameType, false, announceToChat, false).addCriterion(title, trigger)
-                .save(consumer, "celestisynth/" + title);
+    private <ToCheck, Trigger extends CriterionTriggerInstance> Advancement createAdvancement(Consumer<Advancement> consumer, Advancement parent, String saveName, ItemLike displayIcon, FrameType frame, boolean toChat, ToCheck toCheck, Function<ToCheck, Trigger> triggerFactory) {
+        ResourceLocation fileName = new ResourceLocation(Celestisynth.MODID, saveName);
+        String languageKey = fileName.toLanguageKey("advancement");
+        return Advancement.Builder
+                .advancement()
+                .parent(parent)
+                .display(displayIcon, Component.translatable(languageKey + ".title"), Component.translatable(languageKey + ".description"), null, frame, true, toChat, false)
+                .addCriterion("criteria", triggerFactory.apply(toCheck))
+                .save(consumer, fileName, super.fileHelper);
     }
 }

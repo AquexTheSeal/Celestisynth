@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:amethyst_shard"
+              "celestisynth:solar_crystal"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:celestial_core"
+        "recipe": "celestisynth:solaris"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:celestial_core"
+      "celestisynth:solaris"
     ]
   }
 }

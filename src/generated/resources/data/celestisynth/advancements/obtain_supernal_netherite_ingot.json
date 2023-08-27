@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:celestisynth/root",
+  "parent": "celestisynth:root",
   "criteria": {
-    "obtained_supernal_ingot": {
+    "criteria": {
       "conditions": {
         "items": [
           {
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.celestisynth.obtained_supernal_ingot.description"
+      "translate": "advancement.celestisynth.obtain_supernal_netherite_ingot.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
       "item": "celestisynth:supernal_netherite_ingot"
     },
-    "show_toast": false,
+    "show_toast": true,
     "title": {
-      "translate": "advancements.celestisynth.obtained_supernal_ingot.title"
+      "translate": "advancement.celestisynth.obtain_supernal_netherite_ingot.title"
     }
   },
   "requirements": [
     [
-      "obtained_supernal_ingot"
+      "criteria"
     ]
   ]
 }

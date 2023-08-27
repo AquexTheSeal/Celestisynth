@@ -1,12 +1,12 @@
 {
-  "parent": "minecraft:celestisynth/placed_celestial_table",
+  "parent": "celestisynth:place_celestial_table",
   "criteria": {
-    "obtained_crescentia": {
+    "criteria": {
       "conditions": {
         "items": [
           {
             "items": [
-              "celestisynth:crescentia"
+              "celestisynth:solaris"
             ]
           }
         ]
@@ -17,22 +17,22 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.celestisynth.obtained_crescentia.description"
+      "translate": "advancement.celestisynth.obtain_solaris.description"
     },
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "celestisynth:crescentia",
+      "item": "celestisynth:solaris",
       "nbt": "{Damage:0}"
     },
-    "show_toast": false,
+    "show_toast": true,
     "title": {
-      "translate": "advancements.celestisynth.obtained_crescentia.title"
+      "translate": "advancement.celestisynth.obtain_solaris.title"
     }
   },
   "requirements": [
     [
-      "obtained_crescentia"
+      "criteria"
     ]
   ]
 }
