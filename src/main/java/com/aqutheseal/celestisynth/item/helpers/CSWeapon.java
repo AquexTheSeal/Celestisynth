@@ -64,10 +64,10 @@ public interface CSWeapon {
             AnimationManager.playAnimation(entity.level, AnimationManager.AnimationsList.CLEAR);
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (player.getItemBySlot(slot).getItem() instanceof CSWeapon cs) {
-                    CompoundTag data = player.getItemBySlot(slot).getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-                    CompoundTag dataAlt = player.getItemBySlot(slot).getOrCreateTagElement(CSWeapon.CS_EXTRAS_ELEMENT);
-                    data.getAllKeys().clear();
-                    dataAlt.getAllKeys().clear();
+                    CompoundTag data = player.getItemBySlot(slot).getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+                    CompoundTag dataAlt = player.getItemBySlot(slot).getTagElement(CSWeapon.CS_EXTRAS_ELEMENT);
+                    if (data != null) data.getAllKeys().clear();
+                    if (dataAlt != null)  dataAlt.getAllKeys().clear();
                     cs.resetExtraValues(player.getItemBySlot(slot), player);
                 }
             }

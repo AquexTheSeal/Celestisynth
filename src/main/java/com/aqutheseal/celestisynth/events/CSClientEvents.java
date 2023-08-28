@@ -39,12 +39,12 @@ public class CSClientEvents {
             ItemStack itemR = Minecraft.getInstance().player.getMainHandItem();
             ItemStack itemL = Minecraft.getInstance().player.getOffhandItem();
             if (itemR.getItem() instanceof CSWeapon) {
-                if (itemR.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
+                if (itemR.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && itemR.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
                     event.setCanceled(true);
                 }
             }
             if (itemL.getItem() instanceof CSWeapon) {
-                if (itemL.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
+                if (itemL.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && itemL.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
                     event.setCanceled(true);
                 }
             }
@@ -97,16 +97,16 @@ public class CSClientEvents {
 
     private static void checkAndSetAngle(ViewportEvent.ComputeCameraAngles event, ItemStack itemStack) {
         if (itemStack.getItem() instanceof AquafloraItem) {
-            CompoundTag tagElement = itemStack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-            if (tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraItem.ATTACK_BLOOMING)) {
+            CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+            if (tagElement != null && tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraItem.ATTACK_BLOOMING)) {
                 event.setPitch(90);
             }
         }
     }
 
     private static void checkAndSetFOV(ViewportEvent.ComputeFov event, ItemStack itemStack) {
-        CompoundTag tagElement = itemStack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-        if (itemStack.getItem() instanceof AquafloraItem) {
+        CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+        if (tagElement != null && itemStack.getItem() instanceof AquafloraItem) {
             if (tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraItem.ATTACK_BLOOMING)) {
                 event.setFOV(140);
             }

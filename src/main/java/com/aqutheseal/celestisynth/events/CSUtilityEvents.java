@@ -12,7 +12,6 @@ import com.aqutheseal.celestisynth.item.weapons.BreezebreakerItem;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSParticleRegistry;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -116,8 +115,8 @@ public class CSUtilityEvents {
     }
 
     private static void checkAndCancel(LivingAttackEvent event, ItemStack itemStack) {
-        CompoundTag tagElement = itemStack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-        if (tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraItem.ATTACK_BLOOMING)) {
+        CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+        if (tagElement != null && tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraItem.ATTACK_BLOOMING)) {
             event.setCanceled(true);
         }
     }

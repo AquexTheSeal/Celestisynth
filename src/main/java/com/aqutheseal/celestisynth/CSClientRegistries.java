@@ -4,6 +4,7 @@ import com.aqutheseal.celestisynth.block.render.CelestialCraftingTableTileRender
 import com.aqutheseal.celestisynth.entities.renderer.CSEffectRenderer;
 import com.aqutheseal.celestisynth.entities.renderer.NullRenderer;
 import com.aqutheseal.celestisynth.entities.renderer.RainfallArrowRenderer;
+import com.aqutheseal.celestisynth.entities.renderer.TempestBossRenderer;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.item.weapons.PoltergeistItem;
@@ -55,6 +56,8 @@ public class CSClientRegistries {
 
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(CSEntityRegistry.TEMPEST.get(), TempestBossRenderer::new);
+
         event.registerEntityRenderer(CSEntityRegistry.CS_EFFECT.get(), CSEffectRenderer::new);
         event.registerEntityRenderer(CSEntityRegistry.CRESCENTIA_RANGED.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityRegistry.BREEZEBREAKER_TORNADO.get(), NullRenderer::new);
@@ -70,13 +73,13 @@ public class CSClientRegistries {
         event.enqueueWork(() -> {
             ItemProperties.register(CSItemRegistry.SOLARIS.get(),
                     new ResourceLocation(Celestisynth.MODID, "soul"), (stack, level, living, id) ->
-                            living != null && stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getInt(SolarisItem.DIRECTION_INDEX_KEY) == 2 ? 1.0F : 0.0F);
+                            living != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getInt(SolarisItem.DIRECTION_INDEX_KEY) == 2 ? 1.0F : 0.0F);
             ItemProperties.register(CSItemRegistry.POLTERGEIST.get(),
                     new ResourceLocation(Celestisynth.MODID, "haunted"), (stack, level, living, id) ->
-                            living != null && stack.getOrCreateTagElement(CSWeapon.CS_EXTRAS_ELEMENT).getBoolean(PoltergeistItem.IS_IMPACT_LARGE) ? 1.0F : 0.0F);
+                            living != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT).getBoolean(PoltergeistItem.IS_IMPACT_LARGE) ? 1.0F : 0.0F);
             ItemProperties.register(CSItemRegistry.AQUAFLORA.get(),
                     new ResourceLocation(Celestisynth.MODID, "blooming"), (stack, level, living, id) ->
-                            living != null && stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(AquafloraItem.CHECK_PASSIVE) ? 1.0F : 0.0F);
+                            living != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(AquafloraItem.CHECK_PASSIVE) ? 1.0F : 0.0F);
 
             ItemProperties.register(CSItemRegistry.RAINFALL_SERENITY.get(), new ResourceLocation("pull"), (stack, level, living, id) -> {
                 if (living == null || !(stack.getItem() instanceof RainfallSerenityItem)) {
