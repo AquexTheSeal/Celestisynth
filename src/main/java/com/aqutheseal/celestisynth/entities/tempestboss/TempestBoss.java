@@ -1,10 +1,12 @@
 package com.aqutheseal.celestisynth.entities.tempestboss;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,6 +36,8 @@ public class TempestBoss extends Monster implements IAnimatable {
             NONE = 0,
             PHASE_TRANSITION_DASH_1 = 1;
 
+    public int calmTimer;
+
     public TempestBoss(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -44,16 +48,33 @@ public class TempestBoss extends Monster implements IAnimatable {
                 .add(Attributes.FOLLOW_RANGE, 64.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.2F)
                 .add(Attributes.ATTACK_DAMAGE, 12.0D)
-                .add(Attributes.ARMOR, 10.0D)
+                .add(Attributes.ARMOR, 15.0D)
                 .add(Attributes.FLYING_SPEED, 1.0F);
     }
 
     @Override
     protected void registerGoals() {
+        this.goalSelector.addGoal(1, new AITempestPhaseChangeGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers(TempestBoss.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (tickCount == 1) {
+            cyclePhase();
+        }
+    }
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (pSource.getDirectEntity() instanceof Player player) {
+            player.displayClientMessage(Component.literal("Phase: " + getPhase().ordinal() + " - " + getPhase().name()), false);
+        }
+        return super.hurt(pSource, pAmount);
     }
 
     public void cyclePhase() {
@@ -101,10 +122,16 @@ public class TempestBoss extends Monster implements IAnimatable {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (getPhase() == TempestPhases.APPROACH_SLOW) {
-            loopAnim(event.getController(), "walk_slow");
+        if (event.isMoving()) {
+            switch (getPhase()) {
+                case IDLE -> loopAnim(event.getController(), "walk_slow");
+                case APPROACH_SLOW -> loopAnim(event.getController(), "walk_slow");
+                case PHASE_1 -> loopAnim(event.getController(), "run");
+                default -> loopAnim(event.getController(), "walk_slow");
+            }
+        } else {
+            loopAnim(event.getController(), "idle");
         }
-        loopAnim(event.getController(), "walk_slow");
         return PlayState.CONTINUE;
     }
 

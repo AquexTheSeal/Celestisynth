@@ -6,16 +6,22 @@
 				"identifier": "geometry.tempest",
 				"texture_width": 96,
 				"texture_height": 96,
-				"visible_bounds_width": 5,
+				"visible_bounds_width": 4,
 				"visible_bounds_height": 3.5,
 				"visible_bounds_offset": [0, 1.25, 0]
 			},
 			"bones": [
 				{
+					"name": "whole",
+					"pivot": [0, 24, 0]
+				},
+				{
 					"name": "Body",
+					"parent": "whole",
 					"pivot": [0, 24, 0],
 					"cubes": [
 						{"origin": [-4, 12, -2], "size": [8, 12, 4], "uv": [24, 49]},
+						{"origin": [-5, 19, -1.9], "size": [10, 6, 11.1], "pivot": [0, 0, 0], "rotation": [10, 0, 0], "uv": [0, 0]},
 						{"origin": [-4, 12, -2], "size": [8, 12, 4], "inflate": 0.25, "uv": [0, 47]}
 					]
 				},
@@ -38,7 +44,7 @@
 				{
 					"name": "rwingtip",
 					"parent": "RightWing",
-					"pivot": [-2, 21, 11],
+					"pivot": [-2, 21, 10],
 					"cubes": [
 						{"origin": [-2, 13, 10], "size": [0, 15, 14], "uv": [0, 18]}
 					]
@@ -54,7 +60,7 @@
 				{
 					"name": "lwingtip",
 					"parent": "LeftWing",
-					"pivot": [2, 21, 11],
+					"pivot": [2, 21, 10],
 					"cubes": [
 						{"origin": [2, 13, 10], "size": [0, 15, 14], "uv": [0, 3]}
 					]
@@ -65,8 +71,7 @@
 					"pivot": [0, 24, 0],
 					"cubes": [
 						{"origin": [-4, 24, -4], "size": [8, 8, 8], "uv": [28, 17]},
-						{"origin": [-4, 24, -4], "size": [8, 8, 8], "inflate": 0.5, "uv": [28, 33]},
-						{"origin": [-5, 19, -1.9], "size": [10, 6, 11.1], "pivot": [0, 0, 0], "rotation": [10, 0, 0], "uv": [0, 0]}
+						{"origin": [-4, 24, -4], "size": [8, 8, 8], "inflate": 0.5, "uv": [28, 33]}
 					]
 				},
 				{

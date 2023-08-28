@@ -44,9 +44,9 @@ public abstract class AITempestAbilityGoal extends Goal {
     }
 
     public abstract void tickAttack(Level level);
+
     @Override
     public void stop() {
         tempest.setAttackState(TempestBoss.NONE);
-        this.chargeTime = 0;
     }
 }
