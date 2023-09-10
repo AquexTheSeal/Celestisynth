@@ -7,6 +7,7 @@ import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.entities.SkillCastPoltergeistWard;
 import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
+import com.aqutheseal.celestisynth.item.helpers.CSWeaponUtil;
 import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.item.weapons.BreezebreakerItem;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
@@ -67,7 +68,7 @@ public class CSUtilityEvents {
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player) {
-            CSWeapon.disableRunningWeapon(player);
+            CSWeaponUtil.disableRunningWeapon(player);
         }
         if (event.getEntity() instanceof LivingMixinSupport lms) {
             if (lms.getPhantomTagger() != null) {

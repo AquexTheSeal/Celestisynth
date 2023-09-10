@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -35,8 +36,6 @@ public class TempestBoss extends Monster implements IAnimatable {
     public static int
             NONE = 0,
             PHASE_TRANSITION_DASH_1 = 1;
-
-    public int calmTimer;
 
     public TempestBoss(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -71,8 +70,11 @@ public class TempestBoss extends Monster implements IAnimatable {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
+        cyclePhase();
         if (pSource.getDirectEntity() instanceof Player player) {
-            player.displayClientMessage(Component.literal("Phase: " + getPhase().ordinal() + " - " + getPhase().name()), false);
+            if (level.isClientSide()) {
+                player.displayClientMessage(Component.literal("New Phase: " + getPhase().ordinal() + " - " + getPhase().name()), false);
+            }
         }
         return super.hurt(pSource, pAmount);
     }
@@ -80,10 +82,26 @@ public class TempestBoss extends Monster implements IAnimatable {
     public void cyclePhase() {
         int newPhase = getPhase().ordinal() + 1;
         if (newPhase < TempestPhases.values().length) {
+            this.modifyPhaseOnCycle(newPhase);
             this.setPhase(TempestPhases.values()[newPhase]);
         } else {
             this.setPhase(TempestPhases.values()[TempestPhases.values().length - 1]);
         }
+    }
+
+    public void modifyPhaseOnCycle(int newPhase) {
+        switch (TempestPhases.values()[newPhase]) {
+            case PHASE_1 ->
+                    modifyAttribute(Attributes.MOVEMENT_SPEED, 0.45);
+            case PHASE_2 ->
+                    modifyAttribute(Attributes.MOVEMENT_SPEED, 0.65);
+        }
+    }
+
+    public void modifyAttribute(Attribute attribute, double value) {
+        var mod = getAttribute(attribute);
+        assert mod != null;
+        mod.setBaseValue(value);
     }
 
     public void setPhase(TempestPhases phase) {

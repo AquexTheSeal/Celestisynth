@@ -2,10 +2,9 @@ package com.aqutheseal.celestisynth.mixin;
 
 import com.aqutheseal.celestisynth.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import com.aqutheseal.celestisynth.network.CSNetwork;
+import com.aqutheseal.celestisynth.network.util.SetPersistentIntPacket;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,14 +20,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Optional;
-
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSupport {
     @Shadow public abstract Inventory getInventory();
 
-    private static final EntityDataAccessor<Integer> CAMERA_ANGLE_ORDINAL = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
     public final String
+            CAMERA_ANGLE_ORDINAL = "cs.screenShakeDuration",
             SCREENSHAKE_DURATION = "cs.screenShakeDuration",
             SCREENSHAKE_FADEOUTBEGIN = "cs.screenShakeFadeoutStart",
             SCREENSHAKE_INTENSITY = "cs.screenShakeIntensity"
@@ -47,14 +44,12 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSup
 
     public boolean cancelCI(ItemStack stack) {
         if (stack.getItem() instanceof CSWeapon) {
-            return stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY);
+            CompoundTag tag = stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+            if (tag != null) {
+                return tag.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY);
+            }
         }
         return false;
-    }
-
-    @Inject(method = "defineSynchedData", at = @At(value = "HEAD"))
-    public void defineSynchedData(CallbackInfo ci) {
-        this.entityData.define(CAMERA_ANGLE_ORDINAL, 0);
     }
 
     @Inject(method = "tick", at = @At(value = "TAIL"))
@@ -110,11 +105,14 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSup
 
     @Override
     public int getCameraAngleOrdinal() {
-        return entityData.get(CAMERA_ANGLE_ORDINAL);
+        return getPersistentData().getInt(CAMERA_ANGLE_ORDINAL);
     }
 
     @Override
     public void setCameraAngleOrdinal(int ordinal) {
-        entityData.set(CAMERA_ANGLE_ORDINAL, ordinal);
+        if (level.isClientSide()) {
+            getPersistentData().putInt(CAMERA_ANGLE_ORDINAL, ordinal);
+            CSNetwork.sendToServer(new SetPersistentIntPacket(CAMERA_ANGLE_ORDINAL, ordinal));
+        }
     }
 }

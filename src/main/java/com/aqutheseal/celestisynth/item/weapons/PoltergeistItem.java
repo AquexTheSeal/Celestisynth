@@ -7,6 +7,7 @@ import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.aqutheseal.celestisynth.entities.SkillCastPoltergeistWard;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
+import com.aqutheseal.celestisynth.item.helpers.CSWeaponUtil;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.BlockPos;
@@ -22,7 +23,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -149,7 +152,7 @@ public class PoltergeistItem extends AxeItem implements CSWeapon {
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
                     target.hurtMarked = true;
                     target.setDeltaMovement((target.getX() - (player.getX() + xx)) / 4, (target.getY() - player.getY()) / 4, (target.getZ() - (player.getZ() + zz)) / 4);
-                    CSWeapon.disableRunningWeapon(target);
+                    CSWeaponUtil.disableRunningWeapon(target);
                     if (target instanceof LivingMixinSupport lms) {
                         lms.setPhantomTagger(player);
                     }

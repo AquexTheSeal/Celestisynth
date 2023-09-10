@@ -105,9 +105,9 @@ public class CSConfig {
             aquafloraShiftSkillDmg = skillDamage(builder, "Aquaflora", "Blasting Off Together", 7.0);
             aquafloraBloomSkillDmg = skillDamage(builder, "Aquaflora", "Exorbitant Slashing Frenzy", 1.15);
             aquafloraBloomShiftSkillDmg = skillDamage(builder, "Aquaflora", "Flowers Away", 0.0);
-            aquafloraSkillCD = skillCooldown(builder, "Aquaflora", "Petal Pierces", 60);
-            aquafloraShiftSkillCD = skillCooldown(builder, "Aquaflora", "Blasting Off Together", 40);
-            aquafloraBloomSkillCD = skillCooldown(builder, "Aquaflora", "Exorbitant Slashing Frenzy", 180);
+            aquafloraSkillCD = skillCooldown(builder, "Aquaflora", "Petal Pierces", 20);
+            aquafloraShiftSkillCD = skillCooldown(builder, "Aquaflora", "Blasting Off Together", 20);
+            aquafloraBloomSkillCD = skillCooldown(builder, "Aquaflora", "Exorbitant Slashing Frenzy", 200);
             aquafloraBloomShiftSkillCD = skillCooldown(builder, "Aquaflora", "Flowers Away", 40);
             builder.pop();
 

@@ -38,7 +38,6 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
     public static final String BUFF_STATE_LIMITER = "cs.buffStateLimiter";
 
     public static final String ATTACK_INDEX = "cs.attackIndex";
-    public static final String IS_SHIFT_RIGHT = "cs.isShiftRight";
     public static final int
             ATTACK_NORMAL_SINGLE = 0,
             ATTACK_NORMAL_DOUBLE = 1,
@@ -80,10 +79,8 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
 
                 if (hand == InteractionHand.MAIN_HAND && !isOffHandBreezebreaker) {
                     AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_RIGHT);
-                    data.putBoolean(IS_SHIFT_RIGHT, true);
                 } else if (hand == InteractionHand.OFF_HAND && !isMainHandBreezebreaker) {
                     AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_LEFT);
-                    data.putBoolean(IS_SHIFT_RIGHT, false);
                 } else if (isMainHandBreezebreaker || isOffHandBreezebreaker) {
                     boolean shouldShiftRight = level.random.nextBoolean();
                     if (shouldShiftRight) {
@@ -91,7 +88,6 @@ public class BreezebreakerItem extends SwordItem implements CSWeapon {
                     } else {
                         AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_LEFT);
                     }
-                    data.putBoolean(IS_SHIFT_RIGHT, shouldShiftRight);
                 }
                 useAndDamageItem(itemstack, level, player, 3);
                 player.getCooldowns().addCooldown(itemstack.getItem(), buffStateModified(itemstack, CSConfig.COMMON.breezebreakerShiftSkillCD.get()));

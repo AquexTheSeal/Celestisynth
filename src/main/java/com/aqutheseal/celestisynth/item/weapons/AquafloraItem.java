@@ -6,6 +6,7 @@ import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.CSEffect;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
+import com.aqutheseal.celestisynth.item.helpers.CSWeaponUtil;
 import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,8 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,6 +38,16 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
 
     public AquafloraItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+    }
+
+    @Override
+    public boolean hasPassive() {
+        return true;
+    }
+
+    @Override
+    public int getPassiveAmount() {
+        return 1;
     }
 
     @Override
@@ -79,9 +92,8 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
                         AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT);
                     } else if (hand == InteractionHand.OFF_HAND && !checkMain) {
                         AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT);
-                    } else if (checkMain || checkOff) {
-                        boolean shouldRight = level.random.nextBoolean();
-                        if (shouldRight) {
+                    } else if (checkDualWield(player, AquafloraItem.class)) {
+                        if (level.random.nextBoolean()) {
                             AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT);
                         } else {
                             AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT);
@@ -93,6 +105,7 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
                     AnimationManager.playAnimation(level, AnimationManager.AnimationsList.ANIM_AQUAFLORA_ASSASSINATE);
                     player.getCooldowns().addCooldown(this, CSConfig.COMMON.aquafloraBloomSkillCD.get());
                 }
+                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 2));
                 useAndDamageItem(itemstack, level, player, 2);
             }
         }
@@ -241,7 +254,7 @@ public class AquafloraItem extends SwordItem implements CSWeapon {
                         target.setDeltaMovement((target.getX() - player.getX()) * 0.4,   1, (target.getZ() - player.getZ()) * 0.4);
                         hurtNoKB(player, target, (float) (double) CSConfig.COMMON.aquafloraShiftSkillDmg.get() + getSharpnessValue(itemStack, 1F));
                         createHitEffect(itemStack, level, player, target);
-                        CSWeapon.disableRunningWeapon(target);
+                        CSWeaponUtil.disableRunningWeapon(target);
                     }
                 }
             }

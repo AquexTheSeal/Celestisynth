@@ -19,7 +19,7 @@ public class MinecraftMixin {
     @Inject(method = "handleKeybinds", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/player/Inventory;selected:I", shift = At.Shift.BEFORE), cancellable = true)
     private void setSelectedSlot(CallbackInfo info) {
         if (this.player.getInventory().getSelected().getItem() instanceof CSWeapon) {
-            if (this.player.getInventory().getSelected().getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
+            if (this.player.getInventory().getSelected().getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
                 info.cancel();
             }
         }
