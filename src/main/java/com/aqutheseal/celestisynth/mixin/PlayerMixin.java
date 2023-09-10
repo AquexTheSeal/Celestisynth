@@ -25,7 +25,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSup
     @Shadow public abstract Inventory getInventory();
 
     public final String
-            CAMERA_ANGLE_ORDINAL = "cs.screenShakeDuration",
+            CAMERA_ANGLE_ORDINAL = "cs.cameraOrdinal",
             SCREENSHAKE_DURATION = "cs.screenShakeDuration",
             SCREENSHAKE_FADEOUTBEGIN = "cs.screenShakeFadeoutStart",
             SCREENSHAKE_INTENSITY = "cs.screenShakeIntensity"

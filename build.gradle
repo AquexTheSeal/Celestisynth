@@ -27,7 +27,7 @@ mixin {
     add sourceSets.main, "${project.modid}.refmap.json"
 }
 
-version = "${project.mc_ver}-1.1.2"
+version = "${project.mc_ver}-1.1.3"
 group = "com.aqutheseal.${project.modid}"
 archivesBaseName = "${project.modid}"
 
@@ -179,6 +179,8 @@ dependencies {
 
     // fg.deobf("curse.maven:rubidium-574856:4568727")
     //implementation fg.deobf("curse.maven:oculus-581495:4578731")
+    implementation fg.deobf("curse.maven:modernfix-790626:4728399")
+    implementation fg.deobf("curse.maven:neruina-851046:4614088")
     implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:4410143")
     implementation fg.deobf("curse.maven:selene-499980:4620027")
     implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4646625")
