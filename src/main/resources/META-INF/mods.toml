@@ -3,39 +3,111 @@ loaderVersion="[43,)"
 license="Massachusetts Institute of Technology (MIT)"
 
 [[mods]]
-modId="celestisynth"
-version="1.19.2-1.1.2"
-displayName="Celestisynth"
-logoFile="celestisynth.png"
-authors="AquTheSeal"
-credits="AquTheSeal, YeoXuHang"
+modId="${modid}"
+version="${mc_version}-${mod_version}"
+displayName="${mod_name}"
+logoFile="celestisynth_logo.png"
+authors="${mod_authors}"
+credits="${mod_authors}"
+description="${mod_description}"
 
-description='''
-Celestisynth is a Minecraft mod that focuses in adding brand-new and unique weapons with special abilities for you to play around with!
-'''
-
+# Base
 [[dependencies.celestisynth]]
 modId="forge"
 mandatory=true
-versionRange="[43,)"
+versionRange="${forge_version_range}"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.celestisynth]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.19.2]"
+versionRange="${mc_version_range}"
+ordering="NONE"
+side="BOTH"
+
+# Dependencies (Required)
+[[dependencies.celestisynth]]
+modId="geckolib3"
+mandatory=true
+versionRange="${geckolib_version_range}"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.celestisynth]]
 modId="playeranimator"
 mandatory=true
-versionRange="[1,)"
+versionRange="${player_animator_version_range}"
+ordering="NONE"
+side="BOTH"
+
+# Dependencies (Optional)
+[[dependencies.celestisynth]]
+modId="jei"
+mandatory=false
+versionRange="${jei_version_range}"
 ordering="AFTER"
+side="BOTH"
 
 [[dependencies.celestisynth]]
-modId="geckolib3"
-mandatory=true
-versionRange="[3.1.40,)"
+modId="jeresources"
+mandatory=false
+versionRange="jer_version_range"
 ordering="AFTER"
+side="BOTH"
+
+[[dependencies.celestisynth]]
+modId="jeed"
+mandatory=false
+versionRange="${jeed_version_range}"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.celestisynth]]
+modId="jade"
+mandatory=false
+versionRange="${jade_version_range}"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.celestisynth]]
+modId="lazydfu"
+mandatory=false
+versionRange="${lazydfu_version_range}"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.celestisynth]]
+modId="configured"
+mandatory=false
+versionRange="${configured_version_range}"
+ordering="AFTER"
+side="CLIENT"
+
+[[dependencies.celestisynth]]
+modId="catalogue"
+mandatory=false
+versionRange="${catalogue_version_range}"
+ordering="AFTER"
+side="CLIENT"
+
+[[dependencies.celestisynth]]
+modId="gamemenumodoption"
+mandatory=false
+versionRange="${gmmo_version_range}"
+ordering="AFTER"
+side="CLIENT"
+
+[[dependencies.celestisynth]]
+modId="appleskin"
+mandatory=false
+versionRange="${appleskin_version_range}"
+ordering="AFTER"
+side="CLIENT"
+
+[[dependencies.celestisynth]]
+modId="shutupexperimentalsettings"
+mandatory=false
+versionRange="${sues_version_range}"
+ordering="AFTER"
+side="CLIENT"
