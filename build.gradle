@@ -76,7 +76,7 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
-            args '--mod', "${modid}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', modid, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 "${modid}" {
@@ -132,8 +132,8 @@ repositories {
         url = "https://modmaven.dev"
     }
     maven {
-	name = "RyanLiptak Maven"
-	url = "https://maven.ryanliptak.com/"
+		name = "RyanLiptak Maven"
+		url = "https://maven.ryanliptak.com/"
     }
 }
 
@@ -170,26 +170,27 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:lazy-dfu-forge-460819:${lazydfu_version}")
 
     // Dependencies (Extrass) (Temp)
-    implementation fg.deobf("curse.maven:supplementaries-412082:4713347")
     implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:4410143")
     implementation fg.deobf("curse.maven:selene-499980:4620027")
     implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4646625")
     implementation fg.deobf("curse.maven:citadel-331936:4556677")
 
+//    implementation fg.deobf("curse.maven:supplementaries-412082:4713347")
 //    runtimeOnly fg.deobf('curse.maven:ferritecore-429235:4117906')
 //    implementation fg.deobf("curse.maven:rubidium-574856:4568727")
 //    implementation fg.deobf("curse.maven:oculus-581495:4578731")
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta', "${modid}.mixins.json".toString()]
-def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
+def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${mod_name}.main/", "$rootDir/bin/main/"]
 def replaceProperties = [modid: modid, mod_name: mod_name, mod_version: mod_version,
-                         mod_authors: mod_authors, mod_description: mod_description,
+                         mod_authors: mod_authors, mod_description: mod_description, mc_version: mc_version,
                          mc_version_range: mc_version_range, forge_version_range: forge_version_range,
                          geckolib_version_range: geckolib_version_range, player_animator_version_range: player_animator_version_range,
 			 			 jei_version_range: jei_version_range, jer_version_range: jer_version_range, jeed_version_range: jeed_version_range, lazydfu_version_range: lazydfu_version_range,
 			 			 configured_version_range: configured_version_range, catalogue_version_range: catalogue_version_range, gmmo_version_range: gmmo_version_range,
 			  			 jade_version_range: jade_version_range, appleskin_version_range: appleskin_version_range, sues_version_range: sues_version_range]
+
 processResources {
     inputs.properties replaceProperties
     replaceProperties.put 'project', project
