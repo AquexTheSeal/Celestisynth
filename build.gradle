@@ -12,30 +12,21 @@ buildscript {
     }
 }
 
-plugins {
-    id 'eclipse'
-    id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
-}
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-mixin {
-    add sourceSets.main, "${project.modid}.refmap.json"
-}
-
-version = "${project.mc_ver}-1.1.3"
-group = "com.aqutheseal.${project.modid}"
-archivesBaseName = "${project.modid}"
+version = "${mc_version}-${mod_version}"
+group = mod_group
+archivesBaseName = modid
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'parchment', version: "${project.parchment}-${project.mc_ver}"
+    mappings channel: mappings_channel, version: mappings_version
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -44,18 +35,16 @@ minecraft {
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'
-
             property 'forge.logging.console.level', 'debug'
 
-            arg "-mixin.config=${project.modid}.mixins.json"
-            args '--username', 'AquDev####'
+            arg "-mixin.config=${modid}.mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
-            property 'forge.enabledGameTestNamespaces', "${project.modid}"
+            args '--username', 'CelesteDev####'
 
             mods {
-                celestisynth {
+                "${modid}" {
                     source sourceSets.main
                 }
             }
@@ -65,35 +54,14 @@ minecraft {
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'
-
             property 'forge.logging.console.level', 'debug'
 
-            arg "-mixin.config=${project.modid}.mixins.json"
+            arg "-mixin.config=${modid}.mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
-            property 'forge.enabledGameTestNamespaces', "${project.modid}"
-
             mods {
-                celestisynth {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        gameTestServer {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            arg "-mixin.config=${project.modid}.mixins.json"
-
-            property 'forge.enabledGameTestNamespaces', "${project.modid}"
-
-            mods {
-                celestisynth {
+                "${modid}" {
                     source sourceSets.main
                 }
             }
@@ -103,15 +71,15 @@ minecraft {
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'
-
             property 'forge.logging.console.level', 'debug'
 
-            arg "-mixin.config=${project.modid}.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
-            args '--mod', "${project.modid}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', modid, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                celestisynth {
+                "${modid}" {
                     source sourceSets.main
                 }
             }
@@ -124,27 +92,17 @@ sourceSets.main.resources {
     ext.refMap = "main.refmap.json"
 }
 
+mixin {
+    add sourceSets.main, "${modid}.refmap.json"
+    config "${modid}.mixins.json"
+
+    debug.export = true
+}
+
 repositories {
-    maven {
-        name "Geckolib Maven"
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-    }
-    maven {
-        name "KosmX's Maven"
-        url 'https://maven.kosmx.dev/'
-    }
     maven {
         name = "CurseMaven Maven"
         url = "https://www.cursemaven.com"
-    }
-    maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6's Maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        name = "ModMaven"
-        url = "https://modmaven.dev"
     }
     exclusiveContent {
         forRepository {
@@ -157,58 +115,121 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
+    maven {
+        name "Geckolib Maven"
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+    }
+    maven {
+        name "KosmX Maven"
+        url 'https://maven.kosmx.dev/'
+    }
+    maven {
+        name = "BlameJared Maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+    maven {
+		name = "RyanLiptak Maven"
+		url = "https://maven.ryanliptak.com/"
+    }
 }
 
 dependencies {
-    // TODO: Refractor and move some stuff to [gradle.properties]...
+    // Base
+    minecraft("net.minecraftforge:forge:${mc_version}-${forge_version}")
+    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 
-    minecraft "net.minecraftforge:forge:${project.mc_ver}-${project.fg_ver}"
+    // Dependencies (Required)
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}")
+    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}")
 
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.40')
-    implementation fg.deobf("curse.maven:playeranimator-658587:4418149")
+    // Dependencies (Extras)
     implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:4534619")
     implementation fg.deobf("curse.maven:cloth-config-348521:3972423")
 
-    implementation fg.deobf("mezz.jei:jei-${project.mc_ver}-forge:11.6.0.1016")
+    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 
-    runtimeOnly fg.deobf('curse.maven:ferritecore-429235:4117906')
-    runtimeOnly fg.deobf('curse.maven:shutup-experimental-settings-407174:3759881')
-    runtimeOnly fg.deobf('curse.maven:lazy-dfu-forge-460819:4327266')
+    implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:${jer_version}")
+    implementation fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:${jeed_version}")
 
-    // EXTRA GOODS (Not going to use these for [gradle.properties] since I can just remove these anytime I want to.)
+    implementation fg.deobf("curse.maven:configured-457570:${configured_version}")
+    implementation fg.deobf("curse.maven:catalogue-459701:${catalogue_version}")
+    implementation fg.deobf("curse.maven:gamemenumodoption-353051:${gmmo_version}")
 
-    // fg.deobf("curse.maven:rubidium-574856:4568727")
-    //implementation fg.deobf("curse.maven:oculus-581495:4578731")
-    implementation fg.deobf("curse.maven:modernfix-790626:4728399")
-    implementation fg.deobf("curse.maven:neruina-851046:4614088")
+    implementation fg.deobf("curse.maven:jade-324717:${jade_version}")
+
+    compileOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}:api")
+    runtimeOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}")
+
+    runtimeOnly fg.deobf("curse.maven:shutup-experimental-settings-407174:${sues_version}")
+    runtimeOnly fg.deobf("curse.maven:lazy-dfu-forge-460819:${lazydfu_version}")
+
+    // Dependencies (Extrass) (Temp)
     implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:4410143")
     implementation fg.deobf("curse.maven:selene-499980:4620027")
     implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4646625")
     implementation fg.deobf("curse.maven:citadel-331936:4556677")
 
-    annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
+//    implementation fg.deobf("curse.maven:supplementaries-412082:4713347")
+//    runtimeOnly fg.deobf('curse.maven:ferritecore-429235:4117906')
+//    implementation fg.deobf("curse.maven:rubidium-574856:4568727")
+//    implementation fg.deobf("curse.maven:oculus-581495:4578731")
+}
+
+def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta', "${modid}.mixins.json".toString()]
+def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${mod_name}.main/", "$rootDir/bin/main/"]
+def replaceProperties = [modid: modid, mod_name: mod_name, mod_version: mod_version,
+                         mod_authors: mod_authors, mod_description: mod_description, mc_version: mc_version,
+                         mc_version_range: mc_version_range, forge_version_range: forge_version_range,
+                         geckolib_version_range: geckolib_version_range, player_animator_version_range: player_animator_version_range,
+			 			 jei_version_range: jei_version_range, jer_version_range: jer_version_range, jeed_version_range: jeed_version_range, lazydfu_version_range: lazydfu_version_range,
+			 			 configured_version_range: configured_version_range, catalogue_version_range: catalogue_version_range, gmmo_version_range: gmmo_version_range,
+			  			 jade_version_range: jade_version_range, appleskin_version_range: appleskin_version_range, sues_version_range: sues_version_range]
+
+processResources {
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
+
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
+
+    intoTargets.each { target ->
+        if (file(target).exists()) {
+            copy {
+                from(sourceSets.main.resources) {
+                    include resourceTargets
+                    expand replaceProperties
+                }
+                into target
+            }
+        }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "${project.modid}",
-                "Specification-Vendor"    : "aqutheseal",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "aqutheseal",
+                "Specification-Title"     : mod_name,
+                "Specification-Vendor"    : mod_authors,
+                "Specification-Version"   : mod_version,
+                "Implementation-Title"    : mod_name,
+                "Implementation-Version"  : mod_version,
+                "Implementation-Vendor"   : mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs"            : "${project.modid}.mixins.json"
+                "MixinConfigs"            : "${modid}.mixins.json"
         ])
     }
 }
 
 jar.finalizedBy('reobfJar')
-
-mixin {
-    add sourceSets.main, "${project.modid}.refmap.json"
-}
 
 publishing {
     publications {

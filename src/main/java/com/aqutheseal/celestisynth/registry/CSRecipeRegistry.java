@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class CSRecipeRegistry {
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, Celestisynth.MODID);
 
-    public static final RegistryObject<RecipeType<CelestialCraftingRecipe>> CELESTIAL_CRAFTING_TYPE = RECIPE_TYPES.register("celestial_crafting", () -> new RecipeType<>() {
+    public static final RegistryObject<RecipeType<CelestialCraftingRecipe>> CELESTIAL_CRAFTING_TYPE = RECIPE_TYPES.register("celestial_crafting", () -> new RecipeType<CelestialCraftingRecipe>() {
         public @NotNull String toString() {
             return "celestial_crafting";
         }
