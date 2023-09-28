@@ -1,22 +1,11 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://repo.spongepowered.org/maven' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-        classpath 'org.spongepowered:mixingradle:0.7.+'
-    }
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
-
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 version = "${mc_version}-${mod_version}"
 group = mod_group
@@ -27,6 +16,8 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
     mappings channel: mappings_channel, version: mappings_version
+    
+    copyIdeResources = true
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -152,6 +143,7 @@ dependencies {
 
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
+    
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 
     implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:${jer_version}")
@@ -182,7 +174,7 @@ dependencies {
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta', "${modid}.mixins.json".toString()]
-def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${mod_name}.main/", "$rootDir/bin/main/"]
+def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
 def replaceProperties = [modid: modid, mod_name: mod_name, mod_version: mod_version,
                          mod_authors: mod_authors, mod_description: mod_description, mc_version: mc_version,
                          mc_version_range: mc_version_range, forge_version_range: forge_version_range,
@@ -190,7 +182,6 @@ def replaceProperties = [modid: modid, mod_name: mod_name, mod_version: mod_vers
 			 			 jei_version_range: jei_version_range, jer_version_range: jer_version_range, jeed_version_range: jeed_version_range, lazydfu_version_range: lazydfu_version_range,
 			 			 configured_version_range: configured_version_range, catalogue_version_range: catalogue_version_range, gmmo_version_range: gmmo_version_range,
 			  			 jade_version_range: jade_version_range, appleskin_version_range: appleskin_version_range, sues_version_range: sues_version_range]
-
 processResources {
     inputs.properties replaceProperties
     replaceProperties.put 'project', project
@@ -210,8 +201,6 @@ processResources {
             }
         }
     }
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 jar {

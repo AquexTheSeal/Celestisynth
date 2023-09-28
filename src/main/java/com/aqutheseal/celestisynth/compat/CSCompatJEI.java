@@ -30,7 +30,6 @@ public class CSCompatJEI implements IModPlugin {
         return ID;
     }
 
-
     @Override
     public void registerCategories(@NotNull IRecipeCategoryRegistration registration) {
         IGuiHelper helper = registration.getJeiHelpers().getGuiHelper();
