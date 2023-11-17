@@ -76,7 +76,7 @@ public class CSClientRegistries {
                             living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getInt(SolarisItem.ATTACK_INDEX_KEY) == 2 ? 1.0F : 0.0F);
             ItemProperties.register(CSItemRegistry.POLTERGEIST.get(),
                     new ResourceLocation(Celestisynth.MODID, "haunted"), (stack, level, living, id) ->
-                            living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT).getBoolean(PoltergeistItem.IS_IMPACT_LARGE) ? 1.0F : 0.0F);
+                            living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT).getBoolean(PoltergeistItem.IS_IMPACT_LARGE) ? 1.0F : 0.0F);
             ItemProperties.register(CSItemRegistry.AQUAFLORA.get(),
                     new ResourceLocation(Celestisynth.MODID, "blooming"), (stack, level, living, id) ->
                             living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(AquafloraItem.CHECK_PASSIVE) ? 1.0F : 0.0F);

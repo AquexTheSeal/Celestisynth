@@ -8,6 +8,7 @@ import com.aqutheseal.celestisynth.registry.*;
 import com.aqutheseal.celestisynth.registry.datagen.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -21,6 +22,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
+
+import java.util.Locale;
 
 @Mod(Celestisynth.MODID)
 public class Celestisynth {
@@ -57,6 +60,10 @@ public class Celestisynth {
 
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.register(this);
+    }
+
+    public static ResourceLocation prefix(String path) {
+        return new ResourceLocation(MODID, path.toLowerCase(Locale.ROOT));
     }
 
     private void registerPackets(FMLCommonSetupEvent event) {
