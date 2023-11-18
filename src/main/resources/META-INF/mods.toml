@@ -13,101 +13,103 @@ description='''${mod_description}'''
 
 # Base
 [[dependencies."${modid}"]]
-modId="forge"
-mandatory=true
-versionRange="${forge_version_range}"
-ordering="NONE"
-side="BOTH"
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
 
 [[dependencies."${modid}"]]
-modId="minecraft"
-mandatory=true
-versionRange="${mc_version_range}"
-ordering="NONE"
-side="BOTH"
+    modId="minecraft"
+    mandatory=true
+    versionRange="${mc_version_range}"
+    ordering="NONE"
+    side="BOTH"
 
 # Dependencies (Required)
 [[dependencies."${modid}"]]
-modId="geckolib3"
-mandatory=true
-versionRange="${geckolib_version_range}"
-ordering="NONE"
-side="BOTH"
+    modId="geckolib3"
+    mandatory=true
+    versionRange="${geckolib_version_range}"
+    ordering="NONE"
+    side="BOTH"
 
 [[dependencies."${modid}"]]
-modId="playeranimator"
-mandatory=true
-versionRange="${player_animator_version_range}"
-ordering="NONE"
-side="BOTH"
+    modId="playeranimator"
+    mandatory=true
+    versionRange="${player_animator_version_range}"
+    ordering="NONE"
+    side="BOTH"
 
 # Dependencies (Optional)
+#   COMMON
 [[dependencies."${modid}"]]
-modId="jei"
-mandatory=false
-versionRange="${jei_version_range}"
-ordering="AFTER"
-side="BOTH"
+    modId="jei"
+    mandatory=false
+    versionRange="${jei_version_range}"
+    ordering="AFTER"
+    side="BOTH"
 
 [[dependencies."${modid}"]]
-modId="jeresources"
-mandatory=false
-versionRange="jer_version_range"
-ordering="AFTER"
-side="BOTH"
+    modId="jeresources"
+    mandatory=false
+    versionRange="jer_version_range"
+    ordering="AFTER"
+    side="BOTH"
 
 [[dependencies."${modid}"]]
-modId="jeed"
-mandatory=false
-versionRange="${jeed_version_range}"
-ordering="AFTER"
-side="BOTH"
+    modId="jeed"
+    mandatory=false
+    versionRange="${jeed_version_range}"
+    ordering="AFTER"
+    side="BOTH"
 
 [[dependencies."${modid}"]]
-modId="jade"
-mandatory=false
-versionRange="${jade_version_range}"
-ordering="AFTER"
-side="BOTH"
+    modId="jade"
+    mandatory=false
+    versionRange="${jade_version_range}"
+    ordering="AFTER"
+    side="BOTH"
 
 [[dependencies."${modid}"]]
-modId="lazydfu"
-mandatory=false
-versionRange="${lazydfu_version_range}"
-ordering="AFTER"
-side="BOTH"
+    modId="lazydfu"
+    mandatory=false
+    versionRange="${lazydfu_version_range}"
+    ordering="AFTER"
+    side="BOTH"
+
+#   CLIENT
+[[dependencies."${modid}"]]
+    modId="configured"
+    mandatory=false
+    versionRange="${configured_version_range}"
+    ordering="AFTER"
+    side="CLIENT"
 
 [[dependencies."${modid}"]]
-modId="configured"
-mandatory=false
-versionRange="${configured_version_range}"
-ordering="AFTER"
-side="CLIENT"
+    modId="catalogue"
+    mandatory=false
+    versionRange="${catalogue_version_range}"
+    ordering="AFTER"
+    side="CLIENT"
 
 [[dependencies."${modid}"]]
-modId="catalogue"
-mandatory=false
-versionRange="${catalogue_version_range}"
-ordering="AFTER"
-side="CLIENT"
+    modId="gamemenumodoption"
+    mandatory=false
+    versionRange="${gmmo_version_range}"
+    ordering="AFTER"
+    side="CLIENT"
 
 [[dependencies."${modid}"]]
-modId="gamemenumodoption"
-mandatory=false
-versionRange="${gmmo_version_range}"
-ordering="AFTER"
-side="CLIENT"
+    modId="appleskin"
+    mandatory=false
+    versionRange="${appleskin_version_range}"
+    ordering="AFTER"
+    side="CLIENT"
 
 [[dependencies."${modid}"]]
-modId="appleskin"
-mandatory=false
-versionRange="${appleskin_version_range}"
-ordering="AFTER"
-side="CLIENT"
-
-[[dependencies."${modid}"]]
-modId="shutupexperimentalsettings"
-mandatory=false
-versionRange="${sues_version_range}"
-ordering="AFTER"
-side="CLIENT"
+    modId="shutupexperimentalsettings"
+    mandatory=false
+    versionRange="${sues_version_range}"
+    ordering="AFTER"
+    side="CLIENT"

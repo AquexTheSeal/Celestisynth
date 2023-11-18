@@ -19,16 +19,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class CelestialCraftingRecipeCategory implements IRecipeCategory<CelestialCraftingRecipe> {
-    public static final int width = 116;
-    public static final int height = 54;
-
+    public static final int WIDTH = 116;
+    public static final int HEIGHT = 54;
     private final @NotNull Component localizedName;
     private final @NotNull IDrawable background;
     private final @NotNull IDrawable icon;
 
     CelestialCraftingRecipeCategory(@NotNull IGuiHelper guiHelper) {
         this.localizedName = Component.translatable(CSBlockRegistry.CELESTIAL_CRAFTING_TABLE.get().getDescriptionId());
-        this.background = guiHelper.createDrawable(Constants.RECIPE_GUI_VANILLA, 0, 60, width, height);
+        this.background = guiHelper.createDrawable(Constants.RECIPE_GUI_VANILLA, 0, 60, WIDTH, HEIGHT);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(CSBlockRegistry.CELESTIAL_CRAFTING_TABLE.get()));
     }
 
