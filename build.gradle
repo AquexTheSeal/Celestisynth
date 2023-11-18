@@ -124,6 +124,11 @@ repositories {
         url 'https://maven.kosmx.dev/'
     }
     maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6's Maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
         name = "BlameJared Maven"
         url = "https://maven.blamejared.com/"
     }
@@ -150,9 +155,7 @@ dependencies {
     implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:4534619")
     implementation fg.deobf("curse.maven:cloth-config-348521:3972423")
 
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 
     implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:${jer_version}")
     implementation fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:${jeed_version}")

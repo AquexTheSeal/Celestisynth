@@ -21,9 +21,9 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class BreezebreakerItem extends SkilledSwordItem {
-    public static final String BB_COMBO_POINTS = "cs.attackIndex";
-    public static final String AT_BUFF_STATE = "cs.buffState";
-    public static final String BUFF_STATE_LIMITER = "cs.buffStateLimiter";
+    public static final String BB_COMBO_POINTS = "cs.bbCombo";
+    public static final String AT_BUFF_STATE = "cs.bbBuffState";
+    public static final String BUFF_STATE_LIMITER = "cs.bbBuffStateLimiter";
 
     public BreezebreakerItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
@@ -34,9 +34,9 @@ public class BreezebreakerItem extends SkilledSwordItem {
         return ImmutableList.of(
                 new BreezebreakerGalestormAttack(player, stack, useDuration),
                 new BreezebreakerDualGalestormAttack(player, stack, useDuration),
+                new BreezebreakerWheelAttack(player, stack, useDuration),
                 new BreezebreakerWhirlwindAttack(player, stack, useDuration),
-                new BreezebreakerWindRoarAttack(player, stack, useDuration),
-                new BreezebreakerWheelAttack(player, stack, useDuration)
+                new BreezebreakerWindRoarAttack(player, stack, useDuration)
         );
     }
 
@@ -57,6 +57,7 @@ public class BreezebreakerItem extends SkilledSwordItem {
 
     @Override
     public void forceTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+        super.forceTick(itemStack, level, entity, itemSlot, isSelected);
         CompoundTag data1 = itemStack.getOrCreateTagElement(CS_EXTRAS_ELEMENT);
         if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof BreezebreakerItem)) {
             sendExpandingParticles(level, ParticleTypes.END_ROD, entity.getX(), entity.getY(), entity.getZ(), 1, 0.1F);
@@ -79,7 +80,6 @@ public class BreezebreakerItem extends SkilledSwordItem {
                 data1.putInt(BUFF_STATE_LIMITER, 0);
             }
         }
-        super.forceTick(itemStack, level, entity, itemSlot, isSelected);
     }
 
     @Override

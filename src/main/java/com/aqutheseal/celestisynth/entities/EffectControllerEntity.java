@@ -1,22 +1,24 @@
 package com.aqutheseal.celestisynth.entities;
 
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
+import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.players.OldUsersConverter;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 public abstract class EffectControllerEntity extends Entity {
@@ -30,6 +32,19 @@ public abstract class EffectControllerEntity extends Entity {
 
     public EffectControllerEntity(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+    }
+    SoundEvent[] BASE_WEAPON_EFFECTS = {
+            CSSoundRegistry.CS_SWORD_SWING.get(),
+            CSSoundRegistry.CS_SWORD_SWING_FIRE.get(),
+            CSSoundRegistry.CS_AIR_SWING.get(),
+            CSSoundRegistry.CS_SWORD_CLASH.get(),
+            CSSoundRegistry.CS_FIRE_SHOOT.get(),
+            CSSoundRegistry.CS_IMPACT_HIT.get()
+    };
+
+    public void playRandomBladeSound(Entity entity, int length) {
+        SoundEvent randomSound = BASE_WEAPON_EFFECTS[new Random().nextInt(length)];
+        entity.playSound(randomSound, 0.35F, 0.5F + new Random().nextFloat());
     }
 
     @Override

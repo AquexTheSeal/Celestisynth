@@ -33,14 +33,11 @@ public class BreezebreakerWheelAttack extends BreezebreakerAttack {
 
     @Override
     public int getAttackStopTime() {
-        return 25;
+        return 10;
     }
 
     @Override
     public boolean getCondition() {
-        if (player.isSprinting() || player.isCrouching() || player.isOnGround()) {
-            return false;
-        }
         return !player.isOnGround();
     }
 

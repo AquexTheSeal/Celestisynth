@@ -5,10 +5,10 @@ import com.aqutheseal.celestisynth.LivingMixinSupport;
 import com.aqutheseal.celestisynth.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.entities.SkillCastPoltergeistWard;
+import com.aqutheseal.celestisynth.item.attacks.AquafloraSlashFrenzyAttack;
 import com.aqutheseal.celestisynth.item.helpers.CSUtilityFunctions;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.item.helpers.CSWeaponUtil;
-import com.aqutheseal.celestisynth.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.item.weapons.BreezebreakerItem;
 import com.aqutheseal.celestisynth.registry.CSEntityRegistry;
 import com.aqutheseal.celestisynth.registry.CSParticleRegistry;
@@ -117,7 +117,7 @@ public class CSUtilityEvents {
 
     private static void checkAndCancel(LivingAttackEvent event, ItemStack itemStack) {
         CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-        if (tagElement != null && tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraItem.ATTACK_BLOOMING)) {
+        if (tagElement != null && tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraSlashFrenzyAttack.ATTACK_ONGOING)) {
             event.setCanceled(true);
         }
     }

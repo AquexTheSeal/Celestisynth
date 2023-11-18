@@ -4,11 +4,9 @@ import com.aqutheseal.celestisynth.animation.AnimationManager;
 import com.aqutheseal.celestisynth.network.CSNetwork;
 import com.aqutheseal.celestisynth.network.util.ChangeCameraTypePacket;
 import com.aqutheseal.celestisynth.network.util.ShakeScreenServerPacket;
-import com.aqutheseal.celestisynth.registry.CSSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -40,15 +38,6 @@ public interface CSWeaponUtil {
     String ANIMATION_TIMER_KEY = "cs.animationTimer";
     String ANIMATION_BEGUN_KEY = "cs.hasAnimationBegun";
 
-    SoundEvent[] BASE_WEAPON_EFFECTS = {
-            CSSoundRegistry.CS_SWORD_SWING.get(),
-            CSSoundRegistry.CS_SWORD_SWING_FIRE.get(),
-            CSSoundRegistry.CS_AIR_SWING.get(),
-            CSSoundRegistry.CS_SWORD_CLASH.get(),
-            CSSoundRegistry.CS_FIRE_SHOOT.get(),
-            CSSoundRegistry.CS_IMPACT_HIT.get()
-    };
-
     static void disableRunningWeapon(Entity entity) {
         if (entity instanceof Player player) {
             AnimationManager.playAnimation(entity.level, AnimationManager.AnimationsList.CLEAR);
@@ -65,11 +54,6 @@ public interface CSWeaponUtil {
                 player.releaseUsingItem();
             }
         }
-    }
-
-    default void playRandomBladeSound(Entity entity, int length) {
-        SoundEvent randomSound = BASE_WEAPON_EFFECTS[new Random().nextInt(length)];
-        entity.playSound(randomSound, 0.35F, 0.5F + new Random().nextFloat());
     }
 
     default void hurtNoKB(Player holder, LivingEntity target, float damage, boolean isBlockable) {

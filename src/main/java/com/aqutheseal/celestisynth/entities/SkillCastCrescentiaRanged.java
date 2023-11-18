@@ -3,7 +3,6 @@ package com.aqutheseal.celestisynth.entities;
 import com.aqutheseal.celestisynth.config.CSConfig;
 import com.aqutheseal.celestisynth.entities.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.item.weapons.CrescentiaItem;
-import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
 import com.aqutheseal.celestisynth.registry.CSItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -88,7 +87,7 @@ public class SkillCastCrescentiaRanged extends EffectControllerEntity {
             CSEffect.createInstance(player, this, CSEffectTypes.CRESCENTIA_THROW_INVERTED, getAngleX(), getAngleY() - 1.5, getAngleZ());
         }
         CSEffect.createInstance(player, this, CSEffectTypes.SOLARIS_AIR, getAngleX(), getAngleY(), getAngleZ());
-        playRandomBladeSound(CSWeapon.BASE_WEAPON_EFFECTS.length, newX, newY, newZ);
+        playRandomBladeSound(BASE_WEAPON_EFFECTS.length, newX, newY, newZ);
 
         int radius = 2;
         for (int sx = -radius; sx <= radius; sx++) {
@@ -109,7 +108,7 @@ public class SkillCastCrescentiaRanged extends EffectControllerEntity {
     }
 
     public void playRandomBladeSound(int length, double x, double y, double z) {
-        SoundEvent randomSound = CrescentiaItem.BASE_WEAPON_EFFECTS[new Random().nextInt(length)];
+        SoundEvent randomSound = BASE_WEAPON_EFFECTS[new Random().nextInt(length)];
         level.playSound(level.getPlayerByUUID(getOwnerUuid()), x, y, z, randomSound, SoundSource.HOSTILE, 0.10F, 0.5F + new Random().nextFloat());
     }
 }

@@ -2,6 +2,7 @@ package com.aqutheseal.celestisynth.events;
 
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.PlayerMixinSupport;
+import com.aqutheseal.celestisynth.item.attacks.AquafloraSlashFrenzyAttack;
 import com.aqutheseal.celestisynth.item.helpers.CSArmorItem;
 import com.aqutheseal.celestisynth.item.helpers.CSArmorProperties;
 import com.aqutheseal.celestisynth.item.helpers.CSRarityTypes;
@@ -98,7 +99,7 @@ public class CSClientEvents {
     private static void checkAndSetAngle(ViewportEvent.ComputeCameraAngles event, ItemStack itemStack) {
         if (itemStack.getItem() instanceof AquafloraItem) {
             CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-            if (tagElement != null && tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraItem.ATTACK_BLOOMING)) {
+            if (tagElement != null && tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraSlashFrenzyAttack.ATTACK_ONGOING)) {
                 event.setPitch(90);
             }
         }
@@ -106,8 +107,8 @@ public class CSClientEvents {
 
     private static void checkAndSetFOV(ViewportEvent.ComputeFov event, ItemStack itemStack) {
         CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-        if (tagElement != null && itemStack.getItem() instanceof AquafloraItem) {
-            if (tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraItem.ATTACK_BLOOMING)) {
+        if (tagElement != null && itemStack.getItem() instanceof AquafloraItem aq) {
+            if (tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraSlashFrenzyAttack.ATTACK_ONGOING)) {
                 event.setFOV(140);
             }
         }
