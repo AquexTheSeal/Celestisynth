@@ -6,9 +6,9 @@ import com.aqutheseal.celestisynth.entities.renderer.NullRenderer;
 import com.aqutheseal.celestisynth.entities.renderer.RainfallArrowRenderer;
 import com.aqutheseal.celestisynth.entities.renderer.TempestBossRenderer;
 import com.aqutheseal.celestisynth.item.attacks.AquafloraAttack;
+import com.aqutheseal.celestisynth.item.attacks.PoltergeistCosmicSteelAttack;
 import com.aqutheseal.celestisynth.item.attacks.SolarisFullRoundAttack;
 import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
-import com.aqutheseal.celestisynth.item.weapons.PoltergeistItem;
 import com.aqutheseal.celestisynth.item.weapons.RainfallSerenityItem;
 import com.aqutheseal.celestisynth.particles.BreezebrokenParticle;
 import com.aqutheseal.celestisynth.particles.RainfallBeamParticle;
@@ -76,7 +76,7 @@ public class CSClientRegistries {
                             living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getInt(SolarisFullRoundAttack.DIRECTION_INDEX_KEY) == 2 ? 1.0F : 0.0F);
             ItemProperties.register(CSItemRegistry.POLTERGEIST.get(),
                     new ResourceLocation(Celestisynth.MODID, "haunted"), (stack, level, living, id) ->
-                            living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT).getBoolean(PoltergeistItem.IS_IMPACT_LARGE) ? 1.0F : 0.0F);
+                            living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT).getBoolean(PoltergeistCosmicSteelAttack.IS_IMPACT_LARGE) ? 1.0F : 0.0F);
             ItemProperties.register(CSItemRegistry.AQUAFLORA.get(),
                     new ResourceLocation(Celestisynth.MODID, "blooming"), (stack, level, living, id) ->
                             living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(AquafloraAttack.CHECK_PASSIVE) ? 1.0F : 0.0F);
