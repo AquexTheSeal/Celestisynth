@@ -2,6 +2,7 @@ package com.aqutheseal.celestisynth.item.weapons;
 
 import com.aqutheseal.celestisynth.item.SkilledSwordItem;
 import com.aqutheseal.celestisynth.item.attacks.SolarisFullRoundAttack;
+import com.aqutheseal.celestisynth.item.attacks.SolarisSoulDashAttack;
 import com.aqutheseal.celestisynth.item.helpers.WeaponAttackInstance;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,7 +22,10 @@ public class SolarisItem extends SkilledSwordItem {
 
     @Override
     public ImmutableList<WeaponAttackInstance> getPossibleAttacks(Player player, ItemStack stack, int dur) {
-        return ImmutableList.of(new SolarisFullRoundAttack(player, stack));
+        return ImmutableList.of(
+                new SolarisFullRoundAttack(player, stack),
+                new SolarisSoulDashAttack(player, stack)
+        );
     }
 
     @Override
