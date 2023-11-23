@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.mixin;
 
-import com.aqutheseal.celestisynth.LivingMixinSupport;
+import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -12,60 +12,67 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityRenderer.class)
-public class EntityRendererMixin<T extends Entity> {
+public abstract class EntityRendererMixin<T extends Entity> {
+
+    private EntityRendererMixin() {
+        throw new IllegalAccessError("Attempted to instantiate a Mixin Class!");
+    }
 
     @Inject(method = "render", at = @At("TAIL"))
-    public void render(T pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
-        if (pEntity instanceof LivingMixinSupport lms) {
-            if (lms.getPhantomTagger() != null) {
-                renderPhantomFlame(pPoseStack, pBuffer, pEntity);
-            }
-        }
+    public void celestisynth$render(T pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
+        if (pEntity instanceof LivingMixinSupport lms && lms.getPhantomTagger() != null) renderPhantomFlame(pPoseStack, pBuffer, pEntity);
     }
 
     private static void renderPhantomFlame(PoseStack pMatrixStack, MultiBufferSource pBuffer, Entity pEntity) {
-        TextureAtlasSprite textureatlassprite = ModelBakery.FIRE_0.sprite();
-        TextureAtlasSprite textureatlassprite1 = ModelBakery.FIRE_1.sprite();
-        pMatrixStack.pushPose();
-        float f = pEntity.getBbWidth() * 1.4F;
-        pMatrixStack.scale(f, f, f);
-        float f1 = 0.5F;
-        float f2 = 0.0F;
-        float f3 = pEntity.getBbHeight() / f;
-        float f4 = 0.0F;
-        pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(-Minecraft.getInstance().gameRenderer.getMainCamera().getYRot()));
-        pMatrixStack.translate(0.0D, 0.0D, (double)(-0.3F + (float)((int)f3) * 0.02F));
-        float f5 = 0.0F;
-        int i = 0;
-        VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
+        TextureAtlasSprite fireSprite0 = ModelBakery.FIRE_0.sprite();
+        TextureAtlasSprite fireSprite1 = ModelBakery.FIRE_1.sprite();
 
-        for(PoseStack.Pose posestack$pose = pMatrixStack.last(); f3 > 0.0F; ++i) {
-            TextureAtlasSprite textureatlassprite2 = i % 2 == 0 ? textureatlassprite : textureatlassprite1;
-            float f6 = textureatlassprite2.getU0();
-            float f7 = textureatlassprite2.getV0();
-            float f8 = textureatlassprite2.getU1();
-            float f9 = textureatlassprite2.getV1();
-            if (i / 2 % 2 == 0) {
-                float f10 = f8;
-                f8 = f6;
-                f6 = f10;
+        pMatrixStack.pushPose();
+
+        float offsetBBWidth = pEntity.getBbWidth() * 1.4F;
+
+        pMatrixStack.scale(offsetBBWidth, offsetBBWidth, offsetBBWidth);
+
+        float xFireVertex = 0.5F;
+        float offsetBBHeight = pEntity.getBbHeight() / offsetBBWidth;
+        float yFireVertexOffset = 0.0F;
+
+        pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(-Minecraft.getInstance().gameRenderer.getMainCamera().getYRot()));
+        pMatrixStack.translate(0.0D, 0.0D, -0.3F + offsetBBHeight * 0.02F);
+
+        float zFireVertex = 0.0F;
+        int stackIdx = 0;
+        VertexConsumer blockVc = pBuffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
+
+        for (PoseStack.Pose lastPose = pMatrixStack.last(); offsetBBHeight > 0.0F; stackIdx++) {
+            TextureAtlasSprite curFireSprite = stackIdx % 2 == 0 ? fireSprite0 : fireSprite1;
+            float curFireSpriteU0 = curFireSprite.getU0();
+            float curFireSpriteV0 = curFireSprite.getV0();
+            float curFireSpriteU1 = curFireSprite.getU1();
+            float curFireSpriteV1 = curFireSprite.getV1();
+
+            if (stackIdx / 2 % 2 == 0) {
+                float cachedU1 = curFireSpriteU1;
+
+                curFireSpriteU1 = curFireSpriteU0;
+                curFireSpriteU0 = cachedU1;
             }
 
-            fireVertex(posestack$pose, vertexconsumer, f1 - 0.0F, 0.0F - f4, f5, f8, f9);
-            fireVertex(posestack$pose, vertexconsumer, -f1 - 0.0F, 0.0F - f4, f5, f6, f9);
-            fireVertex(posestack$pose, vertexconsumer, -f1 - 0.0F, 1.4F - f4, f5, f6, f7);
-            fireVertex(posestack$pose, vertexconsumer, f1 - 0.0F, 1.4F - f4, f5, f8, f7);
-            f3 -= 0.45F;
-            f4 -= 0.45F;
-            f1 *= 0.9F;
-            f5 += 0.03F;
+            fireVertex(lastPose, blockVc, xFireVertex - 0.0F, 0.0F - yFireVertexOffset, zFireVertex, curFireSpriteU1, curFireSpriteV1);
+            fireVertex(lastPose, blockVc, -xFireVertex - 0.0F, 0.0F - yFireVertexOffset, zFireVertex, curFireSpriteU0, curFireSpriteV1);
+            fireVertex(lastPose, blockVc, -xFireVertex - 0.0F, 1.4F - yFireVertexOffset, zFireVertex, curFireSpriteU0, curFireSpriteV0);
+            fireVertex(lastPose, blockVc, xFireVertex - 0.0F, 1.4F - yFireVertexOffset, zFireVertex, curFireSpriteU1, curFireSpriteV0);
+
+            offsetBBHeight -= 0.45F;
+            yFireVertexOffset -= 0.45F;
+            xFireVertex *= 0.9F;
+            zFireVertex += 0.03F;
         }
 
         pMatrixStack.popPose();

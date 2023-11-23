@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.mixin;
 
-import com.aqutheseal.celestisynth.LivingMixinSupport;
+import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,77 +15,64 @@ import javax.annotation.Nullable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingMixinSupport {
-    public final String
-            PHANTOM_TAG_BY = "cs.phantomTagByID",
+    private static final String PHANTOM_TAG_BY = "cs.phantomTagByID",
             QUASAR_IMBUED_BY = "cs.quasarImbuedByID";
-    public int tagTimer;
-    public int quasarTimer;
+    private int tagTimer;
+    private int quasarTimer;
 
-    public LivingEntityMixin(EntityType<?> pEntityType, Level pLevel) {
+    private LivingEntityMixin(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     @Inject(method = "tick", at = @At(value = "HEAD"))
-    public void tick(CallbackInfo ci) {
-        if (tagTimer > 0) {
-            tagTimer--;
-        } else {
-            setPhantomTagger(null);
-        }
-        if (quasarTimer > 0) {
-            quasarTimer--;
-        } else {
-            setQuasarImbued(null);
-        }
+    public void celestisynth$tick(CallbackInfo ci) {
+        if (tagTimer > 0) tagTimer--;
+        else setPhantomTagger(null);
+
+        if (quasarTimer > 0) quasarTimer--;
+        else setQuasarImbued(null);
     }
 
-    public @Nullable Player getPhantomTagger() {
-        if (level.getEntity(getPhantomTagFrom()) instanceof Player) {
-            return (Player) level.getEntity(getPhantomTagFrom());
-        } else {
-            return null;
-        }
+    @Nullable
+    @Override
+    public Player getPhantomTagger() {
+        return level.getEntity(getPhantomTagFrom()) instanceof Player ? (Player) level.getEntity(getPhantomTagFrom()) : null;
     }
 
+    @Override
     public void setPhantomTagger(@Nullable Player tagger) {
-        if (tagger != null) {
-            setPhantomTagFrom(tagger.getId());
-        } else {
-            setPhantomTagFrom(0);
-        }
+        if (tagger != null) setPhantomTagFrom(tagger.getId());
+        else setPhantomTagFrom(0);
     }
 
-    public void setPhantomTagFrom(int phantomTagFrom) {
-        this.getPersistentData().putInt(PHANTOM_TAG_BY, phantomTagFrom);
-        tagTimer = 100;
+    private int getPhantomTagFrom() {
+        return getPersistentData().getInt(PHANTOM_TAG_BY);
     }
 
-    public int getPhantomTagFrom() {
-        return this.getPersistentData().getInt(PHANTOM_TAG_BY);
+    private void setPhantomTagFrom(int phantomTagFrom) {
+        getPersistentData().putInt(PHANTOM_TAG_BY, phantomTagFrom);
+
+        this.tagTimer = 100;
     }
 
+    @Override
     public @Nullable Player getQuasarImbued() {
-        if (level.getEntity(getQuasarImbuedFrom()) instanceof Player) {
-            return (Player) level.getEntity(getQuasarImbuedFrom());
-        } else {
-            return null;
-        }
+        return level.getEntity(getQuasarImbuedFrom()) instanceof Player ? (Player) level.getEntity(getQuasarImbuedFrom()) : null;
     }
 
+    @Override
     public void setQuasarImbued(@Nullable Player imbuedTo) {
-        if (imbuedTo != null) {
-            setQuasarImbuedFrom(imbuedTo.getId());
-        } else {
-            setQuasarImbuedFrom(0);
-        }
+        if (imbuedTo != null) setQuasarImbuedFrom(imbuedTo.getId());
+        else setQuasarImbuedFrom(0);
     }
 
-    public void setQuasarImbuedFrom(int imbuedFrom) {
-        this.getPersistentData().putInt(QUASAR_IMBUED_BY, imbuedFrom);
-        quasarTimer = 100;
-    }
-
-    public int getQuasarImbuedFrom() {
+    private int getQuasarImbuedFrom() {
         return this.getPersistentData().getInt(QUASAR_IMBUED_BY);
+    }
+
+    private void setQuasarImbuedFrom(int imbuedFrom) {
+        getPersistentData().putInt(QUASAR_IMBUED_BY, imbuedFrom);
+
+        this.quasarTimer = 100;
     }
 }

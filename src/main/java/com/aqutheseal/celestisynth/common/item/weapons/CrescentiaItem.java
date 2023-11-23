@@ -1,0 +1,99 @@
+package com.aqutheseal.celestisynth.common.item.weapons;
+
+import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
+import com.aqutheseal.celestisynth.common.attack.cresentia.CrescentiaBarrageAttack;
+import com.aqutheseal.celestisynth.common.attack.cresentia.CrescentiaDragonAttack;
+import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Random;
+
+public class CrescentiaItem extends SkilledSwordItem {
+
+    public CrescentiaItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
+        super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+    }
+
+    @Override
+    public ImmutableList<WeaponAttackInstance> getPossibleAttacks(Player player, ItemStack stack, int dur) {
+        return ImmutableList.of(
+                new CrescentiaBarrageAttack(player, stack),
+                new CrescentiaDragonAttack(player, stack)
+        );
+    }
+
+    @Override
+    public int getSkillsAmount() {
+        return 2;
+    }
+
+    @Override
+    public boolean hasPassive() {
+        return true;
+    }
+
+    @Override
+    public int getPassiveAmount() {
+        return 1;
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack itemStack, LivingEntity entity, LivingEntity source) {
+        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 2));
+
+        return super.hurtEnemy(itemStack, entity, source);
+    }
+
+    @Override
+    public void forceTick(ItemStack itemStack, @NotNull Level level, @NotNull Entity entity, int itemSlot, boolean isSelected) {
+        if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof CrescentiaItem)) player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2, 0));
+
+        super.forceTick(itemStack, level, entity, itemSlot, isSelected);
+    }
+
+    public static void createCrescentiaFirework(ItemStack itemStack, Level level, Player player, double x, double y, double z, boolean isBig) {
+        Random random = new Random();
+        ItemStack star = new ItemStack(Items.FIREWORK_STAR);
+        CompoundTag compoundtag = star.getOrCreateTagElement("Explosion");
+        List<Integer> list = Lists.newArrayList();
+        DyeColor[] allowedColors = new DyeColor[]{DyeColor.LIGHT_BLUE, DyeColor.WHITE, DyeColor.BLUE, DyeColor.MAGENTA, DyeColor.YELLOW, DyeColor.ORANGE};
+        list.add(allowedColors[random.nextInt(allowedColors.length)].getFireworkColor());
+        compoundtag.putIntArray("Colors", list);
+        compoundtag.putByte("Type", (byte)(isBig ? FireworkRocketItem.Shape.LARGE_BALL.getId() : FireworkRocketItem.Shape.SMALL_BALL.getId()));
+        CompoundTag itemCompound = itemStack.getOrCreateTagElement("Fireworks");
+        ListTag listtag = new ListTag();
+        CompoundTag starCompound = star.getTagElement("Explosion");
+        if (starCompound != null) {
+            listtag.add(starCompound);
+        }
+        itemCompound.putByte("Flight", (byte) 3);
+        if (!listtag.isEmpty()) {
+            itemCompound.put("Explosions", listtag);
+        }
+        level.createFireworks(x, y, z, 0.01, 0.01, 0.01, itemCompound);
+        player.playSound(SoundEvents.FIREWORK_ROCKET_LARGE_BLAST, 1.0F, 0.5F + random.nextFloat());
+    }
+
+    public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
+        LivingEntity entity = event.getEntity();
+        CompoundTag tagR = mainHandItem.getItem().getShareTag(entity.getMainHandItem());
+        CompoundTag tagL = offHandItem.getItem().getShareTag(entity.getOffhandItem());
+        if ((tagR != null && (tagR.getBoolean(ANIMATION_BEGUN_KEY)) || (tagL != null && (tagL.getBoolean(ANIMATION_BEGUN_KEY))))) {
+            event.setAmount(event.getAmount() * 0.7F);
+        }
+    }
+}

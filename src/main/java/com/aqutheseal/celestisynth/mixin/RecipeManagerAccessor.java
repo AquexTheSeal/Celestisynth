@@ -14,5 +14,5 @@ import java.util.Map;
 public interface RecipeManagerAccessor {
 
     @Invoker("byType")
-    <C extends Container, T extends Recipe<C>> Map<ResourceLocation, T> getByType(RecipeType<T> p_44055_);
+    <C extends Container, T extends Recipe<C>> Map<ResourceLocation, T> getByType(RecipeType<T> targetRecipeType);
 }

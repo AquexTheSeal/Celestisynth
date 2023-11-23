@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.mixin;
 
-import com.aqutheseal.celestisynth.item.helpers.CSWeapon;
+import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -19,21 +19,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player {
 
-    public ServerPlayerMixin(Level p_219727_, BlockPos p_219728_, float p_219729_, GameProfile p_219730_, @Nullable ProfilePublicKey p_219731_) {
-        super(p_219727_, p_219728_, p_219729_, p_219730_, p_219731_);
+    private ServerPlayerMixin(Level curLevel, BlockPos curPos, float curYRot, GameProfile targetProfile, @Nullable ProfilePublicKey targetProfilePublicKey) {
+        super(curLevel, curPos, curYRot, targetProfile, targetProfilePublicKey);
     }
 
     @Inject(method = "drop(Z)Z", at = @At("HEAD"), cancellable = true)
-    public void dropMixin(boolean val, CallbackInfoReturnable<Boolean> cir) {
-        Inventory inventory = this.getInventory();
+    public void celestisynth$drop(boolean val, CallbackInfoReturnable<Boolean> cir) {
+        Inventory inventory = getInventory();
         ItemStack selected = inventory.getSelected();
+
         if (selected.getItem() instanceof CSWeapon) {
-            CompoundTag tag = selected.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-            if (tag != null) {
-                if (tag.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
-                    cir.setReturnValue(false);
-                }
-            }
+            CompoundTag controllerTag = selected.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+
+            if (controllerTag != null && controllerTag.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) cir.setReturnValue(false);
         }
     }
 }
