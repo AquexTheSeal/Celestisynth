@@ -3,14 +3,12 @@ package com.aqutheseal.celestisynth.common.entity.base;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
-import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.players.OldUsersConverter;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -117,10 +115,6 @@ public class CSEffect extends Entity implements IAnimatable {
         this.entityData.set(CUSTOMIZABLE_SIZE, size);
     }
 
-    public CSEffectTypes getLockedInEffect() {
-        return lockedInEffect;
-    }
-
     public void setLockedInEffect(CSEffectTypes lockedInEffect) {
         this.lockedInEffect = lockedInEffect;
     }
@@ -223,13 +217,6 @@ public class CSEffect extends Entity implements IAnimatable {
             setFrameLevel(getFrameLevel() == getEffectType().getFrames() ? 1 : getFrameLevel() + 1);
 
             frameTimer = 0;
-        }
-
-        if (tickCount == 1) {
-            if (getEffectType() == CSEffectTypes.POLTERGEIST_IMPACT_CRACK || getEffectType() == CSEffectTypes.POLTERGEIST_IMPACT_CRACK_LARGE) {
-                playSound(SoundEvents.END_GATEWAY_SPAWN, 1.0F, 1.75F);
-                playSound(CSSoundEvents.CS_LOUD_IMPACT.get(), 1.5F, 1.0F);
-            }
         }
 
         if (toFollow != null) {

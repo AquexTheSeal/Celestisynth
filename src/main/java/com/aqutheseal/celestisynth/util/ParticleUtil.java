@@ -21,7 +21,7 @@ public final class ParticleUtil {
 
         for(int j = 0; j < serverWorld.players().size(); ++j) {
             ServerPlayer serverplayerentity = serverWorld.players().get(j);
-            if (sendParticles(serverplayerentity, false, pPosX, pPosY, pPosZ, sspawnparticlepacket)) {
+            if (sendParticles(serverplayerentity, pPosX, pPosY, pPosZ, sspawnparticlepacket)) {
                 ++i;
             }
         }
@@ -45,12 +45,12 @@ public final class ParticleUtil {
         return sendParticles(serverWorld, pType, pPosX, pPosY, pPosZ, pParticleCount, 0, 0, 0, pXSpeed, pYSpeed, pZSpeed);
     }
 
-    private static boolean sendParticles(ServerPlayer pPlayer, boolean pLongDistance, double pPosX, double pPosY, double pPosZ, CSSpawnParticlePacket packet) {
+    private static boolean sendParticles(ServerPlayer pPlayer, double pPosX, double pPosY, double pPosZ, CSSpawnParticlePacket packet) {
         if (pPlayer.getLevel().isClientSide()) {
             return false;
         } else {
             BlockPos blockpos = pPlayer.blockPosition();
-            if (blockpos.closerThan(new Vec3i((int) pPosX, (int) pPosY, (int) pPosZ), pLongDistance ? 512.0D : 32.0D)) {
+            if (blockpos.closerThan(new Vec3i((int) pPosX, (int) pPosY, (int) pPosZ), 1024)) {
                 CSNetworkManager.sendToAll(packet);
                 return true;
             } else {

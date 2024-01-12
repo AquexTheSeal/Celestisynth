@@ -27,32 +27,63 @@ public class CSAnimator {
     public static void registerPlayerAnimation(AbstractClientPlayer player, AnimationStack stack) {
         var layer = new ModifierLayer<>();
         layer.addModifier(new AdjustmentModifier((partName) -> {
-            float xRotMod = 0;
-            float yRotMod = 0;
-            float zRotMod = 0;
-            float xMod = 0;
-            float yMod = 0;
-            float zMod = 0;
+            float xRotMod = 0, yRotMod = 0, zRotMod = 0;
+            float xMod = 0, yMod = 0, zMod = 0;
 
-            double yAng = player.getXRot();
-            double yBelow0Modifier = yAng > 0 ? 0 : 1;
             if (player.getUseItem().getItem() instanceof RainfallSerenityItem) {
                 boolean checkHand = player.getUsedItemHand() == InteractionHand.MAIN_HAND;
-                float isMain = checkHand ? -1 : 1;
-                if (partName.equals("rightArm") || partName.equals("leftArm")) {
-                    if (FirstPersonMode.isFirstPersonPass()) {
-                        zRotMod = (float) Math.toRadians(yAng) * isMain;
-                        double v = 3 + Math.toRadians(yAng * -isMain) * 6;
-                        xMod = (float) v;
-                        yMod = (float) (6.0f + Math.sin(Math.toRadians(yAng)) * yBelow0Modifier * 12.0f);
-                        zMod = checkHand ? (float) v : 12.0F;
-                    } else {
-                        zRotMod = (float) Math.toRadians(yAng) * isMain;
+                float f0 = (float) Math.toRadians(player.getXRot()) * 1.75F;
+                float f1 = (float) Math.toRadians(player.getXRot()) * 9F;
+                float rSplit0 = rotationSplit(player.getXRot(), f0, f1);
+                if (checkHand) {
+                    switch (partName) {
+                        case "leftArm" -> {
+                            xRotMod = (float) Math.toRadians(player.getXRot()) / 6;
+                            if (FirstPersonMode.isFirstPersonPass()) {
+                                xMod = rSplit0;
+                            }
+                        }
+                        case "rightArm" -> {
+                            zRotMod = (float) -Math.toRadians(player.getXRot());
+                            if (FirstPersonMode.isFirstPersonPass()) {
+                                xMod = rSplit0;
+                            }
+                        }
+                        case "head" -> {
+                            xRotMod = (float) Math.toRadians(player.getXRot());
+                        }
+                        default -> {
+                            return Optional.empty();
+                        }
+                    }
+                } else {
+                    switch (partName) {
+                        case "rightArm" -> {
+                            xRotMod = (float) -Math.toRadians(player.getXRot()) / 6;
+                            if (FirstPersonMode.isFirstPersonPass()) {
+                                xMod = -rSplit0;
+                            }
+                        }
+                        case "leftArm" -> {
+                            zRotMod = (float) Math.toRadians(player.getXRot());
+                            if (FirstPersonMode.isFirstPersonPass()) {
+                                xMod = -rSplit0;
+                            }
+                        }
+                        case "head" -> {
+                            xRotMod = (float) Math.toRadians(player.getXRot());
+                        }
+                        default -> {
+                            return Optional.empty();
+                        }
                     }
                 }
             }
             if (player.isCrouching()) {
                 if (partName.equals("rightArm") || partName.equals("leftArm")) {
+                    yMod += 3;
+                }
+                if (partName.equals("head")) {
                     yMod += 3;
                 }
             }
@@ -67,5 +98,15 @@ public class CSAnimator {
         var layerOther = new ModifierLayer<>();
         stack.addAnimLayer(0, layerOther);
         CSAnimator.otherAnimationData.put(player, layerOther);
+    }
+
+    public static float rotationSplit(float faceRotation, float faceUpValue, float faceDownValue) {
+        if (faceRotation < 0) {
+            return faceUpValue;
+        } else if (faceRotation > 0) {
+            return faceDownValue;
+        } else {
+            return 0;
+        }
     }
 }

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 public class SolarisSoulDashAttack extends WeaponAttackInstance {
+    public static final String STARTED = "cs.hasStartedSoulDash";
     public static final String HEAD_ROT_LOCK_KEY = "cs.headRotLock";
 
     public SolarisSoulDashAttack(Player player, ItemStack stack) {
@@ -48,12 +49,14 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
 
     @Override
     public void startUsing() {
+        getTagController().putBoolean(STARTED, true);
         getTagController().putFloat(HEAD_ROT_LOCK_KEY, getPlayer().getYRot());
         useAndDamageItem(getStack(), getPlayer().level, getPlayer(), 3);
     }
 
     @Override
     public void stopUsing() {
+        getTagController().putBoolean(STARTED, false);
         getTagController().putFloat(HEAD_ROT_LOCK_KEY, 0);
     }
 

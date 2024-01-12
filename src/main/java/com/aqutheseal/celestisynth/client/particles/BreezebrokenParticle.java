@@ -1,6 +1,5 @@
 package com.aqutheseal.celestisynth.client.particles;
 
-import com.aqutheseal.celestisynth.common.registry.CSParticleRenderTypes;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -44,7 +43,7 @@ public class BreezebrokenParticle extends SimpleAnimatedParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return CSParticleRenderTypes.PARTICLE_SHEET_TRANSLUCENT_LIT;
+        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
     @Override

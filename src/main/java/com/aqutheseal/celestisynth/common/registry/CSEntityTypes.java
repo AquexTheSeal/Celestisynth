@@ -6,6 +6,7 @@ import com.aqutheseal.celestisynth.common.entity.projectile.RainfallArrow;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastBreezebreakerTornado;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastCrescentiaRanged;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
+import com.aqutheseal.celestisynth.common.entity.skill.SkillCastRainfallRain;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -40,6 +41,11 @@ public class CSEntityTypes {
             .sized(0.5F, 0.5F)
             .clientTrackingRange(16)
             .build(Celestisynth.prefix("poltergeist_ward").toString())
+    );
+    public static final RegistryObject<EntityType<SkillCastRainfallRain>> RAINFALL_RAIN = ENTITY_TYPES.register("rainfall_rain", () -> EntityType.Builder.of(SkillCastRainfallRain::new, MobCategory.MISC)
+            .sized(0.5F, 0.5F)
+            .clientTrackingRange(16)
+            .build(Celestisynth.prefix("rainfall_rain").toString())
     );
 
     public static final RegistryObject<EntityType<RainfallArrow>> RAINFALL_ARROW = ENTITY_TYPES.register("rainfall_arrow", () -> EntityType.Builder.<RainfallArrow>of(RainfallArrow::new, MobCategory.MISC)

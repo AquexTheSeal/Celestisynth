@@ -83,5 +83,11 @@
       "celestisynth:rainfall_serenity_shoot-07",
       "celestisynth:rainfall_serenity_shoot-08"
     ]
+  },
+  "vanish": {
+    "subtitle": "subtitles.celestisynth.vanish",
+    "sounds": [
+      "celestisynth:rainfall_serenity_vanish"
+    ]
   }
 }

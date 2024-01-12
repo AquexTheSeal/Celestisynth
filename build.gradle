@@ -29,10 +29,11 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             arg "-mixin.config=${modid}.mixins.json"
+
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
-            //jvmArgs "-XX:+AllowEnhancedClassRedefinition", "-XX:HotswapAgent=fatjar"
+            jvmArgs "-XX:+AllowEnhancedClassRedefinition", "-XX:HotswapAgent=fatjar"
             mods {
                 "${modid}" {
                     source sourceSets.main
@@ -40,9 +41,15 @@ minecraft {
             }
         }
 
-        client { property 'forge.enabledGameTestNamespaces', modid }
-        server { property 'forge.enabledGameTestNamespaces', modid }
-        gameTestServer { property 'forge.enabledGameTestNamespaces', modid }
+        client {
+            property 'forge.enabledGameTestNamespaces', modid
+        }
+        server {
+            property 'forge.enabledGameTestNamespaces', modid
+        }
+        gameTestServer {
+            property 'forge.enabledGameTestNamespaces', modid
+        }
 
         data {
             args '--mod', modid, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
@@ -135,11 +142,12 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:shutup-experimental-settings-407174:${sues_version}")
     runtimeOnly fg.deobf("curse.maven:lazy-dfu-forge-460819:${lazydfu_version}")
 
-    // Dependencies (Extrass) (Temp)
+    // Dependencies (Extras) (Temp)
     implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:4410143")
     implementation fg.deobf("curse.maven:selene-499980:4620027")
-    implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4646625")
+    implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4991989")
     implementation fg.deobf("curse.maven:citadel-331936:4556677")
+    implementation fg.deobf("curse.maven:curios-309927:4985476")
 
 //    implementation fg.deobf("curse.maven:supplementaries-412082:4713347")
 //    runtimeOnly fg.deobf('curse.maven:ferritecore-429235:4117906')

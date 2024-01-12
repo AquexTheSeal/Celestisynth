@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.entity.projectile;
 
 import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
+import com.aqutheseal.celestisynth.common.entity.skill.SkillCastRainfallRain;
 import com.aqutheseal.celestisynth.common.item.weapons.RainfallSerenityItem;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
@@ -82,7 +83,7 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
         super.tick();
 
         if (isStrong()) {
-            if (tickCount == 1) {
+            if (tickCount == 3) {
                 Vec3 from = new Vec3(getOrigin().getX(), getOrigin().getY(), getOrigin().getZ());
                 Vec3 to = new Vec3(getX(), getY(), getZ());
 
@@ -90,14 +91,13 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
             }
         }
 
-        if (tickCount > 1) remove(RemovalReason.DISCARDED);
+        if (tickCount > 2) remove(RemovalReason.DISCARDED);
     }
 
     @Override
     public void shoot(double pX, double pY, double pZ, float pVelocity, float pInaccuracy) {
         super.shoot(pX, pY, pZ, pVelocity, pInaccuracy);
-
-        setDeltaMovement(getDeltaMovement().scale(12));
+        setDeltaMovement(getDeltaMovement().scale(20));
     }
 
     public void hitEffect(HitResult pResult, BlockPos hitPos) {
@@ -117,13 +117,22 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
                 if (pResult instanceof EntityHitResult ehr) {
                     setPierceLevel((byte) (getPierceLevel() + 1));
 
-                    if (random.nextInt(4) == 1) {
+                    if (ehr.getEntity() instanceof LivingMixinSupport lms && getOwner() instanceof Player player && lms.getQuasarImbued() == player) {
+
+                        SkillCastRainfallRain projectile = CSEntityTypes.RAINFALL_RAIN.get().create(player.level);
+                        projectile.targetPos = new BlockPos(ehr.getEntity().blockPosition());
+                        projectile.setOwnerUuid(player.getUUID());
+                        projectile.moveTo(ehr.getEntity().getX(), ehr.getEntity().getY() + 15, ehr.getEntity().getZ());
+                        player.level.addFreshEntity(projectile);
+                    }
+
+                    if (random.nextInt(3) == 1) {
                         for (Entity imbueSource : rawRainfallItem.iterateEntities(level, rawRainfallItem.createAABB(hitPos, 24))) {
                             if (imbueSource instanceof LivingMixinSupport lms && getOwner() instanceof Player player && lms.getQuasarImbued() != null && imbueSource != ehr.getEntity()) {
                                 ehr.getEntity().invulnerableTime = 0;
+
                                 Vec3 from = new Vec3(imbueSource.getX(), imbueSource.getY() + 1.5, imbueSource.getZ());
                                 Vec3 to = new Vec3(ehr.getEntity().getX(), ehr.getEntity().getY() + 1.5F, ehr.getEntity().getZ());
-
                                 createLaser(from, to, false, false);
 
                                 if (!level.isClientSide()) {
@@ -190,7 +199,7 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
 
     @Override
     protected ItemStack getPickupItem() {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

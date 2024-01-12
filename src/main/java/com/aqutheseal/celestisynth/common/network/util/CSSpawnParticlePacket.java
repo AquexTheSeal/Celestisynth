@@ -129,7 +129,7 @@ public class CSSpawnParticlePacket {
             double d2 = getYSpeed();
             double d4 = getZSpeed();
             try {
-                minecraft.level.addParticle((ParticleOptions) getParticle(), isOverrideLimiter(), getX(), getY(), getZ(), d0, d2, d4);
+                minecraft.level.addAlwaysVisibleParticle((ParticleOptions) getParticle(), true, getX(), getY(), getZ(), d0, d2, d4);
             } catch (Throwable throwable1) {
                 Celestisynth.LOGGER.warn("Could not spawn particle effect {}", getParticle());
             }
@@ -143,7 +143,7 @@ public class CSSpawnParticlePacket {
                 double d8 = getZSpeed();
 
                 try {
-                    minecraft.level.addParticle((ParticleOptions) getParticle(), isOverrideLimiter(), getX() + d1, getY() + d3, getZ() + d5, d6, d7, d8);
+                    minecraft.level.addAlwaysVisibleParticle((ParticleOptions) getParticle(), true, getX() + d1, getY() + d3, getZ() + d5, d6, d7, d8);
                 } catch (Throwable throwable) {
                     Celestisynth.LOGGER.warn("Could not spawn particle effect {}", getParticle());
                 }

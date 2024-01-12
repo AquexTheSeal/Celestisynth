@@ -20,6 +20,8 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -35,7 +37,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class RainfallSerenityItem extends BowItem implements CSWeapon {
-    public static float SPEED = 7.5F;
 
     public RainfallSerenityItem(Properties pProperties) {
         super(pProperties);
@@ -63,21 +64,41 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
 
         if (ret != null) return ret;
 
-        pPlayer.startUsingItem(pHand);
-        elementData.putBoolean(ANIMATION_BEGUN_KEY, true);
+        if (!pPlayer.isShiftKeyDown()) {
+            pPlayer.startUsingItem(pHand);
+            elementData.putBoolean(ANIMATION_BEGUN_KEY, true);
+            if (pHand == InteractionHand.MAIN_HAND) {
+                AnimationManager.playAnimation(pPlayer.level, AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_RIGHT);
+            } else {
+                AnimationManager.playAnimation(pPlayer.level, AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_LEFT);
+            }
 
-        if (pHand == InteractionHand.MAIN_HAND) AnimationManager.playAnimation(pLevel, AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_RIGHT);
-        else AnimationManager.playAnimation(pLevel, AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_LEFT);
+            return InteractionResultHolder.consume(heldStack);
 
-        return InteractionResultHolder.consume(heldStack);
+        } else {
+            if (!pPlayer.getCooldowns().isOnCooldown(this)) {
+                shiftSkill(pLevel, pPlayer);
+                pPlayer.getCooldowns().addCooldown(this, 200);
+                return InteractionResultHolder.success(heldStack);
+            }
+
+            return InteractionResultHolder.fail(heldStack);
+        }
     }
 
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
         super.onUsingTick(stack, player, count);
 
-        if (player.getUsedItemHand() == InteractionHand.MAIN_HAND) player.setYBodyRot(player.getYRot() - 45);
-        else player.setYBodyRot(player.getYRot() + 90);
+        player.setYBodyRot(player.getYRot());
+    }
+
+    public void shiftSkill(Level level, Player player) {
+        CSEffect.createInstance(player, null, CSEffectTypes.RAINFALL_VANISH, calculateXLook(player) * 3, 1, calculateZLook(player) * 3);
+        CSEffect.createInstance(player, null, CSEffectTypes.RAINFALL_VANISH_CIRCLE, 0, -1.5, 0);
+        player.playSound(CSSoundEvents.CS_VANISH.get());
+        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 3, true, false, false));
+        player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 100, 0, true, false, false));
     }
 
     @Override
@@ -153,7 +174,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
 
                         if (curPowerFromUse == 1.0F) rainfallArrow.setStrong(true);
                         if (powerEnchLvl > 0) rainfallArrow.setBaseDamage(rainfallArrow.getBaseDamage() + powerEnchLvl);
-                        if (piercingEnchLvl > 0) rainfallArrow.setBaseDamage(rainfallArrow.getBaseDamage() + (piercingEnchLvl * 1.75));
+                        if (piercingEnchLvl > 0) rainfallArrow.setBaseDamage(rainfallArrow.getBaseDamage() + (piercingEnchLvl * 4));
                         if (multishotEnchLvl > 0) rainfallArrow.setBaseDamage(rainfallArrow.getBaseDamage() * 0.75F);
                         if (punchEnchLvl > 0) rainfallArrow.setKnockback(punchEnchLvl);
                         if (flameEnchLvl > 0) rainfallArrow.setFlaming(true);
@@ -184,14 +205,24 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
         enchantments.add(Enchantments.MULTISHOT);
         enchantments.add(Enchantments.PIERCING);
 
+        if (enchantment == Enchantments.PIERCING) {
+            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, stack) > 0) return false;
+            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, stack) > 0) return false;
+        }
+
+        if (enchantment == Enchantments.MULTISHOT || enchantment == Enchantments.QUICK_CHARGE) {
+            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, stack) > 0) return false;
+        }
+
         if (enchantments.contains(enchantment)) return true;
 
         return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     public float getDrawSpeed(ItemStack stack) {
-        float piecingEnchLvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, stack);
-        return (float) (CSConfigManager.COMMON.rainfallSerenityDrawSpeed.get() + piecingEnchLvl * 5);
+        float piercingEnchLvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, stack);
+        float quickEnchLvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
+        return (float) (CSConfigManager.COMMON.rainfallSerenityDrawSpeed.get() + (piercingEnchLvl * 10)) / ((quickEnchLvl + 1) * 0.6f);
     }
 
     public static float getPowerForTime(ItemStack stack, int pCharge) {

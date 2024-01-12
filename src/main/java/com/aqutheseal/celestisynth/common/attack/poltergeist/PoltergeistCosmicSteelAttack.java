@@ -8,6 +8,7 @@ import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
 import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
+import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 
 public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
     public static final String IS_IMPACT_LARGE = "cs.isImpactLarge";
+    public static final String SMASH_HEIGHT = "cs.poltergeistSmashHeight";
     public static final String SMASH_COUNT_FOR_PASSIVE = "cs.smashCountForPassive";
 
     public PoltergeistCosmicSteelAttack(Player player, ItemStack stack) {
@@ -64,21 +66,27 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
         boolean forceCreateImpact = false;
 
         if (getTimerProgress() == 20) {
-            double xx = calculateXLook(player) * (isGiantImpact ? 4 : 3);
-            double zz = calculateZLook(player) * (isGiantImpact ? 4 : 3);
+            double xx = calculateXLook(player) * 3;
+            double zz = calculateZLook(player) * 3;
 
             if (!player.isOnGround() && !player.getAbilities().flying) {
                 getPlayer().moveTo(player.getX(), calculateNonCollidingPos(player.level, getPlayer().blockPosition()).getY() + 1, getPlayer().getZ());
-
                 forceCreateImpact = true;
             }
 
-            double range = (!forceCreateImpact && !player.isOnGround()) ? 4 : isGiantImpact ? 4 : 6.5;
-
+            double range = isGiantImpact ? 6.5 : 4;
+            CSEffectTypes crack =  isGiantImpact ? CSEffectTypes.POLTERGEIST_IMPACT_CRACK_LARGE : CSEffectTypes.POLTERGEIST_IMPACT_CRACK;
             for (Entity entityBatch : iterateEntities(player.level, createAABB(player.blockPosition().offset(xx, 1, zz), range))) {
                 if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
-                    hurtNoKB(player, target, isGiantImpact ? (float) (double) CSConfigManager.COMMON.poltergeistSkillDmg.get() : (float) (CSConfigManager.COMMON.poltergeistSkillDmg.get() + 4) + getSharpnessValue(getStack(), 1.2F));
-                    target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
+
+                    hurtNoKB(player, target, (isGiantImpact ?
+                            (float) (double) CSConfigManager.COMMON.poltergeistSkillDmg.get() * 1.4F :
+                            (float) (double) (CSConfigManager.COMMON.poltergeistSkillDmg.get())) +
+                            getSharpnessValue(getStack(), 1.2F) + getTagController().getInt(SMASH_HEIGHT)
+                    );
+
+                    target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
+                    target.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0));
 
                     target.hurtMarked = true;
 
@@ -100,27 +108,29 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
             }
 
             if (player.isOnGround() || forceCreateImpact) {
-                CSEffect.createInstance(player, null, isGiantImpact ? CSEffectTypes.POLTERGEIST_IMPACT_CRACK_LARGE : CSEffectTypes.POLTERGEIST_IMPACT_CRACK, xx, isGiantImpact ? -1.55 : -0.35, zz);
+                player.playSound(SoundEvents.END_GATEWAY_SPAWN, 1.0F, 1.75F);
+                player.playSound(CSSoundEvents.CS_LOUD_IMPACT.get(), 1.5F, 1.0F);
+                CSEffect.createInstance(player, null, crack, xx, -0.4, zz);
 
                 if (!isGiantImpact) CSEffect.createInstance(player, null, CSEffectTypes.POLTERGEIST_WARD_SUMMON_SMALL, xx, 1, zz);
 
                 if (isGiantImpact) shakeScreensForNearbyPlayers(player, getPlayer().level, 24, 60, 30,  0.035F);
                 else shakeScreensForNearbyPlayers(player, getPlayer().level, 12, 30, 15,  0.01F);
+
             } else getPlayer().playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 0.5F);
 
             addComboPoint(getStack(), player);
 
             if (!player.isOnGround()) {
                 getPlayer().getCooldowns().removeCooldown(getStack().getItem());
-
-                data.putInt(ANIMATION_TIMER_KEY, 0);
-                data.putBoolean(ANIMATION_BEGUN_KEY, false);
+                baseStop();
             }
         }
     }
 
     @Override
     public void stopUsing() {
+        getTagController().putInt(SMASH_HEIGHT, 0);
     }
 
     public BlockPos calculateNonCollidingPos(Level level, BlockPos pos) {
@@ -128,6 +138,8 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
 
         do {
             mutablePos.move(Direction.DOWN);
+            getTagController().putInt(SMASH_HEIGHT,  getTagController().getInt(SMASH_HEIGHT) + 1);
+
         } while (mutablePos.getY() > level.getMinBuildHeight() && level.getBlockState(mutablePos).isPathfindable(level, mutablePos, PathComputationType.LAND));
 
         return new BlockPos(mutablePos.getX(), mutablePos.getY(), mutablePos.getZ());

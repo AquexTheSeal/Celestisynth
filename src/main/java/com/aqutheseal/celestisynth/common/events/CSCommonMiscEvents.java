@@ -77,6 +77,13 @@ public class CSCommonMiscEvents {
     }
 
     @SubscribeEvent
+    public static void onPlayerCopy(PlayerEvent.Clone event) {
+        if (event.isWasDeath()) {
+            CSWeaponUtil.disableRunningWeapon(event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
     public static void onLivingFallEvent(LivingFallEvent event) {
         LivingEntity entity = event.getEntity();
         Item itemR = entity.getMainHandItem().getItem();

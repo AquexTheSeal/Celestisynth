@@ -1,9 +1,9 @@
 package com.aqutheseal.celestisynth.client.gui.celestialcrafting;
 
+import com.aqutheseal.celestisynth.common.events.CSRecipeBookSetupEvents;
 import com.aqutheseal.celestisynth.common.recipe.celestialcrafting.CelestialCraftingRecipe;
 import com.aqutheseal.celestisynth.common.registry.CSBlocks;
 import com.aqutheseal.celestisynth.common.registry.CSMenuTypes;
-import com.aqutheseal.celestisynth.common.registry.CSRecipeBookTypes;
 import com.aqutheseal.celestisynth.common.registry.CSRecipeTypes;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -170,7 +170,7 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
     @Override
     public RecipeBookType getRecipeBookType() {
-        return CSRecipeBookTypes.CELESTIAL_CRAFTING;
+        return CSRecipeBookSetupEvents.CELESTIAL_CRAFTING;
     }
 
     @Override

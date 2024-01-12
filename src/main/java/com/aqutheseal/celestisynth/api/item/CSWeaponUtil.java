@@ -170,7 +170,6 @@ public interface CSWeaponUtil {
 
                     if (data != null) data.getAllKeys().clear();
                     if (dataAlt != null)  dataAlt.getAllKeys().clear();
-
                     cs.resetExtraValues(playerOwner.getItemBySlot(slot), playerOwner);
                 }
             }

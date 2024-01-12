@@ -86,7 +86,7 @@ public enum CSEffectTypes implements IExtensibleEnum {
             0, 0, 2.5, false, true, false)
     ,
     POLTERGEIST_IMPACT_CRACK_LARGE("poltergeist_impact_crack_large", "poltergeist_impact_crack", Model.FLAT, noneTo(20),
-            0, 0, 4, false, true, false)
+            0, 0, 3.5, false, true, false)
     ,
     POLTERGEIST_RETREAT("poltergeist_retreat", Model.FLAT_VERTICAL_SIDEFACE,  noneTo(15),
             0, 0, 2.25, false, true, false)
@@ -120,6 +120,15 @@ public enum CSEffectTypes implements IExtensibleEnum {
     ,
     RAINFALL_SHOOT("rainfall_shoot", Model.FLAT_VERTICAL_SIDEFACE,  noneTo(16),
             8, 2, 2.25, false, false, true)
+    ,
+    RAINFALL_RAIN("rainfall_rain", Model.FLAT, Animation.SPECIAL_RAINFALL,
+            0, 0, 2.5, false, true, false)
+    ,
+    RAINFALL_VANISH("rainfall_vanish", Model.FLAT_VERTICAL_SIDEFACE,  noneTo(20),
+            0, 0, 2.25, false, true, false)
+    ,
+    RAINFALL_VANISH_CIRCLE("rainfall_vanish_circle", Model.FLAT, Animation.SPIN_15,
+            0, 0, 4, false, true, false)
     ;
 
     private final String name;
@@ -236,7 +245,9 @@ public enum CSEffectTypes implements IExtensibleEnum {
         SWEEP_RTOL("animation.cs_effect.sweep_rtol", 15),
         SWEEP_LTOR("animation.cs_effect.sweep_ltor", 15),
         STRETCH("animation.cs_effect.stretch", 15),
-        GOO("animation.cs_effect.goo", Integer.MAX_VALUE);
+        GOO("animation.cs_effect.goo", Integer.MAX_VALUE),
+
+        SPECIAL_RAINFALL("animation.cs_effect.special_rainfall", 50);
 
         private final String animName;
         private final int lifespan;

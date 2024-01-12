@@ -40,10 +40,10 @@ public class AnimationManager {
         boolean isFirstPersonModelLoaded = ModList.get().isLoaded("firstpersonmod");
 
         if (animation == null) {
-            layer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(3, Ease.OUTCIRC), null);
+            layer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(3, Ease.CONSTANT), null);
         } else {
             if (CSAnimator.animationData.containsValue(layer)) {
-                layer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(3, Ease.OUTCIRC), new KeyframeAnimationPlayer(animation)
+                layer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(3, Ease.CONSTANT), new KeyframeAnimationPlayer(animation)
                         .setFirstPersonMode(FirstPersonMode.THIRD_PERSON_MODEL)
                         .setFirstPersonConfiguration(new FirstPersonConfiguration()
                                 .setShowRightArm(!isFirstPersonModelLoaded && CSConfigManager.CLIENT.showRightArmOnAnimate.get()).setShowRightItem(!isFirstPersonModelLoaded)

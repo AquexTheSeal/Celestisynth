@@ -32,7 +32,7 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
 
     @Override
     public int getAttackStopTime() {
-        return 5;
+        return 1;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
     public void startUsing() {
         double range = 4;
 
-        for (Entity entityBatch : iterateEntities(player.level, createAABB(player.blockPosition().above(), range))) {
+        for (Entity entityBatch : iterateEntities(player.level, createAABB(player.blockPosition().above().offset(calculateXLook(player) * 2, 0, calculateZLook(player) * 2), range))) {
             if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
                 hurtNoKB(player, target, (float) (double) CSConfigManager.COMMON.poltergeistShiftSkillDmg.get() + getSharpnessValue(getStack(), 1.2F));
                 target.playSound(CSSoundEvents.CS_SWORD_CLASH.get(), 0.25F, 0.5F);
@@ -53,12 +53,11 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
             } else if (entityBatch instanceof Projectile) entityBatch.remove(Entity.RemovalReason.DISCARDED);
         }
 
-        CSEffect.createInstance(player, null, CSEffectTypes.POLTERGEIST_RETREAT, calculateXLook(player) * 2, 1, calculateZLook(player) * 2);
+        CSEffect.createInstance(player, null, CSEffectTypes.POLTERGEIST_RETREAT, calculateXLook(player) * -2, 1, calculateZLook(player) * -2);
         sendExpandingParticles(player.level, ParticleTypes.SOUL, getPlayer().blockPosition(), 45, 0.5F);
 
-        double multiplier = getPlayer().isOnGround() ? -2 : -1.5;
-
-        getPlayer().setDeltaMovement(calculateXLook(player) * multiplier, 0, calculateZLook(player) * multiplier);
+        double deltaY = player.isOnGround() ? 3 : 0.9;
+        getPlayer().setDeltaMovement(calculateXLook(player) * -0.5, deltaY, calculateZLook(player) * -0.5);
         getPlayer().hurtMarked = true;
         getPlayer().playSound(SoundEvents.ENDER_CHEST_OPEN, 1.0F, 1.5F);
         getPlayer().playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.5F);

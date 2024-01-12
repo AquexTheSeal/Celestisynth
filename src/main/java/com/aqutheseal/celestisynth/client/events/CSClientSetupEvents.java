@@ -13,20 +13,16 @@ import com.aqutheseal.celestisynth.client.renderers.misc.CSEffectRenderer;
 import com.aqutheseal.celestisynth.client.renderers.misc.NullRenderer;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraAttack;
 import com.aqutheseal.celestisynth.common.attack.poltergeist.PoltergeistCosmicSteelAttack;
-import com.aqutheseal.celestisynth.common.attack.solaris.SolarisFullRoundAttack;
+import com.aqutheseal.celestisynth.common.attack.solaris.SolarisSoulDashAttack;
 import com.aqutheseal.celestisynth.common.item.weapons.RainfallSerenityItem;
 import com.aqutheseal.celestisynth.common.registry.*;
-import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-
-import java.util.List;
 
 public class CSClientSetupEvents {
 
@@ -38,6 +34,7 @@ public class CSClientSetupEvents {
         event.registerEntityRenderer(CSEntityTypes.CRESCENTIA_RANGED.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityTypes.BREEZEBREAKER_TORNADO.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityTypes.POLTERGEIST_WARD.get(), NullRenderer::new);
+        event.registerEntityRenderer(CSEntityTypes.RAINFALL_RAIN.get(), NullRenderer::new);
 
         event.registerEntityRenderer(CSEntityTypes.RAINFALL_ARROW.get(), RainfallArrowRenderer::new);
 
@@ -49,7 +46,7 @@ public class CSClientSetupEvents {
         event.enqueueWork(() -> {
             ItemProperties.register(CSItems.SOLARIS.get(),
                     Celestisynth.prefix("soul"), (stack, level, living, id) ->
-                            living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getInt(SolarisFullRoundAttack.DIRECTION_INDEX_KEY) == 2 ? 1.0F : 0.0F);
+                            living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(SolarisSoulDashAttack.STARTED) ? 1.0F : 0.0F);
             ItemProperties.register(CSItems.POLTERGEIST.get(),
                     Celestisynth.prefix("haunted"), (stack, level, living, id) ->
                             living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT).getBoolean(PoltergeistCosmicSteelAttack.IS_IMPACT_LARGE) ? 1.0F : 0.0F);
@@ -75,12 +72,4 @@ public class CSClientSetupEvents {
         event.register(CSParticleTypes.RAINFALL_ENERGY_SMALL.get(), RainfallEnergyParticle.Small.Provider::new);
     }
 
-    @SubscribeEvent
-    public static void onRegisterRecipeBookCategoriesEvent(RegisterRecipeBookCategoriesEvent event) {
-        final List<RecipeBookCategories> celestialList = List.of(CSRecipeBookCategories.CELESTIAL_WEAPONS_CATEGORY, CSRecipeBookCategories.CELESTIAL_CRAFTING_CATEGORY);
-
-        event.registerBookCategories(CSRecipeBookTypes.CELESTIAL_CRAFTING, celestialList);
-        event.registerRecipeCategoryFinder(CSRecipeTypes.CELESTIAL_CRAFTING_TYPE.get(), recipe -> CSRecipeBookCategories.CELESTIAL_WEAPONS_CATEGORY);
-        event.registerAggregateCategory(CSRecipeBookCategories.CELESTIAL_CRAFTING_CATEGORY, celestialList);
-    }
 }

@@ -19,8 +19,9 @@ public class AquafloraPetalPiercesAttack extends AquafloraAttack {
 
     @Override
     public AnimationManager.AnimationsList getAnimation() {
-        if (player.getMainHandItem() == stack && getPlayer().getOffhandItem() == stack) return getPlayer().level.random.nextBoolean() ? AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT : AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT;
-        else return getPlayer().getMainHandItem() == stack ? AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT : AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT;
+        
+        if (player.getMainHandItem() == stack && getPlayer().getOffhandItem() == stack) return getPlayer().level.random.nextBoolean() ? AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT : AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT;
+        else return getPlayer().getMainHandItem() == stack ? AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT : AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT;
     }
 
     @Override

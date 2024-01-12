@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth;
 
+import com.aqutheseal.celestisynth.common.events.CSRecipeBookSetupEvents;
 import com.aqutheseal.celestisynth.manager.CSModManager;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,10 @@ public class Celestisynth {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
+
+        // Don't change
+        CSRecipeBookSetupEvents.staticInit();
+        modEventBus.addListener(CSRecipeBookSetupEvents::registerEvent);
 
         if (modEventBus != null && forgeEventBus != null)  CSModManager.registerAll(modEventBus, forgeEventBus);
     }

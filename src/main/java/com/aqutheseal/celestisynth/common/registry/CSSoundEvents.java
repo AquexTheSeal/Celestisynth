@@ -23,5 +23,6 @@ public class CSSoundEvents {
     public static final RegistryObject<SoundEvent> CS_LOUD_IMPACT = SOUND_EVENTS.register("loud_impact", () -> new SoundEvent(Celestisynth.prefix("loud_impact")));
     public static final RegistryObject<SoundEvent> CS_BLING = SOUND_EVENTS.register("bling", () -> new SoundEvent(Celestisynth.prefix("bling")));
     public static final RegistryObject<SoundEvent> CS_LASER_SHOOT = SOUND_EVENTS.register("laser_shoot", () -> new SoundEvent(Celestisynth.prefix("laser_shoot")));
+    public static final RegistryObject<SoundEvent> CS_VANISH = SOUND_EVENTS.register("vanish", () -> new SoundEvent(Celestisynth.prefix("vanish")));
 
 }

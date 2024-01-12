@@ -21,7 +21,6 @@ public final class CSEventManager {
     private static void registerClientEvents(IEventBus modBus, IEventBus forgeBus) {
         if (FMLEnvironment.dist.isClient()) {
             modBus.register(CSClientSetupEvents.class);
-
             forgeBus.register(CSClientMiscEvents.class);
         }
 
@@ -38,7 +37,6 @@ public final class CSEventManager {
 
     private static void registerServerEvents(IEventBus modBus, IEventBus forgeBus) {
         if (FMLEnvironment.dist.isDedicatedServer()) {
-
         }
     }
 }
