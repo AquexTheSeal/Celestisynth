@@ -40,8 +40,6 @@ public class CSEffectEntity extends Entity implements IAnimatable {
     private static final EntityDataAccessor<Float> CUSTOMIZABLE_SIZE = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.FLOAT);
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    private final AnimationController<CSEffectEntity> mainController = new AnimationController<>(this, "controller", 20, this::predicate);
-
     private static final AnimationBuilder DEFAULT_ANIMATION = new AnimationBuilder().addAnimation("animation.cs_effect.spin", ILoopType.EDefaultLoopTypes.LOOP);
 
     private Entity toFollow;
@@ -53,16 +51,6 @@ public class CSEffectEntity extends Entity implements IAnimatable {
         this.noCulling = true;
     }
 
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(mainController);
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (getAnimationID() != null && !getAnimationID().equals("none") && getVisualType().getAnimation() != null) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(getAnimationID(), ILoopType.EDefaultLoopTypes.LOOP));
@@ -71,6 +59,16 @@ public class CSEffectEntity extends Entity implements IAnimatable {
             event.getController().setAnimation(DEFAULT_ANIMATION);
         }
         return PlayState.CONTINUE;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<>(this, "main_controller", 2, this::predicate));
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 
     public CSVisualType getVisualType() {
