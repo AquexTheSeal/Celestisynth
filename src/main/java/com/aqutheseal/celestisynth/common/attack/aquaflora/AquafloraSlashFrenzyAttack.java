@@ -2,10 +2,10 @@ package com.aqutheseal.celestisynth.common.attack.aquaflora;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.mixin.PlayerMixinSupport;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
@@ -94,9 +94,9 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
                 getPlayer().setYRot((float) yaw);
             }
 
-            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_DASH, 0, 0.55, 0);
+            CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_DASH.get(), 0, 0.55, 0);
             getPlayer().moveTo(target.blockPosition().offset(offsetX, 1, offsetZ), getPlayer().getYRot(), getPlayer().getXRot());
-            CSEffect.createInstance(player, target, CSEffectTypes.AQUAFLORA_ASSASSINATE, 0, -0.2, 0);
+            CSEffectEntity.createInstance(player, target, CSVisualTypes.AQUAFLORA_ASSASSINATE.get(), 0, -0.2, 0);
             getPlayer().playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 0.5F);
 
             double dualWieldMultiplier = checkDualWield(player, AquafloraItem.class) ? 0.52 : 1;

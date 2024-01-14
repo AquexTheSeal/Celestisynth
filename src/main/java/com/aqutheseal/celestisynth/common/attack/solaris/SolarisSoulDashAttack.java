@@ -2,9 +2,9 @@ package com.aqutheseal.celestisynth.common.attack.solaris;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
@@ -92,8 +92,8 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
 
             getPlayer().playSound(SoundEvents.SWEET_BERRY_BUSH_BREAK);
             movePlayerInStraightMotion(getPlayer(), getTagController().getInt(HEAD_ROT_LOCK_KEY));
-            CSEffect.createInstance(getPlayer(), null, CSEffectTypes.SOLARIS_BLITZ_SOUL);
-            CSEffect.createInstance(getPlayer(), null, CSEffectTypes.SOLARIS_AIR_LARGE);
+            CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_BLITZ_SOUL.get());
+            CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_AIR_LARGE.get());
             playRandomBladeSound(getPlayer(), BASE_WEAPON_EFFECTS.length);
 
             BlockPos playerPos = getPlayer().blockPosition();

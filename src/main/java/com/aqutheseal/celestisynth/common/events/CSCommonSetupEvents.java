@@ -1,8 +1,10 @@
 package com.aqutheseal.celestisynth.common.events;
 
+import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.datagen.providers.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +17,8 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.NewRegistryEvent;
+import net.minecraftforge.registries.RegistryBuilder;
 
 public class CSCommonSetupEvents {
     
@@ -23,6 +27,10 @@ public class CSCommonSetupEvents {
     }
 
     public static class CSModSetupEvents {
+        @SubscribeEvent
+        public static void onRegistryCreatingEvent(NewRegistryEvent event) {
+            event.create(new RegistryBuilder<CSVisualType>().setName(CSVisualTypes.VISUALS_KEY.location()).disableSaving());
+        }
 
         @SubscribeEvent
         public static void onFMLCommonSetupEvent(FMLCommonSetupEvent event) {

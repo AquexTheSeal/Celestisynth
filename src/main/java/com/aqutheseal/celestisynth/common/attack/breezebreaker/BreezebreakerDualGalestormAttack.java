@@ -1,9 +1,9 @@
 package com.aqutheseal.celestisynth.common.attack.breezebreaker;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -66,8 +66,8 @@ public class BreezebreakerDualGalestormAttack extends BreezebreakerAttack {
             }
 
             getPlayer().playSound(CSSoundEvents.CS_WIND_STRIKE.get());
-            if (getTimerProgress() == 6) CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_SLASH, calculateXLook(player), 0, calculateZLook(player));
-            else CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_SLASH_INVERTED, calculateXLook(player), 0, calculateZLook(player));
+            if (getTimerProgress() == 6) CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_SLASH.get(), calculateXLook(player), 0, calculateZLook(player));
+            else CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_SLASH_INVERTED.get(), calculateXLook(player), 0, calculateZLook(player));
 
             getPlayer().playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
         }

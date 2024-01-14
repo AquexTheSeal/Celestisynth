@@ -1,9 +1,9 @@
 package com.aqutheseal.celestisynth.common.attack.aquaflora;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,7 +41,7 @@ public class AquafloraPetalPiercesAttack extends AquafloraAttack {
 
     @Override
     public void startUsing() {
-        CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_PIERCE_START, calculateXLook(player) * 3, 1.2 + calculateYLook(player) * 3, calculateZLook(player) * 3);
+        CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_PIERCE_START.get(), calculateXLook(player) * 3, 1.2 + calculateYLook(player) * 3, calculateZLook(player) * 3);
         getPlayer().playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 0.5F);
 
         if (getPlayer().level.isClientSide()) shakeScreens(player, 15, 5, 0.02F);
@@ -51,7 +51,7 @@ public class AquafloraPetalPiercesAttack extends AquafloraAttack {
     public void tickAttack() {
         if (getTimerProgress() >= 0 && getTimerProgress() <= 15) {
             getPlayer().playSound(CSSoundEvents.CS_AIR_SWING.get(), 0.25F, 1.3F + getPlayer().level.random.nextFloat());
-            CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_STAB, -0.5 + getPlayer().level.random.nextDouble() + calculateXLook(player) * 3, (-0.5 + getPlayer().level.random.nextDouble()) + (2 + calculateYLook(player) * 3), -0.5 + getPlayer().level.random.nextDouble() + calculateZLook(player) * 3);
+            CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_STAB.get(), -0.5 + getPlayer().level.random.nextDouble() + calculateXLook(player) * 3, (-0.5 + getPlayer().level.random.nextDouble()) + (2 + calculateYLook(player) * 3), -0.5 + getPlayer().level.random.nextDouble() + calculateZLook(player) * 3);
 
             List<Entity> entities = iterateEntities(getPlayer().level, createAABB(player.blockPosition().offset(calculateXLook(player) * 4.5, 1 + (calculateYLook(player) * 4.5), calculateZLook(player) * 4.5), 2));
             entities.addAll(iterateEntities(getPlayer().level, createAABB(player.blockPosition().offset(calculateXLook(player) * 3, 1 + (calculateYLook(player) * 3), calculateZLook(player) * 3), 2)));

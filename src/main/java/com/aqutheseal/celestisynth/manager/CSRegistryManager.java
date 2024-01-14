@@ -18,5 +18,6 @@ public final class CSRegistryManager {
         CSRecipeTypes.RECIPE_TYPES.register(modBus);
         CSRecipeTypes.RECIPE_SERIALIZERS.register(modBus);
         CSMenuTypes.MENU_TYPES.register(modBus);
+        CSVisualTypes.VISUALS.register(modBus);
     }
 }

@@ -3,9 +3,9 @@ package com.aqutheseal.celestisynth.common.attack.poltergeist;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -53,7 +53,7 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
             } else if (entityBatch instanceof Projectile) entityBatch.remove(Entity.RemovalReason.DISCARDED);
         }
 
-        CSEffect.createInstance(player, null, CSEffectTypes.POLTERGEIST_RETREAT, calculateXLook(player) * -2, 1, calculateZLook(player) * -2);
+        CSEffectEntity.createInstance(player, null, CSVisualTypes.POLTERGEIST_RETREAT.get(), calculateXLook(player) * -2, 1, calculateZLook(player) * -2);
         sendExpandingParticles(player.level, ParticleTypes.SOUL, getPlayer().blockPosition(), 45, 0.5F);
 
         double deltaY = player.isOnGround() ? 3 : 0.9;

@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Random;
 
 public class CrescentiaItem extends SkilledSwordItem {
-
     public CrescentiaItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }

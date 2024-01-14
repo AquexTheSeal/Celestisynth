@@ -1,8 +1,9 @@
 package com.aqutheseal.celestisynth.common.entity.base;
 
 import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.registries.RegistryObject;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -28,51 +30,70 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CSEffect extends Entity implements IAnimatable {
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<String> TYPE_ID = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<String> ANIMATION_ID = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<Integer> FRAME_LEVEL = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> SET_ROT_X = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> SET_ROT_Z = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> CUSTOMIZABLE_SIZE = SynchedEntityData.defineId(CSEffect.class, EntityDataSerializers.FLOAT);
-    private static final AnimationBuilder DEFAULT_ANIMATION = new AnimationBuilder().addAnimation("animation.cs_effect.spin", ILoopType.EDefaultLoopTypes.LOOP);
+public class CSEffectEntity extends Entity implements IAnimatable {
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<String> VISUAL_ID = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> ANIMATION_ID = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> FRAME_LEVEL = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SET_ROT_X = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SET_ROT_Z = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> CUSTOMIZABLE_SIZE = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.FLOAT);
+
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    private final AnimationController<CSEffect> mainController = new AnimationController<>(this, "maincsecontroller", 0, this::predicate);
-    private CSEffectTypes lockedInEffect;
+    private final AnimationController<CSEffectEntity> mainController = new AnimationController<>(this, "controller", 20, this::predicate);
+
+    private static final AnimationBuilder DEFAULT_ANIMATION = new AnimationBuilder().addAnimation("animation.cs_effect.spin", ILoopType.EDefaultLoopTypes.LOOP);
+
     private Entity toFollow;
     private int lifespan;
     private int frameTimer;
 
-    public CSEffect(EntityType<? extends CSEffect> type, Level level) {
+    public CSEffectEntity(EntityType<? extends CSEffectEntity> type, Level level) {
         super(type, level);
         this.noCulling = true;
     }
 
-    public CSEffectTypes getEffectType() {
-        if (lockedInEffect == null) {
-            for (CSEffectTypes candidEffectType : CSEffectTypes.values()) {
-                if (candidEffectType.getName().equalsIgnoreCase(getTypeID())) {
-                    setLockedInEffect(candidEffectType);
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(mainController);
+    }
 
-                    return candidEffectType;
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
+    }
+
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (getAnimationID() != null && !getAnimationID().equals("none") && getVisualType().getAnimation() != null) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(getAnimationID(), ILoopType.EDefaultLoopTypes.LOOP));
+        } else {
+            Celestisynth.LOGGER.warn("Animation is null!");
+            event.getController().setAnimation(DEFAULT_ANIMATION);
+        }
+        return PlayState.CONTINUE;
+    }
+
+    public CSVisualType getVisualType() {
+        if (getVisualID() != null && !getVisualID().equals("none")) {
+            for (RegistryObject<CSVisualType> visual : CSVisualTypes.VISUALS.getEntries()) {
+                if (getVisualID().equals(visual.get().getName())) {
+                    return visual.get();
                 }
             }
-        } else return lockedInEffect;
-
-        return getDefaultEffect();
+        }
+        return getDefaultVisual();
     }
 
-    public void setEffectType(CSEffectTypes getEffectType) {
-        this.setTypeID(getEffectType.getName());
+    public void setVisualType(CSVisualType getEffectType) {
+        setVisualID(getEffectType.getName());
     }
 
-    public String getTypeID() {
-        return this.entityData.get(TYPE_ID);
+    public String getVisualID() {
+        return this.entityData.get(VISUAL_ID);
     }
 
-    public void setTypeID(String value) {
-        this.entityData.set(TYPE_ID, value);
+    public void setVisualID(String value) {
+        this.entityData.set(VISUAL_ID, value);
     }
 
     public String getAnimationID() {
@@ -115,10 +136,6 @@ public class CSEffect extends Entity implements IAnimatable {
         this.entityData.set(CUSTOMIZABLE_SIZE, size);
     }
 
-    public void setLockedInEffect(CSEffectTypes lockedInEffect) {
-        this.lockedInEffect = lockedInEffect;
-    }
-
     public void setOwnerUuid(@Nullable UUID ownerUuid) {
         this.entityData.set(OWNER_UUID, Optional.ofNullable(ownerUuid));
     }
@@ -141,17 +158,21 @@ public class CSEffect extends Entity implements IAnimatable {
     }
 
     @Nullable
-    public static CSEffect getEffectInstance(Player owner, @Nullable Entity toFollow, CSEffectTypes effectTypes, double offsetX, double offsetY, double offsetZ) {
+    public static CSEffectEntity getEffectInstance(Player owner, @Nullable Entity toFollow, CSVisualType visual, double offsetX, double offsetY, double offsetZ) {
         if (owner == null) return null;
 
-        CSEffect slash = CSEntityTypes.CS_EFFECT.get().create(owner.level);
-        slash.setEffectType(effectTypes);
-        slash.setAnimationID(effectTypes.getAnimation().getAnimName());
-        if (toFollow != null) slash.moveTo(toFollow.getX() + offsetX, (toFollow.getY() - 1.5) + offsetY, toFollow.getZ() + offsetZ);
-        else slash.moveTo(owner.getX()  + offsetX, (owner.getY() - 1.5) + offsetY, owner.getZ() + offsetZ);
+        CSEffectEntity slash = CSEntityTypes.CS_EFFECT.get().create(owner.level);
+        slash.setVisualID(visual.getName());
+        slash.setAnimationID(visual.getAnimation().getAnimName());
 
+        if (toFollow != null) {
+            slash.moveTo(toFollow.getX() + offsetX, (toFollow.getY() - 1.5) + offsetY, toFollow.getZ() + offsetZ);
+        } else {
+            slash.moveTo(owner.getX()  + offsetX, (owner.getY() - 1.5) + offsetY, owner.getZ() + offsetZ);
+        }
         slash.setOwnerUuid(owner.getUUID());
         slash.setToFollow(toFollow);
+
         slash.setRandomRotation();
         slash.setXRot(owner.getXRot());
         slash.xRotO = slash.getXRot();
@@ -170,38 +191,18 @@ public class CSEffect extends Entity implements IAnimatable {
         setRotationZ(rotationZ);
     }
 
-    public static void createInstance(Player owner, @Nullable Entity toFollow, CSEffectTypes effectTypes) {
+    public static void createInstance(Player owner, @Nullable Entity toFollow, CSVisualType effectTypes) {
        createInstance(owner, toFollow, effectTypes, 0, 0, 0);
     }
 
-    public static void createInstance(Player owner, @Nullable Entity toFollow, CSEffectTypes effectTypes, double xOffset, double yOffset, double zOffset) {
+    public static void createInstance(Player owner, @Nullable Entity toFollow, CSVisualType effectTypes, double xOffset, double yOffset, double zOffset) {
         if (owner == null) return;
 
-        CSEffect slash = getEffectInstance(owner, toFollow, effectTypes, xOffset, yOffset, zOffset);
+        CSEffectEntity slash = getEffectInstance(owner, toFollow, effectTypes, xOffset, yOffset, zOffset);
         slash.setOwnerUuid(owner.getUUID());
         slash.setToFollow(toFollow);
 
         owner.level.addFreshEntity(slash);
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(mainController);
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (getAnimationID() != null) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(getAnimationID(), ILoopType.EDefaultLoopTypes.LOOP));
-        } else {
-            Celestisynth.LOGGER.warn("EffectType for CSEffect is null!");
-            event.getController().setAnimation(DEFAULT_ANIMATION);
-        }
-        return PlayState.CONTINUE;
     }
 
     @Override
@@ -213,21 +214,21 @@ public class CSEffect extends Entity implements IAnimatable {
 
         frameTimer++;
 
-        if (frameTimer >= (getEffectType().getFramesSpeed())) {
-            setFrameLevel(getFrameLevel() == getEffectType().getFrames() ? 1 : getFrameLevel() + 1);
+        if (frameTimer >= (getVisualType().getFramesSpeed())) {
+            setFrameLevel(getFrameLevel() == getVisualType().getFrames() ? 1 : getFrameLevel() + 1);
 
             frameTimer = 0;
         }
 
         if (toFollow != null) {
-            if (getEffectType() == CSEffectTypes.AQUAFLORA_FLOWER_BIND) {
+            if (getVisualType() == CSVisualTypes.AQUAFLORA_FLOWER_BIND.get()) {
                 calculateCustomizableSize((float) (toFollow.getBbWidth() - (toFollow.getBbWidth() / 4.5)), -getCustomizableSize());
             }
         }
 
         lifespan++;
 
-        if (lifespan >= getEffectType().getAnimation().getLifespan()) {
+        if (lifespan >= getVisualType().getAnimation().getLifespan()) {
             setLifespan(0);
             remove(RemovalReason.DISCARDED);
         }
@@ -248,7 +249,7 @@ public class CSEffect extends Entity implements IAnimatable {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(OWNER_UUID, Optional.empty());
-        this.entityData.define(TYPE_ID, "none");
+        this.entityData.define(VISUAL_ID, "none");
         this.entityData.define(ANIMATION_ID, "none");
         this.entityData.define(FRAME_LEVEL, 1);
         this.entityData.define(SET_ROT_X, 0);
@@ -264,8 +265,8 @@ public class CSEffect extends Entity implements IAnimatable {
         else Celestisynth.LOGGER.warn("Missing Owner UUID for CSEffect! Crashes/unexpected behaviour may occur if the owner is retrieved at any point. Attempting to remove entity from level...");
 
         setLifespan(compoundNBT.getInt("lifespan"));
-        setTypeID(compoundNBT.getString("typeId"));
-        setAnimationID(compoundNBT.getString("animationID"));
+        setVisualID(compoundNBT.getString("visualID"));
+        setAnimationID(compoundNBT.getString("animID"));
     }
 
     @Override
@@ -273,12 +274,12 @@ public class CSEffect extends Entity implements IAnimatable {
         if (getOwnerUuid() != null) compoundNBT.putUUID("Owner", getOwnerUuid());
 
         compoundNBT.putInt("lifespan", lifespan);
-        compoundNBT.putString("typeId", getTypeID());
-        compoundNBT.putString("animationId", getAnimationID());
+        compoundNBT.putString("visualID", getVisualID());
+        compoundNBT.putString("animID", getAnimationID());
     }
 
-    public CSEffectTypes getDefaultEffect() {
-        return CSEffectTypes.SOLARIS_BLITZ;
+    public CSVisualType getDefaultVisual() {
+        return CSVisualTypes.SOLARIS_BLITZ.get();
     }
 
     @Override

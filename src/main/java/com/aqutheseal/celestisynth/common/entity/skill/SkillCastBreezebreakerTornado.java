@@ -1,10 +1,10 @@
 package com.aqutheseal.celestisynth.common.entity.skill;
 
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.base.EffectControllerEntity;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
@@ -63,9 +63,9 @@ public class SkillCastBreezebreakerTornado extends EffectControllerEntity {
         }
 
         for (int yLevel = -1; yLevel < 6; yLevel++) {
-            if (yLevel == -1 || yLevel == 0 || yLevel == 1) CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.SOLARIS_AIR_FLAT, getAngleX(), getAngleY() + yLevel, getAngleZ());
-            if (yLevel == 2 || yLevel == 3) CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.SOLARIS_AIR_MEDIUM_FLAT, getAngleX(), getAngleY() + yLevel, getAngleZ());
-            if (yLevel == 4 || yLevel == 5) CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.SOLARIS_AIR_LARGE_FLAT, getAngleX(), getAngleY() + yLevel, getAngleZ());
+            if (yLevel == -1 || yLevel == 0 || yLevel == 1) CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.SOLARIS_AIR_FLAT.get(), getAngleX(), getAngleY() + yLevel, getAngleZ());
+            if (yLevel == 2 || yLevel == 3) CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.SOLARIS_AIR_MEDIUM_FLAT.get(), getAngleX(), getAngleY() + yLevel, getAngleZ());
+            if (yLevel == 4 || yLevel == 5) CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.SOLARIS_AIR_LARGE_FLAT.get(), getAngleX(), getAngleY() + yLevel, getAngleZ());
         }
 
         if (tickCount % 20 == 0) level.playSound(level.getPlayerByUUID(getOwnerUuid()), getAngleX(), getAngleY(), getAngleZ(), CSSoundEvents.CS_WHIRLWIND.get(), SoundSource.HOSTILE, 0.10F, 0.5F + random.nextFloat());

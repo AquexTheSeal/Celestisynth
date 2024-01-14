@@ -9,7 +9,7 @@ import com.aqutheseal.celestisynth.client.particles.RainfallEnergyParticle;
 import com.aqutheseal.celestisynth.client.renderers.blockentity.CelestialCraftingTableBlockEntityRenderer;
 import com.aqutheseal.celestisynth.client.renderers.entity.boss.TempestBossRenderer;
 import com.aqutheseal.celestisynth.client.renderers.entity.projectile.RainfallArrowRenderer;
-import com.aqutheseal.celestisynth.client.renderers.misc.CSEffectRenderer;
+import com.aqutheseal.celestisynth.client.renderers.misc.CSEffectEntityRenderer;
 import com.aqutheseal.celestisynth.client.renderers.misc.NullRenderer;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraAttack;
 import com.aqutheseal.celestisynth.common.attack.poltergeist.PoltergeistCosmicSteelAttack;
@@ -30,7 +30,7 @@ public class CSClientSetupEvents {
     public static void onRegisterRenderersEvent(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(CSEntityTypes.TEMPEST.get(), TempestBossRenderer::new);
 
-        event.registerEntityRenderer(CSEntityTypes.CS_EFFECT.get(), CSEffectRenderer::new);
+        event.registerEntityRenderer(CSEntityTypes.CS_EFFECT.get(), CSEffectEntityRenderer::new);
         event.registerEntityRenderer(CSEntityTypes.CRESCENTIA_RANGED.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityTypes.BREEZEBREAKER_TORNADO.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityTypes.POLTERGEIST_WARD.get(), NullRenderer::new);

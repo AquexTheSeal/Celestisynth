@@ -1,9 +1,9 @@
 package com.aqutheseal.celestisynth.client.renderers.misc;
 
-import com.aqutheseal.celestisynth.client.models.misc.CSEffectModel;
+import com.aqutheseal.celestisynth.client.models.misc.CSEffectEntityModel;
 import com.aqutheseal.celestisynth.client.renderers.entity.projectile.SilencedRotationProjectileRenderer;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -18,66 +18,66 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.util.Color;
 
-public class CSEffectRenderer extends SilencedRotationProjectileRenderer<CSEffect> {
+public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<CSEffectEntity> {
 
-    public CSEffectRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new CSEffectModel());
+    public CSEffectEntityRenderer(EntityRendererProvider.Context renderManager) {
+        super(renderManager, new CSEffectEntityModel());
     }
 
     @Override
-    public void renderEarly(CSEffect animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderEarly(CSEffectEntity animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         float lerpBodyRot = Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot()) - 165;
 
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f - lerpBodyRot));
 
-        if (animatable.getEffectType().isRotateRandomly() && !animatable.getEffectType().hasSpecialProperties()) {
+        if (animatable.getVisualType().isRotateRandomly() && !animatable.getVisualType().hasSpecialProperties()) {
             poseStack.mulPose(Vector3f.XP.rotationDegrees(animatable.getRotationX()));
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(animatable.getRotationZ()));
         }
 
-        CSEffectTypes.setSpecialProperties(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        CSVisualType.setSpecialProperties(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 
         super.renderEarly(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
 
     @Override
-    public float getHeightScale(CSEffect entity) {
-        float effectScale = (float) animatable.getEffectType().getScale();
+    public float getHeightScale(CSEffectEntity entity) {
+        float effectScale = (float) animatable.getVisualType().getScale();
 
         return super.getHeightScale(entity) * animatable.getCustomizableSize() * effectScale;
     }
 
     @Override
-    public float getWidthScale(CSEffect animatable) {
-        float effectScale = (float) animatable.getEffectType().getScale();
+    public float getWidthScale(CSEffectEntity animatable) {
+        float effectScale = (float) animatable.getVisualType().getScale();
 
         return super.getWidthScale(animatable) * animatable.getCustomizableSize() * effectScale;
     }
 
     @Override
-    public RenderType getRenderType(CSEffect animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, ResourceLocation texture) {
+    public RenderType getRenderType(CSEffectEntity animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, ResourceLocation texture) {
         return RenderType.entityTranslucent(texture);
     }
 
     @Override
-    protected int getBlockLightLevel(CSEffect p_114496_, BlockPos p_114497_) {
+    protected int getBlockLightLevel(CSEffectEntity p_114496_, BlockPos p_114497_) {
         return 15;
     }
 
     @Override
-    protected int getSkyLightLevel(CSEffect p_114509_, BlockPos p_114510_) {
+    protected int getSkyLightLevel(CSEffectEntity p_114509_, BlockPos p_114510_) {
         return 7;
     }
 
     @Override
-    public Color getRenderColor(CSEffect animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight) {
+    public Color getRenderColor(CSEffectEntity animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight) {
         Minecraft mc = Minecraft.getInstance();
         float decreasingAlpha = 1.0f;
         boolean shouldHideAtFirstPerson = false;
 
-        if (animatable.getEffectType().isFadeOut()) {
-            int lifespan = animatable.getEffectType().getAnimation().getLifespan();
+        if (animatable.getVisualType().isFadeOut()) {
+            int lifespan = animatable.getVisualType().getAnimation().getLifespan();
             decreasingAlpha = 1.0F - ((float) animatable.tickCount / lifespan);
         }
 

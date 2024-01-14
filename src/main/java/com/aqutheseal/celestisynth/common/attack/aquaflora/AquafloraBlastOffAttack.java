@@ -2,8 +2,8 @@ package com.aqutheseal.celestisynth.common.attack.aquaflora;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -44,7 +44,7 @@ public class AquafloraBlastOffAttack extends AquafloraAttack {
         List<Entity> surroundingEntities = iterateEntities(getPlayer().level, createAABB(player.blockPosition().offset(calculateXLook(player) * 4, 2 + (calculateYLook(player) * 3), calculateZLook(player) * 4), 3));
 
         getPlayer().playSound(SoundEvents.WITHER_BREAK_BLOCK, 0.7F, 1.5F);
-        CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_BASH, calculateXLook(player) * 2, 1.5, calculateZLook(player) * 2);
+        CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_BASH.get(), calculateXLook(player) * 2, 1.5, calculateZLook(player) * 2);
 
         for (Entity entityBatch : surroundingEntities) {
             if (entityBatch instanceof LivingEntity target) {

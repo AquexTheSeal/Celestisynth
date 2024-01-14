@@ -1,11 +1,11 @@
 package com.aqutheseal.celestisynth.common.entity.skill;
 
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.base.EffectControllerEntity;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.common.entity.projectile.RainfallArrow;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
@@ -48,7 +48,7 @@ public class SkillCastRainfallRain extends EffectControllerEntity {
         Player ownerPlayer = ownerUuid == null ? null : this.getLevel().getPlayerByUUID(ownerUuid);
 
         if (tickCount == 1) {
-            CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.RAINFALL_RAIN, 0, 0, 0);
+            CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.RAINFALL_RAIN.get(), 0, 0, 0);
         }
 
         if (tickCount >= 20 && tickCount <= 40 && tickCount % 2 == 0) {
@@ -112,7 +112,7 @@ public class SkillCastRainfallRain extends EffectControllerEntity {
         double range = 12;
         List<Entity> surroundingEntities = level.getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + range, getZ() + range, getX() - range, getY() - range, getZ() - range));
         for (Entity entityBatch : surroundingEntities) {
-            if (entityBatch instanceof CSEffect effect) {
+            if (entityBatch instanceof CSEffectEntity effect) {
                 if (effect.getToFollow() == this) effect.remove(RemovalReason.DISCARDED);
             }
         }

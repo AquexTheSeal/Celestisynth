@@ -1,9 +1,9 @@
 package com.aqutheseal.celestisynth.common.attack.breezebreaker;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -63,8 +63,8 @@ public class BreezebreakerWheelAttack extends BreezebreakerAttack {
                 }
             }
 
-            CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_WHEEL, 0, -1, 0);
-            CSEffect.createInstance(player, null, CSEffectTypes.BREEZEBREAKER_WHEEL_IMPACT, calculateXLook(player) * 3, 1.5 + calculateYLook(player) * 3, calculateZLook(player) * 3);
+            CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_WHEEL.get(), 0, -1, 0);
+            CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_WHEEL_IMPACT.get(), calculateXLook(player) * 3, 1.5 + calculateYLook(player) * 3, calculateZLook(player) * 3);
             getPlayer().playSound(CSSoundEvents.CS_FIRE_SHOOT.get(), 1.0F, 1.0F);
             getPlayer().playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
             getPlayer().playSound(CSSoundEvents.CS_WIND_STRIKE.get());

@@ -2,9 +2,9 @@ package com.aqutheseal.celestisynth.common.attack.solaris;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
@@ -88,13 +88,13 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
             getPlayer().playSound(SoundEvents.SWEET_BERRY_BUSH_BREAK);
             if (getTagController().getInt(DIRECTION_INDEX_KEY) == 0) {
                 movePlayerInCircularMotion(getPlayer(), getTimerProgress(), false);
-                CSEffect.createInstance(getPlayer(), null, CSEffectTypes.SOLARIS_BLITZ);
-                CSEffect.createInstance(getPlayer(), null, CSEffectTypes.SOLARIS_AIR);
+                CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_BLITZ.get());
+                CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_AIR.get());
                 playRandomBladeSound(getPlayer(), 4);
             } else if (getTagController().getInt(DIRECTION_INDEX_KEY) == 1) {
                 movePlayerInCircularMotion(getPlayer(), getTimerProgress(), true);
-                CSEffect.createInstance(getPlayer(), null, CSEffectTypes.SOLARIS_BLITZ);
-                CSEffect.createInstance(getPlayer(), null, CSEffectTypes.SOLARIS_AIR);
+                CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_BLITZ.get());
+                CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_AIR.get());
                 playRandomBladeSound(getPlayer(), 4);
             }
 

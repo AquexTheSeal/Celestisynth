@@ -1,9 +1,10 @@
 package com.aqutheseal.celestisynth.common.attack.breezebreaker;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -84,12 +85,18 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
             getPlayer().moveTo(player.getX() + calculateXLook(player) * speed, getPlayer().getY(), getPlayer().getZ() + calculateZLook(player) * speed);
 
             double[] multipliers = {2, 1.5, 1, 0.5, 0};
-            CSEffectTypes[] effectTypes = {CSEffectTypes.BREEZEBREAKER_DASH, CSEffectTypes.BREEZEBREAKER_DASH_2, CSEffectTypes.BREEZEBREAKER_DASH_3, CSEffectTypes.BREEZEBREAKER_DASH_3, CSEffectTypes.BREEZEBREAKER_DASH_3};
+            CSVisualType[] effectTypes = {
+                    CSVisualTypes.BREEZEBREAKER_DASH.get(),
+                    CSVisualTypes.BREEZEBREAKER_DASH_2.get(),
+                    CSVisualTypes.BREEZEBREAKER_DASH_3.get(),
+                    CSVisualTypes.BREEZEBREAKER_DASH_3.get(),
+                    CSVisualTypes.BREEZEBREAKER_DASH_3.get()
+            };
 
             for (int i = 0; i < multipliers.length; i++) {
                 int yOffset = i > 1 ? 1 : 0;
 
-                CSEffect.createInstance(player, null, effectTypes[i], delta.x() * multipliers[i], yOffset, delta.z() * multipliers[i]);
+                CSEffectEntity.createInstance(player, null, effectTypes[i], delta.x() * multipliers[i], yOffset, delta.z() * multipliers[i]);
             }
 
             getPlayer().playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);

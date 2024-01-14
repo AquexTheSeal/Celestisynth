@@ -1,9 +1,9 @@
 package com.aqutheseal.celestisynth.common.entity.skill;
 
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.base.EffectControllerEntity;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -41,13 +41,13 @@ public class SkillCastPoltergeistWard extends EffectControllerEntity {
         List<Entity> surroundingEntities = level.getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + (range / 2), getZ() + range, getX() - range, getY() - (range / 2), getZ() - range));
 
         if (tickCount == 1) {
-            CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.POLTERGEIST_WARD_SUMMON, 0, 0.25, 0);
-            CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.POLTERGEIST_WARD, 0, 2, 0);
-            CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.POLTERGEIST_WARD_GROUND, 0, 0.65, 0);
+            CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.POLTERGEIST_WARD_SUMMON.get(), 0, 0.25, 0);
+            CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.POLTERGEIST_WARD.get(), 0, 2, 0);
+            CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.POLTERGEIST_WARD_GROUND.get(), 0, 0.65, 0);
         }
 
         if (tickCount % 20 == 0) {
-            CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.POLTERGEIST_WARD_ABSORB, 0, -1, 0);
+            CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.POLTERGEIST_WARD_ABSORB.get(), 0, -1, 0);
             level.playSound(ownerPlayer, ownerPlayer.blockPosition(), SoundEvents.ELDER_GUARDIAN_CURSE, SoundSource.BLOCKS, 0.5F, 0.5F);
 
             for (Entity entityBatch : surroundingEntities) {
@@ -71,7 +71,7 @@ public class SkillCastPoltergeistWard extends EffectControllerEntity {
                 ParticleUtil.sendParticles(level, ParticleTypes.END_ROD, getX(), getY(), getZ(), 0, offX, offY, offZ);
             }
             for (Entity entityBatch : surroundingEntities) {
-                if (entityBatch instanceof CSEffect effect) {
+                if (entityBatch instanceof CSEffectEntity effect) {
                     if (effect.getToFollow() == this) effect.remove(RemovalReason.DISCARDED);
                 }
             }
@@ -86,7 +86,7 @@ public class SkillCastPoltergeistWard extends EffectControllerEntity {
         List<Entity> surroundingEntities = level.getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + range, getZ() + range, getX() - range, getY() - range, getZ() - range));
 
         for (Entity entityBatch : surroundingEntities) {
-            if (entityBatch instanceof CSEffect effect) {
+            if (entityBatch instanceof CSEffectEntity effect) {
                 if (effect.getToFollow() == this) effect.remove(RemovalReason.DISCARDED);
             }
         }

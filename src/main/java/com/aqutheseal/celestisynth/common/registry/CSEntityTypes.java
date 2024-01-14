@@ -1,7 +1,7 @@
 package com.aqutheseal.celestisynth.common.registry;
 
 import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.projectile.RainfallArrow;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastBreezebreakerTornado;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastCrescentiaRanged;
@@ -22,7 +22,7 @@ public class CSEntityTypes {
             .clientTrackingRange(8)
             .build(Celestisynth.prefix("tempest").toString()));
 
-    public static final RegistryObject<EntityType<CSEffect>> CS_EFFECT = ENTITY_TYPES.register("cs_effect", () -> EntityType.Builder.of(CSEffect::new, MobCategory.MISC)
+    public static final RegistryObject<EntityType<CSEffectEntity>> CS_EFFECT = ENTITY_TYPES.register("cs_effect", () -> EntityType.Builder.of(CSEffectEntity::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .clientTrackingRange(32)
             .build(Celestisynth.prefix("cs_effect").toString())

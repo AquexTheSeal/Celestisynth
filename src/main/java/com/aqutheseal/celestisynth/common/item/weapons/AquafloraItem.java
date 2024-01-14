@@ -5,9 +5,9 @@ import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraFlowersAwayA
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraPetalPiercesAttack;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraSlashFrenzyAttack;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 
 public class AquafloraItem extends SkilledSwordItem {
-
     public AquafloraItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
@@ -48,8 +47,8 @@ public class AquafloraItem extends SkilledSwordItem {
     @Override
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         if (pAttacker instanceof Player player) {
-            if (player.getMainHandItem() == pStack) CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_SLICE, 0, 1.3, 0);
-            if (player.getOffhandItem() == pStack) CSEffect.createInstance(player, null, CSEffectTypes.AQUAFLORA_SLICE_INVERTED, 0, 1.3, 0);
+            if (player.getMainHandItem() == pStack) CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_SLICE.get(), 0, 1.3, 0);
+            if (player.getOffhandItem() == pStack) CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_SLICE_INVERTED.get(), 0, 1.3, 0);
         }
         return super.hurtEnemy(pStack, pTarget, pAttacker);
     }

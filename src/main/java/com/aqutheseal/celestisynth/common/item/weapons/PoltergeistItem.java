@@ -18,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public class PoltergeistItem extends SkilledAxeItem implements CSWeapon {
-
     public PoltergeistItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
         super(tier, attackDamage, attackSpeed, properties);
     }

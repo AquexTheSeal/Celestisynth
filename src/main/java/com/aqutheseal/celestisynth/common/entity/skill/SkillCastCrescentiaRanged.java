@@ -1,10 +1,10 @@
 package com.aqutheseal.celestisynth.common.entity.skill;
 
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.base.EffectControllerEntity;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
 import com.aqutheseal.celestisynth.common.item.weapons.CrescentiaItem;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -85,10 +85,10 @@ public class SkillCastCrescentiaRanged extends EffectControllerEntity {
             CrescentiaItem.createCrescentiaFirework(fireworkStack, level, ownerPlayer, getAngleX() + offZ, (getAngleY() - 1.5) + offX,  getAngleZ() + offY, false);
         }
 
-        if (random.nextBoolean()) CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.CRESCENTIA_THROW, getAngleX(), getAngleY() - 1.5, getAngleZ());
-        else CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.CRESCENTIA_THROW_INVERTED, getAngleX(), getAngleY() - 1.5, getAngleZ());
+        if (random.nextBoolean()) CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.CRESCENTIA_THROW.get(), getAngleX(), getAngleY() - 1.5, getAngleZ());
+        else CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.CRESCENTIA_THROW_INVERTED.get(), getAngleX(), getAngleY() - 1.5, getAngleZ());
 
-        CSEffect.createInstance(ownerPlayer, this, CSEffectTypes.SOLARIS_AIR, getAngleX(), getAngleY(), getAngleZ());
+        CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.SOLARIS_AIR.get(), getAngleX(), getAngleY(), getAngleZ());
         playRandomBladeSound(BASE_WEAPON_EFFECTS.length, newX, newY, newZ);
 
         int radius = 2;

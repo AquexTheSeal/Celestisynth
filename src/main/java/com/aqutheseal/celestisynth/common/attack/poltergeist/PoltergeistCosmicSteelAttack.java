@@ -4,11 +4,12 @@ import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -60,9 +61,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
 
     @Override
     public void tickAttack() {
-        CompoundTag data = getStack().getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
-        CompoundTag dataAlt = getStack().getOrCreateTagElement(CS_EXTRAS_ELEMENT);
-        boolean isGiantImpact = dataAlt.getBoolean(IS_IMPACT_LARGE);
+        boolean isGiantImpact = getTagExtras().getBoolean(IS_IMPACT_LARGE);
         boolean forceCreateImpact = false;
 
         if (getTimerProgress() == 20) {
@@ -75,7 +74,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
             }
 
             double range = isGiantImpact ? 6.5 : 4;
-            CSEffectTypes crack =  isGiantImpact ? CSEffectTypes.POLTERGEIST_IMPACT_CRACK_LARGE : CSEffectTypes.POLTERGEIST_IMPACT_CRACK;
+            CSVisualType crack =  isGiantImpact ? CSVisualTypes.POLTERGEIST_IMPACT_CRACK_LARGE.get() : CSVisualTypes.POLTERGEIST_IMPACT_CRACK.get();
             for (Entity entityBatch : iterateEntities(player.level, createAABB(player.blockPosition().offset(xx, 1, zz), range))) {
                 if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
 
@@ -110,9 +109,9 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
             if (player.isOnGround() || forceCreateImpact) {
                 player.playSound(SoundEvents.END_GATEWAY_SPAWN, 1.0F, 1.75F);
                 player.playSound(CSSoundEvents.CS_LOUD_IMPACT.get(), 1.5F, 1.0F);
-                CSEffect.createInstance(player, null, crack, xx, -0.4, zz);
+                CSEffectEntity.createInstance(player, null, crack, xx, -0.4, zz);
 
-                if (!isGiantImpact) CSEffect.createInstance(player, null, CSEffectTypes.POLTERGEIST_WARD_SUMMON_SMALL, xx, 1, zz);
+                if (!isGiantImpact) CSEffectEntity.createInstance(player, null, CSVisualTypes.POLTERGEIST_WARD_SUMMON_SMALL.get(), xx, 1, zz);
 
                 if (isGiantImpact) shakeScreensForNearbyPlayers(player, getPlayer().level, 24, 60, 30,  0.035F);
                 else shakeScreensForNearbyPlayers(player, getPlayer().level, 12, 30, 15,  0.01F);

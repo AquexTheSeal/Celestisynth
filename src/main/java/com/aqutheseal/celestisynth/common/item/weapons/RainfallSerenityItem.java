@@ -2,11 +2,12 @@ package com.aqutheseal.celestisynth.common.item.weapons;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.common.entity.helper.CSVisualAnimation;
 import com.aqutheseal.celestisynth.common.entity.projectile.RainfallArrow;
 import com.aqutheseal.celestisynth.common.registry.CSParticleTypes;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import com.mojang.math.Quaternion;
@@ -37,6 +38,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class RainfallSerenityItem extends BowItem implements CSWeapon {
+    public static CSVisualAnimation SPECIAL_RAINFALL = new CSVisualAnimation("animation.cs_effect.special_rainfall", 50);
 
     public RainfallSerenityItem(Properties pProperties) {
         super(pProperties);
@@ -94,8 +96,8 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
     }
 
     public void shiftSkill(Level level, Player player) {
-        CSEffect.createInstance(player, null, CSEffectTypes.RAINFALL_VANISH, calculateXLook(player) * 3, 1, calculateZLook(player) * 3);
-        CSEffect.createInstance(player, null, CSEffectTypes.RAINFALL_VANISH_CIRCLE, 0, -1.5, 0);
+        CSEffectEntity.createInstance(player, null, CSVisualTypes.RAINFALL_VANISH.get(), calculateXLook(player) * 3, 1, calculateZLook(player) * 3);
+        CSEffectEntity.createInstance(player, null, CSVisualTypes.RAINFALL_VANISH_CIRCLE.get(), 0, -1.5, 0);
         player.playSound(CSSoundEvents.CS_VANISH.get());
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 3, true, false, false));
         player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 100, 0, true, false, false));
@@ -113,7 +115,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
 
             if (curPowerFromUse >= 1.0D) {
                 if (curPowerFromUse == 1.0F) {
-                    CSEffect.createInstance(player, null, CSEffectTypes.RAINFALL_SHOOT, calculateXLook(player) * 2, 0.5 + (calculateYLook(player, 5) * 1), calculateZLook(player) * 2);
+                    CSEffectEntity.createInstance(player, null, CSVisualTypes.RAINFALL_SHOOT.get(), calculateXLook(player) * 2, 0.5 + (calculateYLook(player, 5) * 1), calculateZLook(player) * 2);
                     player.setDeltaMovement(player.getDeltaMovement().subtract(calculateXLook(player) * 0.5, 0, calculateZLook(player) * 0.5));
                 }
 

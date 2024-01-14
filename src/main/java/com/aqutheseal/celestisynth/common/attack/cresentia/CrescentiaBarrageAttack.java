@@ -2,10 +2,10 @@ package com.aqutheseal.celestisynth.common.attack.cresentia;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffect;
-import com.aqutheseal.celestisynth.common.entity.helper.CSEffectTypes;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.item.weapons.CrescentiaItem;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -76,12 +76,12 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
             if (getTimerProgress() % 30 == 0) getPlayer().playSound(CSSoundEvents.CS_WHIRLWIND.get(), 0.15F, 1.5F);
 
             if (getTimerProgress() % 3 == 0) {
-                if (getPlayer().level.random.nextBoolean()) CSEffect.createInstance(getPlayer(), null, CSEffectTypes.CRESCENTIA_STRIKE, calculateXLook(getPlayer()), -0.3, calculateZLook(getPlayer()));
-                else CSEffect.createInstance(getPlayer(), null, CSEffectTypes.CRESCENTIA_STRIKE_INVERTED, calculateXLook(getPlayer()), -0.3, calculateZLook(getPlayer()));
+                if (getPlayer().level.random.nextBoolean()) CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.CRESCENTIA_STRIKE.get(), calculateXLook(getPlayer()), -0.3, calculateZLook(getPlayer()));
+                else CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get(), calculateXLook(getPlayer()), -0.3, calculateZLook(getPlayer()));
 
                 playRandomBladeSound(getPlayer(), BASE_WEAPON_EFFECTS.length);
             }
-            CSEffect.createInstance(getPlayer(), null, CSEffectTypes.SOLARIS_AIR_LARGE, 0, -1, 0);
+            CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_AIR_LARGE.get(), 0, -1, 0);
 
             float offX = (getPlayer().level.random.nextFloat() * 16) - 8;
             float offY = (getPlayer().level.random.nextFloat() * 16) - 8;
