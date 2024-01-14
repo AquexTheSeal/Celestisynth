@@ -27,31 +27,32 @@ public abstract class SkilledSwordItem extends SwordItem implements CSWeapon {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        ItemStack itemstack = player.getItemInHand(interactionHand);
-        CompoundTag data = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
-        if (!player.getCooldowns().isOnCooldown(itemstack.getItem()) && !data.getBoolean(ANIMATION_BEGUN_KEY)) {
-            if (getUseDuration(itemstack) <= 0) {
+        ItemStack heldStack = player.getItemInHand(interactionHand);
+        CompoundTag data = heldStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+
+        if (!player.getCooldowns().isOnCooldown(heldStack.getItem()) && !data.getBoolean(ANIMATION_BEGUN_KEY)) {
+            if (getUseDuration(heldStack) <= 0) {
                 int index = 0;
-                for (WeaponAttackInstance attack : getPossibleAttacks(player, itemstack, 0)) {
+                for (WeaponAttackInstance attack : getPossibleAttacks(player, heldStack, 0)) {
                     if (attack.getCondition()) {
                         data.putBoolean(ANIMATION_BEGUN_KEY, true);
                         AnimationManager.playAnimation(level, attack.getAnimation());
-                        setAttackIndex(itemstack, index);
+                        setAttackIndex(heldStack, index);
                         attack.startUsing();
-                        player.getCooldowns().addCooldown(itemstack.getItem(), attack.getCooldown());
+                        player.getCooldowns().addCooldown(heldStack.getItem(), attack.getCooldown());
                         break;
                     }
                     index++;
                 }
             } else {
-                if (player.getCooldowns().isOnCooldown(itemstack.getItem()) || data.getBoolean(ANIMATION_BEGUN_KEY)) return InteractionResultHolder.fail(itemstack);
+                if (player.getCooldowns().isOnCooldown(heldStack.getItem()) || data.getBoolean(ANIMATION_BEGUN_KEY)) return InteractionResultHolder.fail(heldStack);
                 else {
                     player.startUsingItem(interactionHand);
-                    return InteractionResultHolder.consume(itemstack);
+                    return InteractionResultHolder.consume(heldStack);
                 }
             }
         }
-        return InteractionResultHolder.success(itemstack);
+        return InteractionResultHolder.success(heldStack);
     }
 
     @Override

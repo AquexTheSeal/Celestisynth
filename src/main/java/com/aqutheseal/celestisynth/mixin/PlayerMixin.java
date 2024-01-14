@@ -26,12 +26,12 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSup
             SCREENSHAKE_INTENSITY = "cs.screenShakeIntensity"
                     ;
 
-    @Shadow
-    public abstract Inventory getInventory();
-
     private PlayerMixin(EntityType<? extends LivingEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
+
+    @Shadow
+    public abstract Inventory getInventory();
 
     @Inject(method = "attack", at = @At(value = "HEAD"), cancellable = true)
     public void celestisynth$attack(Entity pTarget, CallbackInfo ci) {

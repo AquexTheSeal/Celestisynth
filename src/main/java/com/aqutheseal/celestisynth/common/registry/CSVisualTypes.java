@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class CSVisualTypes {
     public static final ResourceKey<Registry<CSVisualType>> VISUALS_KEY = ResourceKey.createRegistryKey(Celestisynth.prefix("cs_visuals"));
 
-    public static DeferredRegister<CSVisualType> VISUALS = DeferredRegister.create(VISUALS_KEY, Celestisynth.MODID);
+    public static final DeferredRegister<CSVisualType> VISUALS = DeferredRegister.create(VISUALS_KEY, Celestisynth.MODID);
 
     public static final RegistryObject<CSVisualType> SOLARIS_BLITZ = addVisual(new CSVisualType("solaris_spin", CSVisualModel.FLAT, CSVisualAnimation.SPIN, 0, 0, 2.5, true, true, false));
     public static final RegistryObject<CSVisualType> SOLARIS_BLITZ_SOUL = addVisual(new CSVisualType("solaris_spin_soul", CSVisualModel.FLAT, CSVisualAnimation.SPIN, 0, 0, 3.5, true, true, false));

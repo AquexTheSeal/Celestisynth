@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVisualType {
-
     private final String name;
     private final String texture;
     private final CSVisualModel model;
@@ -50,38 +49,31 @@ public class CSVisualType {
     }
 
     public static void setSpecialProperties(CSEffectEntity animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-
         float lerpBodyRot = Mth.rotLerp(partialTick, animatable.xRotO, animatable.getXRot()) - 165;
 
         //TODO Un-hardcode
 
-        List<CSVisualType> e0 = new ArrayList<>();
-        e0.add(CSVisualTypes.CRESCENTIA_STRIKE.get());
-        e0.add(CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get());
-        e0.add(CSVisualTypes.CRESCENTIA_THROW.get());
-        e0.add(CSVisualTypes.CRESCENTIA_THROW_INVERTED.get());
-        e0.add(CSVisualTypes.BREEZEBREAKER_SLASH.get());
-        e0.add(CSVisualTypes.BREEZEBREAKER_SLASH_INVERTED.get());
+        List<CSVisualType> rotatableEffectsZ = new ArrayList<>();
+        rotatableEffectsZ.add(CSVisualTypes.CRESCENTIA_STRIKE.get());
+        rotatableEffectsZ.add(CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get());
+        rotatableEffectsZ.add(CSVisualTypes.CRESCENTIA_THROW.get());
+        rotatableEffectsZ.add(CSVisualTypes.CRESCENTIA_THROW_INVERTED.get());
+        rotatableEffectsZ.add(CSVisualTypes.BREEZEBREAKER_SLASH.get());
+        rotatableEffectsZ.add(CSVisualTypes.BREEZEBREAKER_SLASH_INVERTED.get());
 
-        if (e0.contains(animatable.getVisualType())) {
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
-        }
+        if (rotatableEffectsZ.contains(animatable.getVisualType())) poseStack.mulPose(Vector3f.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
 
-        List<CSVisualType> e1 = new ArrayList<>();
-        e1.add(CSVisualTypes.BREEZEBREAKER_WHEEL_IMPACT.get());
-        e1.add(CSVisualTypes.AQUAFLORA_PIERCE_START.get());
-        e1.add(CSVisualTypes.AQUAFLORA_STAB.get());
+        List<CSVisualType> rotatableEffectsX = new ArrayList<>();
+        rotatableEffectsX.add(CSVisualTypes.BREEZEBREAKER_WHEEL_IMPACT.get());
+        rotatableEffectsX.add(CSVisualTypes.AQUAFLORA_PIERCE_START.get());
+        rotatableEffectsX.add(CSVisualTypes.AQUAFLORA_STAB.get());
 
-        if (e1.contains(animatable.getVisualType())) {
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(180f + lerpBodyRot));
-        }
+        if (rotatableEffectsX.contains(animatable.getVisualType()))  poseStack.mulPose(Vector3f.XP.rotationDegrees(180F + lerpBodyRot));
 
-        List<CSVisualType> e2 = new ArrayList<>();
-        e2.add(CSVisualTypes.RAINFALL_SHOOT.get());
+        List<CSVisualType> men = new ArrayList<>();
+        men.add(CSVisualTypes.RAINFALL_SHOOT.get());
 
-        if (e2.contains(animatable.getVisualType())) {
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(180f + lerpBodyRot - 15f));
-        }
+        if (men.contains(animatable.getVisualType())) poseStack.mulPose(Vector3f.XP.rotationDegrees(180F + lerpBodyRot - 15f));
     }
 
     public String getName() {

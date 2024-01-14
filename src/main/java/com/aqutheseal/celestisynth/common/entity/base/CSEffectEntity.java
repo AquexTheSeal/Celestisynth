@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.RegistryObject;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -38,22 +39,23 @@ public class CSEffectEntity extends Entity implements IAnimatable {
     private static final EntityDataAccessor<Integer> SET_ROT_X = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_Z = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> CUSTOMIZABLE_SIZE = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.FLOAT);
-
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final AnimationBuilder DEFAULT_ANIMATION = new AnimationBuilder().addAnimation("animation.cs_effect.spin", ILoopType.EDefaultLoopTypes.LOOP);
-
     private Entity toFollow;
     private int lifespan;
     private int frameTimer;
+    private final AnimationController<CSEffectEntity> mainController = new AnimationController<>(this, "main_controller", 2, this::mainPredicate);
 
     public CSEffectEntity(EntityType<? extends CSEffectEntity> type, Level level) {
         super(type, level);
         this.noCulling = true;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (getAnimationID() != null && !getAnimationID().equals("none") && getVisualType().getAnimation() != null) {
+    private <E extends IAnimatable> PlayState mainPredicate(AnimationEvent<E> event) {
+        if (getAnimationID() != null && getVisualType().getAnimation() != null) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(getAnimationID(), ILoopType.EDefaultLoopTypes.LOOP));
+
+            if (event.getController().getAnimationState().equals(AnimationState.Stopped)) event.getController().markNeedsReload();
         } else {
             Celestisynth.LOGGER.warn("Animation is null!");
             event.getController().setAnimation(DEFAULT_ANIMATION);
@@ -63,7 +65,7 @@ public class CSEffectEntity extends Entity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "main_controller", 2, this::predicate));
+        data.addAnimationController(mainController);
     }
 
     @Override
