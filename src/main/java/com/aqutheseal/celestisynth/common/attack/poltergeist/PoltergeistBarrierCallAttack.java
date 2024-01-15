@@ -53,7 +53,7 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
             } else if (entityBatch instanceof Projectile) entityBatch.remove(Entity.RemovalReason.DISCARDED);
         }
 
-        CSEffectEntity.createInstance(player, null, CSVisualTypes.POLTERGEIST_RETREAT.get(), calculateXLook(player) * -2, 1, calculateZLook(player) * -2);
+        CSEffectEntity.createInstance(player, null, CSVisualTypes.POLTERGEIST_RETREAT.get(), calculateXLook(player) * 2, 1, calculateZLook(player) * 2);
         sendExpandingParticles(player.level, ParticleTypes.SOUL, getPlayer().blockPosition(), 45, 0.5F);
 
         double deltaY = player.isOnGround() ? 3 : 0.9;

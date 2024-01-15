@@ -1,5 +1,3 @@
-package com.aqutheseal.celestisynth.common.attack.poltergeist;
-
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
@@ -25,12 +23,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 
-public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
+public class PoltergeistCosmicSteelAttack2 extends WeaponAttackInstance {
     public static final String IS_IMPACT_LARGE = "cs.isImpactLarge";
     public static final String SMASH_HEIGHT = "cs.poltergeistSmashHeight";
     public static final String SMASH_COUNT_FOR_PASSIVE = "cs.smashCountForPassive";
 
-    public PoltergeistCosmicSteelAttack(Player player, ItemStack stack) {
+    public PoltergeistCosmicSteelAttack2(Player player, ItemStack stack) {
         super(player, stack);
     }
 
@@ -46,7 +44,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
 
     @Override
     public int getAttackStopTime() {
-        return 20;
+        return 25;
     }
 
     @Override
@@ -62,57 +60,68 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
     @Override
     public void tickAttack() {
         boolean isGiantImpact = getTagExtras().getBoolean(IS_IMPACT_LARGE);
+        boolean forceCreateImpact = false;
 
         if (getTimerProgress() == 20) {
-            getPlayer().moveTo(player.getX(), calculateNonCollidingPos(player.level, getPlayer().blockPosition()).getY() + 1, getPlayer().getZ());
-
-            CSVisualType crack =  isGiantImpact ? CSVisualTypes.POLTERGEIST_IMPACT_CRACK_LARGE.get() : CSVisualTypes.POLTERGEIST_IMPACT_CRACK.get();
-            double range = isGiantImpact ? 6.5 : 4;
             double xx = calculateXLook(player) * 3;
             double zz = calculateZLook(player) * 3;
-            doImpact(isGiantImpact, xx, zz, range);
 
-            player.playSound(SoundEvents.END_GATEWAY_SPAWN, 1.0F, 1.75F);
-            player.playSound(CSSoundEvents.CS_LOUD_IMPACT.get(), 1.5F, 1.0F);
-            CSEffectEntity.createInstance(player, null, crack, xx, isGiantImpact ? -1.3 : -0.5, zz);
-
-            if (isGiantImpact) {
-                if (!player.level.isClientSide()) {
-                    SkillCastPoltergeistWard projectile = CSEntityTypes.POLTERGEIST_WARD.get().create(player.level);
-                    projectile.setOwnerUuid(player.getUUID());
-                    projectile.moveTo(player.getX() + xx, getPlayer().getY(), getPlayer().getZ() + zz);
-                    getPlayer().level.addFreshEntity(projectile);
-                }
-                shakeScreensForNearbyPlayers(player, getPlayer().level, 24, 60, 30,  0.035F);
-            } else {
-                CSEffectEntity.createInstance(player, null, CSVisualTypes.POLTERGEIST_WARD_SUMMON_SMALL.get(), xx, 1, zz);
-                shakeScreensForNearbyPlayers(player, getPlayer().level, 12, 30, 15,  0.01F);
+            if (!player.isOnGround() && !player.getAbilities().flying) {
+                getPlayer().moveTo(player.getX(), calculateNonCollidingPos(player.level, getPlayer().blockPosition()).getY() + 1, getPlayer().getZ());
+                forceCreateImpact = true;
             }
+
+            double range = isGiantImpact ? 6.5 : 4;
+            CSVisualType crack =  isGiantImpact ? CSVisualTypes.POLTERGEIST_IMPACT_CRACK_LARGE.get() : CSVisualTypes.POLTERGEIST_IMPACT_CRACK.get();
+            for (Entity entityBatch : iterateEntities(player.level, createAABB(player.blockPosition().offset(xx, 1, zz), range))) {
+                if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
+
+                    hurtNoKB(player, target, (isGiantImpact ?
+                            (float) (double) CSConfigManager.COMMON.poltergeistSkillDmg.get() * 1.4F :
+                            (float) (double) (CSConfigManager.COMMON.poltergeistSkillDmg.get())) +
+                            getSharpnessValue(getStack(), 1.2F) + getTagController().getInt(SMASH_HEIGHT)
+                    );
+
+                    target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
+                    target.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0));
+
+                    target.hurtMarked = true;
+
+                    target.setDeltaMovement((target.getX() - (player.getX() + xx)) / 4, (target.getY() - getPlayer().getY()) / 4, (target.getZ() - (player.getZ() + zz)) / 4);
+                    CSWeaponUtil.disableRunningWeapon(target);
+
+                    if (target instanceof LivingMixinSupport lms) lms.setPhantomTagger(player);
+                }
+
+                if (entityBatch instanceof Projectile projectile) projectile.remove(Entity.RemovalReason.DISCARDED);
+            }
+
+            if (isGiantImpact && !player.level.isClientSide()) {
+                SkillCastPoltergeistWard projectile = CSEntityTypes.POLTERGEIST_WARD.get().create(player.level);
+
+                projectile.setOwnerUuid(player.getUUID());
+                projectile.moveTo(player.getX() + xx, getPlayer().getY(), getPlayer().getZ() + zz);
+                getPlayer().level.addFreshEntity(projectile);
+            }
+
+            if (player.isOnGround() || forceCreateImpact) {
+                player.playSound(SoundEvents.END_GATEWAY_SPAWN, 1.0F, 1.75F);
+                player.playSound(CSSoundEvents.CS_LOUD_IMPACT.get(), 1.5F, 1.0F);
+                CSEffectEntity.createInstance(player, null, crack, xx, isGiantImpact ? -1.3 : -0.5, zz);
+
+                if (!isGiantImpact) CSEffectEntity.createInstance(player, null, CSVisualTypes.POLTERGEIST_WARD_SUMMON_SMALL.get(), xx, 1, zz);
+
+                if (isGiantImpact) shakeScreensForNearbyPlayers(player, getPlayer().level, 24, 60, 30,  0.035F);
+                else shakeScreensForNearbyPlayers(player, getPlayer().level, 12, 30, 15,  0.01F);
+
+            } else getPlayer().playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 0.5F);
 
             addComboPoint(getStack(), player);
 
-            if (getTagController().getInt(SMASH_HEIGHT) > 1) {
+            if (!player.isOnGround()) {
                 getPlayer().getCooldowns().removeCooldown(getStack().getItem());
+                baseStop();
             }
-        }
-    }
-
-    public void doImpact(boolean isGiantImpact, double kbX, double kbZ, double range) {
-        for (Entity entityBatch : iterateEntities(player.level, createAABB(player.blockPosition().offset(kbX, 1, kbZ), range))) {
-            if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
-                hurtNoKB(player, target, (isGiantImpact ? (float) (double) CSConfigManager.COMMON.poltergeistSkillDmg.get() * 1.4F : (float) (double) (CSConfigManager.COMMON.poltergeistSkillDmg.get())) + getSharpnessValue(getStack(), 1.2F) + getTagController().getInt(SMASH_HEIGHT));
-                target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
-                target.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0));
-                target.hurtMarked = true;
-                target.setDeltaMovement((target.getX() - (player.getX() + kbX)) / 3, (target.getY() - getPlayer().getY()) / 3, (target.getZ() - (player.getZ() + kbZ)) / 3);
-                CSWeaponUtil.disableRunningWeapon(target);
-
-                if (target instanceof LivingMixinSupport lms) {
-                    lms.setPhantomTagger(player);
-                }
-            }
-
-            if (entityBatch instanceof Projectile projectile) projectile.remove(Entity.RemovalReason.DISCARDED);
         }
     }
 
