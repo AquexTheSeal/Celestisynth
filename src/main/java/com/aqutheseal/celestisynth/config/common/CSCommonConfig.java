@@ -34,6 +34,7 @@ public class CSCommonConfig {
     public final ForgeConfigSpec.ConfigValue<Integer> aquafloraBloomSkillCD;
     public final ForgeConfigSpec.ConfigValue<Integer> aquafloraBloomShiftSkillCD;
 
+    public final ForgeConfigSpec.ConfigValue<Boolean> enablePoltergeistHeightDmg;
     public final ForgeConfigSpec.ConfigValue<Double> rainfallSerenityArrowDmg;
     public final ForgeConfigSpec.ConfigValue<Double> rainfallSerenityQuasarArrowDmg;
     public final ForgeConfigSpec.ConfigValue<Double> rainfallSerenityDrawSpeed;
@@ -76,7 +77,10 @@ public class CSCommonConfig {
         poltergeistSkillDmg = skillDamage(builder, "Poltergeist", "Cosmic Steel Annihilation", 17.5);
         poltergeistShiftSkillDmg = skillDamage(builder, "Poltergeist", "Barrier Call", 10.0);
         poltergeistSkillCD = skillCooldown(builder, "Poltergeist", "Cosmic Steel Annihilation", 200);
-        poltergeistShiftSkillCD = skillCooldown(builder, "Poltergeist", "Barrier Call", 10);
+        poltergeistShiftSkillCD = skillCooldown(builder, "Poltergeist", "Barrier Call", 80);
+
+        enablePoltergeistHeightDmg = builder.comment("Enables the increasing of Poltergeist's Cosmic Steel Annihilation damage with smash height.")
+                .define("Enable Height Damage", true);
         builder.pop();
 
         builder.push("Value Modifiers - Aquaflora");
