@@ -9,7 +9,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -259,6 +258,17 @@ public class CSEffectEntity extends Entity implements IAnimatable {
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundNBT) {
+        this.remove(RemovalReason.DISCARDED);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundNBT) {
+        this.remove(RemovalReason.DISCARDED);
+    }
+
+    /**
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundNBT) {
         UUID potentialOwnerUUID = compoundNBT.hasUUID("Owner") ? compoundNBT.getUUID("Owner") : compoundNBT.getString("Owner") != null ? OldUsersConverter.convertMobOwnerIfNecessary(getServer(), compoundNBT.getString("Owner")) : null;
 
         if (potentialOwnerUUID != null) setOwnerUuid(potentialOwnerUUID);
@@ -277,6 +287,7 @@ public class CSEffectEntity extends Entity implements IAnimatable {
         compoundNBT.putString("visualID", getVisualID());
         compoundNBT.putString("animID", getAnimationID());
     }
+    **/
 
     public CSVisualType getDefaultVisual() {
         return CSVisualTypes.SOLARIS_BLITZ.get();

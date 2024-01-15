@@ -6,7 +6,6 @@ import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
 import com.aqutheseal.celestisynth.api.mixin.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraSlashFrenzyAttack;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
 import com.aqutheseal.celestisynth.common.item.weapons.BreezebreakerItem;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
@@ -18,14 +17,12 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -115,15 +112,6 @@ public class CSCommonMiscEvents {
                 }
 
                 player.setDeltaMovement(entity.getDeltaMovement().multiply(2.75, 2.25, 2.75));
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onEntityJoinEvent(EntityJoinLevelEvent event) {
-        if (event.getEntity() instanceof CSEffectEntity effect) {
-            if (event.loadedFromDisk()) {
-                effect.remove(Entity.RemovalReason.DISCARDED);
             }
         }
     }

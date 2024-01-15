@@ -1,6 +1,5 @@
 package com.aqutheseal.celestisynth.common.entity.base;
 
-import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import net.minecraft.nbt.CompoundTag;
@@ -8,7 +7,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -78,6 +76,17 @@ public abstract class EffectControllerEntity extends Entity {
     }
 
     @Override
+    public void readAdditionalSaveData(CompoundTag compoundNBT) {
+        this.remove(RemovalReason.DISCARDED);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundNBT) {
+        this.remove(RemovalReason.DISCARDED);
+    }
+
+    /**
+    @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         UUID potentialOwnerUUID = tag.hasUUID("Owner") ? tag.getUUID("Owner") : tag.getString("Owner") != null ? OldUsersConverter.convertMobOwnerIfNecessary(getServer(), tag.getString("Owner")) : null;
 
@@ -103,6 +112,7 @@ public abstract class EffectControllerEntity extends Entity {
         tag.putFloat("cs.angleAddY", getAddAngleY());
         tag.putFloat("cs.angleAddZ", getAddAngleZ());
     }
+    **/
 
     public void setOwnerUuid(@Nullable UUID ownerUuid) {
         this.entityData.set(OWNER_UUID, Optional.ofNullable(ownerUuid));
