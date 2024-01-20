@@ -33,10 +33,11 @@ public class CSItemModelProvider extends ItemModelProvider {
         exemptions.add(CSItems.CRESCENTIA);
         exemptions.add(CSItems.BREEZEBREAKER);
         exemptions.add(CSItems.POLTERGEIST);
+        exemptions.add(CSItems.AQUAFLORA);
+        exemptions.add(CSItems.RAINFALL_SERENITY);
+        exemptions.add(CSItems.FROSTBOUND);
 
         this.defaultItem(CSItems.ITEMS.getEntries());
-
-        this.csSinglePredicatedModel(CSItems.AQUAFLORA, "item/long_blade", csLoc("blooming"), "item/long_blade");
 
         this.csCustomModel(CSBlocks.SOLAR_CRYSTAL.get().asItem(), getMcLoc("item/generated"));
         this.block(CSBlocks.LUNAR_STONE);

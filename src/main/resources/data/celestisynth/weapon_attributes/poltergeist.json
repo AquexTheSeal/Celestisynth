@@ -5,8 +5,8 @@
     "attacks": [
       {
         "hitbox": "FORWARD_BOX",
-        "damage_multiplier": 1.5,
-        "angle": 100,
+        "damage_multiplier": 1.2,
+        "angle": 90,
         "upswing": 0.75,
         "animation": "bettercombat:two_handed_slam_heavy",
         "swing_sound": {
@@ -15,8 +15,8 @@
       },
       {
         "hitbox": "HORIZONTAL_PLANE",
-        "damage_multiplier": 1.1,
-        "angle": 80,
+        "damage_multiplier": 1.0,
+        "angle": 90,
         "upswing": 0.6,
         "animation": "bettercombat:two_handed_slash_horizontal_right",
         "swing_sound": {
@@ -25,8 +25,8 @@
       },
       {
         "hitbox": "HORIZONTAL_PLANE",
-        "damage_multiplier": 1.1,
-        "angle": 80,
+        "damage_multiplier": 1.0,
+        "angle": 90,
         "upswing": 0.6,
         "animation": "bettercombat:two_handed_slash_horizontal_left",
         "swing_sound": {

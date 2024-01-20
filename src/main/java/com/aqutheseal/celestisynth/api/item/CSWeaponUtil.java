@@ -12,6 +12,8 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -51,6 +53,10 @@ public interface CSWeaponUtil {
 
         target.doEnchantDamageEffects(holder, target);
         target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
+    }
+
+    static MobEffectInstance nonVisiblePotionEffect(MobEffect effect, int ticks, int amplifier) {
+        return new MobEffectInstance(effect, ticks, 2, true, false, false);
     }
 
     default void hurtNoKB(Player holder, LivingEntity target, float damage) {

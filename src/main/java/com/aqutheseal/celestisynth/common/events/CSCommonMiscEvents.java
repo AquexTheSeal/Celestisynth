@@ -6,6 +6,7 @@ import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
 import com.aqutheseal.celestisynth.api.mixin.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraSlashFrenzyAttack;
+import com.aqutheseal.celestisynth.common.capabilities.EntityFrostboundProvider;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
 import com.aqutheseal.celestisynth.common.item.weapons.BreezebreakerItem;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
@@ -17,6 +18,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -33,16 +35,36 @@ public class CSCommonMiscEvents {
 
     @SubscribeEvent
     public static void onLivingTickEvent(LivingEvent.LivingTickEvent event) {
-        if (event.getEntity() instanceof LivingMixinSupport lms && lms.getQuasarImbued() != null) {
-            double radius = 0.5 + event.getEntity().getBbWidth();
-            double speed = 0.1;
-            double offX = radius * Math.sin(speed * event.getEntity().tickCount);
-            double offY = -Math.sin(event.getEntity().tickCount) * 0.2;
-            double offZ = radius * Math.cos(speed * event.getEntity().tickCount);
-
-            ParticleUtil.sendParticle(event.getEntity().level, CSParticleTypes.RAINFALL_ENERGY_SMALL.get(),
-                    event.getEntity().getX() + offX, event.getEntity().getY() + offY + 1, event.getEntity().getZ() + offZ);
+        if (event.getEntity() instanceof LivingMixinSupport lms) {
+            if (lms.getQuasarImbued() != null) {
+                double radius = 0.5 + event.getEntity().getBbWidth();
+                double speed = 0.1;
+                double offX = radius * Math.sin(speed * event.getEntity().tickCount);
+                double offY = -Math.sin(event.getEntity().tickCount) * 0.2;
+                double offZ = radius * Math.cos(speed * event.getEntity().tickCount);
+                ParticleUtil.sendParticle(event.getEntity().level, CSParticleTypes.RAINFALL_ENERGY_SMALL.get(),
+                        event.getEntity().getX() + offX, event.getEntity().getY() + offY + 1, event.getEntity().getZ() + offZ);
+            }
         }
+
+        event.getEntity().getCapability(EntityFrostboundProvider.ENTITY_FROSTBOUND).ifPresent(frostbound -> {
+            if (frostbound.getFrostbound() > 0) {
+                if (event.getEntity().tickCount % 5 == 0) {
+                    event.getEntity().setTicksFrozen(2);
+                }
+                event.getEntity().addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 2, 4));
+
+                double radius = 0.8 + event.getEntity().getBbWidth();
+                double speed = 0.2;
+                double offX = radius * Math.sin(speed * event.getEntity().tickCount);
+                double offY = 1;
+                double offZ = radius * Math.cos(speed * event.getEntity().tickCount);
+                ParticleUtil.sendParticle(event.getEntity().level, ParticleTypes.SNOWFLAKE,
+                        event.getEntity().getX() + offX, event.getEntity().getY() + offY, event.getEntity().getZ() + offZ);
+            }
+
+            frostbound.decreaseFrostbound();
+        });
     }
 
     @SubscribeEvent

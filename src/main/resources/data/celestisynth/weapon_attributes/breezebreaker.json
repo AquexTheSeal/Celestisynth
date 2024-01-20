@@ -6,7 +6,7 @@
       {
         "hitbox": "HORIZONTAL_PLANE",
         "damage_multiplier": 1.0,
-        "angle": 100,
+        "angle": 80,
         "upswing": 0.2,
         "animation": "bettercombat:two_handed_slash_horizontal_left",
         "swing_sound": {
@@ -16,7 +16,7 @@
       {
         "hitbox": "HORIZONTAL_PLANE",
         "damage_multiplier": 1.1,
-        "angle": 100,
+        "angle": 80,
         "upswing": 0.2,
         "animation": "bettercombat:two_handed_slash_horizontal_right",
         "swing_sound": {

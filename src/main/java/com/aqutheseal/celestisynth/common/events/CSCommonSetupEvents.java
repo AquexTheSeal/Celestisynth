@@ -1,5 +1,8 @@
 package com.aqutheseal.celestisynth.common.events;
 
+import com.aqutheseal.celestisynth.Celestisynth;
+import com.aqutheseal.celestisynth.common.capabilities.EntityFrostbound;
+import com.aqutheseal.celestisynth.common.capabilities.EntityFrostboundProvider;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
@@ -7,13 +10,16 @@ import com.aqutheseal.celestisynth.common.registry.CSItems;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.datagen.providers.*;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -24,9 +30,22 @@ public class CSCommonSetupEvents {
     
     public static class CSForgeSetupEvents {
 
+        @SubscribeEvent
+        public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+            if(!event.getObject().getCapability(EntityFrostboundProvider.ENTITY_FROSTBOUND).isPresent()) {
+                event.addCapability(Celestisynth.prefix("properties"), new EntityFrostboundProvider());
+            }
+        }
     }
 
     public static class CSModSetupEvents {
+
+        @SubscribeEvent
+        public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+            event.register(EntityFrostbound.class);
+        }
+
+
         @SubscribeEvent
         public static void onRegistryCreatingEvent(NewRegistryEvent event) {
             event.create(new RegistryBuilder<CSVisualType>().setName(CSVisualTypes.VISUALS_KEY.location()).disableSaving());

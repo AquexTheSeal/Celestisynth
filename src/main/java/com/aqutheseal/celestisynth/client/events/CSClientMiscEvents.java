@@ -1,24 +1,33 @@
 package com.aqutheseal.celestisynth.client.events;
 
+import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.api.item.CSArmorItem;
 import com.aqutheseal.celestisynth.api.item.CSArmorProperties;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.api.mixin.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraSlashFrenzyAttack;
+import com.aqutheseal.celestisynth.common.capabilities.EntityFrostboundProvider;
 import com.aqutheseal.celestisynth.common.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.common.registry.CSRarityTypes;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.ViewportEvent;
@@ -47,6 +56,23 @@ public class CSClientMiscEvents {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onEntityRender(RenderLivingEvent event) {
+        LivingEntity entity = event.getEntity();
+        MultiBufferSource buffer = event.getMultiBufferSource();
+        PoseStack stack = event.getPoseStack();
+        int packedLight = event.getPackedLight();
+
+        event.getEntity().getCapability(EntityFrostboundProvider.ENTITY_FROSTBOUND).ifPresent(frostbound -> {
+            if (frostbound.getFrostbound() > 0) {
+                Celestisynth.LOGGER.info("Frostbound: Synced!");
+                VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.outline(event.getRenderer().getTextureLocation(entity)));
+                int i = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
+                event.getRenderer().getModel().renderToBuffer(stack, vertexconsumer, packedLight, i, 0.678F, 0.847F, 0.902F, 0.7F);
+            }
+        });
     }
 
     @SubscribeEvent
