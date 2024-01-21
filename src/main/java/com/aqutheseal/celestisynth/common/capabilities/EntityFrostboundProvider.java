@@ -1,46 +1,38 @@
 package com.aqutheseal.celestisynth.common.capabilities;
 
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import com.aqutheseal.celestisynth.Celestisynth;
+import com.aqutheseal.celestisynth.manager.CSNetworkManager;
+import dev._100media.capabilitysyncer.core.CapabilityAttacher;
+import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import org.jetbrains.annotations.Nullable;
 
-public class EntityFrostboundProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static Capability<EntityFrostbound> ENTITY_FROSTBOUND = CapabilityManager.get(new CapabilityToken<EntityFrostbound>(){});
+public class EntityFrostboundProvider extends CapabilityAttacher {
+    public static Capability<EntityFrostboundCapability> ENTITY_FROSTBOUND = getCapability(new CapabilityToken<>(){});
 
-    private EntityFrostbound frostbound = null;
-    private final LazyOptional<EntityFrostbound> optional = LazyOptional.of(this::createEntityFrostbound);
-
-    private EntityFrostbound createEntityFrostbound() {
-        if (frostbound == null) {
-            this.frostbound = new EntityFrostbound();
-        }
-        return frostbound;
+    @SuppressWarnings("ConstantConditions")
+    @Nullable
+    public static EntityFrostboundCapability getEntityFrostboundUnwrap(LivingEntity entity) {
+        return getEntityFrostbound(entity).orElse(null);
     }
 
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ENTITY_FROSTBOUND) {
-            return optional.cast();
-        }
-        return LazyOptional.empty();
+    public static LazyOptional<EntityFrostboundCapability> getEntityFrostbound(LivingEntity entity) {
+        return entity.getCapability(ENTITY_FROSTBOUND);
     }
 
-    @Override
-    public CompoundTag serializeNBT() {
-        CompoundTag nbt = new CompoundTag();
-        createEntityFrostbound().saveNBTData(nbt);
-        return nbt;
+    private static void attach(AttachCapabilitiesEvent<Entity> event, LivingEntity entity) {
+        genericAttachCapability(event, new EntityFrostboundCapability(entity), ENTITY_FROSTBOUND, Celestisynth.prefix(EntityFrostboundCapability.ID));
     }
 
-    @Override
-    public void deserializeNBT(CompoundTag nbt) {
-       createEntityFrostbound().loadNBTData(nbt);
+    public static void register() {
+        CapabilityAttacher.registerCapability(EntityFrostboundCapability.class);
+        CapabilityAttacher.registerEntityAttacher(LivingEntity.class, EntityFrostboundProvider::attach, EntityFrostboundProvider::getEntityFrostbound, true);
+        SimpleEntityCapabilityStatusPacket.register(CSNetworkManager.INSTANCE, CSNetworkManager.PACKET_ID++);
+        SimpleEntityCapabilityStatusPacket.registerRetriever(Celestisynth.prefix(EntityFrostboundCapability.ID), EntityFrostboundProvider::getEntityFrostboundUnwrap);
     }
 }

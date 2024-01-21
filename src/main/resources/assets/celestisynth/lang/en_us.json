@@ -129,6 +129,7 @@
   "item.celestisynth.aquaflora.skill_3": "Exorbitant Slashing Frenzy",
   "item.celestisynth.aquaflora.condition_3": "Activate: Right-click during Blooming State",
   "item.celestisynth.aquaflora.desc_3": "During the execution of this skill, the player becomes immune to damage while delivering up to 20 individual attacks on entities within range. Dual wielding the same weapon enables the player to perform up to 40+ attacks, albeit with decreased damage.",
+  "item.celestisynth.aquaflora.skill_3.notice": "Unable to locate nearby entities.",
 
   "item.celestisynth.aquaflora.skill_4": "Flowers Away",
   "item.celestisynth.aquaflora.condition_4": "Activate: Right-click while holding SHIFT during Blooming State",

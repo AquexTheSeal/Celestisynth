@@ -16,8 +16,4 @@ public interface PlayerMixinSupport {
     float getScreenShakeIntensity();
 
     void setScreenShakeIntensity(float intensity);
-
-    int getCameraAngleOrdinal();
-
-    void setCameraAngleOrdinal(int ordinal);
 }

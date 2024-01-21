@@ -2,8 +2,6 @@ package com.aqutheseal.celestisynth.mixin;
 
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.api.mixin.PlayerMixinSupport;
-import com.aqutheseal.celestisynth.common.network.util.SetPersistentIntPacket;
-import com.aqutheseal.celestisynth.manager.CSNetworkManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -20,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSupport {
-    private static final String CAMERA_ANGLE_ORDINAL = "cs.cameraOrdinal",
+    private static final String
             SCREENSHAKE_DURATION = "cs.screenShakeDuration",
             SCREENSHAKE_FADEOUTBEGIN = "cs.screenShakeFadeoutStart",
             SCREENSHAKE_INTENSITY = "cs.screenShakeIntensity"
@@ -82,19 +80,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSup
     @Override
     public void setScreenShakeIntensity(float intensity) {
         getPersistentData().putFloat(SCREENSHAKE_INTENSITY, intensity);
-    }
-
-    @Override
-    public int getCameraAngleOrdinal() {
-        return getPersistentData().getInt(CAMERA_ANGLE_ORDINAL);
-    }
-
-    @Override
-    public void setCameraAngleOrdinal(int ordinal) {
-        if (level.isClientSide()) {
-            getPersistentData().putInt(CAMERA_ANGLE_ORDINAL, ordinal);
-            CSNetworkManager.sendToServer(new SetPersistentIntPacket(CAMERA_ANGLE_ORDINAL, ordinal));
-        }
     }
 
     private boolean cancelCI(ItemStack stack) {

@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -55,9 +56,6 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
     @Override
     public void startUsing() {
         getTagController().putBoolean(ATTACK_ONGOING, true);
-
-        if (player instanceof PlayerMixinSupport pms && getPlayer().level.isClientSide()) pms.setCameraAngleOrdinal(Minecraft.getInstance().options.getCameraType().ordinal());
-
         getTagController().putFloat(INITIAL_VIEW_ANGLE, getPlayer().getXRot());
     }
 
@@ -72,11 +70,10 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
             LivingEntity target = entities.size() > 0 ? entities.get(getPlayer().level.random.nextInt(entities.size())) : null;
 
             if (target == player || target == null) {
-                AnimationManager.playAnimation(getPlayer().level, AnimationManager.AnimationsList.CLEAR);
-                getTagController().putInt(ANIMATION_TIMER_KEY, 0);
-                getTagController().putBoolean(ANIMATION_BEGUN_KEY, false);
-                getPlayer().setXRot( getTagController().getFloat(INITIAL_VIEW_ANGLE));
-                setCameraAngle(player,  getTagController().getInt(INITIAL_PERSPECTIVE));
+                player.displayClientMessage(Component.translatable("item.celestisynth.aquaflora.skill_3.notice"), true);
+                getPlayer().playSound(CSSoundEvents.CS_BLING.get(), 0.25F, 1.5F);
+                CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_DASH.get(), 0, 0.55, 0);
+                baseStop();
                 return;
             }
 

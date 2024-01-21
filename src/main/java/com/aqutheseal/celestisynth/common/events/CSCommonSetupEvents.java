@@ -1,10 +1,11 @@
 package com.aqutheseal.celestisynth.common.events;
 
 import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.common.capabilities.EntityFrostbound;
+import com.aqutheseal.celestisynth.common.capabilities.EntityFrostboundCapability;
 import com.aqutheseal.celestisynth.common.capabilities.EntityFrostboundProvider;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
+import com.aqutheseal.celestisynth.common.registry.CSCapabilities;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
@@ -29,22 +30,9 @@ import net.minecraftforge.registries.RegistryBuilder;
 public class CSCommonSetupEvents {
     
     public static class CSForgeSetupEvents {
-
-        @SubscribeEvent
-        public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
-            if(!event.getObject().getCapability(EntityFrostboundProvider.ENTITY_FROSTBOUND).isPresent()) {
-                event.addCapability(Celestisynth.prefix("properties"), new EntityFrostboundProvider());
-            }
-        }
     }
 
     public static class CSModSetupEvents {
-
-        @SubscribeEvent
-        public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-            event.register(EntityFrostbound.class);
-        }
-
 
         @SubscribeEvent
         public static void onRegistryCreatingEvent(NewRegistryEvent event) {
@@ -53,6 +41,8 @@ public class CSCommonSetupEvents {
 
         @SubscribeEvent
         public static void onFMLCommonSetupEvent(FMLCommonSetupEvent event) {
+            CSCapabilities.registerCapabilities();
+
             event.enqueueWork(() -> {
                 BrewingRecipeRegistry.addRecipe(new BrewingRecipe(Ingredient.of(Items.PHANTOM_MEMBRANE), Ingredient.of(CSItems.LUNAR_SCRAP.get()), new ItemStack(CSItems.STARSTRUCK_SCRAP.get())));
                 BrewingRecipeRegistry.addRecipe(new BrewingRecipe(Ingredient.of(Items.PHANTOM_MEMBRANE), Ingredient.of(Items.FEATHER), new ItemStack(CSItems.STARSTRUCK_FEATHER.get())));

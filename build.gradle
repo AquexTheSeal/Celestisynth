@@ -5,6 +5,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 version = "${mc_version}-${mod_version}"
@@ -110,6 +111,15 @@ repositories {
 		name = "RyanLiptak Maven"
 		url = "https://maven.ryanliptak.com/"
     }
+    maven {
+        name = '100Media Maven'
+        url = 'https://maven.100media.dev/'
+    }
+}
+
+configurations {
+    shade
+    implementation.extendsFrom shade
 }
 
 dependencies {
@@ -120,6 +130,9 @@ dependencies {
     // Dependencies (Required)
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}")
     implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}")
+
+    // Dependencies (Shadowed)
+    shade fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
 
     // Dependencies (Extras)
     implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:4534619")
@@ -163,7 +176,7 @@ tasks.named('processResources', ProcessResources).configure {
             geckolib_version_range: geckolib_version_range, player_animator_version_range: player_animator_version_range,
             jei_version_range: jei_version_range, jer_version_range: jer_version_range, jeed_version_range: jeed_version_range, lazydfu_version_range: lazydfu_version_range,
             configured_version_range: configured_version_range, catalogue_version_range: catalogue_version_range, gmmo_version_range: gmmo_version_range,
-            jade_version_range: jade_version_range, appleskin_version_range: appleskin_version_range, sues_version_range: sues_version_range
+            jade_version_range: jade_version_range, appleskin_version_range: appleskin_version_range, sues_version_range: sues_version_range, capabilitysyncer_version: capabilitysyncer_version
     ]
     inputs.properties replaceProperties
 
@@ -175,6 +188,7 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 tasks.named('jar', Jar).configure {
+    archiveClassifier = 'slim'
     manifest {
         attributes([
                 'Specification-Title'     : mod_name,
@@ -188,6 +202,19 @@ tasks.named('jar', Jar).configure {
         ])
     }
     finalizedBy 'reobfJar'
+}
+
+shadowJar {
+    archiveClassifier = ''
+    configurations = [project.configurations.shade]
+    relocate 'dev._100media.capabilitysyncer', "${project.group}.relocated.capabilitysyncer"
+    finalizedBy 'reobfShadowJar'
+}
+
+assemble.dependsOn shadowJar
+
+reobf {
+    shadowJar {}
 }
 
 publishing {

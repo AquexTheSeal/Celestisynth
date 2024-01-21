@@ -13,12 +13,12 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class CSNetworkManager {
-    private static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder.named(Celestisynth.prefix("messages"))
+    public static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder.named(Celestisynth.prefix("messages"))
             .networkProtocolVersion(() -> "1.0")
             .clientAcceptedVersions(s -> true)
             .serverAcceptedVersions(s -> true)
             .simpleChannel();
-    private static int PACKET_ID = 0;
+    public static int PACKET_ID = 0;
 
     @SubscribeEvent
     public static void registerPackets(FMLCommonSetupEvent event) {
@@ -37,12 +37,6 @@ public class CSNetworkManager {
                 .decoder(ShakeScreenServerPacket::new)
                 .encoder(ShakeScreenServerPacket::toBytes)
                 .consumerMainThread(ShakeScreenServerPacket::handle)
-                .add();
-
-        INSTANCE.messageBuilder(SetPersistentIntPacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_SERVER)
-                .decoder(SetPersistentIntPacket::new)
-                .encoder(SetPersistentIntPacket::toBytes)
-                .consumerMainThread(SetPersistentIntPacket::handle)
                 .add();
     }
 

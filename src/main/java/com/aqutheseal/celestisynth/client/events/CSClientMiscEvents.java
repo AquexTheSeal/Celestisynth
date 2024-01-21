@@ -67,7 +67,6 @@ public class CSClientMiscEvents {
 
         event.getEntity().getCapability(EntityFrostboundProvider.ENTITY_FROSTBOUND).ifPresent(frostbound -> {
             if (frostbound.getFrostbound() > 0) {
-                Celestisynth.LOGGER.info("Frostbound: Synced!");
                 VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.outline(event.getRenderer().getTextureLocation(entity)));
                 int i = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
                 event.getRenderer().getModel().renderToBuffer(stack, vertexconsumer, packedLight, i, 0.678F, 0.847F, 0.902F, 0.7F);

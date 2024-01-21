@@ -148,13 +148,6 @@ public class CSCommonMiscEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void onPlayerTickEvent(TickEvent.PlayerTickEvent event) {
-        if (event.side.isClient() && event.player.level.isClientSide() && event.player instanceof PlayerMixinSupport pms) {
-            pms.setCameraAngleOrdinal(Minecraft.getInstance().options.getCameraType().ordinal());
-        }
-    }
-
     private static void checkAndCancelAttack(LivingAttackEvent event, ItemStack itemStack) {
         CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
 
