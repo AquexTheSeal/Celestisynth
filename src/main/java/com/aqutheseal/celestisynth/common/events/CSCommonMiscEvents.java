@@ -1,12 +1,12 @@
 package com.aqutheseal.celestisynth.common.events;
 
+import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
-import com.aqutheseal.celestisynth.api.mixin.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraSlashFrenzyAttack;
-import com.aqutheseal.celestisynth.common.capabilities.EntityFrostboundProvider;
+import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
 import com.aqutheseal.celestisynth.common.item.weapons.BreezebreakerItem;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
@@ -15,7 +15,6 @@ import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import com.google.common.collect.Streams;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffects;
@@ -24,7 +23,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -47,10 +45,15 @@ public class CSCommonMiscEvents {
             }
         }
 
-        event.getEntity().getCapability(EntityFrostboundProvider.ENTITY_FROSTBOUND).ifPresent(frostbound -> {
-            if (frostbound.getFrostbound() > 0) {
-                if (event.getEntity().tickCount % 5 == 0) {
-                    event.getEntity().setTicksFrozen(2);
+        event.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+            if (data.getFrostbound() > 0) {
+
+                if (event.getEntity().level.isClientSide()) {
+                    Celestisynth.LOGGER.info("FROSTBOUND: SYNCED!");
+                }
+
+                if (event.getEntity().tickCount % 10 == 0) {
+                    event.getEntity().setTicksFrozen(10);
                 }
                 event.getEntity().addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 2, 4));
 
@@ -63,8 +66,22 @@ public class CSCommonMiscEvents {
                         event.getEntity().getX() + offX, event.getEntity().getY() + offY, event.getEntity().getZ() + offZ);
             }
 
-            frostbound.decreaseFrostbound();
+            data.decreaseFrostbound();
         });
+
+        event.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+
+            if (data.getTagSource() != null && event.getEntity().level.isClientSide()) {
+                Celestisynth.LOGGER.info("PHANTOM TAG: SYNCED!");
+            }
+
+            if (data.getTagTime() <= 0) {
+                data.removeSource();
+            }
+
+            data.decreaseTagTime();
+        });
+
     }
 
     @SubscribeEvent
@@ -89,13 +106,15 @@ public class CSCommonMiscEvents {
         if (event.getEntity() instanceof Player player) {
             CSWeaponUtil.disableRunningWeapon(player);
         }
-        if (event.getEntity() instanceof LivingMixinSupport lms && lms.getPhantomTagger() != null) {
-            SkillCastPoltergeistWard poltergeistProjectile = CSEntityTypes.POLTERGEIST_WARD.get().create(event.getEntity().getLevel());
 
-            poltergeistProjectile.setOwnerUuid(lms.getPhantomTagger().getUUID());
-            poltergeistProjectile.moveTo(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ());
-            event.getEntity().getLevel().addFreshEntity(poltergeistProjectile);
-        }
+        event.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+            if (data.getTagSource() instanceof Player player) {
+                SkillCastPoltergeistWard poltergeistProjectile = CSEntityTypes.POLTERGEIST_WARD.get().create(event.getEntity().getLevel());
+                poltergeistProjectile.setOwnerUuid(player.getUUID());
+                poltergeistProjectile.moveTo(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ());
+                event.getEntity().getLevel().addFreshEntity(poltergeistProjectile);
+            }
+        });
     }
 
     @SubscribeEvent

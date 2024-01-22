@@ -3,6 +3,7 @@ package com.aqutheseal.celestisynth.common.attack.poltergeist;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
+import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
@@ -49,7 +50,11 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
                 hurtNoKB(player, target, (float) (double) CSConfigManager.COMMON.poltergeistShiftSkillDmg.get() + getSharpnessValue(getStack(), 1.2F));
                 target.playSound(CSSoundEvents.CS_SWORD_CLASH.get(), 0.25F, 0.5F);
 
+                target.getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+                    data.setTag(player, 200);
+                });
                 if (target instanceof LivingMixinSupport lms) lms.setPhantomTagger(player);
+
             } else if (entityBatch instanceof Projectile) entityBatch.remove(Entity.RemovalReason.DISCARDED);
         }
 

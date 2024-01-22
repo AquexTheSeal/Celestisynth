@@ -29,7 +29,7 @@ public class CSAdvancementProvider extends AdvancementProvider {
 
     @Override
     protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
-        Advancement rootObtainedCore = Advancement.Builder.advancement().display(CSItems.CELESTIAL_CORE.get(), Component.translatable("advancements.celestisynth.obtained_core.title"), Component.translatable("advancements.celestisynth.obtained_core.description"), Celestisynth.prefix("textures/block/zephyr_deposit.png"), FrameType.TASK, false, true, false).addCriterion("obtained_core", InventoryChangeTrigger.TriggerInstance.hasItems(CSItems.CELESTIAL_CORE.get())).save(consumer, "celestisynth:root");
+        Advancement rootObtainedCore = Advancement.Builder.advancement().display(CSItems.CELESTIAL_CORE.get(), Component.translatable("advancement.celestisynth.obtain_celestial_core.title"), Component.translatable("advancement.celestisynth.obtain_celestial_core.description"), Celestisynth.prefix("textures/block/zephyr_deposit.png"), FrameType.TASK, false, true, false).addCriterion("obtained_core", InventoryChangeTrigger.TriggerInstance.hasItems(CSItems.CELESTIAL_CORE.get())).save(consumer, "celestisynth:root");
 
         Advancement getSupernalIngot = this.obtainItem(consumer, rootObtainedCore, CSItems.SUPERNAL_NETHERITE_INGOT, FrameType.TASK, false);
 
@@ -38,7 +38,7 @@ public class CSAdvancementProvider extends AdvancementProvider {
         Advancement placeCelestialTable = this.createAdvancement(consumer, obtainedCelestialIngot, "place_celestial_table", FrameType.CHALLENGE, true, CSBlocks.CELESTIAL_CRAFTING_TABLE, PlacedBlockTrigger.TriggerInstance::placedBlock);
 
         CSItems.ITEMS.getEntries().stream().filter(weapon -> weapon.get() instanceof CSWeapon)
-                .forEach(item -> this.obtainItem(consumer, placeCelestialTable, item, FrameType.GOAL, true));
+                .forEach(item -> this.obtainItem(consumer, placeCelestialTable, item, FrameType.GOAL, false));
     }
 
 

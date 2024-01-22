@@ -9,7 +9,7 @@ public class BreezebrokenParticle extends SimpleAnimatedParticle {
     protected float rotSpeed;
     protected float startQuadSize;
 
-    BreezebrokenParticle(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, SpriteSet pSprites) {
+    public BreezebrokenParticle(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, SpriteSet pSprites) {
         super(pLevel, pX, pY, pZ, pSprites, 0.0F);
         this.xd = pXSpeed;
         this.yd = pYSpeed;

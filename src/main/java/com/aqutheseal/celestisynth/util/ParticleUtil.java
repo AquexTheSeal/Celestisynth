@@ -2,6 +2,7 @@ package com.aqutheseal.celestisynth.util;
 
 import com.aqutheseal.celestisynth.common.network.util.CSSpawnParticlePacket;
 import com.aqutheseal.celestisynth.manager.CSNetworkManager;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleType;

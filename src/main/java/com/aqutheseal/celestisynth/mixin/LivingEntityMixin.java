@@ -16,12 +16,10 @@ import javax.annotation.Nullable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingMixinSupport {
+
     @Unique
     private static final String
-            PHANTOM_TAG_BY = "cs.phantomTagByID",
             QUASAR_IMBUED_BY = "cs.quasarImbuedByID";
-
-    @Unique private int tagTimer;
     @Unique private int quasarTimer;
 
     private LivingEntityMixin(EntityType<?> pEntityType, Level pLevel) {
@@ -30,33 +28,9 @@ public abstract class LivingEntityMixin extends Entity implements LivingMixinSup
 
     @Inject(method = "tick", at = @At(value = "HEAD"))
     public void celestisynth$tick(CallbackInfo ci) {
-        if (tagTimer > 0) tagTimer--;
-        else setPhantomTagger(null);
 
         if (quasarTimer > 0) quasarTimer--;
         else setQuasarImbued(null);
-    }
-
-    @Nullable
-    @Override
-    public Player getPhantomTagger() {
-        return level.getEntity(getPhantomTagFrom()) instanceof Player ? (Player) level.getEntity(getPhantomTagFrom()) : null;
-    }
-
-    @Override
-    public void setPhantomTagger(@Nullable Player tagger) {
-        if (tagger != null) setPhantomTagFrom(tagger.getId());
-        else setPhantomTagFrom(0);
-    }
-
-    private int getPhantomTagFrom() {
-        return getPersistentData().getInt(PHANTOM_TAG_BY);
-    }
-
-    private void setPhantomTagFrom(int phantomTagFrom) {
-        getPersistentData().putInt(PHANTOM_TAG_BY, phantomTagFrom);
-
-        this.tagTimer = 100;
     }
 
     @Override

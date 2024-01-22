@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.mixin;
 
-import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
+import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -26,7 +26,11 @@ public abstract class EntityRendererMixin<T extends Entity> {
 
     @Inject(method = "render", at = @At("TAIL"))
     public void celestisynth$render(T pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
-        if (pEntity instanceof LivingMixinSupport lms && lms.getPhantomTagger() != null) renderPhantomFlame(pPoseStack, pBuffer, pEntity);
+        pEntity.getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+            if (data.getTagSource() != null) {
+                renderPhantomFlame(pPoseStack, pBuffer, pEntity);
+            }
+        });
     }
 
     private static void renderPhantomFlame(PoseStack pMatrixStack, MultiBufferSource pBuffer, Entity pEntity) {

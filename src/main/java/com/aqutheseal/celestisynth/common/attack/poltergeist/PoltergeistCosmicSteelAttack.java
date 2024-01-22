@@ -2,8 +2,8 @@ package com.aqutheseal.celestisynth.common.attack.poltergeist;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
-import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
+import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
@@ -107,8 +107,10 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
                 target.setDeltaMovement((target.getX() - (player.getX() + kbX)) / 3, (target.getY() - getPlayer().getY()) / 3, (target.getZ() - (player.getZ() + kbZ)) / 3);
                 CSWeaponUtil.disableRunningWeapon(target);
 
-                if (target instanceof LivingMixinSupport lms) {
-                    lms.setPhantomTagger(player);
+                if (!player.level.isClientSide()) {
+                    target.getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+                        data.setTag(player, 100);
+                    });
                 }
             }
 

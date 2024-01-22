@@ -26,10 +26,22 @@
   "block.celestisynth.celestial_crafting_table": "Celestial Workbench",
   "gui.celestisynth.celestial_crafting": "Celestial Workbench",
 
+  "advancement.celestisynth.obtain_celestial_core.title": "Down to the Core",
+  "advancement.celestisynth.obtain_celestial_core.description": "The dawn of a celestial journey! Obtain a Celestial Core.",
+
+  "advancement.celestisynth.obtain_supernal_netherite_ingot.title": "Eruption",
+  "advancement.celestisynth.obtain_supernal_netherite_ingot.description": "Obtain a Supernal Netherite Ingot, an important material to craft Celestial weaponry.",
+
+  "advancement.celestisynth.obtain_celestial_netherite_ingot.title": "Celestial Emergence",
+  "advancement.celestisynth.obtain_celestial_netherite_ingot.description": "Obtain a Celestial Netherite Ingot, an important material to craft Celestial weaponry.",
+
+  "advancement.celestisynth.place_celestial_table.title": "A Lost Memory",
+  "advancement.celestisynth.place_celestial_table.description": "Place a Celestial Table, the root of Celestisynth weaponry.",
+
   "------------------- SOLARIS ------------------":  "",
 
   "item.celestisynth.solaris": "Solaris",
-  "advancement.celestisynth.obtain_solaris.title": "A million degrees above",
+  "advancement.celestisynth.obtain_solaris.title": "A Million Degrees Above",
   "advancement.celestisynth.obtain_solaris.description": "Obtain a Solaris",
 
   "item.celestisynth.solaris.passive_1": "Ember's Blessing",
@@ -151,6 +163,12 @@
   "item.celestisynth.rainfall_serenity.skill_2": "Quasar Rainfall",
   "item.celestisynth.rainfall_serenity.condition_2": "Activate: Hit Entity with weapon",
   "item.celestisynth.rainfall_serenity.desc_2": "When the laser strikes a target with a \"Quasar Mark\", a portal spawns above and lasers will rain down around the target.",
+
+  "------------------- FROSTBOUND ------------------":  "",
+
+  "item.celestisynth.frostbound": "Frostbound",
+  "advancement.celestisynth.obtain_frostbound.title": "The Treasure of Boreas",
+  "advancement.celestisynth.obtain_frostbound.description": "Obtain a Frostbound",
 
   "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< advancement [NON-WEAPONS] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>":  "",
 
