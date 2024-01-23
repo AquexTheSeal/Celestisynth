@@ -58,10 +58,10 @@ public class CrescentiaItem extends SkilledSwordItem {
     }
 
     @Override
-    public void forceTick(ItemStack itemStack, @NotNull Level level, @NotNull Entity entity, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack itemStack, @NotNull Level level, @NotNull Entity entity, int itemSlot, boolean isSelected) {
         if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof CrescentiaItem)) player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2, 0));
 
-        super.forceTick(itemStack, level, entity, itemSlot, isSelected);
+        super.inventoryTick(itemStack, level, entity, itemSlot, isSelected);
     }
 
     public static void createCrescentiaFirework(ItemStack itemStack, Level level, Player player, double x, double y, double z, boolean isBig) {

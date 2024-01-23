@@ -77,7 +77,8 @@ public abstract class SkilledSwordItem extends SwordItem implements CSWeapon {
     }
 
     @Override
-    public void forceTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+        super.inventoryTick(itemStack, level, entity, itemSlot, isSelected);
         CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
         if (entity instanceof Player player && data.getBoolean(ANIMATION_BEGUN_KEY)) {
             int animationTimer = data.getInt(ANIMATION_TIMER_KEY);

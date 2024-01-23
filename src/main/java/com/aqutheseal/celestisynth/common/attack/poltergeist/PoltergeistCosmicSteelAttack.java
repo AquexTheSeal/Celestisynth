@@ -109,7 +109,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
 
                 if (!player.level.isClientSide()) {
                     target.getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
-                        data.setTag(player, 100);
+                        data.setPhantomTag(player, 100);
                     });
                 }
             }

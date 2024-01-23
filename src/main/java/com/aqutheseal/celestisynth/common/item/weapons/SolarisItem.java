@@ -5,8 +5,6 @@ import com.aqutheseal.celestisynth.common.attack.solaris.SolarisFullRoundAttack;
 import com.aqutheseal.celestisynth.common.attack.solaris.SolarisSoulDashAttack;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -16,9 +14,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-
-import java.util.function.Consumer;
 
 public class SolarisItem extends SkilledSwordItem {
 
@@ -56,9 +51,8 @@ public class SolarisItem extends SkilledSwordItem {
     }
 
     @Override
-    public void forceTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
         if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof SolarisItem)) player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2, 0));
-
-        super.forceTick(itemStack, level, entity, itemSlot, isSelected);
+        super.inventoryTick(itemStack, level, entity, itemSlot, isSelected);
     }
 }

@@ -7,27 +7,26 @@ import dev._100media.capabilitysyncer.network.EntityCapabilityStatusPacket;
 import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.UUID;
 
-public class CelestisynthEntityCapability extends LivingEntityCapability {
+public class CelestisynthEntityCapability extends LivingEntityCapability implements CSCapabilityHelper {
     public static final String ID = "celestisynthCapabilities";
-
-    public static UUID emptyUUID = new UUID(0L, 0L);
 
     public static final String FROSTBOUND_ID = "cs.frostBound";
     public static final String PHANTOM_TAG_SOURCE_ID = "cs.phantomTagSource";
     public static final String PHANTOM_TAG_TIME_ID = "cs.phantomTagTime";
+    public static final String QUASAR_IMBUE_SOURCE_ID = "cs.quasarImbueSource";
+    public static final String QUASAR_IMBUE_TIME_ID = "cs.quasarImbueTime";
 
     private int frostBound;
-    private @Nullable Player phantomTagSource;
+    private @Nullable LivingEntity phantomTagSource;
     private int phantomTagTime;
+    private @Nullable LivingEntity quasarImbueSource;
+    private int quasarImbueTime;
 
     protected CelestisynthEntityCapability(LivingEntity entity) {
         super(entity);
@@ -51,51 +50,93 @@ public class CelestisynthEntityCapability extends LivingEntityCapability {
 
     // PHANTOM TAG
 
-    public void setTag(@Nonnull Player source, int time) {
+    public void setPhantomTag(@Nonnull LivingEntity source, int time) {
         this.phantomTagSource = source;
         this.phantomTagTime = time;
         this.updateTracking();
     }
 
-    public @Nullable Entity getTagSource() {
+    public @Nullable LivingEntity getPhantomTagSource() {
         return phantomTagSource;
     }
 
-    public int getTagTime() {
+    public int getPhantomTagTime() {
         return phantomTagTime;
     }
 
-    public void removeSource() {
+    public void removePhantomTagSource() {
         this.phantomTagSource = null;
         this.updateTracking();
     }
 
-    public void decreaseTagTime() {
+    public void decreasePhantomTagTime() {
         this.phantomTagTime = Math.max(this.phantomTagTime - 1, 0);
+        this.updateTracking();
+    }
+
+    // QUASAR IMBUE
+
+    public void setQuasarImbue(@Nonnull LivingEntity source, int time) {
+        this.quasarImbueSource = source;
+        this.quasarImbueTime = time;
+        this.updateTracking();
+    }
+
+    public void clearQuasarImbue() {
+        this.quasarImbueSource = null;
+        this.quasarImbueTime = 0;
+        this.updateTracking();
+    }
+
+    public @Nullable LivingEntity getQuasarImbueSource() {
+        return quasarImbueSource;
+    }
+
+    public int getQuasarImbueTime() {
+        return quasarImbueTime;
+    }
+
+    public void removeQuasarImbueSource() {
+        this.quasarImbueSource = null;
+        this.updateTracking();
+    }
+
+    public void decreaseQuasarImbueTime() {
+        this.quasarImbueTime = Math.max(this.quasarImbueTime - 1, 0);
         this.updateTracking();
     }
 
     @Override
     public CompoundTag serializeNBT(boolean savingToDisk) {
         CompoundTag nbt = new CompoundTag();
-        nbt.putInt(ID, this.frostBound);
 
-        nbt.putUUID(PHANTOM_TAG_SOURCE_ID, this.phantomTagSource != null ? this.phantomTagSource.getUUID() : emptyUUID);
+        nbt.putInt(FROSTBOUND_ID, this.frostBound);
+
+        nbt.putInt(PHANTOM_TAG_SOURCE_ID, this.phantomTagSource != null ? this.phantomTagSource.getId() : 0);
         nbt.putInt(PHANTOM_TAG_TIME_ID, this.phantomTagTime);
+
+        nbt.putInt(QUASAR_IMBUE_SOURCE_ID, this.quasarImbueSource != null ? this.quasarImbueSource.getId() : 0);
+        nbt.putInt(QUASAR_IMBUE_TIME_ID, this.quasarImbueTime);
 
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt, boolean readingFromDisk) {
-        if (nbt.contains(ID, Tag.TAG_INT)) {
+
+        if (nbt.contains(FROSTBOUND_ID, Tag.TAG_INT)) {
             this.frostBound = nbt.getInt(FROSTBOUND_ID);
         }
 
-        if (nbt.getUUID(PHANTOM_TAG_SOURCE_ID) != emptyUUID) this.phantomTagSource = entity.level.getPlayerByUUID(nbt.getUUID(PHANTOM_TAG_SOURCE_ID));
-        else this.phantomTagSource = null;
+        if (nbt.contains(PHANTOM_TAG_SOURCE_ID, Tag.TAG_INT) && nbt.contains(PHANTOM_TAG_TIME_ID, Tag.TAG_INT)) {
+            this.phantomTagSource = getLivingFromWorld(livingEntity.level, nbt.getInt(PHANTOM_TAG_SOURCE_ID));
+            this.phantomTagTime = nbt.getInt(PHANTOM_TAG_TIME_ID);
+        }
 
-        if (nbt.contains(ID, Tag.TAG_INT)) this.phantomTagTime = nbt.getInt(PHANTOM_TAG_TIME_ID);
+        if (nbt.contains(QUASAR_IMBUE_SOURCE_ID, Tag.TAG_INT) && nbt.contains(QUASAR_IMBUE_TIME_ID, Tag.TAG_INT)) {
+            this.quasarImbueSource = getLivingFromWorld(livingEntity.level, nbt.getInt(QUASAR_IMBUE_SOURCE_ID));
+            this.quasarImbueTime = nbt.getInt(QUASAR_IMBUE_TIME_ID);
+        }
     }
 
     @Override

@@ -27,7 +27,7 @@ public abstract class EntityRendererMixin<T extends Entity> {
     @Inject(method = "render", at = @At("TAIL"))
     public void celestisynth$render(T pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
         pEntity.getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
-            if (data.getTagSource() != null) {
+            if (data.getPhantomTagSource() != null) {
                 renderPhantomFlame(pPoseStack, pBuffer, pEntity);
             }
         });

@@ -56,8 +56,8 @@ public class BreezebreakerItem extends SkilledSwordItem {
     }
 
     @Override
-    public void forceTick(ItemStack itemStack, Level level, Entity owner, int itemSlot, boolean isSelected) {
-        super.forceTick(itemStack, level, owner, itemSlot, isSelected);
+    public void inventoryTick(ItemStack itemStack, Level level, Entity owner, int itemSlot, boolean isSelected) {
+        super.inventoryTick(itemStack, level, owner, itemSlot, isSelected);
 
         CompoundTag extrasData = itemStack.getOrCreateTagElement(CS_EXTRAS_ELEMENT);
 

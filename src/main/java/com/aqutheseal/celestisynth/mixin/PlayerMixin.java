@@ -47,9 +47,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSup
                 if (getScreenShakeDuration() < getScreenShakeFadeoutBegin()) setScreenShakeIntensity(Math.max(0, getScreenShakeIntensity() - 0.001F));
             }
         }
-
-        if (getMainHandItem().getItem() instanceof CSWeapon cs) cs.forceTick(getMainHandItem(), level, this, getInventory().selected, getInventory().getSelected() == getMainHandItem());
-        if (getOffhandItem().getItem() instanceof CSWeapon cs) cs.forceTick(getOffhandItem(), level, this, Inventory.SLOT_OFFHAND, getInventory().getSelected() == getOffhandItem());
     }
 
     @Override

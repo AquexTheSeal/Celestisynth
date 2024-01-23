@@ -1,10 +1,8 @@
 package com.aqutheseal.celestisynth.common.events;
 
-import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
-import com.aqutheseal.celestisynth.api.mixin.LivingMixinSupport;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraSlashFrenzyAttack;
 import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
@@ -33,8 +31,9 @@ public class CSCommonMiscEvents {
 
     @SubscribeEvent
     public static void onLivingTickEvent(LivingEvent.LivingTickEvent event) {
-        if (event.getEntity() instanceof LivingMixinSupport lms) {
-            if (lms.getQuasarImbued() != null) {
+
+        event.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+            if (data.getQuasarImbueSource() != null) {
                 double radius = 0.5 + event.getEntity().getBbWidth();
                 double speed = 0.1;
                 double offX = radius * Math.sin(speed * event.getEntity().tickCount);
@@ -43,20 +42,16 @@ public class CSCommonMiscEvents {
                 ParticleUtil.sendParticle(event.getEntity().level, CSParticleTypes.RAINFALL_ENERGY_SMALL.get(),
                         event.getEntity().getX() + offX, event.getEntity().getY() + offY + 1, event.getEntity().getZ() + offZ);
             }
-        }
+            if (data.getQuasarImbueTime() <= 0) {
+                data.removeQuasarImbueSource();
+            }
+            data.decreaseQuasarImbueTime();
 
-        event.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
             if (data.getFrostbound() > 0) {
-
-                if (event.getEntity().level.isClientSide()) {
-                    Celestisynth.LOGGER.info("FROSTBOUND: SYNCED!");
-                }
-
                 if (event.getEntity().tickCount % 10 == 0) {
                     event.getEntity().setTicksFrozen(10);
                 }
                 event.getEntity().addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 2, 4));
-
                 double radius = 0.8 + event.getEntity().getBbWidth();
                 double speed = 0.2;
                 double offX = radius * Math.sin(speed * event.getEntity().tickCount);
@@ -65,23 +60,13 @@ public class CSCommonMiscEvents {
                 ParticleUtil.sendParticle(event.getEntity().level, ParticleTypes.SNOWFLAKE,
                         event.getEntity().getX() + offX, event.getEntity().getY() + offY, event.getEntity().getZ() + offZ);
             }
-
             data.decreaseFrostbound();
-        });
 
-        event.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
-
-            if (data.getTagSource() != null && event.getEntity().level.isClientSide()) {
-                Celestisynth.LOGGER.info("PHANTOM TAG: SYNCED!");
+            if (data.getPhantomTagTime() <= 0) {
+                data.removePhantomTagSource();
             }
-
-            if (data.getTagTime() <= 0) {
-                data.removeSource();
-            }
-
-            data.decreaseTagTime();
+            data.decreasePhantomTagTime();
         });
-
     }
 
     @SubscribeEvent
@@ -108,7 +93,7 @@ public class CSCommonMiscEvents {
         }
 
         event.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
-            if (data.getTagSource() instanceof Player player) {
+            if (data.getPhantomTagSource() instanceof Player player) {
                 SkillCastPoltergeistWard poltergeistProjectile = CSEntityTypes.POLTERGEIST_WARD.get().create(event.getEntity().getLevel());
                 poltergeistProjectile.setOwnerUuid(player.getUUID());
                 poltergeistProjectile.moveTo(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ());
