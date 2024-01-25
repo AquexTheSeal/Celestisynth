@@ -6,7 +6,6 @@
   "mixins": [
     "AbstractArrowMixin",
     "InventoryMixin",
-    "LivingEntityMixin",
     "PlayerMixin",
     "RecipeManagerAccessor",
     "ServerPlayerMixin"

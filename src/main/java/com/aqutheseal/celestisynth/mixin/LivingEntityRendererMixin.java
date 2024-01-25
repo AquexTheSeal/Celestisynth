@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.mixin;
 
-import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
+import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
@@ -43,7 +43,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
             shift = At.Shift.AFTER
     ))
     public void celestisynth$render(T pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
-        pEntity.getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+        pEntity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
             if (data.getFrostbound() > 0) {
                 VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.eyes(this.getTextureLocation(pEntity)));
                 int i = getOverlayCoords(pEntity, this.getWhiteOverlayProgress(pEntity, pPartialTicks));

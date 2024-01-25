@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.common.entity.projectile;
 
-import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
+import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastRainfallRain;
 import com.aqutheseal.celestisynth.common.item.weapons.RainfallSerenityItem;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
@@ -117,7 +117,7 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
                 if (pResult instanceof EntityHitResult ehr) {
                     setPierceLevel((byte) (getPierceLevel() + 1));
 
-                    ehr.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+                    ehr.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                         if (getOwner() instanceof Player player && data.getQuasarImbueSource() == player) {
                             SkillCastRainfallRain projectile = CSEntityTypes.RAINFALL_RAIN.get().create(player.level);
                             projectile.targetPos = new BlockPos(ehr.getEntity().blockPosition());
@@ -129,7 +129,7 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
 
                     if (random.nextInt(3) == 1) {
                         for (Entity imbueSource : rawRainfallItem.iterateEntities(level, rawRainfallItem.createAABB(hitPos, 24))) {
-                            imbueSource.getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+                            imbueSource.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                                 if (imbueSource != ehr.getEntity() && getOwner() instanceof Player player && data.getQuasarImbueSource() == player) {
                                     ehr.getEntity().invulnerableTime = 0;
 
@@ -166,7 +166,7 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
                     }
 
 
-                    ehr.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+                    ehr.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                         if (isImbueQuasar() && getOwner() instanceof Player player) {
                             data.setQuasarImbue(player, 200);
                         }

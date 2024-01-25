@@ -37,11 +37,14 @@ public class CSItemModelProvider extends ItemModelProvider {
         exemptions.add(CSItems.RAINFALL_SERENITY);
         exemptions.add(CSItems.FROSTBOUND);
 
+        exemptions.add(CSItems.TEMPEST_SPAWN_EGG);
+
         this.defaultItem(CSItems.ITEMS.getEntries());
 
         this.csCustomModel(CSBlocks.SOLAR_CRYSTAL.get().asItem(), getMcLoc("item/generated"));
         this.block(CSBlocks.LUNAR_STONE);
         this.block(CSBlocks.ZEPHYR_DEPOSIT);
+        this.block(CSBlocks.WINTEREIS);
     }
 
     public void defaultItem(Collection<RegistryObject<Item>> items) {

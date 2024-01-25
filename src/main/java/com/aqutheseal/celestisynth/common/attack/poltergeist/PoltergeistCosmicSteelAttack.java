@@ -3,7 +3,7 @@ package com.aqutheseal.celestisynth.common.attack.poltergeist;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
+import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
@@ -108,7 +108,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
                 CSWeaponUtil.disableRunningWeapon(target);
 
                 if (!player.level.isClientSide()) {
-                    target.getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+                    target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                         data.setPhantomTag(player, 100);
                     });
                 }

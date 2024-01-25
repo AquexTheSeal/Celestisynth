@@ -12,27 +12,27 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import org.jetbrains.annotations.Nullable;
 
-public class CelestisynthEntityProvider extends CapabilityAttacher {
-    public static Capability<CelestisynthEntityCapability> CAPABILITY = getCapability(new CapabilityToken<>(){});
+public class CSEntityCapabilityProvider extends CapabilityAttacher {
+    public static Capability<CSEntityCapability> CAPABILITY = getCapability(new CapabilityToken<>(){});
 
     @SuppressWarnings("ConstantConditions")
     @Nullable
-    public static CelestisynthEntityCapability unwrap(LivingEntity entity) {
+    public static CSEntityCapability unwrap(LivingEntity entity) {
         return get(entity).orElse(null);
     }
 
-    public static LazyOptional<CelestisynthEntityCapability> get(LivingEntity entity) {
+    public static LazyOptional<CSEntityCapability> get(LivingEntity entity) {
         return entity.getCapability(CAPABILITY);
     }
 
     private static void attach(AttachCapabilitiesEvent<Entity> event, LivingEntity entity) {
-        genericAttachCapability(event, new CelestisynthEntityCapability(entity), CAPABILITY, Celestisynth.prefix(CelestisynthEntityCapability.ID));
+        genericAttachCapability(event, new CSEntityCapability(entity), CAPABILITY, Celestisynth.prefix(CSEntityCapability.ID));
     }
 
     public static void register() {
-        CapabilityAttacher.registerCapability(CelestisynthEntityCapability.class);
-        CapabilityAttacher.registerEntityAttacher(LivingEntity.class, CelestisynthEntityProvider::attach, CelestisynthEntityProvider::get, true);
+        CapabilityAttacher.registerCapability(CSEntityCapability.class);
+        CapabilityAttacher.registerEntityAttacher(LivingEntity.class, CSEntityCapabilityProvider::attach, CSEntityCapabilityProvider::get, true);
         SimpleEntityCapabilityStatusPacket.register(CSNetworkManager.INSTANCE, CSNetworkManager.PACKET_ID++);
-        SimpleEntityCapabilityStatusPacket.registerRetriever(Celestisynth.prefix(CelestisynthEntityCapability.ID), CelestisynthEntityProvider::unwrap);
+        SimpleEntityCapabilityStatusPacket.registerRetriever(Celestisynth.prefix(CSEntityCapability.ID), CSEntityCapabilityProvider::unwrap);
     }
 }

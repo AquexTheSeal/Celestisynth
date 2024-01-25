@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth.common.capabilities;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -14,5 +15,9 @@ public interface CSCapabilityHelper {
         } else {
             return null;
         }
+    }
+
+    default boolean checkBoth(CompoundTag tag, byte tagByte, String id1, String id2) {
+        return tag.contains(id1, tagByte) &&  tag.contains(id2, tagByte);
     }
 }

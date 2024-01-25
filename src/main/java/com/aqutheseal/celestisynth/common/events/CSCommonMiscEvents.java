@@ -4,7 +4,7 @@ import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraSlashFrenzyAttack;
-import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
+import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
 import com.aqutheseal.celestisynth.common.item.weapons.BreezebreakerItem;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
@@ -32,7 +32,7 @@ public class CSCommonMiscEvents {
     @SubscribeEvent
     public static void onLivingTickEvent(LivingEvent.LivingTickEvent event) {
 
-        event.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+        event.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
             if (data.getQuasarImbueSource() != null) {
                 double radius = 0.5 + event.getEntity().getBbWidth();
                 double speed = 0.1;
@@ -43,7 +43,7 @@ public class CSCommonMiscEvents {
                         event.getEntity().getX() + offX, event.getEntity().getY() + offY + 1, event.getEntity().getZ() + offZ);
             }
             if (data.getQuasarImbueTime() <= 0) {
-                data.removeQuasarImbueSource();
+                data.clearQuasarImbue();
             }
             data.decreaseQuasarImbueTime();
 
@@ -63,7 +63,7 @@ public class CSCommonMiscEvents {
             data.decreaseFrostbound();
 
             if (data.getPhantomTagTime() <= 0) {
-                data.removePhantomTagSource();
+                data.clearPhantomTag();
             }
             data.decreasePhantomTagTime();
         });
@@ -92,7 +92,7 @@ public class CSCommonMiscEvents {
             CSWeaponUtil.disableRunningWeapon(player);
         }
 
-        event.getEntity().getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+        event.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
             if (data.getPhantomTagSource() instanceof Player player) {
                 SkillCastPoltergeistWard poltergeistProjectile = CSEntityTypes.POLTERGEIST_WARD.get().create(event.getEntity().getLevel());
                 poltergeistProjectile.setOwnerUuid(player.getUUID());

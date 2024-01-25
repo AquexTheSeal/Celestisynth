@@ -27,7 +27,7 @@ public class CSCommonSetupEvents {
     }
 
     public static class CSModSetupEvents {
-
+ 
         @SubscribeEvent
         public static void onRegistryCreatingEvent(NewRegistryEvent event) {
             event.create(new RegistryBuilder<CSVisualType>().setName(CSVisualTypes.VISUALS_KEY.location()).disableSaving());
@@ -53,7 +53,6 @@ public class CSCommonSetupEvents {
             DataGenerator dataGenerator = event.getGenerator();
             final ExistingFileHelper efh = event.getExistingFileHelper();
 
-            dataGenerator.addProvider(event.includeServer(), new CSBlockModelProvider(dataGenerator, efh));
             dataGenerator.addProvider(event.includeServer(), new CSBlockstateProvider(dataGenerator, efh));
             dataGenerator.addProvider(event.includeServer(), new CSItemModelProvider(dataGenerator, efh));
             dataGenerator.addProvider(event.includeServer(), new CSRecipeProvider(dataGenerator));

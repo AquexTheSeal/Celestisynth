@@ -13,7 +13,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CelestisynthEntityCapability extends LivingEntityCapability implements CSCapabilityHelper {
+public class CSEntityCapability extends LivingEntityCapability implements CSCapabilityHelper {
     public static final String ID = "celestisynthCapabilities";
 
     public static final String FROSTBOUND_ID = "cs.frostBound";
@@ -28,7 +28,7 @@ public class CelestisynthEntityCapability extends LivingEntityCapability impleme
     private @Nullable LivingEntity quasarImbueSource;
     private int quasarImbueTime;
 
-    protected CelestisynthEntityCapability(LivingEntity entity) {
+    protected CSEntityCapability(LivingEntity entity) {
         super(entity);
     }
 
@@ -64,8 +64,9 @@ public class CelestisynthEntityCapability extends LivingEntityCapability impleme
         return phantomTagTime;
     }
 
-    public void removePhantomTagSource() {
+    public void clearPhantomTag() {
         this.phantomTagSource = null;
+        this.quasarImbueTime = 0;
         this.updateTracking();
     }
 
@@ -82,11 +83,6 @@ public class CelestisynthEntityCapability extends LivingEntityCapability impleme
         this.updateTracking();
     }
 
-    public void clearQuasarImbue() {
-        this.quasarImbueSource = null;
-        this.quasarImbueTime = 0;
-        this.updateTracking();
-    }
 
     public @Nullable LivingEntity getQuasarImbueSource() {
         return quasarImbueSource;
@@ -96,8 +92,9 @@ public class CelestisynthEntityCapability extends LivingEntityCapability impleme
         return quasarImbueTime;
     }
 
-    public void removeQuasarImbueSource() {
+    public void clearQuasarImbue() {
         this.quasarImbueSource = null;
+        this.quasarImbueTime = 0;
         this.updateTracking();
     }
 
@@ -128,12 +125,12 @@ public class CelestisynthEntityCapability extends LivingEntityCapability impleme
             this.frostBound = nbt.getInt(FROSTBOUND_ID);
         }
 
-        if (nbt.contains(PHANTOM_TAG_SOURCE_ID, Tag.TAG_INT) && nbt.contains(PHANTOM_TAG_TIME_ID, Tag.TAG_INT)) {
+        if (checkBoth(nbt, Tag.TAG_INT, PHANTOM_TAG_SOURCE_ID, PHANTOM_TAG_TIME_ID)) {
             this.phantomTagSource = getLivingFromWorld(livingEntity.level, nbt.getInt(PHANTOM_TAG_SOURCE_ID));
             this.phantomTagTime = nbt.getInt(PHANTOM_TAG_TIME_ID);
         }
 
-        if (nbt.contains(QUASAR_IMBUE_SOURCE_ID, Tag.TAG_INT) && nbt.contains(QUASAR_IMBUE_TIME_ID, Tag.TAG_INT)) {
+        if (checkBoth(nbt, Tag.TAG_INT, QUASAR_IMBUE_SOURCE_ID, QUASAR_IMBUE_TIME_ID)) {
             this.quasarImbueSource = getLivingFromWorld(livingEntity.level, nbt.getInt(QUASAR_IMBUE_SOURCE_ID));
             this.quasarImbueTime = nbt.getInt(QUASAR_IMBUE_TIME_ID);
         }

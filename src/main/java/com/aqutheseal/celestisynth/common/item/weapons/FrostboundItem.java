@@ -1,7 +1,7 @@
 package com.aqutheseal.celestisynth.common.item.weapons;
 
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
+import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.sounds.SoundEvents;
@@ -39,7 +39,7 @@ public class FrostboundItem extends SkilledSwordItem {
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity entity, LivingEntity source) {
-        entity.getCapability(CelestisynthEntityProvider.CAPABILITY).ifPresent(data -> {
+        entity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
             data.setFrostbound(100);
         });
         entity.playSound(SoundEvents.PLAYER_HURT_FREEZE);

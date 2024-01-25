@@ -1,9 +1,9 @@
 package com.aqutheseal.celestisynth.common.registry;
 
-import com.aqutheseal.celestisynth.common.capabilities.CelestisynthEntityProvider;
+import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 
 public class CSCapabilities {
     public static void registerCapabilities() {
-        CelestisynthEntityProvider.register();
+        CSEntityCapabilityProvider.register();
     }
 }
