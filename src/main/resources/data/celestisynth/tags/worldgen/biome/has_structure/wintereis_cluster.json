@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:is_end",
+    "minecraft:small_end_islands",
+    "minecraft:end_highlands"
+  ]
+}

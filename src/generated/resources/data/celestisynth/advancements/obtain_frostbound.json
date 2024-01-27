@@ -1,0 +1,38 @@
+{
+  "parent": "celestisynth:place_celestial_table",
+  "criteria": {
+    "criteria": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "celestisynth:frostbound"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.celestisynth.obtain_frostbound.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "celestisynth:frostbound",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.celestisynth.obtain_frostbound.title"
+    }
+  },
+  "requirements": [
+    [
+      "criteria"
+    ]
+  ]
+}

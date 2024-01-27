@@ -19,5 +19,7 @@ public final class CSRegistryManager {
         CSRecipeTypes.RECIPE_SERIALIZERS.register(modBus);
         CSMenuTypes.MENU_TYPES.register(modBus);
         CSVisualTypes.VISUALS.register(modBus);
+        CSStructures.STRUCTURE_TYPE.register(modBus);
+        CSStructures.STRUCTURE_PIECE.register(modBus);
     }
 }
