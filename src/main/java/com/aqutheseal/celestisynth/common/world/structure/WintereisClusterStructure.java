@@ -11,7 +11,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-import java.util.Random;
 
 public class WintereisClusterStructure extends Structure {
     public static final Codec<WintereisClusterStructure> CODEC = simpleCodec(WintereisClusterStructure::new);
@@ -28,19 +27,18 @@ public class WintereisClusterStructure extends Structure {
 
     private void generatePieces(StructurePiecesBuilder builder, Structure.GenerationContext context) {
         BlockPos placePos = context.chunkPos().getMiddleBlockPosition(70);
-        builder.addPiece(new WintereisClusterPiece(context.random(), placePos, 10, 0.4, Direction.NORTH, WintereisClusterPiece.CENTER_PIECE));
-        for (int i = 0; i < 10; i++) {
-            builder.addPiece(new WintereisClusterPiece(context.random(), placePos.offset(bounded(40), bounded(10), bounded(40)),
-                    4 + context.random().nextInt(3), 0.4, Direction.NORTH, WintereisClusterPiece.CONNECTOR_STRAIGHT)
-            );
+        builder.addPiece(new WintereisClusterPiece(context.random(), placePos, Direction.NORTH, WintereisClusterPiece.CENTER_PIECE));
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            builder.addPiece(new WintereisClusterPiece(context.random(), placePos.relative(direction, 48), direction, WintereisClusterPiece.CONNECTOR_FOUR_WAY));
+            builder.addPiece(new WintereisClusterPiece(context.random(), placePos.relative(direction, 48 * 2), direction.getOpposite(), WintereisClusterPiece.CONNECTOR_END));
         }
+        builder.addPiece(new WintereisClusterPiece(context.random(), placePos.offset(48, 0, -48), Direction.SOUTH, WintereisClusterPiece.CONNECTOR_CORNER));
+        builder.addPiece(new WintereisClusterPiece(context.random(), placePos.offset(48, 0, 48), Direction.WEST, WintereisClusterPiece.CONNECTOR_CORNER));
+        builder.addPiece(new WintereisClusterPiece(context.random(), placePos.offset(-48, 0, 48), Direction.NORTH, WintereisClusterPiece.CONNECTOR_CORNER));
+        builder.addPiece(new WintereisClusterPiece(context.random(), placePos.offset(-48, 0, -48), Direction.EAST, WintereisClusterPiece.CONNECTOR_CORNER));
     }
 
     public @NotNull StructureType<?> type() {
         return CSStructures.WINTEREIS_CLUSTER_STRUCTURE.get();
-    }
-
-    public int bounded(int value) {
-        return (-value) + (new Random().nextInt(value * 2));
     }
 }
