@@ -15,6 +15,7 @@
   },
   "client": [
     "EntityRendererMixin",
+    "ItemRendererMixin",
     "LivingEntityRendererMixin",
     "MinecraftMixin"
   ]

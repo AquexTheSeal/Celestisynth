@@ -43,137 +43,98 @@ public class WintereisClusterPiece extends BlockPlacerPiece {
     @Override
     public void generatePiece(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
         if (type == CENTER_PIECE) {
-            generateDiamond(level, CSBlocks.WINTEREIS.get().defaultBlockState(), pos, box, 10, 0.4, false);
+            buildDiamond(level, CSBlocks.WINTEREIS.get().defaultBlockState(), pos, box, 10, 0.4, false);
             for (Pair<Integer, Integer> corner : get8WayPoses(4)) {
-                generateDiamond(level, CSBlocks.WINTEREIS.get().defaultBlockState(), pos.offset(corner.getFirst(), 0, corner.getSecond()), box, 4, 0.25, false);
+                buildDiamond(level, CSBlocks.WINTEREIS.get().defaultBlockState(), pos.offset(corner.getFirst(), 0, corner.getSecond()), box, 4, 0.25, false);
             }
 
             for (Pair<Integer, Integer> corner : getCornerPoses(20)) {
-                generateDiamond(level, Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos.offset(corner.getFirst(), 16, corner.getSecond()), box, 4, 0.3, true);
+                buildDiamond(level, Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos.offset(corner.getFirst(), 16, corner.getSecond()), box, 4, 0.3, true);
             }
 
-            for (int cr = 0; cr <= 360; cr++) {
-                putBlock(level, Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos.offset(Math.sin(cr) * 20, 0, Math.cos(cr) * 20), box);
-            }
-            generateConnector(level,  Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos, box, 16);
+            buildCircle(level, Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos, box, 20);
+            buildCircle(level, Blocks.DARK_PRISMARINE.defaultBlockState(), pos.above(12), box, 14);
+            buildCircle(level, Blocks.DARK_PRISMARINE.defaultBlockState(), pos.above(20), box, 8);
+            buildCircle(level, Blocks.DARK_PRISMARINE.defaultBlockState(), pos.below(12), box, 14);
+            buildCircle(level, Blocks.DARK_PRISMARINE.defaultBlockState(), pos.below(20), box, 8);
+
+            constructBridgeSet(level,  Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos, box, 16);
         }
         if (type == CONNECTOR_FOUR_WAY) {
-            generateDiamond(level,  Blocks.ICE.defaultBlockState(), pos, box, 8, 0.5, false);
-            generateConnector(level,  Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos, box, 12);
+            buildDiamond(level,  Blocks.ICE.defaultBlockState(), pos, box, 8, 0.5, false);
+            constructBridgeSet(level,  Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos, box, 12);
         }
         if (type == CONNECTOR_CORNER) {
-            generateDiamond(level,  Blocks.ICE.defaultBlockState(), pos, box, 4, 0.5, false);
-            generateConnector(level,  Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos, box, 8);
+            buildDiamond(level,  Blocks.ICE.defaultBlockState(), pos, box, 4, 0.5, false);
+            constructBridgeSet(level,  Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos, box, 8);
 
-            for (Pair<Integer, Integer> corner : getCornerPoses(16)) {
-                generateDiamond(level, Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos.offset(corner.getFirst(), 0, corner.getSecond()), box, 4, 0.3, true);
+            for (Pair<Integer, Integer> corner : getCornerPoses(12)) {
+                buildDiamond(level, Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos.offset(corner.getFirst(), 0, corner.getSecond()), box, 3, 0.3, true);
             }
         }
         if (type == CONNECTOR_END) {
-            generateDiamond(level,  Blocks.ICE.defaultBlockState(), pos, box, 3, 0.5, false);
-            generateConnector(level,  Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos, box, 4);
+            buildDiamond(level,  Blocks.ICE.defaultBlockState(), pos, box, 2, 0.5, false);
+            constructBridgeSet(level,  Blocks.PRISMARINE_BRICKS.defaultBlockState(), pos, box, 6);
         }
     }
 
-    public void generateConnector(WorldGenLevel level, BlockState blockState, BlockPos pos, BoundingBox box, int radius) {
+    public void buildCircle(WorldGenLevel level, BlockState blockState, BlockPos pos, BoundingBox box, int radius) {
         for (int cr = 0; cr <= 360; cr++) {
             putBlock(level, blockState, pos.offset(Math.sin(cr) * radius, 0, Math.cos(cr) * radius), box);
         }
+    }
+
+    public void constructBridgeSet(WorldGenLevel level, BlockState blockState, BlockPos pos, BoundingBox box, int radius) {
+        buildCircle(level, blockState, pos, box, radius);
+
         if (type == CENTER_PIECE || type == CONNECTOR_FOUR_WAY) {
-            for (int sx = -24; sx <= 24; sx++) {
-                if (sx > (radius - 1) || sx < -(radius - 1)) {
-                    for (int sz = -2; sz <= 2; sz++) {
-                        putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                    }
-                }
-            }
-            for (int sz = -24; sz <= 24; sz++) {
-                if (sz > (radius - 1) || sz < -(radius - 1)) {
-                    for (int sx = -2; sx <= 2; sx++) {
-                        putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                    }
-                }
+            for (Direction direction : Direction.Plane.HORIZONTAL) {
+                buildBridge(level, blockState, pos, box, radius, direction);
             }
         }
         if (type == CONNECTOR_CORNER) {
-            if (getOrientation() != null) {
-                switch (getOrientation()) {
-                    case WEST: {
-                        for (int sz = -radius; sz >= -24; sz--) {
-                            for (int sx = -2; sx <= 2; sx++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        for (int sx = -radius; sx >= -24; sx--) {
-                                for (int sz = -2; sz <= 2; sz++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        break;
-                    }
-                    case EAST: {
-                        for (int sz = radius; sz <= 24; sz++) {
-                            for (int sx = -2; sx <= 2; sx++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        for (int sx = radius; sx <= 24; sx++) {
-                            for (int sz = -2; sz <= 2; sz++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        break;
-                    }
-                    case NORTH: {
-                        for (int sx = radius; sx <= 24; sx++) {
-                            for (int sz = -2; sz <= 2; sz++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        for (int sz = -radius; sz >= -24; sz--) {
-                            for (int sx = -2; sx <= 2; sx++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        break;
-                    }
-                    case SOUTH: {
-                        for (int sx = -radius; sx >= -24; sx--) {
-                            for (int sz = -2; sz <= 2; sz++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        for (int sz = radius; sz <= 24; sz++) {
-                            for (int sx = -2; sx <= 2; sx++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        break;
-                    }
-                }
+            if (Direction.Plane.HORIZONTAL.test(getOrientation())) {
+                buildBridge(level, blockState, pos, box, radius, getOrientation());
+                buildBridge(level, blockState, pos, box, radius, getOrientation().getClockWise());
             }
         }
         if (type == CONNECTOR_END) {
-            if (getOrientation() != null) {
-                switch (getOrientation()) {
-                    case WEST: {
-                        for (int sx = -radius; sx >= -24; sx--) {
-                            for (int sz = -2; sz <= 2; sz++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        break;
-                    }
-                    case EAST: {
-                        for (int sx = radius; sx <= 24; sx++) {
-                            for (int sz = -2; sz <= 2; sz++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        break;
-                    }
-                    case NORTH: {
-                        for (int sz = -radius; sz >= -24; sz--) {
-                            for (int sx = -2; sx <= 2; sx++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        break;
-                    }
-                    case SOUTH: {
-                        for (int sz = radius; sz <= 24; sz++) {
-                            for (int sx = -2; sx <= 2; sx++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
-                        }
-                        break;
-                    }
-                }
+            if (Direction.Plane.HORIZONTAL.test(getOrientation())) {
+                buildBridge(level, blockState, pos, box, radius, getOrientation());
             }
         }
     }
 
-    public void generateDiamond(WorldGenLevel level, BlockState blockState, BlockPos pos, BoundingBox box, int radius, double heightMod, boolean generateBelow) {
+    public void buildBridge(WorldGenLevel level, BlockState blockState, BlockPos pos, BoundingBox box, int radius, Direction direction) {
+        switch (direction) {
+            case NORTH:
+                for (int sz = -radius; sz >= -24; sz--) {
+                    for (int sx = -2; sx <= 2; sx++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
+                }
+                break;
+            case EAST:
+                for (int sx = radius; sx <= 24; sx++) {
+                    for (int sz = -2; sz <= 2; sz++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
+                }
+                break;
+            case SOUTH:
+                for (int sz = radius; sz <= 24; sz++) {
+                    for (int sx = -2; sx <= 2; sx++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
+                }
+                break;
+            case WEST:
+                for (int sx = -radius; sx >= -24; sx--) {
+                    for (int sz = -2; sz <= 2; sz++) putBlock(level, blockState, pos.offset(sx, 0, sz), box);
+                }
+                break;
+        }
+    }
+
+    public void buildDiamond(WorldGenLevel level, BlockState blockState, BlockPos pos, BoundingBox box, int radius, double heightMod, boolean generateBelow) {
         for (int sy = -64; sy <= 64; sy++) {
             for (int sx = -radius; sx <= radius; sx++) {
                 for (int sz = -radius; sz <= radius; sz++) {
-                    if (Math.abs(sx) + Math.abs(sz) + Math.abs(sy * heightMod) <= radius) {
+                    if (Math.abs(sx) + Math.abs(sz) + Math.abs(sy * heightMod) <= radius && Math.pow(sx, 2) + Math.pow(sz, 2) <= radius) {
                         BlockPos.MutableBlockPos offset = pos.mutable().move(sx, sy, sz);
                         if (generateBelow) {
                             for (int ty = offset.getY(); ty > level.getMinBuildHeight(); ty--) {
