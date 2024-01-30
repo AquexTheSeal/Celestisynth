@@ -143,8 +143,6 @@ dependencies {
     implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:${jer_version}")
     implementation fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:${jeed_version}")
 
-    implementation fg.deobf("curse.maven:configured-457570:${configured_version}")
-    implementation fg.deobf("curse.maven:catalogue-459701:${catalogue_version}")
     implementation fg.deobf("curse.maven:gamemenumodoption-353051:${gmmo_version}")
 
     implementation fg.deobf("curse.maven:jade-324717:${jade_version}")
@@ -152,15 +150,14 @@ dependencies {
     compileOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}:api")
     runtimeOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}")
 
-    runtimeOnly fg.deobf("curse.maven:shutup-experimental-settings-407174:${sues_version}")
     runtimeOnly fg.deobf("curse.maven:lazy-dfu-forge-460819:${lazydfu_version}")
 
     // Dependencies (Extras) (Temp)
-    implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:4410143")
-    implementation fg.deobf("curse.maven:selene-499980:4620027")
-    implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:4991989")
-    implementation fg.deobf("curse.maven:citadel-331936:4556677")
-    implementation fg.deobf("curse.maven:curios-309927:4985476")
+    implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:5051316")
+    implementation fg.deobf("curse.maven:selene-499980:5068161")
+    implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:5058433")
+    implementation fg.deobf("curse.maven:citadel-331936:5065861")
+    implementation fg.deobf("curse.maven:curios-309927:5066845")
 
 //    implementation fg.deobf("curse.maven:supplementaries-412082:4713347")
 //    runtimeOnly fg.deobf('curse.maven:ferritecore-429235:4117906')
@@ -175,8 +172,8 @@ tasks.named('processResources', ProcessResources).configure {
             mc_version_range: mc_version_range, forge_version_range: forge_version_range,
             geckolib_version_range: geckolib_version_range, player_animator_version_range: player_animator_version_range,
             jei_version_range: jei_version_range, jer_version_range: jer_version_range, jeed_version_range: jeed_version_range, lazydfu_version_range: lazydfu_version_range,
-            configured_version_range: configured_version_range, catalogue_version_range: catalogue_version_range, gmmo_version_range: gmmo_version_range,
-            jade_version_range: jade_version_range, appleskin_version_range: appleskin_version_range, sues_version_range: sues_version_range, capabilitysyncer_version: capabilitysyncer_version
+            gmmo_version_range: gmmo_version_range, jade_version_range: jade_version_range, appleskin_version_range: appleskin_version_range,
+            capabilitysyncer_version: capabilitysyncer_version
     ]
     inputs.properties replaceProperties
 
