@@ -38,7 +38,7 @@ public class BreezebreakerWheelAttack extends BreezebreakerAttack {
 
     @Override
     public boolean getCondition() {
-        return !player.isOnGround();
+        return !player.onGround();
     }
 
     @Override

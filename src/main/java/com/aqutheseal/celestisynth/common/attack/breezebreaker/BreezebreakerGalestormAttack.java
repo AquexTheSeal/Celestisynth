@@ -38,7 +38,7 @@ public class BreezebreakerGalestormAttack extends BreezebreakerAttack {
 
     @Override
     public boolean getCondition() {
-        return !player.isSprinting() && !player.isCrouching() && getPlayer().isOnGround() && heldDuration < 6;
+        return !player.isSprinting() && !player.isCrouching() && getPlayer().onGround() && heldDuration < 6;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class BreezebreakerGalestormAttack extends BreezebreakerAttack {
     public void tickAttack() {
         if (getTimerProgress() == 6) {
             double range = 6.0;
-            List<Entity> entities = iterateEntities(player.level(), createAABB(player.blockPosition().offset(calculateXLook(player) * 3, 1, calculateZLook(player) * 3), range));
+            List<Entity> entities = iterateEntities(player.level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 3), 1, (int) (calculateZLook(player) * 3)), range));
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {

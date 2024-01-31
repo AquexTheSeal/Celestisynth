@@ -15,7 +15,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
@@ -63,7 +63,7 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
                 double attackDamage = CSConfigManager.COMMON.breezebreakerSprintSkillDmg.get() + getSharpnessValue(stack, 1);
 
                 hurtNoKB(player, observedLivingTarget, (float) attackDamage);
-                getPlayer().level().explode(player, observedLivingTarget.getX(), observedLivingTarget.getY(), observedLivingTarget.getZ(), 1.0F, Explosion.BlockInteraction.NONE);
+                getPlayer().level().explode(player, observedLivingTarget.getX(), observedLivingTarget.getY(), observedLivingTarget.getZ(), 1.0F, Level.ExplosionInteraction.NONE);
                 observedLivingTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 2));
                 observedLivingTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
                 sendExpandingParticles(player.level(), ParticleTypes.FIREWORK, getPlayer().blockPosition().above(), 45, 0.2F);
@@ -73,7 +73,7 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
             Vec3 delta;
 
             for (float distii = 0; distii < speed; distii += 0.25F) {
-                BlockPos newPos = new BlockPos(player.getX() + calculateXLook(player) * distii, getPlayer().getY(), getPlayer().getZ() + calculateZLook(player) * distii);
+                BlockPos newPos = new BlockPos((int) (player.getX() + calculateXLook(player) * distii), (int) getPlayer().getY(), (int) (getPlayer().getZ() + calculateZLook(player) * distii));
 
                 if (!player.level().isEmptyBlock(newPos)) {
                     speed = distii;

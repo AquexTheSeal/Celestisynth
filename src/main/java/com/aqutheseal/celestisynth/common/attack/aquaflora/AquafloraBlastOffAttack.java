@@ -41,7 +41,7 @@ public class AquafloraBlastOffAttack extends AquafloraAttack {
 
     @Override
     public void startUsing() {
-        List<Entity> surroundingEntities = iterateEntities(getPlayer().level(), createAABB(player.blockPosition().offset(calculateXLook(player) * 4, 2 + (calculateYLook(player) * 3), calculateZLook(player) * 4), 3));
+        List<Entity> surroundingEntities = iterateEntities(getPlayer().level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 4), (int) (2 + (calculateYLook(player) * 3)), (int) (calculateZLook(player) * 4)), 3));
 
         getPlayer().playSound(SoundEvents.WITHER_BREAK_BLOCK, 0.7F, 1.5F);
         CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_BASH.get(), calculateXLook(player) * 2, 1.5, calculateZLook(player) * 2);
@@ -57,7 +57,7 @@ public class AquafloraBlastOffAttack extends AquafloraAttack {
             }
         }
 
-        double check = getPlayer().isOnGround() ? 0.3 : 0.14;
+        double check = getPlayer().onGround() ? 0.3 : 0.14;
 
         if (getPlayer().level().isClientSide()) shakeScreens(player, 3, 2, 0.015F);
 

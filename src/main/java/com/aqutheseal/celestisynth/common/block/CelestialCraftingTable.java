@@ -57,14 +57,13 @@ public class CelestialCraftingTable extends Block implements EntityBlock {
 
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
         if (pRandom.nextInt(24) == 0) pLevel.playLocalSound((double) pPos.getX() + 0.5D, (double) pPos.getY() + 0.5D, (double) pPos.getZ() + 0.5D, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F + pRandom.nextFloat(), pRandom.nextFloat() * 0.7F + 0.3F, false);
-        if (pRandom.nextInt(24) == 0) pLevel.playLocalSound((double) pPos.getX() + 0.5D, (double) pPos.getY() + 0.5D, (double) pPos.getZ() + 0.5D, SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD, SoundSource.BLOCKS, 1.0F + pRandom.nextFloat(), pRandom.nextFloat() * 0.7F + 0.3F, false);
 
         for (int i = 0; i < 2; i++) {
             double rX = -0.2 + pRandom.nextDouble() * 0.4;
             double rY = pRandom.nextDouble() * 0.2;
             double rZ = -0.2 + pRandom.nextDouble() * 0.4;
 
-            pLevel.addParticle(ParticleTypes.SOUL_FIRE_FLAME, pPos.getX() + 0.5D, pPos.getY() + 0.75D, pPos.getZ() + 0.5D, rX, rY, rZ);
+            pLevel.addParticle(ParticleTypes.SCULK_SOUL, pPos.getX() + 0.5D, pPos.getY() + 0.75D, pPos.getZ() + 0.5D, rX, rY, rZ);
             pLevel.addParticle(ParticleTypes.SOUL, pPos.getX() + 0.5D, pPos.getY() + 0.75D, pPos.getZ() + 0.5D, rZ, rY, rX);
         }
     }
