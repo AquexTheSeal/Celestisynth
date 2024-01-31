@@ -80,7 +80,7 @@ public class WintereisClusterPiece extends BlockPlacerPiece {
 
     public void buildCircle(WorldGenLevel level, BlockState blockState, BlockPos pos, BoundingBox box, int radius) {
         for (int cr = 0; cr <= 360; cr++) {
-            putBlock(level, blockState, pos.offset(Math.sin(cr) * radius, 0, Math.cos(cr) * radius), box);
+            putBlock(level, blockState, pos.offset((int) (Math.sin(cr) * radius), 0, (int) (Math.cos(cr) * radius)), box);
         }
     }
 

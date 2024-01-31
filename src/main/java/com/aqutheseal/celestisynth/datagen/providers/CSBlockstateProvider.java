@@ -3,15 +3,15 @@ package com.aqutheseal.celestisynth.datagen.providers;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.registry.CSBlocks;
 import com.aqutheseal.celestisynth.datagen.helpers.BlockDatagenHelper;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class CSBlockstateProvider extends BlockStateProvider {
     private final BlockDatagenHelper helper = new BlockDatagenHelper(models(), this);
 
-    public CSBlockstateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
-        super(gen, Celestisynth.MODID, exFileHelper);
+    public CSBlockstateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
+        super(output, Celestisynth.MODID, exFileHelper);
     }
 
     @Override

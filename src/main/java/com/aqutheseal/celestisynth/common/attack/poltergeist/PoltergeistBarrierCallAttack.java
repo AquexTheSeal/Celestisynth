@@ -44,7 +44,7 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
     public void startUsing() {
         double range = 4;
 
-        for (Entity entityBatch : iterateEntities(player.level, createAABB(player.blockPosition().above().offset(calculateXLook(player) * 2, 0, calculateZLook(player) * 2), range))) {
+        for (Entity entityBatch : iterateEntities(player.level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 2), 0, (int) (calculateZLook(player) * 2)), range))) {
             if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
                 hurtNoKB(player, target, (float) (double) CSConfigManager.COMMON.poltergeistShiftSkillDmg.get() + getSharpnessValue(getStack(), 1.2F));
                 target.playSound(CSSoundEvents.CS_SWORD_CLASH.get(), 0.25F, 0.5F);
@@ -57,14 +57,14 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
         }
 
         CSEffectEntity.createInstance(player, null, CSVisualTypes.POLTERGEIST_RETREAT.get(), calculateXLook(player) * 2, 1, calculateZLook(player) * 2);
-        sendExpandingParticles(player.level, ParticleTypes.SOUL, getPlayer().blockPosition(), 45, 0.5F);
+        sendExpandingParticles(player.level(), ParticleTypes.SOUL, getPlayer().blockPosition(), 45, 0.5F);
 
-        double deltaY = player.isOnGround() ? 3 : 0.9;
+        double deltaY = player.onGround() ? 3 : 0.9;
         getPlayer().setDeltaMovement(calculateXLook(player) * -0.5, deltaY, calculateZLook(player) * -0.5);
         getPlayer().hurtMarked = true;
         getPlayer().playSound(SoundEvents.ENDER_CHEST_OPEN, 1.0F, 1.5F);
         getPlayer().playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.5F);
-        useAndDamageItem(getStack(), getPlayer().level, getPlayer(), 2);
+        useAndDamageItem(getStack(), getPlayer().level(), getPlayer(), 2);
     }
 
     @Override

@@ -7,10 +7,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,8 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player {
 
-    private ServerPlayerMixin(Level curLevel, BlockPos curPos, float curYRot, GameProfile targetProfile, @Nullable ProfilePublicKey targetProfilePublicKey) {
-        super(curLevel, curPos, curYRot, targetProfile, targetProfilePublicKey);
+    public ServerPlayerMixin(Level pLevel, BlockPos pPos, float pYRot, GameProfile pGameProfile) {
+        super(pLevel, pPos, pYRot, pGameProfile);
     }
 
     @Inject(method = "drop(Z)Z", at = @At("HEAD"), cancellable = true)

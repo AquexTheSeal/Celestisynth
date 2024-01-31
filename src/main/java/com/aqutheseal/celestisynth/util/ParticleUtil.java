@@ -2,7 +2,6 @@ package com.aqutheseal.celestisynth.util;
 
 import com.aqutheseal.celestisynth.common.network.util.CSSpawnParticlePacket;
 import com.aqutheseal.celestisynth.manager.CSNetworkManager;
-import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleType;
@@ -47,7 +46,7 @@ public final class ParticleUtil {
     }
 
     private static boolean sendParticles(ServerPlayer pPlayer, double pPosX, double pPosY, double pPosZ, CSSpawnParticlePacket packet) {
-        if (pPlayer.getLevel().isClientSide()) {
+        if (pPlayer.level().isClientSide()) {
             return false;
         } else {
             BlockPos blockpos = pPlayer.blockPosition();

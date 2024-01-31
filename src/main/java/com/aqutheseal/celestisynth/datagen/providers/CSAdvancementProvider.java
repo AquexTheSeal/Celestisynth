@@ -7,8 +7,8 @@ import com.aqutheseal.celestisynth.common.registry.CSItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.critereon.EnterBlockTrigger;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.PlacedBlockTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.network.chat.Component;
@@ -16,12 +16,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class CSAdvancementProvider extends AdvancementProvider {
+public class CSAdvancementProvider extends ForgeAdvancementProvider {
 
     public CSAdvancementProvider(DataGenerator generatorIn, ExistingFileHelper fileHelperIn) {
         super(generatorIn, fileHelperIn);
@@ -35,7 +36,7 @@ public class CSAdvancementProvider extends AdvancementProvider {
 
         Advancement obtainedCelestialIngot = this.obtainItem(consumer, getSupernalIngot, CSItems.CELESTIAL_NETHERITE_INGOT, FrameType.TASK, false);
 
-        Advancement placeCelestialTable = this.createAdvancement(consumer, obtainedCelestialIngot, "place_celestial_table", FrameType.CHALLENGE, true, CSBlocks.CELESTIAL_CRAFTING_TABLE, PlacedBlockTrigger.TriggerInstance::placedBlock);
+        Advancement placeCelestialTable = this.createAdvancement(consumer, obtainedCelestialIngot, "place_celestial_table", FrameType.CHALLENGE, true, CSBlocks.CELESTIAL_CRAFTING_TABLE, EnterBlockTrigger.TriggerInstance::entersBlock);
 
         CSItems.ITEMS.getEntries().stream().filter(weapon -> weapon.get() instanceof CSWeapon)
                 .forEach(item -> this.obtainItem(consumer, placeCelestialTable, item, FrameType.GOAL, false));
@@ -58,6 +59,6 @@ public class CSAdvancementProvider extends AdvancementProvider {
                 .parent(parent)
                 .display(displayIcon, Component.translatable(languageKey + ".title"), Component.translatable(languageKey + ".description"), null, frame, true, toChat, false)
                 .addCriterion("criteria", triggerFactory.apply(toCheck))
-                .save(consumer, fileName, super.fileHelper);
+                .save(consumer, fileName, fileH);
     }
 }

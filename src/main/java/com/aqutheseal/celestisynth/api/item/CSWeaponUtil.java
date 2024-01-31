@@ -6,12 +6,12 @@ import com.aqutheseal.celestisynth.common.network.util.ShakeScreenServerPacket;
 import com.aqutheseal.celestisynth.manager.CSNetworkManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -48,8 +48,8 @@ public interface CSWeaponUtil {
 
         target.invulnerableTime = 0;
 
-        if (!(isBlockable && target.getUseItem().getItem() instanceof ShieldItem)) target.hurt(DamageSource.playerAttack(holder), damage);
-        else useAndDamageItem(target.getUseItem(), target.level, target, (int) (damage / 3));
+        if (!(isBlockable && target.getUseItem().getItem() instanceof ShieldItem)) target.hurt(target.damageSources().playerAttack(holder), damage);
+        else useAndDamageItem(target.getUseItem(), target.level(), target, (int) (damage / 3));
 
         target.doEnchantDamageEffects(holder, target);
         target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
@@ -103,7 +103,7 @@ public interface CSWeaponUtil {
         sendExpandingParticles(level, particleType, origin.getX(), origin.getY(), origin.getZ(), amount, expansionMultiplier);
     }
 
-    default AABB createAABB(BlockPos pos, double range) {
+    default AABB createAABB(Vec3i pos, double range) {
         return createAABB(pos.getX(), pos.getY(), pos.getZ(), range);
     }
 
@@ -162,7 +162,7 @@ public interface CSWeaponUtil {
     }
 
     default void setCameraAngle(Player player, int ordinal) {
-        if (!player.level.isClientSide()) CSNetworkManager.sendToAll(new ChangeCameraTypePacket(player.getId(), ordinal));
+        if (!player.level().isClientSide()) CSNetworkManager.sendToAll(new ChangeCameraTypePacket(player.getId(), ordinal));
     }
 
     static void disableRunningWeapon(Entity owner) {
@@ -186,7 +186,7 @@ public interface CSWeaponUtil {
 
     @Nullable
     static EntityHitResult expandedHitResult(Entity pShooter, Vec3 pStartVec, Vec3 pEndVec, AABB pBoundingBox, Predicate<Entity> pFilter, double pDistance) {
-        Level level = pShooter.level;
+        Level level = pShooter.level();
         double range = pDistance;
         Entity confirmedTarget = null;
         Vec3 clipVec = null;

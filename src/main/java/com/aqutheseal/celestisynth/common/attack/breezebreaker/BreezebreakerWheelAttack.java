@@ -44,21 +44,21 @@ public class BreezebreakerWheelAttack extends BreezebreakerAttack {
     @Override
     public void startUsing() {
         super.startUsing();
-        useAndDamageItem(stack, getPlayer().level, player, 4);
+        useAndDamageItem(stack, getPlayer().level(), player, 4);
     }
 
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 10) {
             double range = 7.5;
-            List<Entity> entities = getPlayer().level.getEntitiesOfClass(Entity.class, getPlayer().getBoundingBox().inflate(range, range, 3).move(0, 1, 0));
+            List<Entity> entities = getPlayer().level().getEntitiesOfClass(Entity.class, getPlayer().getBoundingBox().inflate(range, range, 3).move(0, 1, 0));
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
                         hurtNoKB(player, target, (float) (double) CSConfigManager.COMMON.breezebreakerSprintSkillDmg.get() + getSharpnessValue(stack, 1.5F));
                         target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 1));
-                        sendExpandingParticles(player.level, ParticleTypes.POOF, target.blockPosition().above(), 45, 0);
+                        sendExpandingParticles(player.level(), ParticleTypes.POOF, target.blockPosition().above(), 45, 0);
                     }
                 }
             }
@@ -68,7 +68,7 @@ public class BreezebreakerWheelAttack extends BreezebreakerAttack {
             getPlayer().playSound(CSSoundEvents.CS_FIRE_SHOOT.get(), 1.0F, 1.0F);
             getPlayer().playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
             getPlayer().playSound(CSSoundEvents.CS_WIND_STRIKE.get());
-            sendExpandingParticles(player.level, ParticleTypes.END_ROD, getPlayer().blockPosition().above(), 75, 0);
+            sendExpandingParticles(player.level(), ParticleTypes.END_ROD, getPlayer().blockPosition().above(), 75, 0);
         }
     }
 

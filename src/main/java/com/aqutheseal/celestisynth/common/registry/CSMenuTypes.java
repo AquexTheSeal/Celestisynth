@@ -10,5 +10,5 @@ import net.minecraftforge.registries.RegistryObject;
 public class CSMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Celestisynth.MODID);
 
-    public static final RegistryObject<MenuType<CelestialCraftingMenu>> CELESTIAL_CRAFTING = MENU_TYPES.register("celestial_crafting", () -> new MenuType<>(CelestialCraftingMenu::new));
+    public static final RegistryObject<MenuType<CelestialCraftingMenu>> CELESTIAL_CRAFTING = MENU_TYPES.register("celestial_crafting", () -> new MenuType<>(CelestialCraftingMenu::new, null));
 }

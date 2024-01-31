@@ -48,7 +48,7 @@ public abstract class WeaponAttackInstance implements CSWeaponUtil {
 
     public void baseStop() {
         stopUsing();
-        AnimationManager.playAnimation(getPlayer().level, AnimationManager.AnimationsList.CLEAR);
+        AnimationManager.playAnimation(getPlayer().level(), AnimationManager.AnimationsList.CLEAR);
         getTagController().putInt("cs.AttackIndex", -1);
         getTagController().putInt(ANIMATION_TIMER_KEY, 0);
         getTagController().putBoolean(ANIMATION_BEGUN_KEY, false);

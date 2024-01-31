@@ -56,7 +56,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
 
     @Override
     public void startUsing() {
-        useAndDamageItem(getStack(), getPlayer().level, getPlayer(), 5);
+        useAndDamageItem(getStack(), getPlayer().level(), getPlayer(), 5);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
         boolean isGiantImpact = getTagExtras().getBoolean(IS_IMPACT_LARGE);
 
         if (getTimerProgress() == 20) {
-            getPlayer().moveTo(player.getX(), calculateNonCollidingPos(player.level, getPlayer().blockPosition()).getY() + 1, getPlayer().getZ());
+            getPlayer().moveTo(player.getX(), calculateNonCollidingPos(player.level(), getPlayer().blockPosition()).getY() + 1, getPlayer().getZ());
 
             CSVisualType crack =  isGiantImpact ? CSVisualTypes.POLTERGEIST_IMPACT_CRACK_LARGE.get() : CSVisualTypes.POLTERGEIST_IMPACT_CRACK.get();
             double range = isGiantImpact ? 6.5 : 4;
@@ -77,16 +77,16 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
             CSEffectEntity.createInstance(player, null, crack, xx, isGiantImpact ? -1.3 : -0.5, zz);
 
             if (isGiantImpact) {
-                if (!player.level.isClientSide()) {
-                    SkillCastPoltergeistWard projectile = CSEntityTypes.POLTERGEIST_WARD.get().create(player.level);
+                if (!player.level().isClientSide()) {
+                    SkillCastPoltergeistWard projectile = CSEntityTypes.POLTERGEIST_WARD.get().create(player.level());
                     projectile.setOwnerUuid(player.getUUID());
                     projectile.moveTo(player.getX() + xx, getPlayer().getY(), getPlayer().getZ() + zz);
-                    getPlayer().level.addFreshEntity(projectile);
+                    getPlayer().level().addFreshEntity(projectile);
                 }
-                shakeScreensForNearbyPlayers(player, getPlayer().level, 24, 60, 30,  0.035F);
+                shakeScreensForNearbyPlayers(player, getPlayer().level(), 24, 60, 30,  0.035F);
             } else {
                 CSEffectEntity.createInstance(player, null, CSVisualTypes.POLTERGEIST_WARD_SUMMON_SMALL.get(), xx, 1, zz);
-                shakeScreensForNearbyPlayers(player, getPlayer().level, 12, 30, 15,  0.01F);
+                shakeScreensForNearbyPlayers(player, getPlayer().level(), 12, 30, 15,  0.01F);
             }
 
             addComboPoint(getStack(), player);
@@ -98,7 +98,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
     }
 
     public void doImpact(boolean isGiantImpact, double kbX, double kbZ, double range) {
-        for (Entity entityBatch : iterateEntities(player.level, createAABB(player.blockPosition().offset(kbX, 1, kbZ), range))) {
+        for (Entity entityBatch : iterateEntities(player.level(), createAABB(player.blockPosition().offset((int) kbX, 1, (int) kbZ), range))) {
             if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
                 hurtNoKB(player, target, (isGiantImpact ? (float) (double) CSConfigManager.COMMON.poltergeistSkillDmg.get() * 1.4F : (float) (double) (CSConfigManager.COMMON.poltergeistSkillDmg.get())) + getSharpnessValue(getStack(), 1.2F) + getTagController().getInt(SMASH_HEIGHT));
                 target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
@@ -107,7 +107,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
                 target.setDeltaMovement((target.getX() - (player.getX() + kbX)) / 3, (target.getY() - getPlayer().getY()) / 3, (target.getZ() - (player.getZ() + kbZ)) / 3);
                 CSWeaponUtil.disableRunningWeapon(target);
 
-                if (!player.level.isClientSide()) {
+                if (!player.level().isClientSide()) {
                     target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                         data.setPhantomTag(player, 100);
                     });

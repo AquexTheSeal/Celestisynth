@@ -48,13 +48,13 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
     public void startUsing() {
         super.startUsing();
         
-        useAndDamageItem(stack, getPlayer().level, player, 5);
+        useAndDamageItem(stack, getPlayer().level(), player, 5);
     }
 
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 10) {
-            sendExpandingParticles(player.level, ParticleTypes.CAMPFIRE_COSY_SMOKE, getPlayer().blockPosition(), 45, 0.2F);
+            sendExpandingParticles(player.level(), ParticleTypes.CAMPFIRE_COSY_SMOKE, getPlayer().blockPosition(), 45, 0.2F);
 
             Entity lookAtTarget = getLookedAtEntity(player, 16);
             LivingEntity observedLivingTarget = lookAtTarget instanceof LivingEntity entity ? entity : null;
@@ -63,10 +63,10 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
                 double attackDamage = CSConfigManager.COMMON.breezebreakerSprintSkillDmg.get() + getSharpnessValue(stack, 1);
 
                 hurtNoKB(player, observedLivingTarget, (float) attackDamage);
-                getPlayer().level.explode(player, observedLivingTarget.getX(), observedLivingTarget.getY(), observedLivingTarget.getZ(), 1.0F, Explosion.BlockInteraction.NONE);
+                getPlayer().level().explode(player, observedLivingTarget.getX(), observedLivingTarget.getY(), observedLivingTarget.getZ(), 1.0F, Explosion.BlockInteraction.NONE);
                 observedLivingTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 2));
                 observedLivingTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
-                sendExpandingParticles(player.level, ParticleTypes.FIREWORK, getPlayer().blockPosition().above(), 45, 0.2F);
+                sendExpandingParticles(player.level(), ParticleTypes.FIREWORK, getPlayer().blockPosition().above(), 45, 0.2F);
             }
 
             double speed = 7;
@@ -75,7 +75,7 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
             for (float distii = 0; distii < speed; distii += 0.25F) {
                 BlockPos newPos = new BlockPos(player.getX() + calculateXLook(player) * distii, getPlayer().getY(), getPlayer().getZ() + calculateZLook(player) * distii);
 
-                if (!player.level.isEmptyBlock(newPos)) {
+                if (!player.level().isEmptyBlock(newPos)) {
                     speed = distii;
                     break;
                 }

@@ -30,7 +30,7 @@ public class BreezebreakerWhirlwindAttack extends BreezebreakerAttack {
     public void startUsing() {
         super.startUsing();
 
-        useAndDamageItem(stack, getPlayer().level, player, 3);
+        useAndDamageItem(stack, getPlayer().level(), player, 3);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class BreezebreakerWhirlwindAttack extends BreezebreakerAttack {
             getPlayer().playSound(CSSoundEvents.CS_WIND_STRIKE.get());
             getPlayer().playSound(CSSoundEvents.CS_WHIRLWIND.get());
 
-            if (!player.level.isClientSide()) {
-                SkillCastBreezebreakerTornado tornadoSkillCast = CSEntityTypes.BREEZEBREAKER_TORNADO.get().create(player.level);
+            if (!player.level().isClientSide()) {
+                SkillCastBreezebreakerTornado tornadoSkillCast = CSEntityTypes.BREEZEBREAKER_TORNADO.get().create(player.level());
 
                 tornadoSkillCast.setOwnerUuid(player.getUUID());
                 tornadoSkillCast.setAngleX((float) calculateXLook(player));
@@ -66,7 +66,7 @@ public class BreezebreakerWhirlwindAttack extends BreezebreakerAttack {
                 tornadoSkillCast.setAddAngleZ((float) calculateZLook(player));
                 tornadoSkillCast.moveTo(player.getX(), getPlayer().getY() + 1, getPlayer().getZ());
 
-                getPlayer().level.addFreshEntity(tornadoSkillCast);
+                getPlayer().level().addFreshEntity(tornadoSkillCast);
             }
         }
     }

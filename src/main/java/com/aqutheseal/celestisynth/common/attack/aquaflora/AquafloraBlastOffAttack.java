@@ -41,7 +41,7 @@ public class AquafloraBlastOffAttack extends AquafloraAttack {
 
     @Override
     public void startUsing() {
-        List<Entity> surroundingEntities = iterateEntities(getPlayer().level, createAABB(player.blockPosition().offset(calculateXLook(player) * 4, 2 + (calculateYLook(player) * 3), calculateZLook(player) * 4), 3));
+        List<Entity> surroundingEntities = iterateEntities(getPlayer().level(), createAABB(player.blockPosition().offset(calculateXLook(player) * 4, 2 + (calculateYLook(player) * 3), calculateZLook(player) * 4), 3));
 
         getPlayer().playSound(SoundEvents.WITHER_BREAK_BLOCK, 0.7F, 1.5F);
         CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_BASH.get(), calculateXLook(player) * 2, 1.5, calculateZLook(player) * 2);
@@ -51,7 +51,7 @@ public class AquafloraBlastOffAttack extends AquafloraAttack {
                 if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
                     target.setDeltaMovement((target.getX() - getPlayer().getX()) * 0.4,   1, (target.getZ() - getPlayer().getZ()) * 0.4);
                     hurtNoKB(player, target, (float) (double) CSConfigManager.COMMON.aquafloraShiftSkillDmg.get() + getSharpnessValue(getStack(), 1F));
-                    createHitEffect(getStack(), getPlayer().level, player, target);
+                    createHitEffect(getStack(), getPlayer().level(), player, target);
                     CSWeaponUtil.disableRunningWeapon(target);
                 }
             }
@@ -59,7 +59,7 @@ public class AquafloraBlastOffAttack extends AquafloraAttack {
 
         double check = getPlayer().isOnGround() ? 0.3 : 0.14;
 
-        if (getPlayer().level.isClientSide()) shakeScreens(player, 3, 2, 0.015F);
+        if (getPlayer().level().isClientSide()) shakeScreens(player, 3, 2, 0.015F);
 
         getPlayer().setDeltaMovement(player.getDeltaMovement().add(calculateXLook(player) * check, 0, calculateZLook(player) * check));
     }

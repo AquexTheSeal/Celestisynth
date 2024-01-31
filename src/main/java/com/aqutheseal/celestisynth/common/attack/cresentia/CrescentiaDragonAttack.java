@@ -38,7 +38,7 @@ public class CrescentiaDragonAttack extends WeaponAttackInstance {
 
     @Override
     public void startUsing() {
-        useAndDamageItem(getStack(), getPlayer().level, getPlayer(), 5);
+        useAndDamageItem(getStack(), getPlayer().level(), getPlayer(), 5);
     }
 
     @Override
@@ -46,8 +46,8 @@ public class CrescentiaDragonAttack extends WeaponAttackInstance {
         if (getTimerProgress() <= 20) setDeltaPlayer(getPlayer(), 0, 0, 0);
 
         if (getTimerProgress() == 20) {
-            if (!player.level.isClientSide()) {
-                SkillCastCrescentiaRanged cresentiaSkillCast = CSEntityTypes.CRESCENTIA_RANGED.get().create(getPlayer().level);
+            if (!player.level().isClientSide()) {
+                SkillCastCrescentiaRanged cresentiaSkillCast = CSEntityTypes.CRESCENTIA_RANGED.get().create(getPlayer().level());
 
                 cresentiaSkillCast.setOwnerUuid(getPlayer().getUUID());
                 cresentiaSkillCast.setAngleX((float) calculateXLook(getPlayer()));
@@ -58,15 +58,15 @@ public class CrescentiaDragonAttack extends WeaponAttackInstance {
                 cresentiaSkillCast.setAddAngleZ((float) calculateZLook(getPlayer()) / 2);
                 cresentiaSkillCast.moveTo(getPlayer().getX(), getPlayer().getY() + 1, getPlayer().getZ());
 
-                getPlayer().level.addFreshEntity(cresentiaSkillCast);
+                getPlayer().level().addFreshEntity(cresentiaSkillCast);
             }
 
             for (int i = 0; i < 10; i++) {
-                float offX = getPlayer().level.random.nextFloat() * 12 - 6;
-                float offY = getPlayer().level.random.nextFloat() * 12 - 6;
-                float offZ = getPlayer().level.random.nextFloat() * 12 - 6;
+                float offX = getPlayer().level().random.nextFloat() * 12 - 6;
+                float offY = getPlayer().level().random.nextFloat() * 12 - 6;
+                float offZ = getPlayer().level().random.nextFloat() * 12 - 6;
 
-                CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level, getPlayer(), getPlayer().getX() + offX, getPlayer().getY() + offY, getPlayer().getZ() + offZ, true);
+                CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level(), getPlayer(), getPlayer().getX() + offX, getPlayer().getY() + offY, getPlayer().getZ() + offZ, true);
 
                 getPlayer().playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
             }

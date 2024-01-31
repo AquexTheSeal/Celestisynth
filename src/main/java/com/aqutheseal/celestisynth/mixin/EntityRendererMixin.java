@@ -3,7 +3,7 @@ package com.aqutheseal.celestisynth.mixin;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -47,7 +47,7 @@ public abstract class EntityRendererMixin<T extends Entity> {
         float offsetBBHeight = pEntity.getBbHeight() / offsetBBWidth;
         float yFireVertexOffset = 0.0F;
 
-        pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(-Minecraft.getInstance().gameRenderer.getMainCamera().getYRot()));
+        pMatrixStack.mulPose(Axis.YP.rotationDegrees(-Minecraft.getInstance().gameRenderer.getMainCamera().getYRot()));
         pMatrixStack.translate(0.0D, 0.0D, -0.3F + offsetBBHeight * 0.02F);
 
         float zFireVertex = 0.0F;

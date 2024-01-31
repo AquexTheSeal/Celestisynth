@@ -8,6 +8,7 @@ import com.aqutheseal.celestisynth.common.registry.CSItems;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.datagen.providers.*;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -52,11 +53,12 @@ public class CSCommonSetupEvents {
         public static void onGatherDataEvent(final GatherDataEvent event) {
             DataGenerator dataGenerator = event.getGenerator();
             final ExistingFileHelper efh = event.getExistingFileHelper();
+            final PackOutput pack = event.getGenerator().getPackOutput();
 
-            dataGenerator.addProvider(event.includeServer(), new CSBlockstateProvider(dataGenerator, efh));
-            dataGenerator.addProvider(event.includeServer(), new CSItemModelProvider(dataGenerator, efh));
-            dataGenerator.addProvider(event.includeServer(), new CSRecipeProvider(dataGenerator));
-            dataGenerator.addProvider(event.includeServer(), new CSAdvancementProvider(dataGenerator, efh));
+            dataGenerator.addProvider(event.includeServer(), new CSBlockstateProvider(pack, efh));
+            dataGenerator.addProvider(event.includeServer(), new CSItemModelProvider(pack, efh));
+            dataGenerator.addProvider(event.includeServer(), new CSRecipeProvider(pack));
+            dataGenerator.addProvider(event.includeServer(), new CSAdvancementProvider(pack, efh));
         }
     }
 }

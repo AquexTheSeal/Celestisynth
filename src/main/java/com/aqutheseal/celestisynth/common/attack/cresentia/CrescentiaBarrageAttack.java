@@ -47,17 +47,17 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
 
     @Override
     public void startUsing() {
-        useAndDamageItem(getStack(), getPlayer().level, getPlayer(), 4);
+        useAndDamageItem(getStack(), getPlayer().level(), getPlayer(), 4);
     }
 
     @Override
     public void tickAttack() {
-        if (getTimerProgress() == 15) getPlayer().playSound(CSSoundEvents.CS_WHIRLWIND.get(), 0.35F, 0.5F + player.level.random.nextFloat());
+        if (getTimerProgress() == 15) getPlayer().playSound(CSSoundEvents.CS_WHIRLWIND.get(), 0.35F, 0.5F + player.level().random.nextFloat());
 
         if (getTimerProgress() >= 15 && getTimerProgress() <= 60) {
             double range = 7.0;
             double rangeSq = Mth.square(range);
-            List<Entity> entities = getPlayer().level.getEntitiesOfClass(Entity.class, getPlayer().getBoundingBox().inflate(range, range, range).move(calculateXLook(getPlayer()), 0, calculateZLook(getPlayer())));
+            List<Entity> entities = getPlayer().level().getEntitiesOfClass(Entity.class, getPlayer().getBoundingBox().inflate(range, range, range).move(calculateXLook(getPlayer()), 0, calculateZLook(getPlayer())));
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
@@ -67,7 +67,7 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
                     }
                 }
                 if (entityBatch instanceof Projectile projectile) {
-                    CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level, getPlayer(), projectile.getX(), projectile.getY(), projectile.getZ(), true);
+                    CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level(), getPlayer(), projectile.getX(), projectile.getY(), projectile.getZ(), true);
                     getPlayer().playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
                     projectile.remove(Entity.RemovalReason.DISCARDED);
                 }
@@ -76,20 +76,20 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
             if (getTimerProgress() % 30 == 0) getPlayer().playSound(CSSoundEvents.CS_WHIRLWIND.get(), 0.15F, 1.5F);
 
             if (getTimerProgress() % 3 == 0) {
-                if (getPlayer().level.random.nextBoolean()) CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.CRESCENTIA_STRIKE.get(), calculateXLook(getPlayer()), -0.3, calculateZLook(getPlayer()));
+                if (getPlayer().level().random.nextBoolean()) CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.CRESCENTIA_STRIKE.get(), calculateXLook(getPlayer()), -0.3, calculateZLook(getPlayer()));
                 else CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get(), calculateXLook(getPlayer()), -0.3, calculateZLook(getPlayer()));
 
                 playRandomBladeSound(getPlayer(), BASE_WEAPON_EFFECTS.length);
             }
             CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_AIR_LARGE.get(), 0, -1, 0);
 
-            float offX = (getPlayer().level.random.nextFloat() * 16) - 8;
-            float offY = (getPlayer().level.random.nextFloat() * 16) - 8;
-            float offZ = (getPlayer().level.random.nextFloat() * 16) - 8;
+            float offX = (getPlayer().level().random.nextFloat() * 16) - 8;
+            float offY = (getPlayer().level().random.nextFloat() * 16) - 8;
+            float offZ = (getPlayer().level().random.nextFloat() * 16) - 8;
 
-            CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level, getPlayer(), getPlayer().getX() + offX, getPlayer().getY() + offY, getPlayer().getZ() + offZ, false);
+            CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level(), getPlayer(), getPlayer().getX() + offX, getPlayer().getY() + offY, getPlayer().getZ() + offZ, false);
 
-            if (getPlayer().level.random.nextBoolean()) CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level, getPlayer(), getPlayer().getX() + offZ, getPlayer().getY() + offX, getPlayer().getZ() + offY, false);
+            if (getPlayer().level().random.nextBoolean()) CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level(), getPlayer(), getPlayer().getX() + offZ, getPlayer().getY() + offX, getPlayer().getZ() + offY, false);
         }
     }
 

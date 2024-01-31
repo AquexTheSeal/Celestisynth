@@ -21,5 +21,6 @@ public final class CSRegistryManager {
         CSVisualTypes.VISUALS.register(modBus);
         CSStructures.STRUCTURE_TYPE.register(modBus);
         CSStructures.STRUCTURE_PIECE.register(modBus);
+        CSCreativeTabs.CREATIVE_MODE_TABS.register(modBus);
     }
 }

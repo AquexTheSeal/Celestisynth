@@ -49,7 +49,7 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
     @Override
     public void startUsing() {
         getTagController().putInt(DIRECTION_INDEX_KEY, getPlayer().getRandom().nextInt(2));
-        useAndDamageItem(getStack(), getPlayer().level, getPlayer(), 2);
+        useAndDamageItem(getStack(), getPlayer().level(), getPlayer(), 2);
     }
 
     @Override
@@ -63,13 +63,13 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
             getPlayer().playSound(CSSoundEvents.CS_STEP.get());
             for (int i = 0; i < 15; i++) {
                 Random rand = new Random();
-                if (!getPlayer().level.isClientSide()) {
-                    ParticleUtil.sendParticles((ServerLevel) getPlayer().level, ParticleTypes.LARGE_SMOKE, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 0, (-1 + rand.nextFloat(2)) * 0.5, 0.1, (-1 + rand.nextFloat(2)) * 0.5);
+                if (!getPlayer().level().isClientSide()) {
+                    ParticleUtil.sendParticles((ServerLevel) getPlayer().level(), ParticleTypes.LARGE_SMOKE, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 0, (-1 + rand.nextFloat(2)) * 0.5, 0.1, (-1 + rand.nextFloat(2)) * 0.5);
                 }
             }
         }
         if (getTimerProgress() > 0 && getTimerProgress() < 24) {
-            if (!getPlayer().level.isClientSide()) ParticleUtil.sendParticles((ServerLevel) getPlayer().level, ParticleTypes.FLAME, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 0, 0, 0.1, 0);
+            if (!getPlayer().level().isClientSide()) ParticleUtil.sendParticles((ServerLevel) getPlayer().level(), ParticleTypes.FLAME, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 0, 0, 0.1, 0);
 
             getPlayer().setDeltaMovement(0, 0, 0);
             getPlayer().hurtMarked = true;
@@ -77,7 +77,7 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
         } else if (getTimerProgress() > 23 && getTimerProgress() < 60) {
             BlockPos blockPosForAttack = getPlayer().blockPosition();
             int range = 4;
-            List<LivingEntity> entities = getPlayer().level.getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
+            List<LivingEntity> entities = getPlayer().level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
 
             for (LivingEntity target : entities) {
                 if (target != getPlayer() && !getPlayer().isAlliedTo(target) && target.isAlive()) {
@@ -105,8 +105,8 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
 
             for (int i = 0; i < particleCount; i++) {
                 double angle = i * angleIncrement;
-                double rotationX = getPlayer().level.random.nextDouble() * 360.0;
-                double rotationZ = getPlayer().level.random.nextDouble() * 360.0;
+                double rotationX = getPlayer().level().random.nextDouble() * 360.0;
+                double rotationZ = getPlayer().level().random.nextDouble() * 360.0;
                 double x = playerPos.getX() + radius * Math.cos(angle);
                 double y = playerPos.getY() + 1.5;
                 double z = playerPos.getZ() + radius * Math.sin(angle);
@@ -115,7 +115,7 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
                 double motionY = Math.sin(Math.toRadians(rotationZ));
                 double motionZ = Math.cos(Math.toRadians(rotationX)) * Math.cos(Math.toRadians(rotationZ));
 
-                if (!getPlayer().level.isClientSide()) ParticleUtil.sendParticles((ServerLevel) getPlayer().level, ParticleTypes.FLAME, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
+                if (!getPlayer().level().isClientSide()) ParticleUtil.sendParticles((ServerLevel) getPlayer().level(), ParticleTypes.FLAME, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
             }
         }
     }

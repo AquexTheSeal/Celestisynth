@@ -119,11 +119,11 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
 
                     ehr.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                         if (getOwner() instanceof Player player && data.getQuasarImbueSource() == player) {
-                            SkillCastRainfallRain projectile = CSEntityTypes.RAINFALL_RAIN.get().create(player.level);
+                            SkillCastRainfallRain projectile = CSEntityTypes.RAINFALL_RAIN.get().create(player.level());
                             projectile.targetPos = new BlockPos(ehr.getEntity().blockPosition());
                             projectile.setOwnerUuid(player.getUUID());
                             projectile.moveTo(ehr.getEntity().getX(), ehr.getEntity().getY() + 15, ehr.getEntity().getZ());
-                            player.level.addFreshEntity(projectile);
+                            player.level().addFreshEntity(projectile);
                         }
                     });
 

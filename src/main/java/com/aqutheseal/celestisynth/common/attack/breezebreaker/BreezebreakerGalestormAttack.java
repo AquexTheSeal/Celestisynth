@@ -45,21 +45,21 @@ public class BreezebreakerGalestormAttack extends BreezebreakerAttack {
     public void startUsing() {
         super.startUsing();
 
-        useAndDamageItem(stack, getPlayer().level, player, 1);
+        useAndDamageItem(stack, getPlayer().level(), player, 1);
     }
 
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 6) {
             double range = 6.0;
-            List<Entity> entities = iterateEntities(player.level, createAABB(player.blockPosition().offset(calculateXLook(player) * 3, 1, calculateZLook(player) * 3), range));
+            List<Entity> entities = iterateEntities(player.level(), createAABB(player.blockPosition().offset(calculateXLook(player) * 3, 1, calculateZLook(player) * 3), range));
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
                         hurtNoKB(player, target, (float) (CSConfigManager.COMMON.breezebreakerSkillDmg.get() + getSharpnessValue(stack, 1)));
                         target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 1));
-                        sendExpandingParticles(player.level, ParticleTypes.POOF, target.blockPosition().above(), 15, 0);
+                        sendExpandingParticles(player.level(), ParticleTypes.POOF, target.blockPosition().above(), 15, 0);
                     }
                 }
             }

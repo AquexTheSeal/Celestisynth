@@ -4,7 +4,7 @@ import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -61,19 +61,19 @@ public class CSVisualType {
         rotatableEffectsZ.add(CSVisualTypes.BREEZEBREAKER_SLASH.get());
         rotatableEffectsZ.add(CSVisualTypes.BREEZEBREAKER_SLASH_INVERTED.get());
 
-        if (rotatableEffectsZ.contains(animatable.getVisualType())) poseStack.mulPose(Vector3f.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
+        if (rotatableEffectsZ.contains(animatable.getVisualType())) poseStack.mulPose(Axis.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
 
         List<CSVisualType> rotatableEffectsX = new ArrayList<>();
         rotatableEffectsX.add(CSVisualTypes.BREEZEBREAKER_WHEEL_IMPACT.get());
         rotatableEffectsX.add(CSVisualTypes.AQUAFLORA_PIERCE_START.get());
         rotatableEffectsX.add(CSVisualTypes.AQUAFLORA_STAB.get());
 
-        if (rotatableEffectsX.contains(animatable.getVisualType()))  poseStack.mulPose(Vector3f.XP.rotationDegrees(180F + lerpBodyRot));
+        if (rotatableEffectsX.contains(animatable.getVisualType()))  poseStack.mulPose(Axis.XP.rotationDegrees(180F + lerpBodyRot));
 
         List<CSVisualType> men = new ArrayList<>();
         men.add(CSVisualTypes.RAINFALL_SHOOT.get());
 
-        if (men.contains(animatable.getVisualType())) poseStack.mulPose(Vector3f.XP.rotationDegrees(180F + lerpBodyRot - 15f));
+        if (men.contains(animatable.getVisualType())) poseStack.mulPose(Axis.XP.rotationDegrees(180F + lerpBodyRot - 15f));
     }
 
     public String getName() {

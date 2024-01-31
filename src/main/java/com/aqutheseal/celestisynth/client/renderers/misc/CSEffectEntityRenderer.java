@@ -7,7 +7,7 @@ import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -28,11 +28,11 @@ public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<C
     public void renderEarly(CSEffectEntity animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         float lerpBodyRot = Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot()) - 165;
 
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(180f - lerpBodyRot));
+        poseStack.mulPose(Axis.YP.rotationDegrees(180f - lerpBodyRot));
 
         if (animatable.getVisualType().isRotateRandomly() && !animatable.getVisualType().hasSpecialProperties()) {
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(animatable.getRotationX()));
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(animatable.getRotationZ()));
+            poseStack.mulPose(Axis.XP.rotationDegrees(animatable.getRotationX()));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(animatable.getRotationZ()));
         }
 
         CSVisualType.setSpecialProperties(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);

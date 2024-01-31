@@ -1,14 +1,12 @@
 package com.aqutheseal.celestisynth.common.attack.aquaflora;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
-import com.aqutheseal.celestisynth.api.mixin.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.google.common.collect.Lists;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -66,8 +64,8 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
 
         if (getTimerProgress() >= 15 && getTimerProgress() % (checkDualWield(player, AquafloraItem.class) ? 2 : 5) == 0) {
             Predicate<Entity> filter = (e) -> e != player && e instanceof LivingEntity le && (player.hasLineOfSight(le) || le.hasLineOfSight(player)) &&  le.isAlive() && !player.isAlliedTo(le);
-            List<LivingEntity> entities = iterateEntities(getPlayer().level, createAABB(player.blockPosition(), 12)).stream().filter(filter).map(LivingEntity.class::cast).toList();
-            LivingEntity target = entities.size() > 0 ? entities.get(getPlayer().level.random.nextInt(entities.size())) : null;
+            List<LivingEntity> entities = iterateEntities(getPlayer().level(), createAABB(player.blockPosition(), 12)).stream().filter(filter).map(LivingEntity.class::cast).toList();
+            LivingEntity target = entities.size() > 0 ? entities.get(getPlayer().level().random.nextInt(entities.size())) : null;
 
             if (target == player || target == null) {
                 player.displayClientMessage(Component.translatable("item.celestisynth.aquaflora.skill_3.notice"), true);
@@ -77,10 +75,10 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
                 return;
             }
 
-            double offsetX = -4 + getPlayer().level.random.nextInt(8);
-            double offsetZ = -4 + getPlayer().level.random.nextInt(8);
+            double offsetX = -4 + getPlayer().level().random.nextInt(8);
+            double offsetZ = -4 + getPlayer().level().random.nextInt(8);
 
-            if (getPlayer().level.isClientSide()) {
+            if (getPlayer().level().isClientSide()) {
                 double dx = target.getX() - (player.getX() + offsetX);
                 double dz = target.getZ() - (player.getZ() + offsetZ);
                 double yaw = -Math.atan2(dx, dz);
@@ -92,14 +90,14 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
             }
 
             CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_DASH.get(), 0, 0.55, 0);
-            getPlayer().moveTo(target.blockPosition().offset(offsetX, 1, offsetZ), getPlayer().getYRot(), getPlayer().getXRot());
+            getPlayer().moveTo(target.blockPosition().offset((int) offsetX, 1, (int) offsetZ), getPlayer().getYRot(), getPlayer().getXRot());
             CSEffectEntity.createInstance(player, target, CSVisualTypes.AQUAFLORA_ASSASSINATE.get(), 0, -0.2, 0);
             getPlayer().playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 0.5F);
 
             double dualWieldMultiplier = checkDualWield(player, AquafloraItem.class) ? 0.52 : 1;
 
             hurtNoKB(player, target, (float) (CSConfigManager.COMMON.aquafloraBloomSkillDmg.get() * dualWieldMultiplier) + getSharpnessValue(getStack(), (float) (0.65 * dualWieldMultiplier)));
-            createAquafloraFirework(getStack(), getPlayer().level, player, target.getX(), target.getY() + 1, target.getZ());
+            createAquafloraFirework(getStack(), getPlayer().level(), player, target.getX(), target.getY() + 1, target.getZ());
         }
     }
 
@@ -130,6 +128,6 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
 
         if (!starDataListTag.isEmpty()) fireworkDataTag.put("Explosions", starDataListTag);
 
-        player.level.createFireworks(x, y, z, 0.01, 0.01, 0.01, fireworkDataTag);
+        player.level().createFireworks(x, y, z, 0.01, 0.01, 0.01, fireworkDataTag);
     }
 }

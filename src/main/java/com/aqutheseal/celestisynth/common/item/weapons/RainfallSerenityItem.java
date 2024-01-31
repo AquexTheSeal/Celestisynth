@@ -10,8 +10,6 @@ import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -34,6 +32,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -70,9 +70,9 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
             pPlayer.startUsingItem(pHand);
             elementData.putBoolean(ANIMATION_BEGUN_KEY, true);
             if (pHand == InteractionHand.MAIN_HAND) {
-                AnimationManager.playAnimation(pPlayer.level, AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_RIGHT);
+                AnimationManager.playAnimation(pPlayer.level(), AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_RIGHT);
             } else {
-                AnimationManager.playAnimation(pPlayer.level, AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_LEFT);
+                AnimationManager.playAnimation(pPlayer.level(), AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_LEFT);
             }
 
             return InteractionResultHolder.consume(heldStack);
@@ -89,10 +89,9 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
-        super.onUsingTick(stack, player, count);
-
-        player.setYBodyRot(player.getYRot());
+    public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) {
+        super.onUseTick(pLevel, pLivingEntity, pStack, pRemainingUseDuration);
+        pLivingEntity.setYBodyRot(pLivingEntity.getYRot());
     }
 
     public void shiftSkill(Level level, Player player) {
@@ -129,7 +128,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
                     float offY = (-0.5f + random.nextFloat()) * expansionMultiplier;
                     float offZ = (float) Math.sin(angle) * expansionMultiplier;
 
-                    ParticleUtil.sendParticles(player.level, CSParticleTypes.RAINFALL_ENERGY_SMALL.get(), player.getX(), player.getY(), player.getZ(), 0, offX, offY, offZ);
+                    ParticleUtil.sendParticles(player.level(), CSParticleTypes.RAINFALL_ENERGY_SMALL.get(), player.getX(), player.getY(), player.getZ(), 0, offX, offY, offZ);
                 }
 
                 FloatArrayList angles = new FloatArrayList();
@@ -148,7 +147,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
                 }
                 for (float angle : angles) {
                     if (!pLevel.isClientSide) {
-                        BlockPos originPos = new BlockPos(player.getX(), player.getY() + 1.5, player.getZ());
+                        BlockPos originPos = new BlockPos((int) player.getX(), (int) (player.getY() + 1.5), (int) player.getZ());
                         RainfallArrow rainfallArrow = new RainfallArrow(pLevel, player);
 
                         rainfallArrow = (RainfallArrow) customArrow(rainfallArrow);
@@ -159,14 +158,11 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
                         rainfallArrow.setImbueQuasar(true);
 
                         Vec3 vec31 = pEntityLiving.getUpVector(1.0F);
-                        Vector3f wrappedVec = new Vector3f(vec31);
+                        Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(angle * ((float)Math.PI / 180F), vec31.x, vec31.y, vec31.z);
+                        Vec3 vec3 =  pEntityLiving.getViewVector(1.0F);
+                        Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
 
-                        Quaternion quaternion = new Quaternion(wrappedVec, angle, true);
-                        Vec3 viewVec = pEntityLiving.getViewVector(1.0F);
-                        Vector3f wrappedViewVec = new Vector3f(viewVec);
-
-                        wrappedViewVec.transform(quaternion);
-                        rainfallArrow.shoot(wrappedViewVec.x(), wrappedViewVec.y(), wrappedViewVec.z(), (float) (curPowerFromUse * 3.0F), 0);
+                        rainfallArrow.shoot(vector3f.x(), vector3f.y(), vector3f.z(), (float) (curPowerFromUse * 3.0F), 0);
 
                         int powerEnchLvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, pStack);
                         int piercingEnchLvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, pStack);

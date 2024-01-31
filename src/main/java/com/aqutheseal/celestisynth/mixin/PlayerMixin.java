@@ -38,7 +38,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSup
 
     @Inject(method = "tick", at = @At(value = "TAIL"))
     public void celestisynth$tick(CallbackInfo ci) {
-        if (level.isClientSide()) {
+        if (level().isClientSide()) {
             if (getScreenShakeDuration() > 0) {
                 if (getScreenShakeIntensity() > 1.0f) setScreenShakeIntensity(1.0f);
 

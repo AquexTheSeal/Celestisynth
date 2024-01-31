@@ -4,7 +4,7 @@ import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.recipe.celestialcrafting.CelestialShapedRecipeBuilder;
 import com.aqutheseal.celestisynth.common.registry.CSBlocks;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -17,8 +17,8 @@ import java.util.function.Consumer;
 
 public class CSRecipeProvider extends RecipeProvider {
 
-    public CSRecipeProvider(DataGenerator p_125973_) {
-        super(p_125973_);
+    public CSRecipeProvider(PackOutput output) {
+        super(output);
     }
 
     private ResourceLocation modLoc(String path) {
@@ -26,65 +26,65 @@ public class CSRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-        ShapedRecipeBuilder.shaped(CSItems.CELESTIAL_CORE.get())
+    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CSItems.CELESTIAL_CORE.get())
                 .pattern(" x ").pattern("xyx").pattern(" x ")
                 .define('x', Ingredient.of(Items.AMETHYST_SHARD)).define('y', Ingredient.of(csItemTag("celestial_core_bases")))
                 .unlockedBy("has_item", has(Items.AMETHYST_SHARD))
                 .save(consumer, modLoc("celestial_core"));
 
-        ShapedRecipeBuilder.shaped(CSItems.CELESTIAL_CORE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CSItems.CELESTIAL_CORE.get())
                 .pattern(" x ").pattern("xyx").pattern(" x ")
                 .define('x', Ingredient.of(Items.AMETHYST_SHARD)).define('y', Ingredient.of(CSItems.CELESTIAL_CORE_HEATED.get()))
                 .unlockedBy("has_item", has(CSItems.CELESTIAL_CORE_HEATED.get()))
                 .save(consumer, modLoc("celestial_core_dupe"));
 
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(CSItems.CELESTIAL_CORE.get()), CSItems.CELESTIAL_CORE_HEATED.get(), 0.25F, 600)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(CSItems.CELESTIAL_CORE.get()), RecipeCategory.MISC, CSItems.CELESTIAL_CORE_HEATED.get(), 0.25F, 600)
                 .unlockedBy("has_item", has(CSItems.CELESTIAL_CORE.get()))
                 .save(consumer, modLoc("celestial_core_smelting"));
 
-        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CSItems.CELESTIAL_CORE.get()), CSItems.CELESTIAL_CORE_HEATED.get(), 0.45F, 300)
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CSItems.CELESTIAL_CORE.get()), RecipeCategory.MISC, CSItems.CELESTIAL_CORE_HEATED.get(), 0.45F, 300)
                 .unlockedBy("has_item", has(CSItems.CELESTIAL_CORE.get()))
                 .save(consumer, modLoc("celestial_core_blasting"));
 
-        UpgradeRecipeBuilder.smithing(
-                        Ingredient.of(Items.NETHERITE_INGOT), Ingredient.of(Items.GHAST_TEAR), CSItems.SUPERNAL_NETHERITE_INGOT.get())
+        SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(Items.NETHERITE_INGOT), Ingredient.of(Items.GHAST_TEAR), RecipeCategory.MISC, CSItems.SUPERNAL_NETHERITE_INGOT.get())
                 .unlocks("has_item", has(Items.NETHERITE_INGOT))
                 .save(consumer, modLoc("supernal_netherite_ingot_smithing"));
 
-        UpgradeRecipeBuilder.smithing(
-                        Ingredient.of(Items.NETHERITE_INGOT), Ingredient.of(CSItems.CELESTIAL_CORE.get()), CSItems.SUPERNAL_NETHERITE_INGOT.get())
+        SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(Items.NETHERITE_INGOT), Ingredient.of(CSItems.CELESTIAL_CORE.get()), RecipeCategory.MISC, CSItems.SUPERNAL_NETHERITE_INGOT.get())
                 .unlocks("has_item", has(Items.NETHERITE_INGOT))
                 .save(consumer, modLoc("supernal_netherite_ingot_smithing_from_core"));
 
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(CSItems.SUPERNAL_NETHERITE_INGOT.get()), CSItems.CELESTIAL_NETHERITE_INGOT.get(), 0.6F, 1000)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(CSItems.SUPERNAL_NETHERITE_INGOT.get()), RecipeCategory.MISC, CSItems.CELESTIAL_NETHERITE_INGOT.get(), 0.6F, 1000)
                 .unlockedBy("has_item", has(CSItems.SUPERNAL_NETHERITE_INGOT.get()))
                 .save(consumer, modLoc("celestial_netherite_ingot_smelting"));
 
-        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CSItems.SUPERNAL_NETHERITE_INGOT.get()), CSItems.CELESTIAL_NETHERITE_INGOT.get(), 0.75F, 500)
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CSItems.SUPERNAL_NETHERITE_INGOT.get()), RecipeCategory.MISC, CSItems.CELESTIAL_NETHERITE_INGOT.get(), 0.75F, 500)
                 .unlockedBy("has_item", has(CSItems.SUPERNAL_NETHERITE_INGOT.get()))
                 .save(consumer, modLoc("celestial_netherite_ingot_blasting"));
 
-        ShapedRecipeBuilder.shaped(CSBlocks.CELESTIAL_CRAFTING_TABLE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CSBlocks.CELESTIAL_CRAFTING_TABLE.get())
                 .pattern("bnb").pattern("ncn").pattern("ooo")
                 .define('b', Ingredient.of(Items.NETHERITE_INGOT)).define('n', Ingredient.of(CSItems.CELESTIAL_NETHERITE_INGOT.get()))
                 .define('c', Ingredient.of(Items.CRAFTING_TABLE)).define('o', Ingredient.of(Items.OBSIDIAN))
                 .unlockedBy("has_item", has(CSItems.CELESTIAL_NETHERITE_INGOT.get()))
                 .save(consumer, modLoc("celestial_crafting_table"));
 
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(CSBlocks.LUNAR_STONE.get()), CSItems.LUNAR_SCRAP.get(), 0.15F, 200)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(CSBlocks.LUNAR_STONE.get()), RecipeCategory.MISC, CSItems.LUNAR_SCRAP.get(), 0.15F, 200)
                 .unlockedBy("has_item", has(CSBlocks.LUNAR_STONE.get()))
                 .save(consumer, modLoc("lunar_scrap_smelting"));
 
-        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CSBlocks.LUNAR_STONE.get()), CSItems.LUNAR_SCRAP.get(), 0.2F, 100)
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CSBlocks.LUNAR_STONE.get()), RecipeCategory.MISC, CSItems.LUNAR_SCRAP.get(), 0.2F, 100)
                 .unlockedBy("has_item", has(CSBlocks.LUNAR_STONE.get()))
                 .save(consumer, modLoc("lunar_scrap_blasting"));
 
-        ShapelessRecipeBuilder.shapeless(CSItems.EYEBOMINATION.get()).requires(Items.ENDER_EYE, 4).requires(Items.BLAZE_POWDER)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, CSItems.EYEBOMINATION.get()).requires(Items.ENDER_EYE, 4).requires(Items.BLAZE_POWDER)
                 .unlockedBy("has_item", has(Items.ENDER_EYE))
                 .save(consumer, modLoc("eyebomination"));
 
-        CelestialShapedRecipeBuilder.shaped(CSItems.SOLARIS.get())
+        CelestialShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, CSItems.SOLARIS.get())
                 .pattern("sns")
                 .pattern("sis")
                 .pattern(" n ")
@@ -94,7 +94,7 @@ public class CSRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CSBlocks.SOLAR_CRYSTAL.get()))
                 .save(consumer, modLoc("solaris"));
 
-        CelestialShapedRecipeBuilder.shaped(CSItems.CRESCENTIA.get())
+        CelestialShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, CSItems.CRESCENTIA.get())
                 .pattern("lll")
                 .pattern("l l")
                 .pattern("nni")
@@ -104,7 +104,7 @@ public class CSRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CSBlocks.LUNAR_STONE.get()))
                 .save(consumer, modLoc("crescentia"));
 
-        CelestialShapedRecipeBuilder.shaped(CSItems.BREEZEBREAKER.get())
+        CelestialShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, CSItems.BREEZEBREAKER.get())
                 .pattern(" nz")
                 .pattern("znn")
                 .pattern("iz ")
@@ -114,7 +114,7 @@ public class CSRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CSBlocks.ZEPHYR_DEPOSIT.get()))
                 .save(consumer, modLoc("breezebreaker"));
 
-        CelestialShapedRecipeBuilder.shaped(CSItems.POLTERGEIST.get())
+        CelestialShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, CSItems.POLTERGEIST.get())
                 .pattern("eee")
                 .pattern("ean")
                 .pattern(" ni")
@@ -125,7 +125,7 @@ public class CSRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CSItems.EYEBOMINATION.get()))
                 .save(consumer, modLoc("poltergeist"));
 
-        CelestialShapedRecipeBuilder.shaped(CSItems.AQUAFLORA.get())
+        CelestialShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, CSItems.AQUAFLORA.get())
                 .pattern("efi")
                 .pattern("fif")
                 .pattern("nfe")
@@ -136,7 +136,7 @@ public class CSRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(Items.LILY_PAD))
                 .save(consumer, modLoc("aquaflora"));
 
-        CelestialShapedRecipeBuilder.shaped(CSItems.RAINFALL_SERENITY.get())
+        CelestialShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, CSItems.RAINFALL_SERENITY.get())
                 .pattern("nfs")
                 .pattern("ibs")
                 .pattern("nfs")

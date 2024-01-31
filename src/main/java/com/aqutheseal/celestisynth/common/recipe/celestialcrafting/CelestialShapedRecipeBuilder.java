@@ -11,12 +11,12 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.Registry;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
@@ -27,7 +27,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class CelestialShapedRecipeBuilder implements RecipeBuilder {
+public class CelestialShapedRecipeBuilder extends CraftingRecipeBuilder implements RecipeBuilder {
+    private final RecipeCategory category;
     private final Item result;
     private final int count;
     private final List<String> rows = Lists.newArrayList();
@@ -35,18 +36,20 @@ public class CelestialShapedRecipeBuilder implements RecipeBuilder {
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
     @Nullable
     private String group;
+    private boolean showNotification = true;
 
-    public CelestialShapedRecipeBuilder(ItemLike pResult, int pCount) {
+    public CelestialShapedRecipeBuilder(RecipeCategory pCategory, ItemLike pResult, int pCount) {
+        this.category = pCategory;
         this.result = pResult.asItem();
         this.count = pCount;
     }
 
-    public static CelestialShapedRecipeBuilder shaped(ItemLike pResult) {
-        return shaped(pResult, 1);
+    public static CelestialShapedRecipeBuilder shaped(RecipeCategory pCategory, ItemLike pResult) {
+        return shaped(pCategory, pResult, 1);
     }
 
-    public static CelestialShapedRecipeBuilder shaped(ItemLike pResult, int pCount) {
-        return new CelestialShapedRecipeBuilder(pResult, pCount);
+    public static CelestialShapedRecipeBuilder shaped(RecipeCategory pCategory, ItemLike pResult, int pCount) {
+        return new CelestialShapedRecipeBuilder(pCategory, pResult, pCount);
     }
 
     public CelestialShapedRecipeBuilder define(Character pSymbol, TagKey<Item> pTag) {
@@ -94,7 +97,7 @@ public class CelestialShapedRecipeBuilder implements RecipeBuilder {
     public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
         this.ensureValid(pRecipeId);
         this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pRecipeId)).rewards(AdvancementRewards.Builder.recipe(pRecipeId)).requirements(RequirementsStrategy.OR);
-        pFinishedRecipeConsumer.accept(new CelestialShapedRecipeBuilder.Result(pRecipeId, this.result, this.count, this.group == null ? "" : this.group, this.rows, this.key, this.advancement, new ResourceLocation(pRecipeId.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + pRecipeId.getPath())));
+        pFinishedRecipeConsumer.accept(new ShapedRecipeBuilder.Result(pRecipeId, this.result, this.count, this.group == null ? "" : this.group, determineBookCategory(this.category), this.rows, this.key, this.advancement, pRecipeId.withPrefix("recipes/" + this.category.getFolderName() + "/"), this.showNotification));
     }
 
     private void ensureValid(ResourceLocation pId) {
@@ -125,7 +128,7 @@ public class CelestialShapedRecipeBuilder implements RecipeBuilder {
         }
     }
 
-    public static class Result implements FinishedRecipe {
+    public static class Result extends CraftingRecipeBuilder.CraftingResult {
         private final ResourceLocation id;
         private final Item result;
         private final int count;
@@ -134,8 +137,10 @@ public class CelestialShapedRecipeBuilder implements RecipeBuilder {
         private final Map<Character, Ingredient> key;
         private final Advancement.Builder advancement;
         private final ResourceLocation advancementId;
+        private final boolean showNotification;
 
-        public Result(ResourceLocation pId, Item pResult, int pCount, String pGroup, List<String> pPattern, Map<Character, Ingredient> pKey, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId) {
+        public Result(ResourceLocation pId, Item pResult, int pCount, String pGroup, CraftingBookCategory pCategory, List<String> pPattern, Map<Character, Ingredient> pKey, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId, boolean pShowNotification) {
+            super(pCategory);
             this.id = pId;
             this.result = pResult;
             this.count = pCount;
@@ -144,9 +149,11 @@ public class CelestialShapedRecipeBuilder implements RecipeBuilder {
             this.key = pKey;
             this.advancement = pAdvancement;
             this.advancementId = pAdvancementId;
+            this.showNotification = pShowNotification;
         }
 
         public void serializeRecipeData(JsonObject pJson) {
+            super.serializeRecipeData(pJson);
             if (!this.group.isEmpty()) {
                 pJson.addProperty("group", this.group);
             }
@@ -166,12 +173,13 @@ public class CelestialShapedRecipeBuilder implements RecipeBuilder {
 
             pJson.add("key", jsonobject);
             JsonObject jsonobject1 = new JsonObject();
-            jsonobject1.addProperty("item", Registry.ITEM.getKey(this.result).toString());
+            jsonobject1.addProperty("item", BuiltInRegistries.ITEM.getKey(this.result).toString());
             if (this.count > 1) {
                 jsonobject1.addProperty("count", this.count);
             }
 
             pJson.add("result", jsonobject1);
+            pJson.addProperty("show_notification", this.showNotification);
         }
 
         public RecipeSerializer<?> getType() {

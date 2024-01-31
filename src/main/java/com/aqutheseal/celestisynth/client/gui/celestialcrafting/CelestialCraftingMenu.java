@@ -22,7 +22,7 @@ import java.util.Optional;
 public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
     private final ContainerLevelAccess access;
     private final Player player;
-    private final CraftingContainer craftSlots = new CraftingContainer(this, 3, 3);
+    private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 3, 3);
     private final ResultContainer resultSlots = new ResultContainer();
 
     public CelestialCraftingMenu(int pContainerId, Inventory pPlayerInventory) {
@@ -38,7 +38,7 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
         addSlot(new ResultSlot(pPlayerInventory.player, this.craftSlots, this.resultSlots, 0, 124, 35) {
             @Override
             public void onTake(Player pPlayer, ItemStack pStack) {
-                if (pPlayer.level.isClientSide()) addCraftedEffect(pPlayer);
+                if (pPlayer.level().isClientSide()) addCraftedEffect(pPlayer);
 
                 super.onTake(pPlayer, pStack);
             }
@@ -94,7 +94,7 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
     @Override
     public boolean recipeMatches(Recipe<? super CraftingContainer> pRecipe) {
-        return pRecipe.matches(this.craftSlots, this.player.level);
+        return pRecipe.matches(this.craftSlots, this.player.level());
     }
 
     @Override
