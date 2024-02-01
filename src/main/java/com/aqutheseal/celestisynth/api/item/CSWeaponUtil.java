@@ -167,7 +167,7 @@ public interface CSWeaponUtil {
 
     static void disableRunningWeapon(Entity owner) {
         if (owner instanceof Player playerOwner) {
-            AnimationManager.playAnimation(owner.level, AnimationManager.AnimationsList.CLEAR);
+            AnimationManager.playAnimation(owner.level(), AnimationManager.AnimationsList.CLEAR);
 
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (playerOwner.getItemBySlot(slot).getItem() instanceof CSWeapon cs) {

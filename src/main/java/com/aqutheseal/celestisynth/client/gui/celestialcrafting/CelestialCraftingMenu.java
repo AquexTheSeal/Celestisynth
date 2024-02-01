@@ -63,7 +63,7 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
             if (potentialCelestialRecipe.isPresent()) {
                 CelestialCraftingRecipe curRecipe = potentialCelestialRecipe.get();
-                if (pResult.setRecipeUsed(pLevel, craftingServerPlayer, curRecipe)) resultStack = curRecipe.assemble(pContainer);
+                if (pResult.setRecipeUsed(pLevel, craftingServerPlayer, curRecipe)) resultStack = curRecipe.assemble(pContainer, pLevel.registryAccess());
             }
 
             pResult.setItem(0, resultStack);

@@ -3,9 +3,9 @@ package com.aqutheseal.celestisynth.client.models.entity.boss;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class TempestBossModel extends AnimatedGeoModel<TempestBoss> {
+public class TempestBossModel extends GeoModel<TempestBoss> {
 
     @Override
     public ResourceLocation getModelResource(TempestBoss animatable) {

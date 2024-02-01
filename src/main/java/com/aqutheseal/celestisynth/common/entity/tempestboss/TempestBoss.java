@@ -3,6 +3,7 @@ package com.aqutheseal.celestisynth.common.entity.tempestboss;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -19,19 +20,17 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class TempestBoss extends Monster implements IAnimatable {
+public class TempestBoss extends Monster implements GeoEntity {
     private static final EntityDataAccessor<Integer> BATTLE_PHASE = SynchedEntityData.defineId(TempestBoss.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(TempestBoss.class, EntityDataSerializers.INT);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public static int
             NONE = 0,
@@ -72,7 +71,7 @@ public class TempestBoss extends Monster implements IAnimatable {
     public boolean hurt(DamageSource pSource, float pAmount) {
         cyclePhase();
         if (pSource.getDirectEntity() instanceof Player player) {
-            if (level.isClientSide()) {
+            if (level().isClientSide()) {
                 player.displayClientMessage(Component.literal("New Phase: " + getPhase().ordinal() + " - " + getPhase().name()), false);
             }
         }
@@ -91,10 +90,8 @@ public class TempestBoss extends Monster implements IAnimatable {
 
     public void modifyPhaseOnCycle(int newPhase) {
         switch (TempestPhases.values()[newPhase]) {
-            case PHASE_1 ->
-                    modifyAttribute(Attributes.MOVEMENT_SPEED, 0.45);
-            case PHASE_2 ->
-                    modifyAttribute(Attributes.MOVEMENT_SPEED, 0.65);
+            case PHASE_1 -> modifyAttribute(Attributes.MOVEMENT_SPEED, 0.45);
+            case PHASE_2 -> modifyAttribute(Attributes.MOVEMENT_SPEED, 0.65);
         }
     }
 
@@ -124,37 +121,27 @@ public class TempestBoss extends Monster implements IAnimatable {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(BATTLE_PHASE, 1);
-        this.entityData.define(ATTACK_STATE, 0);
     }
 
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    public boolean isControlledByLocalInstance() {
+        return true;
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, (state) -> {
             switch (getPhase()) {
-                case IDLE -> loopAnim(event.getController(), "walk_slow");
-                case APPROACH_SLOW -> loopAnim(event.getController(), "walk_slow");
-                case PHASE_1 -> loopAnim(event.getController(), "run");
-                default -> loopAnim(event.getController(), "walk_slow");
+                case PHASE_1 -> {
+                    return state.setAndContinue(RawAnimation.begin().thenLoop("animation.tempest.run"));
+                }
+                default -> {
+                    return state.setAndContinue(RawAnimation.begin().thenLoop("animation.tempest.walk_slow"));
+                }
             }
-        } else {
-            loopAnim(event.getController(), "idle");
-        }
-        return PlayState.CONTINUE;
+        }));
     }
 
-    public <E extends IAnimatable> void loopAnim(AnimationController<E> controller, String name) {
-        controller.setAnimation(new AnimationBuilder().addAnimation("animation.tempest." + name, ILoopType.EDefaultLoopTypes.LOOP));
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
     }
 
     @Override
@@ -168,7 +155,7 @@ public class TempestBoss extends Monster implements IAnimatable {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

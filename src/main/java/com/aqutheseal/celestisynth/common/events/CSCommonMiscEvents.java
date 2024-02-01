@@ -39,7 +39,7 @@ public class CSCommonMiscEvents {
                 double offX = radius * Math.sin(speed * event.getEntity().tickCount);
                 double offY = -Math.sin(event.getEntity().tickCount) * 0.2;
                 double offZ = radius * Math.cos(speed * event.getEntity().tickCount);
-                ParticleUtil.sendParticle(event.getEntity().level, CSParticleTypes.RAINFALL_ENERGY_SMALL.get(),
+                ParticleUtil.sendParticle(event.getEntity().level(), CSParticleTypes.RAINFALL_ENERGY_SMALL.get(),
                         event.getEntity().getX() + offX, event.getEntity().getY() + offY + 1, event.getEntity().getZ() + offZ);
             }
             if (data.getQuasarImbueTime() <= 0) {
@@ -57,7 +57,7 @@ public class CSCommonMiscEvents {
                 double offX = radius * Math.sin(speed * event.getEntity().tickCount);
                 double offY = 1;
                 double offZ = radius * Math.cos(speed * event.getEntity().tickCount);
-                ParticleUtil.sendParticle(event.getEntity().level, ParticleTypes.SNOWFLAKE,
+                ParticleUtil.sendParticle(event.getEntity().level(), ParticleTypes.SNOWFLAKE,
                         event.getEntity().getX() + offX, event.getEntity().getY() + offY, event.getEntity().getZ() + offZ);
             }
             data.decreaseFrostbound();
@@ -94,10 +94,10 @@ public class CSCommonMiscEvents {
 
         event.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
             if (data.getPhantomTagSource() instanceof Player player) {
-                SkillCastPoltergeistWard poltergeistProjectile = CSEntityTypes.POLTERGEIST_WARD.get().create(event.getEntity().getLevel());
+                SkillCastPoltergeistWard poltergeistProjectile = CSEntityTypes.POLTERGEIST_WARD.get().create(event.getEntity().level());
                 poltergeistProjectile.setOwnerUuid(player.getUUID());
                 poltergeistProjectile.moveTo(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ());
-                event.getEntity().getLevel().addFreshEntity(poltergeistProjectile);
+                event.getEntity().level().addFreshEntity(poltergeistProjectile);
             }
         });
     }
@@ -115,7 +115,7 @@ public class CSCommonMiscEvents {
         Item itemR = entity.getMainHandItem().getItem();
         Item itemL = entity.getOffhandItem().getItem();
 
-        if (entity instanceof Player player && player.getLevel().isClientSide()) AnimationManager.playAnimation(AnimationManager.AnimationsList.CLEAR, true);
+        if (entity instanceof Player player && player.level().isClientSide()) AnimationManager.playAnimation(AnimationManager.AnimationsList.CLEAR, true);
         if (itemR instanceof BreezebreakerItem || itemL instanceof BreezebreakerItem)  event.setCanceled(true);
     }
 
@@ -127,14 +127,14 @@ public class CSCommonMiscEvents {
 
         if (itemR instanceof BreezebreakerItem || itemL instanceof BreezebreakerItem) {
             if (entity instanceof Player player) {
-                if (player.getLevel().isClientSide()) AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_JUMP, true);
+                if (player.level().isClientSide()) AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_JUMP, true);
 
                 player.playSound(CSSoundEvents.CS_HOP.get());
 
-                if (itemR instanceof CSWeapon wp) wp.sendExpandingParticles(entity.level, ParticleTypes.SMOKE, player.blockPosition(), 75, 0.35F);
+                if (itemR instanceof CSWeapon wp) wp.sendExpandingParticles(entity.level(), ParticleTypes.SMOKE, player.blockPosition(), 75, 0.35F);
                 else {
                     CSWeapon wp = (CSWeapon) itemL;
-                    wp.sendExpandingParticles(entity.level, ParticleTypes.SMOKE, player.blockPosition(), 75, 0.35F);
+                    wp.sendExpandingParticles(entity.level(), ParticleTypes.SMOKE, player.blockPosition(), 75, 0.35F);
                 }
 
                 player.setDeltaMovement(entity.getDeltaMovement().multiply(2.75, 2.25, 2.75));

@@ -6,6 +6,7 @@ import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -15,22 +16,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.RegistryObject;
-import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CSEffectEntity extends Entity implements IAnimatable {
+public class CSEffectEntity extends Entity implements GeoEntity {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<String> VISUAL_ID = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> ANIMATION_ID = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.STRING);
@@ -38,38 +35,35 @@ public class CSEffectEntity extends Entity implements IAnimatable {
     private static final EntityDataAccessor<Integer> SET_ROT_X = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SET_ROT_Z = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> CUSTOMIZABLE_SIZE = SynchedEntityData.defineId(CSEffectEntity.class, EntityDataSerializers.FLOAT);
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    private static final AnimationBuilder DEFAULT_ANIMATION = new AnimationBuilder().addAnimation("animation.cs_effect.spin", ILoopType.EDefaultLoopTypes.LOOP);
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private static final RawAnimation DEFAULT_ANIMATION = RawAnimation.begin().thenLoop("animation.cs_effect.spin");
+
     private Entity toFollow;
     private int lifespan;
     private int frameTimer;
-    private final AnimationController<CSEffectEntity> mainController = new AnimationController<>(this, "main_controller", 2, this::mainPredicate);
 
     public CSEffectEntity(EntityType<? extends CSEffectEntity> type, Level level) {
         super(type, level);
         this.noCulling = true;
     }
 
-    private <E extends IAnimatable> PlayState mainPredicate(AnimationEvent<E> event) {
-        if (getAnimationID() != null && getVisualType().getAnimation() != null) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(getAnimationID(), ILoopType.EDefaultLoopTypes.LOOP));
-
-            if (event.getController().getAnimationState().equals(AnimationState.Stopped)) event.getController().markNeedsReload();
-        } else {
-            Celestisynth.LOGGER.warn("Animation is null!");
-            event.getController().setAnimation(DEFAULT_ANIMATION);
-        }
-        return PlayState.CONTINUE;
+    public boolean isControlledByLocalInstance() {
+        return true;
     }
 
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(mainController);
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, (state) -> {
+            if (getAnimationID() != null && getVisualType().getAnimation() != null) {
+                return state.setAndContinue(RawAnimation.begin().thenLoop(getAnimationID()));
+            } else {
+                return state.setAndContinue(DEFAULT_ANIMATION);
+            }
+        }));
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
     }
 
     public CSVisualType getVisualType() {
@@ -160,7 +154,7 @@ public class CSEffectEntity extends Entity implements IAnimatable {
     public static CSEffectEntity getEffectInstance(Player owner, @Nullable Entity toFollow, CSVisualType visual, double offsetX, double offsetY, double offsetZ) {
         if (owner == null) return null;
 
-        CSEffectEntity slash = CSEntityTypes.CS_EFFECT.get().create(owner.level);
+        CSEffectEntity slash = CSEntityTypes.CS_EFFECT.get().create(owner.level());
         slash.setVisualID(visual.getName());
         slash.setAnimationID(visual.getAnimation().getAnimName());
 
@@ -201,7 +195,7 @@ public class CSEffectEntity extends Entity implements IAnimatable {
         slash.setOwnerUuid(owner.getUUID());
         slash.setToFollow(toFollow);
 
-        owner.level.addFreshEntity(slash);
+        owner.level().addFreshEntity(slash);
     }
 
     @Override
@@ -266,35 +260,12 @@ public class CSEffectEntity extends Entity implements IAnimatable {
         this.remove(RemovalReason.DISCARDED);
     }
 
-    /**
-    @Override
-    public void readAdditionalSaveData(CompoundTag compoundNBT) {
-        UUID potentialOwnerUUID = compoundNBT.hasUUID("Owner") ? compoundNBT.getUUID("Owner") : compoundNBT.getString("Owner") != null ? OldUsersConverter.convertMobOwnerIfNecessary(getServer(), compoundNBT.getString("Owner")) : null;
-
-        if (potentialOwnerUUID != null) setOwnerUuid(potentialOwnerUUID);
-        else Celestisynth.LOGGER.warn("Missing Owner UUID for CSEffect! Crashes/unexpected behaviour may occur if the owner is retrieved at any point. Attempting to remove entity from level...");
-
-        setLifespan(compoundNBT.getInt("lifespan"));
-        setVisualID(compoundNBT.getString("visualID"));
-        setAnimationID(compoundNBT.getString("animID"));
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compoundNBT) {
-        if (getOwnerUuid() != null) compoundNBT.putUUID("Owner", getOwnerUuid());
-
-        compoundNBT.putInt("lifespan", lifespan);
-        compoundNBT.putString("visualID", getVisualID());
-        compoundNBT.putString("animID", getAnimationID());
-    }
-    **/
-
     public CSVisualType getDefaultVisual() {
         return CSVisualTypes.SOLARIS_BLITZ.get();
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

@@ -126,12 +126,12 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
         }
 
         if (checkBoth(nbt, Tag.TAG_INT, PHANTOM_TAG_SOURCE_ID, PHANTOM_TAG_TIME_ID)) {
-            this.phantomTagSource = getLivingFromWorld(livingEntity.level, nbt.getInt(PHANTOM_TAG_SOURCE_ID));
+            this.phantomTagSource = getLivingFromWorld(livingEntity.level(), nbt.getInt(PHANTOM_TAG_SOURCE_ID));
             this.phantomTagTime = nbt.getInt(PHANTOM_TAG_TIME_ID);
         }
 
         if (checkBoth(nbt, Tag.TAG_INT, QUASAR_IMBUE_SOURCE_ID, QUASAR_IMBUE_TIME_ID)) {
-            this.quasarImbueSource = getLivingFromWorld(livingEntity.level, nbt.getInt(QUASAR_IMBUE_SOURCE_ID));
+            this.quasarImbueSource = getLivingFromWorld(livingEntity.level(), nbt.getInt(QUASAR_IMBUE_SOURCE_ID));
             this.quasarImbueTime = nbt.getInt(QUASAR_IMBUE_TIME_ID);
         }
     }

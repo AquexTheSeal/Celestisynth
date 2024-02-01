@@ -1,29 +1,20 @@
 package com.aqutheseal.celestisynth.datagen.providers;
 
-import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.api.item.CSWeapon;
-import com.aqutheseal.celestisynth.common.registry.CSBlocks;
-import com.aqutheseal.celestisynth.common.registry.CSItems;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.critereon.EnterBlockTrigger;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.advancements.AdvancementProvider;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
-import net.minecraftforge.registries.RegistryObject;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class CSAdvancementProvider extends ForgeAdvancementProvider {
 
+    public CSAdvancementProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper, List<AdvancementGenerator> subProviders) {
+        super(output, registries, existingFileHelper, subProviders);
+    }
+
+/**
     public CSAdvancementProvider(DataGenerator generatorIn, ExistingFileHelper fileHelperIn) {
         super(generatorIn, fileHelperIn);
     }
@@ -61,4 +52,5 @@ public class CSAdvancementProvider extends ForgeAdvancementProvider {
                 .addCriterion("criteria", triggerFactory.apply(toCheck))
                 .save(consumer, fileName, fileH);
     }
+    **/
 }

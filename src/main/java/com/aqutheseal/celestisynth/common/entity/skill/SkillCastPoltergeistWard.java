@@ -8,7 +8,6 @@ import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,9 +35,9 @@ public class SkillCastPoltergeistWard extends EffectControllerEntity {
         super.tick();
 
         UUID ownerUuid = getOwnerUuid();
-        Player ownerPlayer = ownerUuid == null ? null : this.getLevel().getPlayerByUUID(ownerUuid);
+        Player ownerPlayer = ownerUuid == null ? null : this.level().getPlayerByUUID(ownerUuid);
         double range = 8.5;
-        List<Entity> surroundingEntities = level.getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + (range / 2), getZ() + range, getX() - range, getY() - (range / 2), getZ() - range));
+        List<Entity> surroundingEntities = level().getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + (range / 2), getZ() + range, getX() - range, getY() - (range / 2), getZ() - range));
 
         if (tickCount == 1) {
             CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.POLTERGEIST_WARD_SUMMON.get(), 0, 0.25, 0);
@@ -48,11 +47,11 @@ public class SkillCastPoltergeistWard extends EffectControllerEntity {
 
         if (tickCount % 20 == 0) {
             CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.POLTERGEIST_WARD_ABSORB.get(), 0, -1, 0);
-            level.playSound(ownerPlayer, ownerPlayer.blockPosition(), SoundEvents.ELDER_GUARDIAN_CURSE, SoundSource.BLOCKS, 0.5F, 0.5F);
+            level().playSound(ownerPlayer, ownerPlayer.blockPosition(), SoundEvents.ELDER_GUARDIAN_CURSE, SoundSource.BLOCKS, 0.5F, 0.5F);
 
             for (Entity entityBatch : surroundingEntities) {
                 if (entityBatch instanceof LivingEntity target && entityBatch != ownerPlayer) {
-                    target.hurt(DamageSource.indirectMagic(ownerPlayer, ownerPlayer), 1.5F);
+                    target.hurt(damageSources().indirectMagic(ownerPlayer, ownerPlayer), 1.5F);
                     target.setDeltaMovement((this.getX() - target.getX()) / 4, (this.getY() - target.getY()) / 4, (this.getZ() - target.getZ()) / 4);
                     target.hurtMarked = true;
                 }
@@ -68,7 +67,7 @@ public class SkillCastPoltergeistWard extends EffectControllerEntity {
                 float offY = (-0.5f + random.nextFloat()) * expansionMultiplier;
                 float offZ = (-0.5f + random.nextFloat()) * expansionMultiplier;
 
-                ParticleUtil.sendParticles(level, ParticleTypes.END_ROD, getX(), getY(), getZ(), 0, offX, offY, offZ);
+                ParticleUtil.sendParticles(level(), ParticleTypes.END_ROD, getX(), getY(), getZ(), 0, offX, offY, offZ);
             }
             for (Entity entityBatch : surroundingEntities) {
                 if (entityBatch instanceof CSEffectEntity effect) {
@@ -83,7 +82,7 @@ public class SkillCastPoltergeistWard extends EffectControllerEntity {
     @Override
     public void remove(RemovalReason pReason) {
         double range = 12;
-        List<Entity> surroundingEntities = level.getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + range, getZ() + range, getX() - range, getY() - range, getZ() - range));
+        List<Entity> surroundingEntities = level().getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + range, getZ() + range, getX() - range, getY() - range, getZ() - range));
 
         for (Entity entityBatch : surroundingEntities) {
             if (entityBatch instanceof CSEffectEntity effect) {

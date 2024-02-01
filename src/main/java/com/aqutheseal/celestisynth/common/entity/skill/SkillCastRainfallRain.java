@@ -45,14 +45,14 @@ public class SkillCastRainfallRain extends EffectControllerEntity {
         if (targetPos == null) remove(RemovalReason.DISCARDED);
 
         UUID ownerUuid = getOwnerUuid();
-        Player ownerPlayer = ownerUuid == null ? null : this.getLevel().getPlayerByUUID(ownerUuid);
+        Player ownerPlayer = ownerUuid == null ? null : this.level().getPlayerByUUID(ownerUuid);
 
         if (tickCount == 1) {
             CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.RAINFALL_RAIN.get(), 0, 0, 0);
         }
 
         if (tickCount >= 20 && tickCount <= 40 && tickCount % 2 == 0) {
-            level.playSound(null, targetPos.getX(), targetPos.getY(), targetPos.getZ(), CSSoundEvents.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 0.4f, 0.5F + random.nextFloat());
+            level().playSound(null, targetPos.getX(), targetPos.getY(), targetPos.getZ(), CSSoundEvents.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 0.4f, 0.5F + random.nextFloat());
 
             double rx = -5 + random.nextInt(10);
             double rz = -5 + random.nextInt(10);
@@ -63,8 +63,8 @@ public class SkillCastRainfallRain extends EffectControllerEntity {
             double finalDistZ = floor.getZ() - getZ();
             double finalDistY = floor.getY() - getY();
 
-            if (!level.isClientSide) {
-                RainfallArrow rainfallArrow = new RainfallArrow(level, ownerPlayer);
+            if (!level().isClientSide) {
+                RainfallArrow rainfallArrow = new RainfallArrow(level(), ownerPlayer);
 
                 rainfallArrow.setOwner(ownerPlayer);
                 rainfallArrow.moveTo(position());
@@ -75,7 +75,7 @@ public class SkillCastRainfallRain extends EffectControllerEntity {
                 rainfallArrow.setImbueQuasar(false);
 
                 rainfallArrow.shoot(finalDistX, finalDistY, finalDistZ, 3.0F, 0);
-                level.addFreshEntity(rainfallArrow);
+                level().addFreshEntity(rainfallArrow);
 
                 Vec3 from = new Vec3(getX(), getY(), getZ());
                 Vec3 to = new Vec3(floor.getX(), floor.getY(), floor.getZ());
@@ -91,7 +91,7 @@ public class SkillCastRainfallRain extends EffectControllerEntity {
                 float offX = (-0.5f + random.nextFloat()) * expansionMultiplier;
                 float offY = (-0.5f + random.nextFloat()) * expansionMultiplier;
                 float offZ = (-0.5f + random.nextFloat()) * expansionMultiplier;
-                ParticleUtil.sendParticles(level, ParticleTypes.SCULK_SOUL, getX(), getY(), getZ(), 0, offX, offY, offZ);
+                ParticleUtil.sendParticles(level(), ParticleTypes.SCULK_SOUL, getX(), getY(), getZ(), 0, offX, offY, offZ);
             }
 
             remove(RemovalReason.DISCARDED);
@@ -102,7 +102,7 @@ public class SkillCastRainfallRain extends EffectControllerEntity {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, getY(), z);
         do {
             mutablePos.move(Direction.DOWN);
-        } while (mutablePos.getY() > level.getMinBuildHeight() && level.getBlockState(mutablePos).isPathfindable(level, mutablePos, PathComputationType.LAND));
+        } while (mutablePos.getY() > level().getMinBuildHeight() && level().getBlockState(mutablePos).isPathfindable(level(), mutablePos, PathComputationType.LAND));
         return new BlockPos(mutablePos.getX(), mutablePos.getY(), mutablePos.getZ());
     }
 
@@ -110,7 +110,7 @@ public class SkillCastRainfallRain extends EffectControllerEntity {
     @Override
     public void remove(RemovalReason pReason) {
         double range = 12;
-        List<Entity> surroundingEntities = level.getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + range, getZ() + range, getX() - range, getY() - range, getZ() - range));
+        List<Entity> surroundingEntities = level().getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + range, getZ() + range, getX() - range, getY() - range, getZ() - range));
         for (Entity entityBatch : surroundingEntities) {
             if (entityBatch instanceof CSEffectEntity effect) {
                 if (effect.getToFollow() == this) effect.remove(RemovalReason.DISCARDED);

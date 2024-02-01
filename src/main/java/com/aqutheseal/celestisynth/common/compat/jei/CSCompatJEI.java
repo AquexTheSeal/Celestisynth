@@ -8,7 +8,6 @@ import com.aqutheseal.celestisynth.common.recipe.celestialcrafting.CelestialCraf
 import com.aqutheseal.celestisynth.common.registry.CSBlocks;
 import com.aqutheseal.celestisynth.common.registry.CSMenuTypes;
 import com.aqutheseal.celestisynth.common.registry.CSRecipeTypes;
-import dev.kosmx.playerAnim.mixin.firstPerson.ItemInHandRendererMixin;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -16,8 +15,6 @@ import mezz.jei.api.registration.*;
 import mezz.jei.library.plugins.vanilla.RecipeBookGuiHandler;
 import mezz.jei.library.plugins.vanilla.crafting.CategoryRecipeValidator;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemInHandRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +23,7 @@ import java.util.List;
 
 @JeiPlugin
 public class CSCompatJEI implements IModPlugin {
-    public static final mezz.jei.api.recipe.RecipeType<CelestialCraftingRecipe> CELESTIAL_CRAFTING = mezz.jei.api.recipe.RecipeType.create(Celestisynth.MODID, "hunter_weapon", CelestialCraftingRecipe.class);
+    public static final mezz.jei.api.recipe.RecipeType<CelestialCraftingRecipe> CELESTIAL_CRAFTING = mezz.jei.api.recipe.RecipeType.create(Celestisynth.MODID, "celestisynth", CelestialCraftingRecipe.class);
     private static final ResourceLocation ID = Celestisynth.prefix("plugin");
 
     @NotNull

@@ -33,7 +33,7 @@ public abstract class AITempestAbilityGoal extends Goal {
     public void tick() {
         LivingEntity target = tempest.getTarget();
         if (target != null) {
-            Level level = tempest.level;
+            Level level = tempest.level();
             ++this.chargeTime;
             if (target.distanceToSqr(tempest) < 4096.0D) {
                 tickAttack(level);

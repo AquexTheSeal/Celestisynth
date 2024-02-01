@@ -12,12 +12,12 @@ import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,24 +30,21 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class RainfallArrow extends AbstractArrow implements IAnimatable {
+public class RainfallArrow extends AbstractArrow implements GeoEntity {
     private static final EntityDataAccessor<Boolean> IS_STRONG = SynchedEntityData.defineId(RainfallArrow.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_FLAMING = SynchedEntityData.defineId(RainfallArrow.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<BlockPos> ORIGIN = SynchedEntityData.defineId(RainfallArrow.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<Boolean> SHOULD_IMBUE_QUASAR = SynchedEntityData.defineId(RainfallArrow.class, EntityDataSerializers.BOOLEAN);
-    private static final AnimationBuilder IDLE_ANIMATION = new AnimationBuilder().addAnimation("animation.rainfall_arrow.idle", ILoopType.EDefaultLoopTypes.LOOP);
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    private final AnimationController<RainfallArrow> mainController = new AnimationController<>(this, "mainrainfallarrowcontroller", 0, this::predicate);
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     private final RainfallSerenityItem rawRainfallItem = (RainfallSerenityItem) CSItems.RAINFALL_SERENITY.get();
 
     public RainfallArrow(EntityType<? extends RainfallArrow> pEntityType, Level pLevel) {
@@ -68,13 +65,13 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
 
         for (double i = 0; i <= distance; i += 0.1) {
             Vec3 particlePos = from.add(direction.scale(i));
-            BlockPos particleBlockPos = new BlockPos(particlePos);
+            BlockPos particleBlockPos = new BlockPos((int) particlePos.x(), (int) particlePos.y(), (int) particlePos.z());
 
-            if (strictLoading && !level.isLoaded(particleBlockPos)) return;
+            if (strictLoading && !level().isLoaded(particleBlockPos)) return;
 
             SimpleParticleType curParticle = isMainArrow ? CSParticleTypes.RAINFALL_BEAM.get() : CSParticleTypes.RAINFALL_BEAM_QUASAR.get();
 
-            ParticleUtil.sendParticles(level, curParticle, particlePos.x, particlePos.y, particlePos.z, 1, 0, 0, 0);
+            ParticleUtil.sendParticles(level(), curParticle, particlePos.x, particlePos.y, particlePos.z, 1, 0, 0, 0);
         }
     }
 
@@ -104,11 +101,11 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
         if (getOwner() instanceof Player) {
             if (isStrong()) {
                 if (pResult instanceof BlockHitResult || (pResult instanceof EntityHitResult ehr && ehr.getEntity() instanceof LivingEntity)) {
-                    for (Entity potentialTarget : rawRainfallItem.iterateEntities(level, rawRainfallItem.createAABB(hitPos, 4))) {
+                    for (Entity potentialTarget : rawRainfallItem.iterateEntities(level(), rawRainfallItem.createAABB(hitPos, 4))) {
                         if (potentialTarget instanceof LivingEntity target && potentialTarget != getOwner()) {
                             if (isFlaming()) target.setSecondsOnFire(2);
 
-                            target.hurt(DamageSource.indirectMagic(this, getOwner() != null ? getOwner() : null), 2);
+                            target.hurt(damageSources().indirectMagic(this, getOwner() != null ? getOwner() : null), 2);
                             target.invulnerableTime = 0;
                         }
                     }
@@ -128,7 +125,7 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
                     });
 
                     if (random.nextInt(3) == 1) {
-                        for (Entity imbueSource : rawRainfallItem.iterateEntities(level, rawRainfallItem.createAABB(hitPos, 24))) {
+                        for (Entity imbueSource : rawRainfallItem.iterateEntities(level(), rawRainfallItem.createAABB(hitPos, 24))) {
                             imbueSource.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                                 if (imbueSource != ehr.getEntity() && getOwner() instanceof Player player && data.getQuasarImbueSource() == player) {
                                     ehr.getEntity().invulnerableTime = 0;
@@ -137,9 +134,9 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
                                     Vec3 to = new Vec3(ehr.getEntity().getX(), ehr.getEntity().getY() + 1.5F, ehr.getEntity().getZ());
                                     createLaser(from, to, false, false);
 
-                                    if (!level.isClientSide()) {
-                                        BlockPos imbuePos = new BlockPos(imbueSource.getX(), imbueSource.getY() + 1.5D, imbueSource.getZ());
-                                        RainfallArrow rainfallArrow = new RainfallArrow(level, player);
+                                    if (!level().isClientSide()) {
+                                        BlockPos imbuePos = new BlockPos((int) imbueSource.getX(), (int) (imbueSource.getY() + 1.5D), (int) imbueSource.getZ());
+                                        RainfallArrow rainfallArrow = new RainfallArrow(level(), player);
 
                                         rainfallArrow.setOwner(player);
                                         rainfallArrow.moveTo(imbueSource.position());
@@ -155,10 +152,10 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
                                         double finalDistZ = ehr.getEntity().getZ() - imbueSource.getZ();
 
                                         rainfallArrow.shoot(finalDistX, offsetDistY, finalDistZ, 3.0F, 0);
-                                        level.addFreshEntity(rainfallArrow);
+                                        level().addFreshEntity(rainfallArrow);
                                     }
 
-                                    level.playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundEvents.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 0.7f, 2.0F);
+                                    level().playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundEvents.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 0.7f, 2.0F);
                                     data.clearQuasarImbue();
                                 }
                             });
@@ -185,7 +182,7 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
                     double offY = (Math.sin(offsetPi) * Math.sin(targetAngle)) * expansionMultiplier;
                     double offZ = Math.cos(offsetPi) * expansionMultiplier;
 
-                    ParticleUtil.sendParticles(level, CSParticleTypes.RAINFALL_ENERGY.get(), hitPos.getX(), hitPos.getY(), hitPos.getZ(), 0, offX, offY, offZ);
+                    ParticleUtil.sendParticles(level(), CSParticleTypes.RAINFALL_ENERGY.get(), hitPos.getX(), hitPos.getY(), hitPos.getZ(), 0, offX, offY, offZ);
                 }
             }
         }
@@ -257,23 +254,22 @@ public class RainfallArrow extends AbstractArrow implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(mainController);
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+
+    public boolean isControlledByLocalInstance() {
+        return true;
+    }
+
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, (state) -> {
+            return state.setAndContinue(RawAnimation.begin().thenLoop("animation.rainfall_arrow.idle"));
+        }));
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(IDLE_ANIMATION);
-        return PlayState.CONTINUE;
-    }
-
-
-    @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

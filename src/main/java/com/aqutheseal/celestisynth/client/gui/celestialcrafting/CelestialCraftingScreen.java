@@ -3,6 +3,7 @@ package com.aqutheseal.celestisynth.client.gui.celestialcrafting;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
@@ -35,7 +36,7 @@ public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCr
             this.recipeBookComponent.toggleVisibility();
             this.leftPos = this.recipeBookComponent.updateScreenPosition(this.width, this.imageWidth);
 
-            ((ImageButton) targetButton).setPosition(this.leftPos + 5, this.height / 2 - 49);
+            targetButton.setPosition(this.leftPos + 5, this.height / 2 - 49);
         }));
         addWidget(this.recipeBookComponent);
         setInitialFocus(this.recipeBookComponent);
@@ -50,86 +51,79 @@ public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCr
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(pPoseStack);
-
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        this.renderBackground(pGuiGraphics);
         if (this.recipeBookComponent.isVisible() && this.widthTooNarrow) {
-            this.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
-            this.recipeBookComponent.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+            this.renderBg(pGuiGraphics, pPartialTick, pMouseX, pMouseY);
+            this.recipeBookComponent.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         } else {
-            this.recipeBookComponent.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-            super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-            this.recipeBookComponent.renderGhostRecipe(pPoseStack, this.leftPos, this.topPos, true, pPartialTick);
+            this.recipeBookComponent.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+            super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+            this.recipeBookComponent.renderGhostRecipe(pGuiGraphics, this.leftPos, this.topPos, true, pPartialTick);
         }
 
-        renderTooltip(pPoseStack, pMouseX, pMouseY);
-        this.recipeBookComponent.renderTooltip(pPoseStack, this.leftPos, this.topPos, pMouseX, pMouseY);
+        this.renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+        this.recipeBookComponent.renderTooltip(pGuiGraphics, this.leftPos, this.topPos, pMouseX, pMouseY);
     }
 
-    @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pX, int pY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, CRAFTING_TABLE_LOCATION);
+        //int i = //this.leftPos;
+        //int j = //(this.height - this.imageHeight) / 2;
+        this.blit(pPoseStack, super.leftPos, super.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
-        blit(pPoseStack, super.leftPos, super.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        //EXPERIMENTAL FEATURE - Currently only support Minecraft default Latin/English alphabet / font with NO Forced Unicode Mode
 
-        // EXPERIMENTAL FEATURE - Currently only supports Minecraft default Latin/English alphabet / font with NO Forced Unicode Mode
-
-        // Calculating top left of the label
+        //calculating top left of the label
         final int topLeftX = super.leftPos + super.titleLabelX - 6;
         final int topLeftY = super.topPos + super.titleLabelY - 4;
 
-        final int stringWidth = super.font.width(super.title); // Calculating text length
-        final int topRightX = topLeftX + 9 + stringWidth; // Calculating top right of the label
+        //calculating text length
+        final int stringWidth = super.font.width(super.title);
 
-        super.blit(pPoseStack, topLeftX, topLeftY, 176, 0, 3, 14); // Render text border left
-        super.blit(pPoseStack, topLeftX + 3, topLeftY, 0, 205, stringWidth + 6, 14);  // Render text border
-        super.blit(pPoseStack, topRightX, topLeftY, 182, 0, 3, 14); // Render text border right
+        //calculating top right of the label
+        final int topRightX = topLeftX + 9 + stringWidth;
+
+        //render text border left
+        super.blit(pPoseStack, topLeftX, topLeftY, 176, 0, 3, 14);
+
+        //render text border
+        //blit(pPoseStack, super.leftPos + super.titleLabelX, super.topPos + super.titleLabelY, 180, 0, 1, 14, stringWidth, 14);
+        super.blit(pPoseStack, topLeftX + 3, topLeftY, 0, 205, stringWidth + 6, 14);
+
+        //render text border right
+        super.blit(pPoseStack, topRightX, topLeftY, 182, 0, 3, 14);
     }
 
-    @Override
     protected boolean isHovering(int pX, int pY, int pWidth, int pHeight, double pMouseX, double pMouseY) {
         return (!this.widthTooNarrow || !this.recipeBookComponent.isVisible()) && super.isHovering(pX, pY, pWidth, pHeight, pMouseX, pMouseY);
     }
 
-    @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (this.recipeBookComponent.mouseClicked(pMouseX, pMouseY, pButton)) {
-            setFocused(this.recipeBookComponent);
+            this.setFocused(this.recipeBookComponent);
             return true;
-        } else return this.widthTooNarrow && this.recipeBookComponent.isVisible() || super.mouseClicked(pMouseX, pMouseY, pButton);
+        } else {
+            return this.widthTooNarrow && this.recipeBookComponent.isVisible() || super.mouseClicked(pMouseX, pMouseY, pButton);
+        }
     }
 
-    @Override
     protected boolean hasClickedOutside(double pMouseX, double pMouseY, int pGuiLeft, int pGuiTop, int pMouseButton) {
-        boolean mouseOutOfBounds = pMouseX < (double) pGuiLeft || pMouseY < (double) pGuiTop || pMouseX >= (double) (pGuiLeft + this.imageWidth) || pMouseY >= (double) (pGuiTop + this.imageHeight);
-        return this.recipeBookComponent.hasClickedOutside(pMouseX, pMouseY, this.leftPos, this.topPos, this.imageWidth, this.imageHeight, pMouseButton) && mouseOutOfBounds;
+        boolean flag = pMouseX < (double)pGuiLeft || pMouseY < (double)pGuiTop || pMouseX >= (double)(pGuiLeft + this.imageWidth) || pMouseY >= (double)(pGuiTop + this.imageHeight);
+        return this.recipeBookComponent.hasClickedOutside(pMouseX, pMouseY, this.leftPos, this.topPos, this.imageWidth, this.imageHeight, pMouseButton) && flag;
     }
 
-    @Override
     protected void slotClicked(Slot pSlot, int pSlotId, int pMouseButton, ClickType pType) {
         super.slotClicked(pSlot, pSlotId, pMouseButton, pType);
         this.recipeBookComponent.slotClicked(pSlot);
     }
 
-    @Override
     public void recipesUpdated() {
         this.recipeBookComponent.recipesUpdated();
     }
 
-    @Override
-    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        this.font.draw(pPoseStack, this.title, (float) this.titleLabelX, (float) this.titleLabelY, 0);
-    }
-
-    @Override
-    public void removed() {
-        this.recipeBookComponent.removed();
-        super.removed();
-    }
-
-    @Override
     public RecipeBookComponent getRecipeBookComponent() {
         return this.recipeBookComponent;
     }

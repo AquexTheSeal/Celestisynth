@@ -4,6 +4,7 @@ import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -42,7 +43,7 @@ public abstract class EffectControllerEntity extends Entity {
     }
 
     public void playRandomBladeSound(Entity entity, int length) {
-        SoundEvent randomSound = BASE_WEAPON_EFFECTS[entity.level.getRandom().nextInt(length)];
+        SoundEvent randomSound = BASE_WEAPON_EFFECTS[entity.level().getRandom().nextInt(length)];
 
         entity.playSound(randomSound, 0.35F, 0.5F + new Random().nextFloat());
     }
@@ -52,7 +53,7 @@ public abstract class EffectControllerEntity extends Entity {
         super.tick();
 
         UUID ownerUuid = getOwnerUuid();
-        Player ownerPlayer = ownerUuid == null ? null : getLevel().getPlayerByUUID(ownerUuid);
+        Player ownerPlayer = ownerUuid == null ? null : level().getPlayerByUUID(ownerUuid);
 
         if (ownerPlayer == null || ownerPlayer.isDeadOrDying()) remove(RemovalReason.DISCARDED);
     }
@@ -172,7 +173,7 @@ public abstract class EffectControllerEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

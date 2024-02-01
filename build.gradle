@@ -128,15 +128,15 @@ dependencies {
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 
     // Dependencies (Required)
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version}:${geckolib_version}")
     implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}")
 
     // Dependencies (Shadowed)
     shade fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
 
     // Dependencies (Extras)
-    implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:4534619")
-    implementation fg.deobf("curse.maven:cloth-config-348521:3972423")
+    implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:5065424")
+    implementation fg.deobf("curse.maven:cloth-config-348521:4973441")
 
     implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 
@@ -149,8 +149,6 @@ dependencies {
 
     compileOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}:api")
     runtimeOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}")
-
-    runtimeOnly fg.deobf("curse.maven:lazy-dfu-forge-460819:${lazydfu_version}")
 
     // Dependencies (Extras) (Temp)
     implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:5051316")
@@ -171,7 +169,7 @@ tasks.named('processResources', ProcessResources).configure {
             mod_authors: mod_authors, mod_description: mod_description, mc_version: mc_version,
             mc_version_range: mc_version_range, forge_version_range: forge_version_range,
             geckolib_version_range: geckolib_version_range, player_animator_version_range: player_animator_version_range,
-            jei_version_range: jei_version_range, jer_version_range: jer_version_range, jeed_version_range: jeed_version_range, lazydfu_version_range: lazydfu_version_range,
+            jei_version_range: jei_version_range, jer_version_range: jer_version_range, jeed_version_range: jeed_version_range,
             gmmo_version_range: gmmo_version_range, jade_version_range: jade_version_range, appleskin_version_range: appleskin_version_range,
             capabilitysyncer_version: capabilitysyncer_version
     ]

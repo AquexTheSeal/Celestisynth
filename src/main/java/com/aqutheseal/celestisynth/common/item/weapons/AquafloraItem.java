@@ -13,9 +13,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
-import software.bernie.example.client.model.item.JackInTheBoxModel;
-import software.bernie.example.client.renderer.item.JackInTheBoxRenderer;
-import software.bernie.example.item.JackInTheBoxItem;
 
 public class AquafloraItem extends SkilledSwordItem {
     public AquafloraItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {

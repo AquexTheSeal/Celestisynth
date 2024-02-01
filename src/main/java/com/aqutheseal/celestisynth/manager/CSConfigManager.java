@@ -6,8 +6,6 @@ import com.aqutheseal.celestisynth.config.common.CSCommonConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.loading.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 public final class CSConfigManager {
@@ -28,8 +26,6 @@ public final class CSConfigManager {
     }
 
     protected static void registerConfigs() {
-        registerConfigFolder();
-
         registerClientConfig();
         registerCommonConfig();
         registerServerConfig();
@@ -45,9 +41,5 @@ public final class CSConfigManager {
 
     private static void registerServerConfig() {
     //    ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MAIN_SERVER_SPEC);
-    }
-
-    private static void registerConfigFolder() {
-        FileUtils.getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve(Celestisynth.MODID), Celestisynth.MODID);
     }
 }

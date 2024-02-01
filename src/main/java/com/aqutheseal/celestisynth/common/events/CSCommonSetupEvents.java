@@ -58,7 +58,7 @@ public class CSCommonSetupEvents {
             dataGenerator.addProvider(event.includeServer(), new CSBlockstateProvider(pack, efh));
             dataGenerator.addProvider(event.includeServer(), new CSItemModelProvider(pack, efh));
             dataGenerator.addProvider(event.includeServer(), new CSRecipeProvider(pack));
-            dataGenerator.addProvider(event.includeServer(), new CSAdvancementProvider(pack, efh));
+            //dataGenerator.addProvider(event.includeServer(), new CSAdvancementProvider(pack, efh));
         }
     }
 }

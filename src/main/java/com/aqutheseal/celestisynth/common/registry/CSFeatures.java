@@ -4,27 +4,16 @@ import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.world.feature.LunarCraterFeature;
 import com.aqutheseal.celestisynth.common.world.feature.SolarCraterFeature;
 import com.aqutheseal.celestisynth.common.world.feature.ZephyrDepositFeature;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.blockpredicates.MatchingBlockTagPredicate;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
-import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.List;
-
 public class CSFeatures {
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Celestisynth.MODID);
-    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registries.CONFIGURED_FEATURE, Celestisynth.MODID);
-    public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, Celestisynth.MODID);
+    //public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registries.CONFIGURED_FEATURE, Celestisynth.MODID);
+    //public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, Celestisynth.MODID);
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> SOLAR_CRATER = FEATURES.register("solar_crater",
             () -> new SolarCraterFeature(NoneFeatureConfiguration.CODEC)
@@ -38,6 +27,7 @@ public class CSFeatures {
             () -> new ZephyrDepositFeature(NoneFeatureConfiguration.CODEC)
     );
 
+    /*
     public static final RegistryObject<ConfiguredFeature<?, ?>> SOLAR_CRATER_CONFIGURED = CONFIGURED_FEATURES.register("solar_crater_configured",
             () -> new ConfiguredFeature<>(CSFeatures.SOLAR_CRATER.get(), new NoneFeatureConfiguration())
     );
@@ -74,4 +64,5 @@ public class CSFeatures {
                     )
             )
     );
+    */
 }

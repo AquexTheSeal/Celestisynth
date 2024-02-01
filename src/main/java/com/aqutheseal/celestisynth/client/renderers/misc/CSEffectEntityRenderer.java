@@ -16,7 +16,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.util.Color;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.core.object.Color;
 
 public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<CSEffectEntity> {
 
@@ -25,39 +26,29 @@ public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<C
     }
 
     @Override
-    public void renderEarly(CSEffectEntity animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void preRender(PoseStack poseStack, CSEffectEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         float lerpBodyRot = Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot()) - 165;
-
-        poseStack.mulPose(Axis.YP.rotationDegrees(180f - lerpBodyRot));
+        float ageInTicks = animatable.tickCount + partialTick;
+        applyRotations(animatable, poseStack, ageInTicks, lerpBodyRot, partialTick);
 
         if (animatable.getVisualType().isRotateRandomly() && !animatable.getVisualType().hasSpecialProperties()) {
             poseStack.mulPose(Axis.XP.rotationDegrees(animatable.getRotationX()));
             poseStack.mulPose(Axis.ZP.rotationDegrees(animatable.getRotationZ()));
         }
-
         CSVisualType.setSpecialProperties(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 
-        super.renderEarly(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-    }
-
-
-    @Override
-    public float getHeightScale(CSEffectEntity entity) {
-        float effectScale = (float) animatable.getVisualType().getScale();
-
-        return super.getHeightScale(entity) * animatable.getCustomizableSize() * effectScale;
+        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     @Override
-    public float getWidthScale(CSEffectEntity animatable) {
-        float effectScale = (float) animatable.getVisualType().getScale();
-
-        return super.getWidthScale(animatable) * animatable.getCustomizableSize() * effectScale;
+    public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack, CSEffectEntity animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
+        float f = (float) animatable.getVisualType().getScale();
+        super.scaleModelForRender(widthScale * f, heightScale * f, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
     }
 
     @Override
-    public RenderType getRenderType(CSEffectEntity animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, ResourceLocation texture) {
-        return RenderType.entityTranslucent(texture);
+    public RenderType getRenderType(CSEffectEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+        return RenderType.entityTranslucentEmissive(texture);
     }
 
     @Override
@@ -67,24 +58,25 @@ public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<C
 
     @Override
     protected int getSkyLightLevel(CSEffectEntity p_114509_, BlockPos p_114510_) {
-        return 7;
+        return 15;
     }
 
     @Override
-    public Color getRenderColor(CSEffectEntity animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight) {
+    public Color getRenderColor(CSEffectEntity animatable, float partialTick, int packedLight) {
         Minecraft mc = Minecraft.getInstance();
         float decreasingAlpha = 1.0f;
         boolean shouldHideAtFirstPerson = false;
-
         if (animatable.getVisualType().isFadeOut()) {
             int lifespan = animatable.getVisualType().getAnimation().getLifespan();
             decreasingAlpha = 1.0F - ((float) animatable.tickCount / lifespan);
         }
-
         if (!CSConfigManager.CLIENT.visibilityOnFirstPerson.get()) {
-            if (mc.level != null && animatable.getOwnerUuid() != null && mc.player != null && mc.options.getCameraType().isFirstPerson() && animatable.getOwnerUuid() == mc.player.getUUID()) shouldHideAtFirstPerson = true;
+            if (mc.level != null && animatable.getOwnerUuid() != null && mc.player != null) {
+                if (mc.options.getCameraType().isFirstPerson() && animatable.getOwnerUuid() == mc.player.getUUID()) {
+                    shouldHideAtFirstPerson = true;
+                }
+            }
         }
-
         return Color.ofRGBA(1, 1, 1, shouldHideAtFirstPerson ? 0F : decreasingAlpha);
     }
 }

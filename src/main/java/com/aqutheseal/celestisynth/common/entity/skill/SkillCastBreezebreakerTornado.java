@@ -8,7 +8,6 @@ import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,7 +37,7 @@ public class SkillCastBreezebreakerTornado extends EffectControllerEntity {
         super.tick();
 
         UUID ownerUuid = getOwnerUuid();
-        Player ownerPlayer = ownerUuid == null ? null : this.getLevel().getPlayerByUUID(ownerUuid);
+        Player ownerPlayer = ownerUuid == null ? null : this.level().getPlayerByUUID(ownerUuid);
 
         setAngleX(getAngleX() + getAddAngleX());
         setAngleY(getAngleY() + getAddAngleY());
@@ -50,7 +49,7 @@ public class SkillCastBreezebreakerTornado extends EffectControllerEntity {
         BlockPos newPos = new BlockPos((int) newX, (int) newY, (int) newZ);
 
         double range = 6.0;
-        List<Entity> entities = level.getEntitiesOfClass(Entity.class, new AABB(newX + range, newY + (range * 2), newZ + range, newX - range, newY - range, newZ - range));
+        List<Entity> entities = level().getEntitiesOfClass(Entity.class, new AABB(newX + range, newY + (range * 2), newZ + range, newX - range, newY - range, newZ - range));
 
         for (Entity entityBatch : entities) {
             if (entityBatch instanceof LivingEntity target) {
@@ -68,17 +67,17 @@ public class SkillCastBreezebreakerTornado extends EffectControllerEntity {
             if (yLevel == 4 || yLevel == 5) CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.SOLARIS_AIR_LARGE_FLAT.get(), getAngleX(), getAngleY() + yLevel, getAngleZ());
         }
 
-        if (tickCount % 20 == 0) level.playSound(level.getPlayerByUUID(getOwnerUuid()), getAngleX(), getAngleY(), getAngleZ(), CSSoundEvents.CS_WHIRLWIND.get(), SoundSource.HOSTILE, 0.10F, 0.5F + random.nextFloat());
+        if (tickCount % 20 == 0) level().playSound(level().getPlayerByUUID(getOwnerUuid()), getAngleX(), getAngleY(), getAngleZ(), CSSoundEvents.CS_WHIRLWIND.get(), SoundSource.HOSTILE, 0.10F, 0.5F + random.nextFloat());
 
         int radius = 2;
         for (int sx = -radius; sx <= radius; sx++) {
             for (int sy = -radius; sy <= radius; sy++) {
                 for (int sz = -radius; sz <= radius; sz++) {
-                    if (getLevel().getBlockState(newPos.offset(sx, sy, sz)).is(BlockTags.REPLACEABLE_PLANTS)) getLevel().destroyBlock(newPos.offset(sx, sy, sz), false, ownerPlayer);
+                    if (level().getBlockState(newPos.offset(sx, sy, sz)).canBeReplaced()) level().destroyBlock(newPos.offset(sx, sy, sz), false, ownerPlayer);
                 }
             }
         }
 
-        if (tickCount == 100 || !getLevel().getBlockState(newPos).isAir()) remove(RemovalReason.DISCARDED);
+        if (tickCount == 100 || !level().getBlockState(newPos).isAir()) remove(RemovalReason.DISCARDED);
     }
 }

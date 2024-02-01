@@ -38,7 +38,7 @@ public class CSClientSetupEvents {
 
         event.registerEntityRenderer(CSEntityTypes.RAINFALL_ARROW.get(), RainfallArrowRenderer::new);
 
-        event.registerBlockEntityRenderer(CSBlockEntityTypes.CELESTIAL_CRAFTING_TABLE_TILE.get(), CelestialCraftingTableBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(CSBlockEntityTypes.CELESTIAL_CRAFTING_TABLE_TILE.get(), context -> new CelestialCraftingTableBlockEntityRenderer());
     }
 
     @SubscribeEvent
@@ -65,11 +65,11 @@ public class CSClientSetupEvents {
 
     @SubscribeEvent
     public static void onRegisterParticleProvidersEvent(final RegisterParticleProvidersEvent event) {
-        event.register(CSParticleTypes.BREEZEBROKEN.get(), BreezebrokenParticle.Provider::new);
-        event.register(CSParticleTypes.RAINFALL_BEAM.get(), RainfallBeamParticle.Provider::new);
-        event.register(CSParticleTypes.RAINFALL_BEAM_QUASAR.get(), RainfallBeamParticle.Quasar.Provider::new);
-        event.register(CSParticleTypes.RAINFALL_ENERGY.get(), RainfallEnergyParticle.Provider::new);
-        event.register(CSParticleTypes.RAINFALL_ENERGY_SMALL.get(), RainfallEnergyParticle.Small.Provider::new);
+        event.registerSpriteSet(CSParticleTypes.BREEZEBROKEN.get(), BreezebrokenParticle.Provider::new);
+        event.registerSpriteSet(CSParticleTypes.RAINFALL_BEAM.get(), RainfallBeamParticle.Provider::new);
+        event.registerSpriteSet(CSParticleTypes.RAINFALL_BEAM_QUASAR.get(), RainfallBeamParticle.Quasar.Provider::new);
+        event.registerSpriteSet(CSParticleTypes.RAINFALL_ENERGY.get(), RainfallEnergyParticle.Provider::new);
+        event.registerSpriteSet(CSParticleTypes.RAINFALL_ENERGY_SMALL.get(), RainfallEnergyParticle.Small.Provider::new);
     }
 
 }

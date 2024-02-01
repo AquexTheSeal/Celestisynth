@@ -9,9 +9,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.geo.render.built.GeoModel;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class TempestBossRenderer extends GeoEntityRenderer<TempestBoss> {
     public static final ResourceLocation GLOW_LAYER = Celestisynth.prefix("textures/entity/tempestboss/tempest_glow.png");
@@ -21,8 +20,8 @@ public class TempestBossRenderer extends GeoEntityRenderer<TempestBoss> {
     }
 
     @Override
-    public void render(GeoModel model, TempestBoss animatable, float partialTick, RenderType type, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        super.render(model, animatable, partialTick, RenderType.eyes(GLOW_LAYER), poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderFinal(PoseStack poseStack, TempestBoss animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.renderFinal(poseStack, animatable, model, bufferSource, bufferSource.getBuffer(RenderType.eyes(GLOW_LAYER)), partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }
