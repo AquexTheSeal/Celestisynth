@@ -1,14 +1,11 @@
 package com.aqutheseal.celestisynth.client.gui.celestialcrafting;
 
 import com.aqutheseal.celestisynth.Celestisynth;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -66,13 +63,9 @@ public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCr
         this.recipeBookComponent.renderTooltip(pGuiGraphics, this.leftPos, this.topPos, pMouseX, pMouseY);
     }
 
-    protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pX, int pY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, CRAFTING_TABLE_LOCATION);
-        //int i = //this.leftPos;
-        //int j = //(this.height - this.imageHeight) / 2;
-        this.blit(pPoseStack, super.leftPos, super.topPos, 0, 0, this.imageWidth, this.imageHeight);
+    @Override
+    protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pX, int pY) {
+        pGuiGraphics.blit(CRAFTING_TABLE_LOCATION, super.leftPos, super.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
         //EXPERIMENTAL FEATURE - Currently only support Minecraft default Latin/English alphabet / font with NO Forced Unicode Mode
 
@@ -87,14 +80,13 @@ public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCr
         final int topRightX = topLeftX + 9 + stringWidth;
 
         //render text border left
-        super.blit(pPoseStack, topLeftX, topLeftY, 176, 0, 3, 14);
+        pGuiGraphics.blit(CRAFTING_TABLE_LOCATION, topLeftX, topLeftY, 176, 0, 3, 14);
 
         //render text border
-        //blit(pPoseStack, super.leftPos + super.titleLabelX, super.topPos + super.titleLabelY, 180, 0, 1, 14, stringWidth, 14);
-        super.blit(pPoseStack, topLeftX + 3, topLeftY, 0, 205, stringWidth + 6, 14);
+        pGuiGraphics.blit(CRAFTING_TABLE_LOCATION, topLeftX + 3, topLeftY, 0, 205, stringWidth + 6, 14);
 
         //render text border right
-        super.blit(pPoseStack, topRightX, topLeftY, 182, 0, 3, 14);
+        pGuiGraphics.blit(CRAFTING_TABLE_LOCATION, topRightX, topLeftY, 182, 0, 3, 14);
     }
 
     protected boolean isHovering(int pX, int pY, int pWidth, int pHeight, double pMouseX, double pMouseY) {
