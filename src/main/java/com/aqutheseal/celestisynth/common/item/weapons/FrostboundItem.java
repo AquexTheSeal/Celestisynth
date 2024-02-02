@@ -1,11 +1,10 @@
 package com.aqutheseal.celestisynth.common.item.weapons;
 
-import com.aqutheseal.celestisynth.client.renderers.item.FrostboundRenderer;
+import com.aqutheseal.celestisynth.api.item.CSGeoItem;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,20 +14,26 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class FrostboundItem extends SkilledSwordItem implements GeoItem {
-    private static final RawAnimation POPUP_ANIM = RawAnimation.begin().thenPlay("use.popup");
+public class FrostboundItem extends SkilledSwordItem implements GeoItem, CSGeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public FrostboundItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    @Override
+    public String model() {
+        return "frostbound";
+    }
+
+    @Override
+    public String texture() {
+        return "frostbound";
     }
 
     @Override
@@ -63,27 +68,11 @@ public class FrostboundItem extends SkilledSwordItem implements GeoItem {
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            private FrostboundRenderer renderer;
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new FrostboundRenderer();
-                return this.renderer;
-            }
-        });
+        this.initGeo(consumer);
     }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, (state) ->
-                state.setAndContinue(RawAnimation.begin().thenLoop("animation.weapon.none")))
-        );
-    }
-
 }

@@ -38,7 +38,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
         pEntity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
             if (data.getFrostbound() > 0) {
                 VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.eyes(this.getTextureLocation(pEntity)));
-                int i = getOverlayCoords(pEntity, 0.0F);
+                int i = getOverlayCoords(pEntity, this.getWhiteOverlayProgress(pEntity, pPartialTicks));
                 this.model.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, i, 0F, 0.3F, 1.0F, 1.0F);
             }
         });
