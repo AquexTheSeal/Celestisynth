@@ -1,11 +1,11 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.spongepowered.mixin' version '0.7.+'
-    id 'eclipse'
-    id 'idea'
-    id 'maven-publish'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id("net.minecraftforge.gradle") version("${fg_plugin_version}")
+    id("org.spongepowered.mixin") version("${mixin_plugin_version}")
+    id("eclipse")
+    id("idea")
+    id("maven-publish")
+    id("org.parchmentmc.librarian.forgegradle") version("${librarian_plugin_version}")
+    id("com.github.johnrengelman.shadow") version("${shadow_plugin_version}")
 }
 
 version = "${mc_version}-${mod_version}"
@@ -36,7 +36,7 @@ minecraft {
 
             jvmArgs "-XX:+AllowEnhancedClassRedefinition", "-XX:HotswapAgent=fatjar"
             mods {
-                "${modid}" {
+                modid {
                     source sourceSets.main
                 }
             }
@@ -86,19 +86,16 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
+
     maven {
-        name "Geckolib Maven"
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        name = "Geckolib Maven"
+        url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
     }
     maven {
-        name "KosmX Maven"
-        url 'https://maven.kosmx.dev/'
+        name = "KosmX Maven"
+        url = "https://maven.kosmx.dev/"
     }
-    maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6's Maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
+
     maven {
         name = "BlameJared Maven"
         url = "https://maven.blamejared.com/"
@@ -112,8 +109,8 @@ repositories {
 		url = "https://maven.ryanliptak.com/"
     }
     maven {
-        name = '100Media Maven'
-        url = 'https://maven.100media.dev/'
+        name = "100Media Maven"
+        url = "https://maven.100media.dev/"
     }
 }
 
@@ -143,6 +140,8 @@ dependencies {
     implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:${jer_version}")
     implementation fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:${jeed_version}")
 
+    implementation fg.deobf("curse.maven:config-menus-forge-544048:${config_menus_version}")
+    implementation fg.deobf("curse.maven:catalogue-459701:${catalogue_version}")
     implementation fg.deobf("curse.maven:gamemenumodoption-353051:${gmmo_version}")
 
     implementation fg.deobf("curse.maven:jade-324717:${jade_version}")
@@ -156,22 +155,42 @@ dependencies {
     implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:5058433")
     implementation fg.deobf("curse.maven:citadel-331936:5065861")
     implementation fg.deobf("curse.maven:curios-309927:5066845")
-
-//    implementation fg.deobf("curse.maven:supplementaries-412082:4713347")
-//    runtimeOnly fg.deobf('curse.maven:ferritecore-429235:4117906')
-//    implementation fg.deobf("curse.maven:rubidium-574856:4568727")
-//    implementation fg.deobf("curse.maven:oculus-581495:4578731")
 }
 
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
-            modid: modid, mod_name: mod_name, mod_version: mod_version,
-            mod_authors: mod_authors, mod_description: mod_description, mc_version: mc_version,
-            mc_version_range: mc_version_range, forge_version_range: forge_version_range,
-            geckolib_version_range: geckolib_version_range, player_animator_version_range: player_animator_version_range,
-            jei_version_range: jei_version_range, jer_version_range: jer_version_range, jeed_version_range: jeed_version_range,
-            gmmo_version_range: gmmo_version_range, jade_version_range: jade_version_range, appleskin_version_range: appleskin_version_range,
-            capabilitysyncer_version: capabilitysyncer_version
+            // Base
+            modid: modid,
+            mod_name: mod_name,
+            mod_version: mod_version,
+            mod_authors: mod_authors,
+            mod_license: mod_license,
+            mod_description: mod_description,
+            mod_issue_tracker_url: mod_issue_tracker_url,
+
+            mc_version: mc_version,
+            mc_version_range: mc_version_range,
+            forge_version_range: forge_version_range,
+            loader_version_range: loader_version_range,
+
+            // Dependencies (Required)
+            geckolib_version_range: geckolib_version_range,
+            player_animator_version_range: player_animator_version_range,
+
+            // Dependencies (Shadowed)
+            capabilitysyncer_version: capabilitysyncer_version,
+
+            // Dependencies (Optional)
+            jei_version_range: jei_version_range,
+            jer_version_range: jer_version_range,
+            jeed_version_range: jeed_version_range,
+
+            config_menus_version_range: config_menus_version_range,
+            catalogue_version_range: catalogue_version_range,
+            gmmo_version_range: gmmo_version_range,
+
+            jade_version_range: jade_version_range,
+            appleskin_version_range: appleskin_version_range
     ]
     inputs.properties replaceProperties
 
@@ -196,14 +215,15 @@ tasks.named('jar', Jar).configure {
                 'MixinConfigs'		  	  : "${modid}.mixins.json"
         ])
     }
-    finalizedBy 'reobfJar'
+    finalizedBy("reobfJar")
 }
 
 shadowJar {
     archiveClassifier = ''
     configurations = [project.configurations.shade]
-    relocate 'dev._100media.capabilitysyncer', "${project.group}.relocated.capabilitysyncer"
-    finalizedBy 'reobfShadowJar'
+
+    relocate("dev._100media.capabilitysyncer", "${group}.relocated.capabilitysyncer")
+    finalizedBy("reobfShadowJar")
 }
 
 assemble.dependsOn shadowJar
