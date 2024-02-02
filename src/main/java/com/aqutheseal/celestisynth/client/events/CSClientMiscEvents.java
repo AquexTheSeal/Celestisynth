@@ -5,6 +5,7 @@ import com.aqutheseal.celestisynth.api.item.CSArmorProperties;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.api.mixin.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraSlashFrenzyAttack;
+import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.item.weapons.AquafloraItem;
 import com.aqutheseal.celestisynth.common.registry.CSRarityTypes;
 import com.mojang.datafixers.util.Either;
@@ -16,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -24,11 +26,22 @@ import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.List;
 import java.util.ListIterator;
 
 public class CSClientMiscEvents {
+
+    @SubscribeEvent
+    public static void onGeoEntityRender(GeoRenderEvent.Entity event) {
+        event.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+            if (data.getFrostbound() > 0) {
+                if (event.getEntity() instanceof LivingEntity entity) {
+                }
+            }
+        });
+    }
 
     @SubscribeEvent
     public static void onScreenRender(ScreenEvent.Opening event) {

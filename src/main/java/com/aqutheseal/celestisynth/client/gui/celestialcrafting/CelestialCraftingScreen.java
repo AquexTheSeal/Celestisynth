@@ -63,6 +63,10 @@ public class CelestialCraftingScreen extends AbstractContainerScreen<CelestialCr
         this.recipeBookComponent.renderTooltip(pGuiGraphics, this.leftPos, this.topPos, pMouseX, pMouseY);
     }
 
+    protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
+        pGuiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
+    }
+
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pX, int pY) {
         pGuiGraphics.blit(CRAFTING_TABLE_LOCATION, super.leftPos, super.topPos, 0, 0, this.imageWidth, this.imageHeight);

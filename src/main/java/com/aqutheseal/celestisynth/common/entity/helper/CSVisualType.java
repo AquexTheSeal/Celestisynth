@@ -53,27 +53,37 @@ public class CSVisualType {
 
         //TODO Un-hardcode
 
-        List<CSVisualType> rotatableEffectsZ = new ArrayList<>();
-        rotatableEffectsZ.add(CSVisualTypes.CRESCENTIA_STRIKE.get());
-        rotatableEffectsZ.add(CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get());
-        rotatableEffectsZ.add(CSVisualTypes.CRESCENTIA_THROW.get());
-        rotatableEffectsZ.add(CSVisualTypes.CRESCENTIA_THROW_INVERTED.get());
-        rotatableEffectsZ.add(CSVisualTypes.BREEZEBREAKER_SLASH.get());
-        rotatableEffectsZ.add(CSVisualTypes.BREEZEBREAKER_SLASH_INVERTED.get());
+        List<CSVisualType> z0 = new ArrayList<>();
+        z0.add(CSVisualTypes.CRESCENTIA_STRIKE.get());
+        z0.add(CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get());
+        z0.add(CSVisualTypes.CRESCENTIA_THROW.get());
+        z0.add(CSVisualTypes.CRESCENTIA_THROW_INVERTED.get());
+        z0.add(CSVisualTypes.BREEZEBREAKER_SLASH.get());
+        z0.add(CSVisualTypes.BREEZEBREAKER_SLASH_INVERTED.get());
 
-        if (rotatableEffectsZ.contains(animatable.getVisualType())) poseStack.mulPose(Axis.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
+        if (z0.contains(animatable.getVisualType())) poseStack.mulPose(Axis.ZP.rotationDegrees(((animatable.getRotationZ() / 360.0F) * 45.0F) - 22.5F));
 
-        List<CSVisualType> rotatableEffectsX = new ArrayList<>();
-        rotatableEffectsX.add(CSVisualTypes.BREEZEBREAKER_WHEEL_IMPACT.get());
-        rotatableEffectsX.add(CSVisualTypes.AQUAFLORA_PIERCE_START.get());
-        rotatableEffectsX.add(CSVisualTypes.AQUAFLORA_STAB.get());
+        List<CSVisualType> x2 = new ArrayList<>();
+        x2.add(CSVisualTypes.CRESCENTIA_STRIKE.get());
+        x2.add(CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get());
+        x2.add(CSVisualTypes.CRESCENTIA_THROW.get());
+        x2.add(CSVisualTypes.CRESCENTIA_THROW_INVERTED.get());
+        x2.add(CSVisualTypes.BREEZEBREAKER_SLASH.get());
+        x2.add(CSVisualTypes.BREEZEBREAKER_SLASH_INVERTED.get());
 
-        if (rotatableEffectsX.contains(animatable.getVisualType()))  poseStack.mulPose(Axis.XP.rotationDegrees(180F + lerpBodyRot));
+        if (x2.contains(animatable.getVisualType())) poseStack.mulPose(Axis.YP.rotationDegrees(-180));
 
-        List<CSVisualType> men = new ArrayList<>();
-        men.add(CSVisualTypes.RAINFALL_SHOOT.get());
+        List<CSVisualType> x0 = new ArrayList<>();
+        x0.add(CSVisualTypes.BREEZEBREAKER_WHEEL_IMPACT.get());
+        x0.add(CSVisualTypes.AQUAFLORA_PIERCE_START.get());
+        x0.add(CSVisualTypes.AQUAFLORA_STAB.get());
 
-        if (men.contains(animatable.getVisualType())) poseStack.mulPose(Axis.XP.rotationDegrees(180F + lerpBodyRot - 15f));
+        if (x0.contains(animatable.getVisualType()))  poseStack.mulPose(Axis.XP.rotationDegrees(180F + lerpBodyRot));
+
+        List<CSVisualType> x1 = new ArrayList<>();
+        x1.add(CSVisualTypes.RAINFALL_SHOOT.get());
+
+        if (x1.contains(animatable.getVisualType())) poseStack.mulPose(Axis.XP.rotationDegrees(180F + lerpBodyRot - 15f));
     }
 
     public String getName() {
