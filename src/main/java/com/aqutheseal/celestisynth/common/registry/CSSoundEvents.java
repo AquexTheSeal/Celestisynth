@@ -7,7 +7,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class CSSoundEvents {
-
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Celestisynth.MODID);
 
     public static final RegistryObject<SoundEvent> CS_STEP = SOUND_EVENTS.register("step", () -> new SoundEvent(Celestisynth.prefix("step")));
