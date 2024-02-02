@@ -121,6 +121,7 @@ public class TempestBoss extends Monster implements GeoEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(BATTLE_PHASE, 1);
+        this.entityData.define(ATTACK_STATE, 0);
     }
 
     public boolean isControlledByLocalInstance() {
