@@ -1,6 +1,5 @@
 package com.aqutheseal.celestisynth.api.skill;
 
-import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -9,34 +8,53 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseSkillInstance implements ISkillInstance {
+    protected final Component skillName;
+    protected final Component skillDescription;
+    protected final Component skillCriterionDescription;
+    protected final ResourceLocation skillIcon;
+    protected final ISkillTier skillTier;
+    protected final int minSkillLevel;
+    protected final int maxSkillLevel;
+    protected final int skillCooldown;
+
+    public BaseSkillInstance(Component skillName, Component skillDescription, Component skillCriterionDescription, ResourceLocation skillIcon, ISkillTier skillTier, int minSkillLevel, int maxSkillLevel, int skillCooldown) {
+        this.skillName = skillName;
+        this.skillDescription = skillDescription;
+        this.skillCriterionDescription = skillCriterionDescription;
+        this.skillIcon = skillIcon;
+        this.skillTier = skillTier;
+        this.minSkillLevel = minSkillLevel;
+        this.maxSkillLevel = maxSkillLevel;
+        this.skillCooldown = skillCooldown;
+    }
 
     @Override
-    public abstract String getName();
+    public Component getName() {
+        return skillName;
+    }
 
     @Override
     public Component getDescription() {
-        return Component.translatable("celestisynth.skill.description.default");
+        return skillDescription;
     }
 
     @Override
     public Component getCriterionDescription() {
-        return Component.translatable("celestisynth.skill.description.criterion.default");
+        return skillCriterionDescription;
     }
 
     @Override
     public ResourceLocation getIcon() {
-        return Celestisynth.prefix("skills/base/default.png");
+        return skillIcon;
     }
 
     @Nullable
     @Override
-    public WeaponAttackInstance getAttack() {
-        return null;
-    }
+    public abstract WeaponAttackInstance getAttack();
 
     @Override
     public ISkillTier getTier() {
-        return CelestisynthSkillTiers.BASIC;
+        return skillTier;
     }
 
     @Nullable
@@ -44,57 +62,46 @@ public abstract class BaseSkillInstance implements ISkillInstance {
     public abstract AbstractSkillTree getSkillTree();
 
     @Override
-    public final int getMinSkillLevel() {
-        return 0;
+    public int getMinSkillLevel() {
+        return minSkillLevel;
     }
 
     @Override
     public int getMaxSkillLevel() {
-        return 3;
+        return maxSkillLevel;
+    }
+
+    @Override
+    public int getSkillCooldown() {
+        return skillCooldown;
     }
 
     @Override
     public abstract boolean isPassive();
 
     @Override
-    public boolean getActivationConditions(Player owner) {
-        return false;
-    }
+    public abstract boolean getActivationConditions(Player owner);
 
     @Override
-    public boolean getDeactivationConditions(Player owner) {
-        return false;
-    }
+    public abstract boolean getDeactivationConditions(Player owner);
 
     @Override
-    public void onSkillLearned(Player owner) {
-
-    }
+    public abstract void onSkillLearned(Player owner);
 
     @Override
-    public void onSkillUnlearned(Player owner) {
-
-    }
+    public abstract void onSkillUnlearned(Player owner);
 
     @Override
-    public void onSkillLevelChanged(Player owner, boolean hasDecreased) {
-
-    }
+    public abstract void onSkillLevelChanged(Player owner, boolean hasDecreased);
 
     @Override
-    public void onSkillActivated(Player owner) {
-
-    }
+    public abstract void onSkillActivated(Player owner);
 
     @Override
-    public void onSkillTick(Player owner) {
-
-    }
+    public abstract void onSkillTick(Player owner);
 
     @Override
-    public void onPassiveTick(Player owner) {
-
-    }
+    public abstract void onPassiveTick(Player owner);
 
     @Override
     public abstract void onSkillDeactivated(Player owner);
@@ -112,7 +119,5 @@ public abstract class BaseSkillInstance implements ISkillInstance {
     public abstract void setDescription(Component newDescription);
 
     @Override
-    public CompoundTag serializeToNBT() {
-        return null;
-    }
+    public abstract CompoundTag serializeToNBT();
 }

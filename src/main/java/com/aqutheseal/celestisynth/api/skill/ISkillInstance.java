@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 public interface ISkillInstance {
 
-    String getName();
+    Component getName();
 
     Component getDescription();
     Component getCriterionDescription();
@@ -27,6 +27,8 @@ public interface ISkillInstance {
 
     int getMinSkillLevel();
     int getMaxSkillLevel();
+
+    int getSkillCooldown();
 
     boolean isPassive();
     boolean getActivationConditions(Player owner);
