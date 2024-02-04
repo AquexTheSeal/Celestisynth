@@ -1,5 +1,6 @@
 {
-  "type": "celestisynth:shaped_celestial_crafting",
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "i": {
       "item": "celestisynth:celestial_core_heated"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "celestisynth:crescentia"
-  }
+  },
+  "show_notification": true
 }

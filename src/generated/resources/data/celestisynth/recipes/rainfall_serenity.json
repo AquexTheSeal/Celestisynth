@@ -1,5 +1,6 @@
 {
-  "type": "celestisynth:shaped_celestial_crafting",
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "b": {
       "item": "minecraft:bow"
@@ -24,5 +25,6 @@
   ],
   "result": {
     "item": "celestisynth:rainfall_serenity"
-  }
+  },
+  "show_notification": true
 }

@@ -3,9 +3,10 @@ package com.aqutheseal.celestisynth.common.recipe.celestialcrafting;
 import com.aqutheseal.celestisynth.common.registry.CSRecipeTypes;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 
@@ -29,23 +30,21 @@ public class CelestialShapedRecipe extends ShapedRecipe implements CelestialCraf
     }
 
     public static class Serializer implements RecipeSerializer<CelestialShapedRecipe> {
+        final RegistryAccess registryAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+
         public Serializer() {
         }
 
         @Override
         public CelestialShapedRecipe fromJson(ResourceLocation pRecipeId, JsonObject pJson) {
             ShapedRecipe fromJson = SHAPED_RECIPE.fromJson(pRecipeId, pJson);
-            CraftingBookCategory craftingbookcategory = CraftingBookCategory.CODEC.byName(GsonHelper.getAsString(pJson, "category", null), CraftingBookCategory.MISC);
-            ItemStack itemstack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pJson, "result"));
-            return new CelestialShapedRecipe(pRecipeId, fromJson.getGroup(), craftingbookcategory, fromJson.getWidth(), fromJson.getHeight(), fromJson.getIngredients(), itemstack, fromJson.showNotification());
+            return new CelestialShapedRecipe(pRecipeId, fromJson.getGroup(), fromJson.category(), fromJson.getWidth(), fromJson.getHeight(), fromJson.getIngredients(), fromJson.getResultItem(registryAccess), fromJson.showNotification());
         }
 
         @Override
         public CelestialShapedRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
             ShapedRecipe fromNetwork = SHAPED_RECIPE.fromNetwork(pRecipeId, pBuffer);
-            CraftingBookCategory craftingbookcategory = pBuffer.readEnum(CraftingBookCategory.class);
-            ItemStack itemstack = pBuffer.readItem();
-            return new CelestialShapedRecipe(pRecipeId, fromNetwork.getGroup(), craftingbookcategory, fromNetwork.getWidth(), fromNetwork.getHeight(), fromNetwork.getIngredients(), itemstack, fromNetwork.showNotification());
+            return new CelestialShapedRecipe(pRecipeId, fromNetwork.getGroup(), fromNetwork.category(), fromNetwork.getWidth(), fromNetwork.getHeight(), fromNetwork.getIngredients(), fromNetwork.getResultItem(registryAccess), fromNetwork.showNotification());
         }
 
         @Override

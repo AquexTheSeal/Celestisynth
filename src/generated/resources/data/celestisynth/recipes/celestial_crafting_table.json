@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "b": {
       "item": "minecraft:netherite_ingot"
@@ -21,5 +22,6 @@
   ],
   "result": {
     "item": "celestisynth:celestial_crafting_table"
-  }
+  },
+  "show_notification": true
 }

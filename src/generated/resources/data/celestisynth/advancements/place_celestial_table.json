@@ -5,7 +5,7 @@
       "conditions": {
         "block": "celestisynth:celestial_crafting_table"
       },
-      "trigger": "minecraft:placed_block"
+      "trigger": "minecraft:enter_block"
     }
   },
   "display": {
@@ -27,5 +27,6 @@
     [
       "criteria"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

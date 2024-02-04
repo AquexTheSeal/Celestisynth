@@ -2,13 +2,14 @@
   "structures": [
     {
       "structure": "celestisynth:wintereis_cluster",
-      "weight": 2
+      "weight": 1
     }
   ],
   "placement": {
     "salt": 1407818372,
-    "spacing": 28,
-    "separation": 6,
+    "frequency": 0,
+    "spacing": 2200,
+    "separation": 1500,
     "type": "minecraft:random_spread"
   }
 }
