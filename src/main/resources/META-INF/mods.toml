@@ -1,6 +1,6 @@
 modLoader="javafml"
-loaderVersion="[43,)"
-license="Massachusetts Institute of Technology (MIT)"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
 
 [[mods]]
 modId="${modid}"
@@ -47,40 +47,47 @@ description='''${mod_description}'''
     modId="jei"
     mandatory=false
     versionRange="${jei_version_range}"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 
 [[dependencies."${modid}"]]
     modId="jeresources"
     mandatory=false
     versionRange="jer_version_range"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 
 [[dependencies."${modid}"]]
     modId="jeed"
     mandatory=false
     versionRange="${jeed_version_range}"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 
 [[dependencies."${modid}"]]
     modId="jade"
     mandatory=false
     versionRange="${jade_version_range}"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
+
+[[dependencies."${modid}"]]
+    modId="forgeconfigscreens"
+    mandatory=false
+    versionRange="${config_menus_version_range}"
+    ordering="NONE"
+    side="CLIENT"
 
 [[dependencies."${modid}"]]
     modId="gamemenumodoption"
     mandatory=false
     versionRange="${gmmo_version_range}"
-    ordering="AFTER"
+    ordering="NONE"
     side="CLIENT"
 
 [[dependencies."${modid}"]]
     modId="appleskin"
     mandatory=false
     versionRange="${appleskin_version_range}"
-    ordering="AFTER"
+    ordering="NONE"
     side="CLIENT"
