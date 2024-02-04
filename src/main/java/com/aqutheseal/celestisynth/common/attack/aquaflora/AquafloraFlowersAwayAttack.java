@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.attack.aquaflora;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
+import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
@@ -50,7 +51,7 @@ public class AquafloraFlowersAwayAttack extends AquafloraAttack {
         for (Entity target : entities) {
             if (target instanceof LivingEntity lt && target != player && target.isAlive() && !player.isAlliedTo(target)) {
                 CSEffectEntity.createInstance(player, target, CSVisualTypes.AQUAFLORA_FLOWER_BIND.get());
-                hurtNoKB(player, lt, (float) (double) CSConfigManager.COMMON.aquafloraBloomShiftSkillDmg.get());
+                initiateAbilityAttack(player, lt, (float) (double) CSConfigManager.COMMON.aquafloraBloomShiftSkillDmg.get(), AttackHurtTypes.NO_KB_PIERCE);
                 target.setDeltaMovement((player.getX() - target.getX()) * 0.35, (player.getY() - target.getY()) * 0.35, (player.getZ() - target.getZ()) * 0.35);
             }
         }

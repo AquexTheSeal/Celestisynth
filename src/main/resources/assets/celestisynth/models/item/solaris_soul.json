@@ -1,6 +1,0 @@
-{
-  "parent": "celestisynth:item/solaris",
-  "textures": {
-    "0": "celestisynth:item/solaris_soul"
-  }
-}

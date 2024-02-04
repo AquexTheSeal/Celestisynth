@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth.common.item.weapons;
 
+import com.aqutheseal.celestisynth.api.item.CSGeoItem;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.attack.breezebreaker.*;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
@@ -16,16 +17,37 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
-public class BreezebreakerItem extends SkilledSwordItem {
+import java.util.function.Consumer;
+
+public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
     public static final String BB_COMBO_POINTS = "cs.bbCombo";
     public static final String AT_BUFF_STATE = "cs.bbBuffState";
     public static final String BUFF_STATE_LIMITER = "cs.bbBuffStateLimiter";
 
     public BreezebreakerItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+        SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    @Override
+    public String geoIdentifier() {
+        return "breezebreaker";
+    }
+
+    @Override
+    public GeoAnimatable cacheItem() {
+        return this;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        this.initGeo(consumer);
     }
 
     @Override

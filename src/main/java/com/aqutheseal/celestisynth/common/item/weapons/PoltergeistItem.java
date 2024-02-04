@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.common.item.weapons;
 
-import com.aqutheseal.celestisynth.api.item.CSWeapon;
+import com.aqutheseal.celestisynth.api.item.CSGeoItem;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.attack.poltergeist.PoltergeistBarrierCallAttack;
 import com.aqutheseal.celestisynth.common.attack.poltergeist.PoltergeistCosmicSteelAttack;
@@ -15,11 +15,41 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
-public class PoltergeistItem extends SkilledAxeItem implements CSWeapon {
+import java.util.function.Consumer;
+
+public class PoltergeistItem extends SkilledAxeItem implements CSGeoItem {
     public PoltergeistItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
         super(tier, attackDamage, attackSpeed, properties);
+        SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    @Override
+    public String geoIdentifier() {
+        return "poltergeist";
+    }
+
+    @Override
+    public String texture(ItemStack stack) {
+        if (attackExtras(stack) != null && attackController(stack).getBoolean(PoltergeistCosmicSteelAttack.IS_IMPACT_LARGE)) {
+            return "poltergeist_haunted";
+        } else {
+            return "poltergeist";
+        }
+    }
+
+    @Override
+    public GeoAnimatable cacheItem() {
+        return this;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        this.initGeo(consumer);
     }
 
 

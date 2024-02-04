@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.attack.solaris;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
+import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
@@ -85,7 +86,7 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
 
             for (LivingEntity target : entities) {
                 if (target != getPlayer() && !getPlayer().isAlliedTo(target) && target.isAlive()) {
-                    hurtNoKB(getPlayer(), target, (float) ((CSConfigManager.COMMON.solarisSkillDmg.get()) + getSharpnessValue(getStack(), 0.5F)));
+                    initiateAbilityAttack(getPlayer(), target, (float) ((CSConfigManager.COMMON.solarisSkillDmg.get()) + getSharpnessValue(getStack(), 0.5F)), AttackHurtTypes.RAPID_PIERCE);
                     target.setSecondsOnFire(5);
                 }
             }

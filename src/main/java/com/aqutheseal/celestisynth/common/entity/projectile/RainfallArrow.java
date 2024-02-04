@@ -80,7 +80,7 @@ public class RainfallArrow extends AbstractArrow implements GeoEntity {
         super.tick();
 
         if (isStrong()) {
-            if (tickCount == 3) {
+            if (tickCount == 2) {
                 Vec3 from = new Vec3(getOrigin().getX(), getOrigin().getY(), getOrigin().getZ());
                 Vec3 to = new Vec3(getX(), getY(), getZ());
 
@@ -88,13 +88,13 @@ public class RainfallArrow extends AbstractArrow implements GeoEntity {
             }
         }
 
-        if (tickCount > 2) remove(RemovalReason.DISCARDED);
+        if (tickCount > 1) remove(RemovalReason.DISCARDED);
     }
 
     @Override
     public void shoot(double pX, double pY, double pZ, float pVelocity, float pInaccuracy) {
         super.shoot(pX, pY, pZ, pVelocity, pInaccuracy);
-        setDeltaMovement(getDeltaMovement().scale(20));
+        setDeltaMovement(getDeltaMovement().scale(30));
     }
 
     public void hitEffect(HitResult pResult, BlockPos hitPos) {

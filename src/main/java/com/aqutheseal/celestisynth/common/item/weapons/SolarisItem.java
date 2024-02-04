@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth.common.item.weapons;
 
+import com.aqutheseal.celestisynth.api.item.CSGeoItem;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.attack.solaris.SolarisFullRoundAttack;
 import com.aqutheseal.celestisynth.common.attack.solaris.SolarisSoulDashAttack;
@@ -14,11 +15,41 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
-public class SolarisItem extends SkilledSwordItem {
+import java.util.function.Consumer;
+
+public class SolarisItem extends SkilledSwordItem implements CSGeoItem {
 
     public SolarisItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Item.Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+        SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    @Override
+    public String geoIdentifier() {
+        return "solaris";
+    }
+
+    @Override
+    public String texture(ItemStack stack) {
+        if (attackController(stack) != null && attackController(stack).getBoolean(SolarisSoulDashAttack.STARTED)) {
+            return "solaris_soul";
+        } else {
+            return "solaris";
+        }
+    }
+
+    @Override
+    public GeoAnimatable cacheItem() {
+        return this;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        this.initGeo(consumer);
     }
 
     @Override

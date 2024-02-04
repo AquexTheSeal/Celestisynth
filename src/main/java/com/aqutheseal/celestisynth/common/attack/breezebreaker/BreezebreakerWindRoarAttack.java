@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.attack.breezebreaker;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
+import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
@@ -62,7 +63,7 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
             if (observedLivingTarget != null) {
                 double attackDamage = CSConfigManager.COMMON.breezebreakerSprintSkillDmg.get() + getSharpnessValue(stack, 1);
 
-                hurtNoKB(player, observedLivingTarget, (float) attackDamage);
+                initiateAbilityAttack(player, observedLivingTarget, (float) attackDamage, AttackHurtTypes.NO_KB_PIERCE);
                 getPlayer().level().explode(player, observedLivingTarget.getX(), observedLivingTarget.getY(), observedLivingTarget.getZ(), 1.0F, Level.ExplosionInteraction.NONE);
                 observedLivingTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 2));
                 observedLivingTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));

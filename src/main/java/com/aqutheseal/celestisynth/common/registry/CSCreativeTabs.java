@@ -18,7 +18,9 @@ public class CSCreativeTabs {
                     .title(Component.translatable("creativetab.celestisynth_tab"))
                     .displayItems((pParameters, pOutput) -> {
                         for (RegistryObject<Item> item : CSItems.ITEMS.getEntries()) {
-                            pOutput.accept(item.get());
+                            if (item != CSItems.FROSTBOUND && item != CSItems.TEMPEST_SPAWN_EGG) {
+                                pOutput.accept(item.get());
+                            }
                         }
                         for (RegistryObject<Block> block : CSBlocks.BLOCKS.getEntries()) {
                             pOutput.accept(block.get());

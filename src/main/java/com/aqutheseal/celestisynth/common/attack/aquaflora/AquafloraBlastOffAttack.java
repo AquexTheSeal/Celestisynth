@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.attack.aquaflora;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
+import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
@@ -50,7 +51,7 @@ public class AquafloraBlastOffAttack extends AquafloraAttack {
             if (entityBatch instanceof LivingEntity target) {
                 if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
                     target.setDeltaMovement((target.getX() - getPlayer().getX()) * 0.4,   1, (target.getZ() - getPlayer().getZ()) * 0.4);
-                    hurtNoKB(player, target, (float) (double) CSConfigManager.COMMON.aquafloraShiftSkillDmg.get() + getSharpnessValue(getStack(), 1F));
+                    initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.aquafloraShiftSkillDmg.get() + getSharpnessValue(getStack(), 1F), AttackHurtTypes.NO_KB_PIERCE);
                     createHitEffect(getStack(), getPlayer().level(), player, target);
                     CSWeaponUtil.disableRunningWeapon(target);
                 }

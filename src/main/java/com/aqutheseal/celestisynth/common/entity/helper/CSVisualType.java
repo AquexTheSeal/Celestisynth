@@ -70,15 +70,22 @@ public class CSVisualType {
         x2.add(CSVisualTypes.CRESCENTIA_THROW_INVERTED.get());
         x2.add(CSVisualTypes.BREEZEBREAKER_SLASH.get());
         x2.add(CSVisualTypes.BREEZEBREAKER_SLASH_INVERTED.get());
+        x2.add(CSVisualTypes.AQUAFLORA_STAB.get());
+        x2.add(CSVisualTypes.AQUAFLORA_SLICE.get());
+        x2.add(CSVisualTypes.AQUAFLORA_SLICE_INVERTED.get());
 
         if (x2.contains(animatable.getVisualType())) poseStack.mulPose(Axis.YP.rotationDegrees(-180));
 
         List<CSVisualType> x0 = new ArrayList<>();
         x0.add(CSVisualTypes.BREEZEBREAKER_WHEEL_IMPACT.get());
         x0.add(CSVisualTypes.AQUAFLORA_PIERCE_START.get());
-        x0.add(CSVisualTypes.AQUAFLORA_STAB.get());
 
         if (x0.contains(animatable.getVisualType()))  poseStack.mulPose(Axis.XP.rotationDegrees(180F + lerpBodyRot));
+
+        List<CSVisualType> x3 = new ArrayList<>();
+        x3.add(CSVisualTypes.AQUAFLORA_STAB.get());
+
+        if (x3.contains(animatable.getVisualType()))  poseStack.mulPose(Axis.XP.rotationDegrees(180F - lerpBodyRot));
 
         List<CSVisualType> x1 = new ArrayList<>();
         x1.add(CSVisualTypes.RAINFALL_SHOOT.get());

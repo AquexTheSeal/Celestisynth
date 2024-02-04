@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.attack.cresentia;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
+import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.item.weapons.CrescentiaItem;
@@ -62,7 +63,7 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != getPlayer() && target.isAlive() && !getPlayer().isAlliedTo(target) && target.distanceToSqr(getPlayer()) < rangeSq) {
-                        hurtNoKB(getPlayer(), target, (float) (CSConfigManager.COMMON.crescentiaSkillDmg.get() + getSharpnessValue(getStack(), 0.25F)));
+                        initiateAbilityAttack(getPlayer(), target, (float) (CSConfigManager.COMMON.crescentiaSkillDmg.get() + getSharpnessValue(getStack(), 0.25F)), AttackHurtTypes.RAPID);
                         target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                     }
                 }

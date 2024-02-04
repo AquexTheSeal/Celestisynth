@@ -6,7 +6,6 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
 public class RainfallBeamParticle extends SimpleAnimatedParticle {
-    private final float rotSpeed;
 
     RainfallBeamParticle(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, SpriteSet pSprites) {
         super(pLevel, pX, pY, pZ, pSprites, 0.0F);
@@ -14,7 +13,6 @@ public class RainfallBeamParticle extends SimpleAnimatedParticle {
         this.yd = pYSpeed;
         this.zd = pZSpeed;
         this.lifetime = 10;
-        this.rotSpeed = ((float)Math.random() - 0.5F) * 0.5F;
 
         setFadeColor(15916745);
         setSpriteFromAge(pSprites);
@@ -28,17 +26,14 @@ public class RainfallBeamParticle extends SimpleAnimatedParticle {
 
         if (this.age < this.lifetime) {
             float progress = (float) this.age / this.lifetime;
-            this.quadSize = startQuadSize + progress * (endQuadSize - startQuadSize);
-            this.alpha = Mth.clamp(quadSize, 0, 1.0F);
+            this.quadSize = Mth.lerp(progress, startQuadSize * 2, endQuadSize);
+            this.alpha = Mth.lerp(progress, startQuadSize, endQuadSize);
         } else this.quadSize = endQuadSize;
-
-        this.oRoll = this.roll;
-        this.roll += (float)Math.PI * this.rotSpeed * 2.0F;
     }
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @Override

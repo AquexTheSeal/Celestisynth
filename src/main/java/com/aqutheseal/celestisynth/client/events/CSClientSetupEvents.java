@@ -1,7 +1,5 @@
 package com.aqutheseal.celestisynth.client.events;
 
-import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.client.gui.celestialcrafting.CelestialCraftingScreen;
 import com.aqutheseal.celestisynth.client.particles.BreezebrokenParticle;
 import com.aqutheseal.celestisynth.client.particles.RainfallBeamParticle;
@@ -11,14 +9,11 @@ import com.aqutheseal.celestisynth.client.renderers.entity.boss.TempestBossRende
 import com.aqutheseal.celestisynth.client.renderers.entity.projectile.RainfallArrowRenderer;
 import com.aqutheseal.celestisynth.client.renderers.misc.CSEffectEntityRenderer;
 import com.aqutheseal.celestisynth.client.renderers.misc.NullRenderer;
-import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraAttack;
-import com.aqutheseal.celestisynth.common.attack.poltergeist.PoltergeistCosmicSteelAttack;
-import com.aqutheseal.celestisynth.common.attack.solaris.SolarisSoulDashAttack;
-import com.aqutheseal.celestisynth.common.item.weapons.RainfallSerenityItem;
-import com.aqutheseal.celestisynth.common.registry.*;
+import com.aqutheseal.celestisynth.common.registry.CSBlockEntityTypes;
+import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
+import com.aqutheseal.celestisynth.common.registry.CSMenuTypes;
+import com.aqutheseal.celestisynth.common.registry.CSParticleTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,21 +39,6 @@ public class CSClientSetupEvents {
     @SubscribeEvent
     public static void onFMLClientSetupEvent(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            ItemProperties.register(CSItems.SOLARIS.get(),
-                    Celestisynth.prefix("soul"), (stack, level, living, id) ->
-                            living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(SolarisSoulDashAttack.STARTED) ? 1.0F : 0.0F);
-            ItemProperties.register(CSItems.POLTERGEIST.get(),
-                    Celestisynth.prefix("haunted"), (stack, level, living, id) ->
-                            living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_EXTRAS_ELEMENT).getBoolean(PoltergeistCosmicSteelAttack.IS_IMPACT_LARGE) ? 1.0F : 0.0F);
-            ItemProperties.register(CSItems.AQUAFLORA.get(),
-                    Celestisynth.prefix("blooming"), (stack, level, living, id) ->
-                            living != null && stack.hasTag() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(AquafloraAttack.CHECK_PASSIVE) ? 1.0F : 0.0F);
-
-            ItemProperties.register(CSItems.RAINFALL_SERENITY.get(), new ResourceLocation("pull"), (stack, level, living, id) ->
-                    living == null || !(stack.getItem() instanceof RainfallSerenityItem) ? 0.0F : living.getUseItem() != stack ? 0.0F : (float)(stack.getUseDuration() - living.getUseItemRemainingTicks()) / ((RainfallSerenityItem)stack.getItem()).getDrawSpeed(stack));
-            ItemProperties.register(CSItems.RAINFALL_SERENITY.get(), new ResourceLocation("pulling"), (stack, level, living, id) ->
-                    living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0F : 0.0F);
-
             MenuScreens.register(CSMenuTypes.CELESTIAL_CRAFTING.get(), CelestialCraftingScreen::new);
         });
     }

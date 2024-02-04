@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.attack.poltergeist;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
+import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
@@ -46,7 +47,7 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
 
         for (Entity entityBatch : iterateEntities(player.level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 2), 0, (int) (calculateZLook(player) * 2)), range))) {
             if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
-                hurtNoKB(player, target, (float) (double) CSConfigManager.COMMON.poltergeistShiftSkillDmg.get() + getSharpnessValue(getStack(), 1.2F));
+                initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.poltergeistShiftSkillDmg.get() + getSharpnessValue(getStack(), 1.2F), AttackHurtTypes.REGULAR);
                 target.playSound(CSSoundEvents.CS_SWORD_CLASH.get(), 0.25F, 0.5F);
 
                 target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {

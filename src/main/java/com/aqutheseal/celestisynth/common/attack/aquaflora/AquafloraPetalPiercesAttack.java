@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.attack.aquaflora;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
+import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
@@ -57,12 +58,12 @@ public class AquafloraPetalPiercesAttack extends AquafloraAttack {
             entities.addAll(iterateEntities(getPlayer().level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 3), (int) (1 + (calculateYLook(player) * 3)), (int) (calculateZLook(player) * 3)), 2)));
             entities.addAll(iterateEntities(getPlayer().level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 1.5), (int) (1 + (calculateYLook(player) * 1.5)), (int) (calculateZLook(player) * 1.5)), 2)));
 
-            if (entities.size() > 0) getPlayer().playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 1F + getPlayer().level().random.nextFloat());
+            if (!entities.isEmpty()) getPlayer().playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 1F + getPlayer().level().random.nextFloat());
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
-                        hurtNoKB(player, target, (float) (double) CSConfigManager.COMMON.aquafloraSkillDmg.get() + getSharpnessValue(getStack(), 0.15F));
+                        initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.aquafloraSkillDmg.get() + getSharpnessValue(getStack(), 0.15F), AttackHurtTypes.RAPID_PIERCE);
                         createHitEffect(getStack(), getPlayer().level(), player, target);
                     }
                 }

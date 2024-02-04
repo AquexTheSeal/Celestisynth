@@ -3,6 +3,7 @@ package com.aqutheseal.celestisynth.api.item;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.common.network.util.ChangeCameraTypePacket;
 import com.aqutheseal.celestisynth.common.network.util.ShakeScreenServerPacket;
+import com.aqutheseal.celestisynth.common.registry.CSDamageSources;
 import com.aqutheseal.celestisynth.manager.CSNetworkManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
@@ -12,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -39,28 +41,55 @@ public interface CSWeaponUtil {
     String ANIMATION_TIMER_KEY = "cs.animationTimer";
     String ANIMATION_BEGUN_KEY = "cs.hasAnimationBegun";
 
-    default void hurtNoKB(Player holder, LivingEntity target, float damage, boolean isBlockable) {
+    default void initiateAbilityAttack(Player holder, LivingEntity target, float damage, DamageSource damageSource, AttackHurtTypes attackHurtType) {
         if (damage == 0) return;
 
-        double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
+        DamageSource regularDamage = target.damageSources().playerAttack(holder);
+        DamageSource rapidDamage = new CSDamageSources(target.level().registryAccess()).rapidPlayerAttack(holder);
 
-        target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(100); //TODO Attrib modifiers!!
+        DamageSource finalDamageSource;
+        if (damageSource != null) {
+            finalDamageSource = damageSource;
+        } else {
+            finalDamageSource = attackHurtType.isRapid() ? rapidDamage : regularDamage;
+        }
 
-        target.invulnerableTime = 0;
+        if (!attackHurtType.doKnockback()) {
+            double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
+            target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1000);
+            attack(holder, target, damage, finalDamageSource, attackHurtType);
+            target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
+        } else {
+            attack(holder, target, damage, finalDamageSource, attackHurtType);
+        }
+    }
 
-        if (!(isBlockable && target.getUseItem().getItem() instanceof ShieldItem)) target.hurt(target.damageSources().playerAttack(holder), damage);
-        else useAndDamageItem(target.getUseItem(), target.level(), target, (int) (damage / 3));
+    default CompoundTag attackController(ItemStack stack) {
+        return stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+    }
 
-        target.doEnchantDamageEffects(holder, target);
-        target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
+    default CompoundTag attackExtras(ItemStack stack) {
+        return stack.getOrCreateTagElement(CSWeapon.CS_EXTRAS_ELEMENT);
+    }
+
+    default void initiateAbilityAttack(Player holder, LivingEntity target, float damage, AttackHurtTypes attackHurtType) {
+        initiateAbilityAttack(holder, target, damage, null, attackHurtType);
+    }
+
+    private void attack(Player holder, LivingEntity target, float damage, DamageSource damageSource, AttackHurtTypes attackHurtType) {
+        if (attackHurtType.isRapid()) {
+            target.invulnerableTime = 0;
+        }
+        if (!(attackHurtType.isBlockable() && target.getUseItem().getItem() instanceof ShieldItem)) {
+            target.hurt(damageSource, damage);
+            target.doEnchantDamageEffects(holder, target);
+        } else {
+            useAndDamageItem(target.getUseItem(), target.level(), target, (int) (damage / 3));
+        }
     }
 
     static MobEffectInstance nonVisiblePotionEffect(MobEffect effect, int ticks, int amplifier) {
-        return new MobEffectInstance(effect, ticks, 2, true, false, false);
-    }
-
-    default void hurtNoKB(Player holder, LivingEntity target, float damage) {
-        hurtNoKB(holder, target, damage, false);
+        return new MobEffectInstance(effect, ticks, amplifier, true, false, false);
     }
 
     default void setDeltaPlayer(Player player, double x, double y, double z) {

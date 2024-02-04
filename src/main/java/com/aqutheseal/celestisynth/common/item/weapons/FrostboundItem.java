@@ -11,29 +11,30 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
 import java.util.function.Consumer;
 
-public class FrostboundItem extends SkilledSwordItem implements GeoItem, CSGeoItem {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
+public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
     public FrostboundItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
     @Override
-    public String model() {
+    public String geoIdentifier() {
         return "frostbound";
     }
 
     @Override
-    public String texture() {
-        return "frostbound";
+    public GeoAnimatable cacheItem() {
+        return this;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        this.initGeo(consumer);
     }
 
     @Override
@@ -64,15 +65,5 @@ public class FrostboundItem extends SkilledSwordItem implements GeoItem, CSGeoIt
         });
         entity.playSound(SoundEvents.PLAYER_HURT_FREEZE);
         return super.hurtEnemy(itemStack, entity, source);
-    }
-
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        this.initGeo(consumer);
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
     }
 }

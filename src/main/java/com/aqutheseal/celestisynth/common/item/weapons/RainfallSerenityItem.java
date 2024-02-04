@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.item.weapons;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
+import com.aqutheseal.celestisynth.api.item.CSGeoItem;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualAnimation;
@@ -14,6 +15,7 @@ import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
@@ -21,6 +23,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -32,16 +35,54 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
-public class RainfallSerenityItem extends BowItem implements CSWeapon {
+public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem {
     public static CSVisualAnimation SPECIAL_RAINFALL = new CSVisualAnimation("animation.cs_effect.special_rainfall", 50);
+
+    public static final String PULL = "cs.pull";
+    public static final String PULLING = "cs.pulling";
 
     public RainfallSerenityItem(Properties pProperties) {
         super(pProperties);
+        SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    @Override
+    public String geoIdentifier() {
+        return "rainfall_serenity";
+    }
+
+    @Override
+    public String texture(ItemStack stack) {
+        float pull = attackExtras(stack).getFloat(PULL);
+        float pulling = attackExtras(stack).getFloat(PULLING);
+        if (pulling == 1 && pull >= 1) {
+            return "rainfall_serenity_pulling_2";
+        } else if (pulling == 1 && pull >= 0.5) {
+            return "rainfall_serenity_pulling_1";
+        } else if (pulling >= 1) {
+            return "rainfall_serenity_pulling_0";
+        } else  {
+            return "rainfall_serenity";
+        }
+    }
+
+    @Override
+    public GeoAnimatable cacheItem() {
+        return this;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        this.initGeo(consumer);
     }
 
     @Override
@@ -85,6 +126,27 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon {
             }
 
             return InteractionResultHolder.fail(heldStack);
+        }
+    }
+
+    @Override
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
+        super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
+
+        if (pEntity instanceof LivingEntity living) {
+            if (living.getUseItem() != pStack) {
+                attackExtras(pStack).putFloat(PULL, 0);
+                attackExtras(pStack).putFloat(PULLING, 0);
+            } else {
+                attackExtras(pStack).putFloat(PULL, (pStack.getUseDuration() - living.getUseItemRemainingTicks()) / ((RainfallSerenityItem) pStack.getItem()).getDrawSpeed(pStack));
+                attackExtras(pStack).putFloat(PULLING, 1);
+            }
+
+            if (pEntity instanceof Player player) {
+                float pull = attackExtras(pStack).getFloat(PULL);
+                float pulling = attackExtras(pStack).getFloat(PULLING);
+                player.displayClientMessage(Component.literal("Pull: " + pull + ", Pulling: " + pulling), true);
+            }
         }
     }
 

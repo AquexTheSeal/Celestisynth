@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth.common.entity.skill;
 
+import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.base.EffectControllerEntity;
 import com.aqutheseal.celestisynth.common.item.weapons.CrescentiaItem;
@@ -61,7 +62,7 @@ public class SkillCastCrescentiaRanged extends EffectControllerEntity {
         for (Entity entityBatch : entities) {
             if (entityBatch instanceof LivingEntity target) {
                 if (target != ownerPlayer && target.isAlive()) {
-                    fromInterfaceWeapon().hurtNoKB(ownerPlayer, target, (float) (double) CSConfigManager.COMMON.crescentiaShiftSkillDmg.get());
+                    fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) CSConfigManager.COMMON.crescentiaShiftSkillDmg.get(), AttackHurtTypes.RAPID_PIERCE);
                     target.hurt(damageSources().playerAttack(ownerPlayer), (float) ((double) CSConfigManager.COMMON.crescentiaShiftSkillDmg.get()));
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                 }
