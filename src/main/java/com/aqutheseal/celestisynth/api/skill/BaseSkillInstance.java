@@ -12,17 +12,15 @@ public abstract class BaseSkillInstance implements ISkillInstance {
     protected final Component skillDescription;
     protected final Component skillCriterionDescription;
     protected final ResourceLocation skillIcon;
-    protected final ISkillTier skillTier;
     protected final int minSkillLevel;
     protected final int maxSkillLevel;
     protected final int skillCooldown;
 
-    public BaseSkillInstance(Component skillName, Component skillDescription, Component skillCriterionDescription, ResourceLocation skillIcon, ISkillTier skillTier, int minSkillLevel, int maxSkillLevel, int skillCooldown) {
+    public BaseSkillInstance(Component skillName, Component skillDescription, Component skillCriterionDescription, ResourceLocation skillIcon, int minSkillLevel, int maxSkillLevel, int skillCooldown) {
         this.skillName = skillName;
         this.skillDescription = skillDescription;
         this.skillCriterionDescription = skillCriterionDescription;
         this.skillIcon = skillIcon;
-        this.skillTier = skillTier;
         this.minSkillLevel = minSkillLevel;
         this.maxSkillLevel = maxSkillLevel;
         this.skillCooldown = skillCooldown;
@@ -51,11 +49,6 @@ public abstract class BaseSkillInstance implements ISkillInstance {
     @Nullable
     @Override
     public abstract WeaponAttackInstance getAttack();
-
-    @Override
-    public ISkillTier getTier() {
-        return skillTier;
-    }
 
     @Nullable
     @Override
@@ -108,9 +101,6 @@ public abstract class BaseSkillInstance implements ISkillInstance {
 
     @Override
     public abstract void setSkillLevel(int newSkillLevel);
-
-    @Override
-    public abstract void setTier(ISkillTier newTier);
 
     @Override
     public abstract void setAttack(@Nullable WeaponAttackInstance newAttack, boolean interruptCurrentAttack);

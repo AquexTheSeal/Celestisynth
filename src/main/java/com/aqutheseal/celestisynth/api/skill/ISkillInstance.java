@@ -20,8 +20,6 @@ public interface ISkillInstance {
     @Nullable
     WeaponAttackInstance getAttack();
 
-    ISkillTier getTier();
-
     @Nullable
     AbstractSkillTree getSkillTree();
 
@@ -42,7 +40,6 @@ public interface ISkillInstance {
     void onPassiveTick(Player owner);
     void onSkillDeactivated(Player owner);
     void setSkillLevel(int newSkillLevel);
-    void setTier(ISkillTier newTier);
     void setAttack(@Nullable WeaponAttackInstance newAttack, boolean interruptCurrentAttack);
     void setDescription(Component newDescription);
 
