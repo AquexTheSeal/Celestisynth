@@ -1,11 +1,10 @@
 package com.aqutheseal.celestisynth.datagen.providers;
 
-import com.aqutheseal.celestisynth.common.registry.CSBlocks;
 import com.aqutheseal.celestisynth.common.registry.CSFeatures;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.blockpredicates.MatchingBlockTagPredicate;
@@ -29,7 +28,7 @@ public class CSFeatureProvider {
     public static class PlacedFeatures {
         public static void bootstrap(BootstapContext<PlacedFeature> ctx) {
             ctx.register(CSFeatures.SOLAR_CRATER_PLACED, new PlacedFeature(ctx.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CSFeatures.SOLAR_CRATER_CONFIGURED),
-                    List.of(RarityFilter.onAverageOnceEvery(85), CountOnEveryLayerPlacement.of(1), BiomeFilter.biome())));
+                    List.of(RarityFilter.onAverageOnceEvery(85), InSquarePlacement.spread(), PlacementUtils.RANGE_4_4,  BiomeFilter.biome())));
 
             ctx.register(CSFeatures.LUNAR_CRATER_PLACED, new PlacedFeature(ctx.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CSFeatures.LUNAR_CRATER_CONFIGURED),
                     List.of(RarityFilter.onAverageOnceEvery(17),
@@ -42,7 +41,6 @@ public class CSFeatureProvider {
             ctx.register(CSFeatures.ZEPHYR_DEPOSIT_PLACED, new PlacedFeature(ctx.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CSFeatures.ZEPHYR_DEPOSIT_CONFIGURED),
                     List.of(RarityFilter.onAverageOnceEvery(7),
                             HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.absolute(100), VerticalAnchor.absolute(320))),
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(CSBlocks.SOLAR_CRYSTAL.get().defaultBlockState(), BlockPos.ZERO)),
                             BiomeFilter.biome()
                     )
             ));
