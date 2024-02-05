@@ -3,12 +3,16 @@ package com.aqutheseal.celestisynth.datagen.providers;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.registry.CSBlocks;
 import com.aqutheseal.celestisynth.common.registry.CSDamageTypes;
+import com.aqutheseal.celestisynth.common.registry.CSTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
@@ -51,6 +55,25 @@ public class CSTagsProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider pProvider) {
+            tag(CSTags.Items.CELESTIAL_CORE_BASES)
+                    .add(Items.HEART_OF_THE_SEA)
+                    .add(Items.NETHER_STAR)
+                    .add(Items.END_CRYSTAL)
+            ;
+        }
+    }
+
+    public static class BiomeHandler extends BiomeTagsProvider {
+
+        public BiomeHandler(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pProvider, @Nullable ExistingFileHelper existingFileHelper) {
+            super(pOutput, pProvider, Celestisynth.MODID, existingFileHelper);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider pProvider) {
+            tag(CSTags.Biomes.HAS_WINTEREIS_CLUSTER)
+                    .addTag(BiomeTags.IS_END)
+            ;
         }
     }
 

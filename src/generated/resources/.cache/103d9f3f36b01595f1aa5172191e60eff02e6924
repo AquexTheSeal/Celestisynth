@@ -1,8 +1,8 @@
-// 1.20.1	2024-02-05T20:12:03.8765576	Registries
+// 1.20.1	2024-02-05T23:15:14.5475826	Registries
 1ad7f221cc14ff59b19b4cafd96d04296e1c8f5f data/celestisynth/damage_type/rapid_player_attack.json
 78c6d92a72d3c5f7d38623637186296efff5249d data/celestisynth/worldgen/configured_feature/lunar_crater.json
 3c557478a6b0f028aa7c77d17099e5bb86456464 data/celestisynth/worldgen/configured_feature/solar_crater.json
 57064a18e90bf6380f16d231b498277146ee8b10 data/celestisynth/worldgen/configured_feature/zephyr_deposit.json
 d279c908ea7c3f49916c50311a9abd148e2a5bd1 data/celestisynth/worldgen/placed_feature/lunar_crater.json
-d04ee3fdc91bbbd717b6f3e97ed56c5b29c9aeb5 data/celestisynth/worldgen/placed_feature/solar_crater.json
+555c457e109ae6b91855806dd5152392ad8af6b5 data/celestisynth/worldgen/placed_feature/solar_crater.json
 6acd262a01c4eaa360cd70e092301bb7ec891bb9 data/celestisynth/worldgen/placed_feature/zephyr_deposit.json

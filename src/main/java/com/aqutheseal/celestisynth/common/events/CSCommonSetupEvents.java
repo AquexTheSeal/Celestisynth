@@ -3,7 +3,10 @@ package com.aqutheseal.celestisynth.common.events;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
-import com.aqutheseal.celestisynth.common.registry.*;
+import com.aqutheseal.celestisynth.common.registry.CSCapabilities;
+import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
+import com.aqutheseal.celestisynth.common.registry.CSItems;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.datagen.providers.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -37,7 +40,7 @@ public class CSCommonSetupEvents {
     }
 
     public static class CSModSetupEvents {
- 
+
         @SubscribeEvent
         public static void onRegistryCreatingEvent(NewRegistryEvent event) {
             event.create(new RegistryBuilder<CSVisualType>().setName(CSVisualTypes.VISUALS_KEY.location()).disableSaving());
@@ -74,6 +77,7 @@ public class CSCommonSetupEvents {
             CSTagsProvider.BlockHandler blockTagProvider = new CSTagsProvider.BlockHandler(output, lookup, efh);
             dataGenerator.addProvider(event.includeServer(), blockTagProvider);
             dataGenerator.addProvider(event.includeServer(), new CSTagsProvider.ItemHandler(output, lookup, blockTagProvider.contentsGetter(), efh));
+            dataGenerator.addProvider(event.includeServer(), new CSTagsProvider.BiomeHandler(output, lookup, efh));
 
             otherProviders(output, lookup, efh).forEach(provider -> dataGenerator.addProvider(event.includeServer(), provider));
         }

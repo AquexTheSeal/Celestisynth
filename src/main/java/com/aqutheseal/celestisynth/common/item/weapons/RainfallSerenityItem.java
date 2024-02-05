@@ -15,7 +15,6 @@ import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
@@ -140,12 +139,6 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
             } else {
                 attackExtras(pStack).putFloat(PULL, (pStack.getUseDuration() - living.getUseItemRemainingTicks()) / ((RainfallSerenityItem) pStack.getItem()).getDrawSpeed(pStack));
                 attackExtras(pStack).putFloat(PULLING, 1);
-            }
-
-            if (pEntity instanceof Player player) {
-                float pull = attackExtras(pStack).getFloat(PULL);
-                float pulling = attackExtras(pStack).getFloat(PULLING);
-                player.displayClientMessage(Component.literal("Pull: " + pull + ", Pulling: " + pulling), true);
             }
         }
     }

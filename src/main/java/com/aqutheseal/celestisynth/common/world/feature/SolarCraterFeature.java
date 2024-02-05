@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth.common.world.feature;
 
+import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.registry.CSBlocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -35,6 +36,7 @@ public class SolarCraterFeature extends Feature<NoneFeatureConfiguration> {
             createCrystalLayer(radiuss, worldgenlevel, randomsource, blockpos.below(i));
         }
 
+        Celestisynth.LOGGER.info("CRATER GENERATED AT: " + blockpos.getX() + " " + blockpos.getY() + " " + blockpos.getZ());
         return true;
     }
 

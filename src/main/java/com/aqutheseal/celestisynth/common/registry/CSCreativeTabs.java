@@ -21,12 +21,12 @@ public class CSCreativeTabs {
                     .title(Component.translatable("creativetab.celestisynth_tab"))
                     .displayItems((pParameters, pOutput) -> {
                         for (RegistryObject<Item> item : CSItems.ITEMS.getEntries()) {
-                            if (getBlackList().contains(item)) {
+                            if (!getBlackList().contains(item)) {
                                 pOutput.accept(item.get());
                             }
                         }
                         for (RegistryObject<Block> block : CSBlocks.BLOCKS.getEntries()) {
-                            if (getBlackList().contains(block)) {
+                            if (!getBlackList().contains(block)) {
                                 pOutput.accept(block.get());
                             }
                         }
