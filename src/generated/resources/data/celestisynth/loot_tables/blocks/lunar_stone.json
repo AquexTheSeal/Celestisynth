@@ -11,10 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "celestisynth:zephyr_deposit"
+          "name": "celestisynth:lunar_stone"
         }
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "celestisynth:blocks/lunar_stone"
 }

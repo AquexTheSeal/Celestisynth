@@ -39,6 +39,6 @@ public class WintereisClusterStructure extends Structure {
     }
 
     public @NotNull StructureType<?> type() {
-        return CSStructures.WINTEREIS_CLUSTER_STRUCTURE.get();
+        return CSStructures.WINTEREIS_CLUSTER.get();
     }
 }

@@ -1,0 +1,6 @@
+// 1.20.1	2024-02-05T19:36:27.6631957	Loot Tables
+f4782a891bcdde3afd0a2c682d53d267a1d62d26 data/celestisynth/loot_tables/blocks/celestial_crafting_table.json
+43b783f050cea1a8a542cc95cb39090d3d8f60b7 data/celestisynth/loot_tables/blocks/lunar_stone.json
+127b4e63a5c1adc0479277e8494c1772d3d12fed data/celestisynth/loot_tables/blocks/solar_crystal.json
+590370c037294e99aaf8332f2f96cdbcb4c2a2ee data/celestisynth/loot_tables/blocks/wintereis.json
+7f9bae4dc760a99b3c8f19a8786f6f89b594d369 data/celestisynth/loot_tables/blocks/zephyr_deposit.json

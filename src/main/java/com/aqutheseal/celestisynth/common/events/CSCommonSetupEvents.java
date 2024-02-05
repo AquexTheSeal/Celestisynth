@@ -3,10 +3,7 @@ package com.aqutheseal.celestisynth.common.events;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
-import com.aqutheseal.celestisynth.common.registry.CSCapabilities;
-import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
-import com.aqutheseal.celestisynth.common.registry.CSItems;
-import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
+import com.aqutheseal.celestisynth.common.registry.*;
 import com.aqutheseal.celestisynth.datagen.providers.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -68,6 +65,7 @@ public class CSCommonSetupEvents {
             final PackOutput output = event.getGenerator().getPackOutput();
             final CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
 
+            dataGenerator.addProvider(event.includeServer(), new CSLootTableProvider(output));
             dataGenerator.addProvider(event.includeServer(), new CSBlockstateProvider(output, efh));
             dataGenerator.addProvider(event.includeServer(), new CSItemModelProvider(output, efh));
             dataGenerator.addProvider(event.includeServer(), new CSRecipeProvider(output));
@@ -79,10 +77,13 @@ public class CSCommonSetupEvents {
 
             otherProviders(output, lookup, efh).forEach(provider -> dataGenerator.addProvider(event.includeServer(), provider));
         }
-        //TODO: Move to datagen -> [ Loot Tables, Configured Feature, Placed Feature, Structure, Structure Set ]
+
+        //TODO: Move to datagen -> [ Structure, Structure Set ]
         public static List<DataProvider> otherProviders(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, ExistingFileHelper efh) {
             RegistrySetBuilder builder = new RegistrySetBuilder()
                     .add(Registries.DAMAGE_TYPE, CSDamageTypeProvider::bootstrap)
+                    .add(Registries.CONFIGURED_FEATURE, CSFeatureProvider.ConfiguredFeatures::bootstrap)
+                    .add(Registries.PLACED_FEATURE, CSFeatureProvider.PlacedFeatures::bootstrap)
                     ;
             return List.of(
                     new DatapackBuiltinEntriesProvider(output, lookup, builder, Set.of(Celestisynth.MODID)),

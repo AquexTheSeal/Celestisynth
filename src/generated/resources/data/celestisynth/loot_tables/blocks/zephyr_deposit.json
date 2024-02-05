@@ -11,10 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "celestisynth:solar_crystal"
+          "name": "celestisynth:zephyr_deposit"
         }
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "celestisynth:blocks/zephyr_deposit"
 }

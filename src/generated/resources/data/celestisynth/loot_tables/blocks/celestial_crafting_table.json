@@ -11,10 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "celestisynth:lunar_stone"
+          "name": "celestisynth:celestial_crafting_table"
         }
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "celestisynth:blocks/celestial_crafting_table"
 }

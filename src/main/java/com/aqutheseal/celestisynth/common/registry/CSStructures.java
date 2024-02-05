@@ -15,7 +15,8 @@ public class CSStructures {
     public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPE = DeferredRegister.create(Registries.STRUCTURE_TYPE, Celestisynth.MODID);
     public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE = DeferredRegister.create(Registries.STRUCTURE_PIECE, Celestisynth.MODID);
 
-    public static RegistryObject<StructureType<WintereisClusterStructure>> WINTEREIS_CLUSTER_STRUCTURE = STRUCTURE_TYPE.register("wintereis_cluster_structure", () -> explicitStructureTypeTyping(WintereisClusterStructure.CODEC));
+    public static RegistryObject<StructureType<WintereisClusterStructure>> WINTEREIS_CLUSTER = STRUCTURE_TYPE.register("wintereis_cluster_structure", () -> explicitStructureTypeTyping(WintereisClusterStructure.CODEC));
+
     public static final RegistryObject<StructurePieceType> WINTEREIS_CLUSTER_PIECE = STRUCTURE_PIECE.register("wintereis_cluster_piece", () -> (StructurePieceType.ContextlessType) WintereisClusterPiece::new);
 
     private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(Codec<T> structureCodec) {

@@ -11,10 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "celestisynth:celestial_crafting_table"
+          "name": "celestisynth:solar_crystal"
         }
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "celestisynth:blocks/solar_crystal"
 }
