@@ -10,6 +10,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -28,4 +29,8 @@ public class CSFeatures {
     public static final ResourceKey<PlacedFeature> SOLAR_CRATER_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, Celestisynth.prefix("solar_crater"));
     public static final ResourceKey<PlacedFeature> LUNAR_CRATER_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, Celestisynth.prefix("lunar_crater"));
     public static final ResourceKey<PlacedFeature> ZEPHYR_DEPOSIT_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, Celestisynth.prefix("zephyr_deposit"));
+
+    public static final ResourceKey<BiomeModifier> SOLAR_CRATER_MODIFIER = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Celestisynth.prefix("solar_crater"));
+    public static final ResourceKey<BiomeModifier> LUNAR_CRATER_MODIFIER = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Celestisynth.prefix("lunar_crater"));
+    public static final ResourceKey<BiomeModifier> ZEPHYR_DEPOSIT_MODIFIER = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Celestisynth.prefix("zephyr_deposit"));
 }

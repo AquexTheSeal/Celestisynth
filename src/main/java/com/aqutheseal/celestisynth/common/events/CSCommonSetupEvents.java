@@ -3,10 +3,7 @@ package com.aqutheseal.celestisynth.common.events;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
-import com.aqutheseal.celestisynth.common.registry.CSCapabilities;
-import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
-import com.aqutheseal.celestisynth.common.registry.CSItems;
-import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
+import com.aqutheseal.celestisynth.common.registry.*;
 import com.aqutheseal.celestisynth.datagen.providers.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -27,6 +24,7 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegistryBuilder;
 
@@ -88,6 +86,9 @@ public class CSCommonSetupEvents {
                     .add(Registries.DAMAGE_TYPE, CSDamageTypeProvider::bootstrap)
                     .add(Registries.CONFIGURED_FEATURE, CSFeatureProvider.ConfiguredFeatures::bootstrap)
                     .add(Registries.PLACED_FEATURE, CSFeatureProvider.PlacedFeatures::bootstrap)
+                    .add(ForgeRegistries.Keys.BIOME_MODIFIERS, CSFeatureProvider.BiomeModifiers::bootstrap)
+                    .add(Registries.STRUCTURE, CSStructureProvider.Structures::bootstrap)
+                    .add(Registries.STRUCTURE_SET, CSStructureProvider.StructureSets::bootstrap)
                     ;
             return List.of(
                     new DatapackBuiltinEntriesProvider(output, lookup, builder, Set.of(Celestisynth.MODID)),

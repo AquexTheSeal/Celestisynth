@@ -2,8 +2,13 @@ package com.aqutheseal.celestisynth.datagen.providers;
 
 import com.aqutheseal.celestisynth.common.registry.CSFeatures;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.blockpredicates.MatchingBlockTagPredicate;
@@ -11,6 +16,8 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.ForgeBiomeModifiers;
 
 import java.util.List;
 
@@ -43,6 +50,33 @@ public class CSFeatureProvider {
                             BiomeFilter.biome()
                     )
             ));
+        }
+    }
+
+    public static class BiomeModifiers {
+        public static void bootstrap(BootstapContext<BiomeModifier> ctx) {
+            final HolderGetter<PlacedFeature> featureRegistry = ctx.lookup(Registries.PLACED_FEATURE);
+            final HolderGetter<Biome> biomeRegistry = ctx.lookup(Registries.BIOME);
+
+            ctx.register(CSFeatures.SOLAR_CRATER_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+                    biomeRegistry.getOrThrow(BiomeTags.IS_NETHER),
+                    HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.SOLAR_CRATER_PLACED)),
+                    GenerationStep.Decoration.SURFACE_STRUCTURES)
+            );
+
+            ctx.register(CSFeatures.LUNAR_CRATER_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+                            biomeRegistry.getOrThrow(BiomeTags.IS_OVERWORLD),
+                            HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.LUNAR_CRATER_PLACED)),
+                            GenerationStep.Decoration.UNDERGROUND_STRUCTURES
+                    )
+            );
+
+            ctx.register(CSFeatures.ZEPHYR_DEPOSIT_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+                            biomeRegistry.getOrThrow(BiomeTags.IS_OVERWORLD),
+                            HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.ZEPHYR_DEPOSIT_PLACED)),
+                            GenerationStep.Decoration.SURFACE_STRUCTURES
+                    )
+            );
         }
     }
 }

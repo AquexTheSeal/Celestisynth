@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1407818372,
+    "separation": 1500,
+    "spacing": 2200
+  },
+  "structures": [
+    {
+      "structure": "celestisynth:wintereis_cluster",
+      "weight": 1
+    }
+  ]
+}
