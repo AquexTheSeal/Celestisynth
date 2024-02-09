@@ -3,7 +3,7 @@ package com.aqutheseal.celestisynth.client.renderers.misc;
 import com.aqutheseal.celestisynth.client.models.misc.CSEffectEntityModel;
 import com.aqutheseal.celestisynth.client.renderers.entity.projectile.SilencedRotationProjectileRenderer;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
-import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
+import com.aqutheseal.celestisynth.common.entity.helper.CSVisualSpecialProperties;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -35,7 +35,7 @@ public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<C
             poseStack.mulPose(Axis.XP.rotationDegrees(animatable.getRotationX()));
             poseStack.mulPose(Axis.ZP.rotationDegrees(animatable.getRotationZ()));
         }
-        CSVisualType.setSpecialProperties(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        CSVisualSpecialProperties.set(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }

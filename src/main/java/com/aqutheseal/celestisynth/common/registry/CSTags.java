@@ -4,6 +4,7 @@ import com.aqutheseal.celestisynth.Celestisynth;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 
@@ -32,4 +33,14 @@ public class CSTags {
             return TagKey.create(Registries.BIOME, new ResourceLocation(Celestisynth.MODID, name));
         }
     }
+    public static class DamageTypes {
+        private static void init() {}
+
+        public static final TagKey<DamageType> IS_CELESTIAL_ATTACK = tag("is_celestial_attack");
+
+        private static TagKey<DamageType> tag(String name) {
+            return TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Celestisynth.MODID, name));
+        }
+    }
+
 }

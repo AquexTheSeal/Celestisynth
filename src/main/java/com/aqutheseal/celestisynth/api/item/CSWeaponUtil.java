@@ -7,9 +7,12 @@ import com.aqutheseal.celestisynth.common.registry.CSDamageSources;
 import com.aqutheseal.celestisynth.manager.CSNetworkManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -26,6 +29,7 @@ import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -44,7 +48,7 @@ public interface CSWeaponUtil {
     default void initiateAbilityAttack(Player holder, LivingEntity target, float damage, DamageSource damageSource, AttackHurtTypes attackHurtType) {
         if (damage == 0) return;
 
-        DamageSource regularDamage = target.damageSources().playerAttack(holder);
+        DamageSource regularDamage = new CSDamageSources(target.level().registryAccess()).basicPlayerAttack(holder);
         DamageSource rapidDamage = new CSDamageSources(target.level().registryAccess()).rapidPlayerAttack(holder);
 
         DamageSource finalDamageSource;
@@ -64,16 +68,16 @@ public interface CSWeaponUtil {
         }
     }
 
+    default void initiateAbilityAttack(Player holder, LivingEntity target, float damage, AttackHurtTypes attackHurtType) {
+        initiateAbilityAttack(holder, target, damage, null, attackHurtType);
+    }
+
     default CompoundTag attackController(ItemStack stack) {
         return stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
     }
 
     default CompoundTag attackExtras(ItemStack stack) {
         return stack.getOrCreateTagElement(CSWeapon.CS_EXTRAS_ELEMENT);
-    }
-
-    default void initiateAbilityAttack(Player holder, LivingEntity target, float damage, AttackHurtTypes attackHurtType) {
-        initiateAbilityAttack(holder, target, damage, null, attackHurtType);
     }
 
     private void attack(Player holder, LivingEntity target, float damage, DamageSource damageSource, AttackHurtTypes attackHurtType) {
@@ -136,8 +140,16 @@ public interface CSWeaponUtil {
         return createAABB(pos.getX(), pos.getY(), pos.getZ(), range);
     }
 
+    default AABB createAABB(Vec3i pos, double xzRange, double yRange) {
+        return createAABB(pos.getX(), pos.getY(), pos.getZ(),xzRange, yRange);
+    }
+
     default AABB createAABB(double x, double y, double z, double range) {
-        return new AABB(x + range, y + range, z + range, x - range, y - range, z - range);
+        return createAABB(x, y, z, range, range);
+    }
+
+    default AABB createAABB(double x, double y, double z, double xzRange, double yRange) {
+        return new AABB(x + xzRange, y + yRange, z + xzRange, x - xzRange, y - yRange, z - xzRange);
     }
 
     default List<Entity> iterateEntities(Level level, AABB aabb) {
@@ -213,6 +225,18 @@ public interface CSWeaponUtil {
         }
     }
 
+    default BlockPos getFloorPositionUnderPlayer(Level level, BlockPos pos) {
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
+        do {
+            mutablePos.move(Direction.DOWN);
+        } while (mutablePos.getY() > level.getMinBuildHeight() && level.getBlockState(mutablePos).isPathfindable(level, mutablePos, PathComputationType.LAND));
+        return new BlockPos(mutablePos.getX(), mutablePos.getY(), mutablePos.getZ());
+    }
+
+    default int getFloorPositionUnderPlayerYLevel(Level level, BlockPos pos) {
+        return getFloorPositionUnderPlayer(level, pos).getY();
+    }
+
     @Nullable
     static EntityHitResult expandedHitResult(Entity pShooter, Vec3 pStartVec, Vec3 pEndVec, AABB pBoundingBox, Predicate<Entity> pFilter, double pDistance) {
         Level level = pShooter.level();
@@ -250,5 +274,9 @@ public interface CSWeaponUtil {
         }
 
         return confirmedTarget == null ? null : new EntityHitResult(confirmedTarget, clipVec);
+    }
+
+    default void playSoundAt(Level level, SoundEvent sound, BlockPos pos) {
+        level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), sound, SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 }

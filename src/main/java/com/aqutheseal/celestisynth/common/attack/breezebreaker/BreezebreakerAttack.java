@@ -14,10 +14,10 @@ public abstract class BreezebreakerAttack extends WeaponAttackInstance {
 
     public void addComboPoint() {
         if (getTagExtras().getInt(BreezebreakerItem.BB_COMBO_POINTS) < 15) {
-            getPlayer().playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
+            player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
             getTagExtras().putInt(BreezebreakerItem.BB_COMBO_POINTS, getTagExtras().getInt(BreezebreakerItem.BB_COMBO_POINTS) + 1);
         } else {
-            getPlayer().playSound(SoundEvents.BEACON_ACTIVATE);
+            player.playSound(SoundEvents.BEACON_ACTIVATE);
             getTagExtras().putBoolean(BreezebreakerItem.AT_BUFF_STATE, !getTagExtras().getBoolean(BreezebreakerItem.AT_BUFF_STATE));
             getTagExtras().putInt(BreezebreakerItem.BB_COMBO_POINTS, 0);
         }

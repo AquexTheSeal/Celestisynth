@@ -91,7 +91,8 @@ public class AnimationManager {
         ANIM_AQUAFLORA_BASH("cs_aquaflora_bash"),
         ANIM_AQUAFLORA_ASSASSINATE("cs_aquaflora_assassinate"),
         ANIM_RAINFALL_AIM_LEFT("cs_rainfall_aim_left"),
-        ANIM_RAINFALL_AIM_RIGHT("cs_rainfall_aim_right");
+        ANIM_RAINFALL_AIM_RIGHT("cs_rainfall_aim_right"),
+        ANIM_FROSTBOUND_TRIPLE_SLASH("cs_frostbound_triple_slash");
 
         final @Nullable String path;
         final int id;

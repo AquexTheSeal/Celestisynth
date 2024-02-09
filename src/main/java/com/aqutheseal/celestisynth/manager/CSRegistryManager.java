@@ -13,8 +13,6 @@ public final class CSRegistryManager {
         CSBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modBus);
         CSSoundEvents.SOUND_EVENTS.register(modBus);
         CSFeatures.FEATURES.register(modBus);
-        //CSFeatures.CONFIGURED_FEATURES.register(modBus);
-        //CSFeatures.PLACED_FEATURES.register(modBus);
         CSRecipeTypes.RECIPE_TYPES.register(modBus);
         CSRecipeTypes.RECIPE_SERIALIZERS.register(modBus);
         CSMenuTypes.MENU_TYPES.register(modBus);

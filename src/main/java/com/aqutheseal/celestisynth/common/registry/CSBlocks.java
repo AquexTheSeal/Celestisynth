@@ -21,7 +21,7 @@ public class CSBlocks {
 
     public static final RegistryObject<Block> SOLAR_CRYSTAL = registerBlock("solar_crystal",
             () -> new SolarCrystalBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).mapColor(MapColor.COLOR_RED).sound(SoundType.GLASS)
-                    .requiresCorrectToolForDrops().strength(3.0F, 9.0F).noOcclusion().emissiveRendering((a, b, c) -> true).lightLevel((a) -> 15)
+                    .requiresCorrectToolForDrops().strength(3.0F, 9.0F).forceSolidOn().noOcclusion().emissiveRendering((a, b, c) -> true).lightLevel((a) -> 15)
             )
     );
     public static final RegistryObject<Block> LUNAR_STONE = registerBlock("lunar_stone",

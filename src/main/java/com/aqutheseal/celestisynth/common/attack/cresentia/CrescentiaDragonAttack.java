@@ -33,42 +33,42 @@ public class CrescentiaDragonAttack extends WeaponAttackInstance {
 
     @Override
     public boolean getCondition() {
-        return getPlayer().isShiftKeyDown();
+        return player.isShiftKeyDown();
     }
 
     @Override
     public void startUsing() {
-        useAndDamageItem(getStack(), getPlayer().level(), getPlayer(), 5);
+        useAndDamageItem(getStack(), level, player, 5);
     }
 
     @Override
     public void tickAttack() {
-        if (getTimerProgress() <= 20) setDeltaPlayer(getPlayer(), 0, 0, 0);
+        if (getTimerProgress() <= 20) setDeltaPlayer(player, 0, 0, 0);
 
         if (getTimerProgress() == 20) {
-            if (!player.level().isClientSide()) {
-                SkillCastCrescentiaRanged cresentiaSkillCast = CSEntityTypes.CRESCENTIA_RANGED.get().create(getPlayer().level());
+            if (!level.isClientSide()) {
+                SkillCastCrescentiaRanged cresentiaSkillCast = CSEntityTypes.CRESCENTIA_RANGED.get().create(level);
 
-                cresentiaSkillCast.setOwnerUuid(getPlayer().getUUID());
-                cresentiaSkillCast.setAngleX((float) calculateXLook(getPlayer()));
-                cresentiaSkillCast.setAngleY((float) calculateYLook(getPlayer()));
-                cresentiaSkillCast.setAngleZ((float) calculateZLook(getPlayer()));
-                cresentiaSkillCast.setAddAngleX((float) calculateXLook(getPlayer()) / 2);
-                cresentiaSkillCast.setAddAngleY((float) calculateYLook(getPlayer()) / 2);
-                cresentiaSkillCast.setAddAngleZ((float) calculateZLook(getPlayer()) / 2);
-                cresentiaSkillCast.moveTo(getPlayer().getX(), getPlayer().getY() + 1, getPlayer().getZ());
+                cresentiaSkillCast.setOwnerUuid(player.getUUID());
+                cresentiaSkillCast.setAngleX((float) calculateXLook(player));
+                cresentiaSkillCast.setAngleY((float) calculateYLook(player));
+                cresentiaSkillCast.setAngleZ((float) calculateZLook(player));
+                cresentiaSkillCast.setAddAngleX((float) calculateXLook(player) / 2);
+                cresentiaSkillCast.setAddAngleY((float) calculateYLook(player) / 2);
+                cresentiaSkillCast.setAddAngleZ((float) calculateZLook(player) / 2);
+                cresentiaSkillCast.moveTo(player.getX(), player.getY() + 1, player.getZ());
 
-                getPlayer().level().addFreshEntity(cresentiaSkillCast);
+                level.addFreshEntity(cresentiaSkillCast);
             }
 
             for (int i = 0; i < 10; i++) {
-                float offX = getPlayer().level().random.nextFloat() * 12 - 6;
-                float offY = getPlayer().level().random.nextFloat() * 12 - 6;
-                float offZ = getPlayer().level().random.nextFloat() * 12 - 6;
+                float offX = level.random.nextFloat() * 12 - 6;
+                float offY = level.random.nextFloat() * 12 - 6;
+                float offZ = level.random.nextFloat() * 12 - 6;
 
-                CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level(), getPlayer(), getPlayer().getX() + offX, getPlayer().getY() + offY, getPlayer().getZ() + offZ, true);
+                CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, true);
 
-                getPlayer().playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
+                player.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
             }
         }
     }

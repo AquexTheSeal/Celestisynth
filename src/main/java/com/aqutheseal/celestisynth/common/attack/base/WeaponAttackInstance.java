@@ -8,11 +8,13 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public abstract class WeaponAttackInstance implements CSWeaponUtil {
-    protected final Player player;
-    protected final ItemStack stack;
-    protected final int heldDuration;
+    public final Player player;
+    public final Level level;
+    public final ItemStack stack;
+    public final int heldDuration;
     public static final SoundEvent[] BASE_WEAPON_EFFECTS = {
             CSSoundEvents.CS_SWORD_SWING.get(),
             CSSoundEvents.CS_SWORD_SWING_FIRE.get(),
@@ -24,6 +26,7 @@ public abstract class WeaponAttackInstance implements CSWeaponUtil {
 
     public WeaponAttackInstance(Player player, ItemStack stack, int heldDuration) {
         this.player = player;
+        this.level = player.level();
         this.stack = stack;
         this.heldDuration = heldDuration;
     }
@@ -48,16 +51,22 @@ public abstract class WeaponAttackInstance implements CSWeaponUtil {
 
     public void baseStop() {
         stopUsing();
-        AnimationManager.playAnimation(getPlayer().level(), AnimationManager.AnimationsList.CLEAR);
+        AnimationManager.playAnimation(level, AnimationManager.AnimationsList.CLEAR);
         getTagController().putInt("cs.AttackIndex", -1);
         getTagController().putInt(ANIMATION_TIMER_KEY, 0);
         getTagController().putBoolean(ANIMATION_BEGUN_KEY, false);
+        player.stopUsingItem();
     }
 
     public void baseTickSkill() {
         tickAttack();
+        if (getTimerProgress() >= getAttackStopTime()) {
+            baseStop();
+        }
+    }
 
-        if (getTimerProgress() >= getAttackStopTime()) baseStop();
+    public Level getLevel() {
+        return level;
     }
 
     public Player getPlayer() {

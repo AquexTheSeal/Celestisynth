@@ -39,35 +39,35 @@ public class BreezebreakerGalestormAttack extends BreezebreakerAttack {
 
     @Override
     public boolean getCondition() {
-        return !player.isSprinting() && !player.isCrouching() && getPlayer().onGround() && heldDuration < 6;
+        return !player.isSprinting() && !player.isCrouching() && player.onGround() && heldDuration < 6;
     }
 
     @Override
     public void startUsing() {
         super.startUsing();
 
-        useAndDamageItem(stack, getPlayer().level(), player, 1);
+        useAndDamageItem(stack, level, player, 1);
     }
 
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 6) {
             double range = 6.0;
-            List<Entity> entities = iterateEntities(player.level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 3), 1, (int) (calculateZLook(player) * 3)), range));
+            List<Entity> entities = iterateEntities(level, createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 3), 1, (int) (calculateZLook(player) * 3)), range));
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
                         initiateAbilityAttack(player, target, (float) (CSConfigManager.COMMON.breezebreakerSkillDmg.get() + getSharpnessValue(stack, 1)), AttackHurtTypes.REGULAR);
                         target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 1));
-                        sendExpandingParticles(player.level(), ParticleTypes.POOF, target.blockPosition().above(), 15, 0);
+                        sendExpandingParticles(level, ParticleTypes.POOF, target.blockPosition().above(), 15, 0);
                     }
                 }
             }
 
-            getPlayer().playSound(CSSoundEvents.CS_WIND_STRIKE.get());
+            player.playSound(CSSoundEvents.CS_WIND_STRIKE.get());
             CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_SLASH.get(), calculateXLook(player), 0, calculateZLook(player));
-            getPlayer().playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
         }
     }
 

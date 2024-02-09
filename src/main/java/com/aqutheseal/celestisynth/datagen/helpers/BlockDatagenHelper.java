@@ -29,12 +29,8 @@ public class BlockDatagenHelper {
         baseModel(block, model.cubeAll(name(block), csLoc(name(block))).renderType(renderType));
     }
 
-    public void cross(Block block) {
-        baseModel(block, model.cross(name(block), csLoc(name(block))));
-    }
-
-    public void cross(Block block, ResourceLocation renderType) {
-        baseModel(block, model.cross(name(block), csLoc(name(block))).renderType(renderType));
+    public void crossRotatable(Block block, ResourceLocation renderType) {
+        state.directionalBlock(block, model.cross(name(block), csLoc(name(block))).renderType(renderType));
     }
 
     public void baseModel(Block block, BlockModelBuilder model) {

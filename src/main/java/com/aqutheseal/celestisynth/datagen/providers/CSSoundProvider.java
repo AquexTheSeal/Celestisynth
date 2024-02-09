@@ -3,24 +3,23 @@ package com.aqutheseal.celestisynth.datagen.providers;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import net.minecraft.data.PackOutput;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.SoundDefinition;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
-import net.minecraftforge.registries.RegistryObject;
 
 public class CSSoundProvider extends SoundDefinitionsProvider {
 
-    public CSSoundProvider(PackOutput output, String modId, ExistingFileHelper helper) {
-        super(output, modId, helper);
+    public CSSoundProvider(PackOutput output, ExistingFileHelper helper) {
+        super(output, Celestisynth.MODID, helper);
     }
 
     @Override
     public void registerSounds() {
-        for (RegistryObject<SoundEvent> sounds : CSSoundEvents.SOUND_EVENTS.getEntries()) {
-            this.add(sounds.get(), definition()
-                    .subtitle("sound." + Celestisynth.MODID + "." + sounds.getId().getPath())
-                    .with(sound(sounds.getId().getPath()).stream())
-            );
-        }
+        this.add(CSSoundEvents.CS_STEP, definition().with(this.simpleSound("step")));
+    }
+
+    private SoundDefinition.Sound simpleSound(String name) {
+        return sound(new ResourceLocation(Celestisynth.MODID, name), SoundDefinition.SoundType.SOUND);
     }
 }

@@ -21,8 +21,8 @@ public class AquafloraPetalPiercesAttack extends AquafloraAttack {
     @Override
     public AnimationManager.AnimationsList getAnimation() {
         
-        if (player.getMainHandItem() == stack && getPlayer().getOffhandItem() == stack) return getPlayer().level().random.nextBoolean() ? AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT : AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT;
-        else return getPlayer().getMainHandItem() == stack ? AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT : AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT;
+        if (player.getMainHandItem() == stack && player.getOffhandItem() == stack) return level.random.nextBoolean() ? AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT : AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT;
+        else return player.getMainHandItem() == stack ? AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_RIGHT : AnimationManager.AnimationsList.ANIM_AQUAFLORA_PIERCE_LEFT;
     }
 
     @Override
@@ -43,28 +43,28 @@ public class AquafloraPetalPiercesAttack extends AquafloraAttack {
     @Override
     public void startUsing() {
         CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_PIERCE_START.get(), calculateXLook(player) * 3, 1.2 + calculateYLook(player) * 3, calculateZLook(player) * 3);
-        getPlayer().playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 0.5F);
+        player.playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 0.5F);
 
-        if (getPlayer().level().isClientSide()) shakeScreens(player, 15, 5, 0.02F);
+        if (level.isClientSide()) shakeScreens(player, 15, 5, 0.02F);
     }
 
     @Override
     public void tickAttack() {
         if (getTimerProgress() >= 0 && getTimerProgress() <= 15) {
-            getPlayer().playSound(CSSoundEvents.CS_AIR_SWING.get(), 0.25F, 1.3F + getPlayer().level().random.nextFloat());
-            CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_STAB.get(), -0.5 + getPlayer().level().random.nextDouble() + calculateXLook(player) * 3, (-0.5 + getPlayer().level().random.nextDouble()) + (2 + calculateYLook(player) * 3), -0.5 + getPlayer().level().random.nextDouble() + calculateZLook(player) * 3);
+            player.playSound(CSSoundEvents.CS_AIR_SWING.get(), 0.25F, 1.3F + level.random.nextFloat());
+            CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_STAB.get(), -0.5 + level.random.nextDouble() + calculateXLook(player) * 3, (-0.5 + level.random.nextDouble()) + (2 + calculateYLook(player) * 3), -0.5 + level.random.nextDouble() + calculateZLook(player) * 3);
 
-            List<Entity> entities = iterateEntities(getPlayer().level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 4.5), (int) (1 + (calculateYLook(player) * 4.5)), (int) (calculateZLook(player) * 4.5)), 2));
-            entities.addAll(iterateEntities(getPlayer().level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 3), (int) (1 + (calculateYLook(player) * 3)), (int) (calculateZLook(player) * 3)), 2)));
-            entities.addAll(iterateEntities(getPlayer().level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 1.5), (int) (1 + (calculateYLook(player) * 1.5)), (int) (calculateZLook(player) * 1.5)), 2)));
+            List<Entity> entities = iterateEntities(level, createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 4.5), (int) (1 + (calculateYLook(player) * 4.5)), (int) (calculateZLook(player) * 4.5)), 2));
+            entities.addAll(iterateEntities(level, createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 3), (int) (1 + (calculateYLook(player) * 3)), (int) (calculateZLook(player) * 3)), 2)));
+            entities.addAll(iterateEntities(level, createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 1.5), (int) (1 + (calculateYLook(player) * 1.5)), (int) (calculateZLook(player) * 1.5)), 2)));
 
-            if (!entities.isEmpty()) getPlayer().playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 1F + getPlayer().level().random.nextFloat());
+            if (!entities.isEmpty()) player.playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 1F + level.random.nextFloat());
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
                         initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.aquafloraSkillDmg.get() + getSharpnessValue(getStack(), 0.15F), AttackHurtTypes.RAPID_PIERCE);
-                        createHitEffect(getStack(), getPlayer().level(), player, target);
+                        createHitEffect(getStack(), level, player, target);
                     }
                 }
             }

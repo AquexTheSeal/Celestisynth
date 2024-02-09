@@ -2,7 +2,7 @@
   "step": {
     "subtitle": "subtitles.celestisynth.step",
     "sounds": [
-      "celestisynth:cs_step"
+      "celestisynth:step"
     ]
   },
   "hop": {
@@ -14,61 +14,61 @@
   "sword_swing": {
     "subtitle": "subtitles.celestisynth.sword_swing",
     "sounds": [
-      "celestisynth:solaris_1"
+      "celestisynth:sword_swing"
     ]
   },
   "sword_swing_fire": {
     "subtitle": "subtitles.celestisynth.sword_swing_fire",
     "sounds": [
-      "celestisynth:solaris_2"
+      "celestisynth:sword_swing_fire"
     ]
   },
   "air_swing": {
     "subtitle": "subtitles.celestisynth.air_swing",
     "sounds": [
-      "celestisynth:solaris_3"
+      "celestisynth:air_swing"
     ]
   },
   "impact_hit": {
     "subtitle": "subtitles.celestisynth.impact_hit",
     "sounds": [
-      "celestisynth:solaris_4"
+      "celestisynth:impact_hit"
     ]
   },
   "sword_clash": {
     "subtitle": "subtitles.celestisynth.sword_clash",
     "sounds": [
-      "celestisynth:solaris_5"
+      "celestisynth:sword_clash"
     ]
   },
   "fire_shoot": {
     "subtitle": "subtitles.celestisynth.fire_shoot",
     "sounds": [
-      "celestisynth:solaris_6"
+      "celestisynth:fire_shoot"
     ]
   },
   "wind_strike": {
     "subtitle": "subtitles.celestisynth.wind_strike",
     "sounds": [
-      "celestisynth:cs_wind_strike"
+      "celestisynth:wind_strike"
     ]
   },
   "whirlwind": {
     "subtitle": "subtitles.celestisynth.whirlwind",
     "sounds": [
-      "celestisynth:cs_whirlwind"
+      "celestisynth:whirlwind"
     ]
   },
   "loud_impact": {
     "subtitle": "subtitles.celestisynth.loud_impact",
     "sounds": [
-      "celestisynth:cs_loud_impact"
+      "celestisynth:loud_impact"
     ]
   },
   "bling": {
     "subtitle": "subtitles.celestisynth.bling",
     "sounds": [
-      "celestisynth:cs_bling"
+      "celestisynth:bling"
     ]
   },
   "laser_shoot": {
@@ -87,7 +87,13 @@
   "vanish": {
     "subtitle": "subtitles.celestisynth.vanish",
     "sounds": [
-      "celestisynth:rainfall_serenity_vanish"
+      "celestisynth:vanish"
+    ]
+  },
+  "frozen_slash": {
+    "subtitle": "subtitles.celestisynth.frozen_slash",
+    "sounds": [
+      "celestisynth:frozen_slash"
     ]
   }
 }

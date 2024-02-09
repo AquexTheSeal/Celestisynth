@@ -10,19 +10,23 @@ public class CSSoundEvents {
 
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Celestisynth.MODID);
 
-    public static final RegistryObject<SoundEvent> CS_STEP = SOUND_EVENTS.register("step", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("step")));
-    public static final RegistryObject<SoundEvent> CS_HOP = SOUND_EVENTS.register("hop", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("hop")));
-    public static final RegistryObject<SoundEvent> CS_SWORD_SWING = SOUND_EVENTS.register("sword_swing", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("sword_swing")));
-    public static final RegistryObject<SoundEvent> CS_SWORD_SWING_FIRE = SOUND_EVENTS.register("sword_swing_fire", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("sword_swing_fire")));
-    public static final RegistryObject<SoundEvent> CS_AIR_SWING = SOUND_EVENTS.register("air_swing", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("air_swing")));
-    public static final RegistryObject<SoundEvent> CS_IMPACT_HIT = SOUND_EVENTS.register("impact_hit", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("impact_hit")));
-    public static final RegistryObject<SoundEvent> CS_SWORD_CLASH = SOUND_EVENTS.register("sword_clash", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("sword_clash")));
-    public static final RegistryObject<SoundEvent> CS_FIRE_SHOOT = SOUND_EVENTS.register("fire_shoot", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("fire_shoot")));
-    public static final RegistryObject<SoundEvent> CS_WIND_STRIKE = SOUND_EVENTS.register("wind_strike", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("wind_strike")));
-    public static final RegistryObject<SoundEvent> CS_WHIRLWIND = SOUND_EVENTS.register("whirlwind", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("whirlwind")));
-    public static final RegistryObject<SoundEvent> CS_LOUD_IMPACT = SOUND_EVENTS.register("loud_impact", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("loud_impact")));
-    public static final RegistryObject<SoundEvent> CS_BLING = SOUND_EVENTS.register("bling", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("bling")));
-    public static final RegistryObject<SoundEvent> CS_LASER_SHOOT = SOUND_EVENTS.register("laser_shoot", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("laser_shoot")));
-    public static final RegistryObject<SoundEvent> CS_VANISH = SOUND_EVENTS.register("vanish", () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix("vanish")));
+    public static final RegistryObject<SoundEvent> CS_STEP = createSound("step");
+    public static final RegistryObject<SoundEvent> CS_HOP = createSound("hop");
+    public static final RegistryObject<SoundEvent> CS_SWORD_SWING = createSound("sword_swing");
+    public static final RegistryObject<SoundEvent> CS_SWORD_SWING_FIRE = createSound("sword_swing_fire");
+    public static final RegistryObject<SoundEvent> CS_AIR_SWING = createSound("air_swing");
+    public static final RegistryObject<SoundEvent> CS_IMPACT_HIT = createSound("impact_hit");
+    public static final RegistryObject<SoundEvent> CS_SWORD_CLASH = createSound("sword_clash");
+    public static final RegistryObject<SoundEvent> CS_FIRE_SHOOT = createSound("fire_shoot");
+    public static final RegistryObject<SoundEvent> CS_WIND_STRIKE = createSound("wind_strike");
+    public static final RegistryObject<SoundEvent> CS_WHIRLWIND = createSound("whirlwind");
+    public static final RegistryObject<SoundEvent> CS_LOUD_IMPACT = createSound("loud_impact");
+    public static final RegistryObject<SoundEvent> CS_BLING = createSound("bling");
+    public static final RegistryObject<SoundEvent> CS_LASER_SHOOT = createSound("laser_shoot");
+    public static final RegistryObject<SoundEvent> CS_VANISH = createSound("vanish");
+    public static final RegistryObject<SoundEvent> FROZEN_SLASH = createSound("frozen_slash");
 
+    public static RegistryObject<SoundEvent> createSound(String name) {
+        return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix(name)));
+    }
 }

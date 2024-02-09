@@ -1,6 +1,7 @@
-// 1.20.1	2024-02-04T22:39:37.5297249	Item Models: celestisynth
+// 1.20.1	2024-02-08T20:43:53.7157608	Item Models: celestisynth
 895a727be030a8e9ed3af3419ee5fd0dfff4ae0b assets/celestisynth/models/item/celestial_core.json
 1eca25b258e7ef396110701a40cbbcc4d0ecaa2c assets/celestisynth/models/item/celestial_core_heated.json
+1eaab6ea2de0ea5cde9b990289a835e430eee4e1 assets/celestisynth/models/item/celestial_debugger.json
 ff4f859ffb01df6bbe2c9449944d3cd907747157 assets/celestisynth/models/item/celestial_netherite_ingot.json
 d4f5402a3800dde0a56764a64d90c27d2cf252ed assets/celestisynth/models/item/eyebomination.json
 df6d1e7ed43cbb2b8c02f9325575d0c83b4c8429 assets/celestisynth/models/item/lunar_scrap.json

@@ -11,11 +11,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
-
-import java.util.function.Consumer;
 
 public class AquafloraItem extends SkilledSwordItem implements CSGeoItem {
     public AquafloraItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
@@ -48,11 +45,6 @@ public class AquafloraItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        this.initGeo(consumer);
-    }
-
-    @Override
     public ImmutableList<WeaponAttackInstance> getPossibleAttacks(Player player, ItemStack stack, int useDuration) {
         return ImmutableList.of(
                 new AquafloraPetalPiercesAttack(player, stack, useDuration),
@@ -60,11 +52,6 @@ public class AquafloraItem extends SkilledSwordItem implements CSGeoItem {
                 new AquafloraSlashFrenzyAttack(player, stack, useDuration),
                 new AquafloraFlowersAwayAttack(player, stack, useDuration)
         );
-    }
-
-    @Override
-    public boolean hasPassive() {
-        return true;
     }
 
     @Override

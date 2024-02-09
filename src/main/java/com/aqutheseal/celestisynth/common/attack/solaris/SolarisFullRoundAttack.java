@@ -44,79 +44,74 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
 
     @Override
     public boolean getCondition() {
-        return !getPlayer().isShiftKeyDown();
+        return !player.isShiftKeyDown();
     }
 
     @Override
     public void startUsing() {
-        getTagController().putInt(DIRECTION_INDEX_KEY, getPlayer().getRandom().nextInt(2));
-        useAndDamageItem(getStack(), getPlayer().level(), getPlayer(), 2);
+        getTagController().putInt(DIRECTION_INDEX_KEY, player.getRandom().nextInt(2));
+        useAndDamageItem(getStack(), level, player, 2);
     }
 
     @Override
     public void stopUsing() {
-        getTagController().putInt(DIRECTION_INDEX_KEY, getPlayer().getRandom().nextInt(2));
+        getTagController().putInt(DIRECTION_INDEX_KEY, player.getRandom().nextInt(2));
     }
 
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 13) {
-            getPlayer().playSound(CSSoundEvents.CS_STEP.get());
+            player.playSound(CSSoundEvents.CS_STEP.get());
             for (int i = 0; i < 15; i++) {
                 Random rand = new Random();
-                if (!getPlayer().level().isClientSide()) {
-                    ParticleUtil.sendParticles((ServerLevel) getPlayer().level(), ParticleTypes.LARGE_SMOKE, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 0, (-1 + rand.nextFloat(2)) * 0.5, 0.1, (-1 + rand.nextFloat(2)) * 0.5);
-                }
+                ParticleUtil.sendParticles(level, ParticleTypes.LARGE_SMOKE, player.getX(), player.getY(), player.getZ(), 0, (-1 + rand.nextFloat(2)) * 0.5, 0.1, (-1 + rand.nextFloat(2)) * 0.5);
             }
         }
         if (getTimerProgress() > 0 && getTimerProgress() < 24) {
-            if (!getPlayer().level().isClientSide()) ParticleUtil.sendParticles((ServerLevel) getPlayer().level(), ParticleTypes.FLAME, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 0, 0, 0.1, 0);
-
-            getPlayer().setDeltaMovement(0, 0, 0);
-            getPlayer().hurtMarked = true;
+            ParticleUtil.sendParticles(level, ParticleTypes.FLAME, player.getX(), player.getY(), player.getZ(), 0, 0, 0.1, 0);
+            player.setDeltaMovement(0, 0, 0);
+            player.hurtMarked = true;
 
         } else if (getTimerProgress() > 23 && getTimerProgress() < 60) {
-            BlockPos blockPosForAttack = getPlayer().blockPosition();
+            BlockPos blockPosForAttack = player.blockPosition();
             int range = 4;
-            List<LivingEntity> entities = getPlayer().level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
+            List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
 
             for (LivingEntity target : entities) {
-                if (target != getPlayer() && !getPlayer().isAlliedTo(target) && target.isAlive()) {
-                    initiateAbilityAttack(getPlayer(), target, (float) ((CSConfigManager.COMMON.solarisSkillDmg.get()) + getSharpnessValue(getStack(), 0.5F)), AttackHurtTypes.RAPID);
+                if (target != player && !player.isAlliedTo(target) && target.isAlive()) {
+                    initiateAbilityAttack(player, target, (float) ((CSConfigManager.COMMON.solarisSkillDmg.get()) + getSharpnessValue(getStack(), 0.5F)), AttackHurtTypes.RAPID);
                     target.setSecondsOnFire(5);
                 }
             }
-            getPlayer().playSound(SoundEvents.SWEET_BERRY_BUSH_BREAK);
+            player.playSound(SoundEvents.SWEET_BERRY_BUSH_BREAK);
             if (getTagController().getInt(DIRECTION_INDEX_KEY) == 0) {
-                movePlayerInCircularMotion(getPlayer(), getTimerProgress(), false);
-                CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_BLITZ.get());
-                CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_AIR.get());
-                playRandomBladeSound(getPlayer(), 4);
+                movePlayerInCircularMotion(player, getTimerProgress(), false);
+                CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_BLITZ.get());
+                CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR.get());
+                playRandomBladeSound(player, 4);
             } else if (getTagController().getInt(DIRECTION_INDEX_KEY) == 1) {
-                movePlayerInCircularMotion(getPlayer(), getTimerProgress(), true);
-                CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_BLITZ.get());
-                CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_AIR.get());
-                playRandomBladeSound(getPlayer(), 4);
+                movePlayerInCircularMotion(player, getTimerProgress(), true);
+                CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_BLITZ.get());
+                CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR.get());
+                playRandomBladeSound(player, 4);
             }
 
-            BlockPos playerPos = getPlayer().blockPosition();
+            BlockPos playerPos = player.blockPosition();
             double radius = 3;
             double particleCount = 50;
             double angleIncrement = (2 * Math.PI) / particleCount;
 
             for (int i = 0; i < particleCount; i++) {
                 double angle = i * angleIncrement;
-                double rotationX = getPlayer().level().random.nextDouble() * 360.0;
-                double rotationZ = getPlayer().level().random.nextDouble() * 360.0;
+                double rotationX = level.random.nextDouble() * 360.0;
+                double rotationZ = level.random.nextDouble() * 360.0;
                 double x = playerPos.getX() + radius * Math.cos(angle);
                 double y = playerPos.getY() + 1.5;
                 double z = playerPos.getZ() + radius * Math.sin(angle);
-
                 double motionX = Math.sin(Math.toRadians(rotationX)) * Math.cos(Math.toRadians(rotationZ));
                 double motionY = Math.sin(Math.toRadians(rotationZ));
                 double motionZ = Math.cos(Math.toRadians(rotationX)) * Math.cos(Math.toRadians(rotationZ));
-
-                if (!getPlayer().level().isClientSide()) ParticleUtil.sendParticles((ServerLevel) getPlayer().level(), ParticleTypes.FLAME, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
+                if (!level.isClientSide()) ParticleUtil.sendParticles((ServerLevel) level, ParticleTypes.FLAME, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
             }
         }
     }
@@ -130,9 +125,9 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
         double angle = (tick - 45) / 25.0 * Math.PI * 2.0;
         double offsetX = radius * Math.cos(angle);
         double offsetZ = radius * Math.sin(angle);
-        double finalX = isRight ? getPlayer().getX() + forwardX * offsetX - perpendicularX * offsetZ : getPlayer().getX() + forwardX * offsetX + perpendicularX * offsetZ;
-        double finalZ = isRight ? getPlayer().getZ() + forwardZ * offsetX - perpendicularZ * offsetZ : getPlayer().getZ() + forwardZ * offsetX + perpendicularZ * offsetZ;
+        double finalX = isRight ? player.getX() + forwardX * offsetX - perpendicularX * offsetZ : player.getX() + forwardX * offsetX + perpendicularX * offsetZ;
+        double finalZ = isRight ? player.getZ() + forwardZ * offsetX - perpendicularZ * offsetZ : player.getZ() + forwardZ * offsetX + perpendicularZ * offsetZ;
 
-        getPlayer().setDeltaMovement(finalX - getPlayer().getX(), getPlayer().getDeltaMovement().y, finalZ - getPlayer().getZ());
+        player.setDeltaMovement(finalX - player.getX(), player.getDeltaMovement().y, finalZ - player.getZ());
     }
 }

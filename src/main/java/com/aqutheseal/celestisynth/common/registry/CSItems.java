@@ -2,6 +2,7 @@ package com.aqutheseal.celestisynth.common.registry;
 
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.item.misc.CelestialCoreItem;
+import com.aqutheseal.celestisynth.common.item.misc.CelestialDebuggerItem;
 import com.aqutheseal.celestisynth.common.item.weapons.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -22,6 +23,7 @@ public class CSItems {
     public static final RegistryObject<Item> EYEBOMINATION = ITEMS.register("eyebomination", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> STARSTRUCK_SCRAP = ITEMS.register("starstruck_scrap", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> STARSTRUCK_FEATHER = ITEMS.register("starstruck_feather", () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> TEMPEST_SPAWN_EGG = ITEMS.register("tempest_spawn_egg", () -> new ForgeSpawnEggItem(CSEntityTypes.TEMPEST, 0, 0, new Item.Properties()));
 
     public static final RegistryObject<Item> SOLARIS = ITEMS.register("solaris", () -> new SolarisItem(Tiers.NETHERITE,  7 - 4, -2.5F, (new Item.Properties()).fireResistant().rarity(CSRarityTypes.CELESTIAL)));
@@ -31,5 +33,7 @@ public class CSItems {
     public static final RegistryObject<Item> AQUAFLORA = ITEMS.register("aquaflora", () -> new AquafloraItem(Tiers.NETHERITE, 2 - 4, -1.1F, (new Item.Properties()).fireResistant().rarity(CSRarityTypes.CELESTIAL)));
     public static final RegistryObject<Item> RAINFALL_SERENITY = ITEMS.register("rainfall_serenity", () -> new RainfallSerenityItem((new Item.Properties()).fireResistant().durability(1200).rarity(CSRarityTypes.CELESTIAL)));
     public static final RegistryObject<Item> FROSTBOUND = ITEMS.register("frostbound", () -> new FrostboundItem(Tiers.NETHERITE,  9 - 4, -2.7F, (new Item.Properties()).fireResistant().rarity(CSRarityTypes.CELESTIAL)));
+
+    public static final RegistryObject<Item> CELESTIAL_DEBUGGER = ITEMS.register("celestial_debugger", () -> new CelestialDebuggerItem(new Item.Properties().rarity(Rarity.EPIC)));
 
 }

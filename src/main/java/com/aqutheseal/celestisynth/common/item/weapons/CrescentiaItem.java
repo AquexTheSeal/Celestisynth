@@ -17,7 +17,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -25,7 +24,6 @@ import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
 import java.util.List;
 import java.util.Random;
-import java.util.function.Consumer;
 
 public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
 
@@ -45,11 +43,6 @@ public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        this.initGeo(consumer);
-    }
-
-    @Override
     public ImmutableList<WeaponAttackInstance> getPossibleAttacks(Player player, ItemStack stack, int dur) {
         return ImmutableList.of(
                 new CrescentiaBarrageAttack(player, stack),
@@ -60,11 +53,6 @@ public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
     @Override
     public int getSkillsAmount() {
         return 2;
-    }
-
-    @Override
-    public boolean hasPassive() {
-        return true;
     }
 
     @Override

@@ -36,17 +36,17 @@ public class AquafloraFlowersAwayAttack extends AquafloraAttack {
 
     @Override
     public boolean getCondition() {
-        return getTagController().getBoolean(CHECK_PASSIVE) && getPlayer().isCrouching();
+        return getTagController().getBoolean(CHECK_PASSIVE) && player.isCrouching();
     }
 
     @Override
     public void startUsing() {
-        sendExpandingParticles(getPlayer().level(), ParticleTypes.END_ROD, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 55, 1.2F);
+        sendExpandingParticles(level, ParticleTypes.END_ROD, player.getX(), player.getY(), player.getZ(), 55, 1.2F);
         CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_FLOWER.get(), 0, -1, 0);
 
-        List<Entity> entities = iterateEntities(getPlayer().level(), createAABB(player.blockPosition(), 12));
+        List<Entity> entities = iterateEntities(level, createAABB(player.blockPosition(), 12));
 
-        getPlayer().playSound(CSSoundEvents.CS_BLING.get(), 0.4F, 0.5F);
+        player.playSound(CSSoundEvents.CS_BLING.get(), 0.4F, 0.5F);
 
         for (Entity target : entities) {
             if (target instanceof LivingEntity lt && target != player && target.isAlive() && !player.isAlliedTo(target)) {

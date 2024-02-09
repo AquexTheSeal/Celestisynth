@@ -39,13 +39,19 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
     }
 
     public void setFrostbound(int value) {
-        this.frostBound = value;
+        if (this.frostBound < value) {
+            this.frostBound = value;
+            this.updateTracking();
+        }
+    }
+
+    public void decreaseFrostbound(int value) {
+        this.frostBound = Math.max(frostBound - value, 0);
         this.updateTracking();
     }
 
     public void decreaseFrostbound() {
-        this.frostBound = Math.max(frostBound - 1, 0);
-        this.updateTracking();
+       decreaseFrostbound(1);
     }
 
     // PHANTOM TAG

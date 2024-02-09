@@ -30,6 +30,10 @@ public class CSDamageSources {
         return new DamageSource(this.damageTypes.getHolderOrThrow(pDamageTypeKey), pCausingEntity, pDirectEntity);
     }
 
+    public DamageSource basicPlayerAttack(Player pPlayer) {
+        return this.source(CSDamageTypes.BASIC_PLAYER_ATTACK, pPlayer);
+    }
+
     public DamageSource rapidPlayerAttack(Player pPlayer) {
         return this.source(CSDamageTypes.RAPID_PLAYER_ATTACK, pPlayer);
     }

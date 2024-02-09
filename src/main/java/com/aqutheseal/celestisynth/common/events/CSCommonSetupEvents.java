@@ -3,7 +3,10 @@ package com.aqutheseal.celestisynth.common.events;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
-import com.aqutheseal.celestisynth.common.registry.*;
+import com.aqutheseal.celestisynth.common.registry.CSCapabilities;
+import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
+import com.aqutheseal.celestisynth.common.registry.CSItems;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.datagen.providers.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -33,7 +36,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class CSCommonSetupEvents {
-    
+
     public static class CSForgeSetupEvents {
     }
 
@@ -71,6 +74,7 @@ public class CSCommonSetupEvents {
             dataGenerator.addProvider(event.includeServer(), new CSItemModelProvider(output, efh));
             dataGenerator.addProvider(event.includeServer(), new CSRecipeProvider(output));
             dataGenerator.addProvider(event.includeServer(), new CSAdvancementProvider(output, lookup, efh));
+            //dataGenerator.addProvider(event.includeServer(), new CSSoundProvider(output, efh));
 
             CSTagsProvider.BlockHandler blockTagProvider = new CSTagsProvider.BlockHandler(output, lookup, efh);
             dataGenerator.addProvider(event.includeServer(), blockTagProvider);

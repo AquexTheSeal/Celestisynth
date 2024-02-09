@@ -7,6 +7,7 @@ import net.minecraft.world.damagesource.DamageType;
 public class CSDamageTypeProvider {
 
     public static void bootstrap(BootstapContext<DamageType> ctx) {
+        ctx.register(CSDamageTypes.BASIC_PLAYER_ATTACK, new DamageType("basic_player_attack", 1.0f));
         ctx.register(CSDamageTypes.RAPID_PLAYER_ATTACK, new DamageType("rapid_player_attack", 1.0f));
     }
 }

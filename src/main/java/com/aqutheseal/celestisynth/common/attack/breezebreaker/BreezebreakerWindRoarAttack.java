@@ -42,20 +42,20 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
 
     @Override
     public boolean getCondition() {
-        return getPlayer().isSprinting();
+        return player.isSprinting();
     }
 
     @Override
     public void startUsing() {
         super.startUsing();
         
-        useAndDamageItem(stack, getPlayer().level(), player, 5);
+        useAndDamageItem(stack, level, player, 5);
     }
 
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 10) {
-            sendExpandingParticles(player.level(), ParticleTypes.CAMPFIRE_COSY_SMOKE, getPlayer().blockPosition(), 45, 0.2F);
+            sendExpandingParticles(level, ParticleTypes.CAMPFIRE_COSY_SMOKE, player.blockPosition(), 45, 0.2F);
 
             Entity lookAtTarget = getLookedAtEntity(player, 16);
             LivingEntity observedLivingTarget = lookAtTarget instanceof LivingEntity entity ? entity : null;
@@ -64,26 +64,26 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
                 double attackDamage = CSConfigManager.COMMON.breezebreakerSprintSkillDmg.get() + getSharpnessValue(stack, 1);
 
                 initiateAbilityAttack(player, observedLivingTarget, (float) attackDamage, AttackHurtTypes.NO_KB_PIERCE);
-                getPlayer().level().explode(player, observedLivingTarget.getX(), observedLivingTarget.getY(), observedLivingTarget.getZ(), 1.0F, Level.ExplosionInteraction.NONE);
+                level.explode(player, observedLivingTarget.getX(), observedLivingTarget.getY(), observedLivingTarget.getZ(), 1.0F, Level.ExplosionInteraction.NONE);
                 observedLivingTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 2));
                 observedLivingTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
-                sendExpandingParticles(player.level(), ParticleTypes.FIREWORK, getPlayer().blockPosition().above(), 45, 0.2F);
+                sendExpandingParticles(level, ParticleTypes.FIREWORK, player.blockPosition().above(), 45, 0.2F);
             }
 
             double speed = 7;
             Vec3 delta;
 
             for (float distii = 0; distii < speed; distii += 0.25F) {
-                BlockPos newPos = new BlockPos((int) (player.getX() + calculateXLook(player) * distii), (int) getPlayer().getY(), (int) (getPlayer().getZ() + calculateZLook(player) * distii));
+                BlockPos newPos = new BlockPos((int) (player.getX() + calculateXLook(player) * distii), (int) player.getY(), (int) (player.getZ() + calculateZLook(player) * distii));
 
-                if (!player.level().isEmptyBlock(newPos)) {
+                if (!level.isEmptyBlock(newPos)) {
                     speed = distii;
                     break;
                 }
             }
 
             delta = new Vec3(calculateXLook(player) * speed, 0, calculateZLook(player) * speed);
-            getPlayer().moveTo(player.getX() + calculateXLook(player) * speed, getPlayer().getY(), getPlayer().getZ() + calculateZLook(player) * speed);
+            player.moveTo(player.getX() + calculateXLook(player) * speed, player.getY(), player.getZ() + calculateZLook(player) * speed);
 
             double[] multipliers = {2, 1.5, 1, 0.5, 0};
             CSVisualType[] effectTypes = {
@@ -100,9 +100,9 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
                 CSEffectEntity.createInstance(player, null, effectTypes[i], delta.x() * multipliers[i], yOffset, delta.z() * multipliers[i]);
             }
 
-            getPlayer().playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
-            getPlayer().playSound(CSSoundEvents.CS_IMPACT_HIT.get(), 1.0F, 1.0F);
-            getPlayer().playSound(CSSoundEvents.CS_STEP.get(), 1.0F, 1.0F);
+            player.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
+            player.playSound(CSSoundEvents.CS_IMPACT_HIT.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundEvents.CS_STEP.get(), 1.0F, 1.0F);
         }
     }
 

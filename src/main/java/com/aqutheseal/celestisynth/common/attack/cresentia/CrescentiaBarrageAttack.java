@@ -43,54 +43,54 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
 
     @Override
     public boolean getCondition() {
-        return !getPlayer().isShiftKeyDown();
+        return !player.isShiftKeyDown();
     }
 
     @Override
     public void startUsing() {
-        useAndDamageItem(getStack(), getPlayer().level(), getPlayer(), 4);
+        useAndDamageItem(getStack(), level, player, 4);
     }
 
     @Override
     public void tickAttack() {
-        if (getTimerProgress() == 15) getPlayer().playSound(CSSoundEvents.CS_WHIRLWIND.get(), 0.35F, 0.5F + player.level().random.nextFloat());
+        if (getTimerProgress() == 15) player.playSound(CSSoundEvents.CS_WHIRLWIND.get(), 0.35F, 0.5F + level.random.nextFloat());
 
         if (getTimerProgress() >= 15 && getTimerProgress() <= 60) {
             double range = 7.0;
             double rangeSq = Mth.square(range);
-            List<Entity> entities = getPlayer().level().getEntitiesOfClass(Entity.class, getPlayer().getBoundingBox().inflate(range, range, range).move(calculateXLook(getPlayer()), 0, calculateZLook(getPlayer())));
+            List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range).move(calculateXLook(player), 0, calculateZLook(player)));
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
-                    if (target != getPlayer() && target.isAlive() && !getPlayer().isAlliedTo(target) && target.distanceToSqr(getPlayer()) < rangeSq) {
-                        initiateAbilityAttack(getPlayer(), target, (float) (CSConfigManager.COMMON.crescentiaSkillDmg.get() + getSharpnessValue(getStack(), 0.25F)), AttackHurtTypes.RAPID);
+                    if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
+                        initiateAbilityAttack(player, target, (float) (CSConfigManager.COMMON.crescentiaSkillDmg.get() + getSharpnessValue(getStack(), 0.25F)), AttackHurtTypes.RAPID);
                         target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                     }
                 }
                 if (entityBatch instanceof Projectile projectile) {
-                    CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level(), getPlayer(), projectile.getX(), projectile.getY(), projectile.getZ(), true);
-                    getPlayer().playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
+                    CrescentiaItem.createCrescentiaFirework(getStack(), level, player, projectile.getX(), projectile.getY(), projectile.getZ(), true);
+                    player.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
                     projectile.remove(Entity.RemovalReason.DISCARDED);
                 }
             }
 
-            if (getTimerProgress() % 30 == 0) getPlayer().playSound(CSSoundEvents.CS_WHIRLWIND.get(), 0.15F, 1.5F);
+            if (getTimerProgress() % 30 == 0) player.playSound(CSSoundEvents.CS_WHIRLWIND.get(), 0.15F, 1.5F);
 
             if (getTimerProgress() % 3 == 0) {
-                if (getPlayer().level().random.nextBoolean()) CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.CRESCENTIA_STRIKE.get(), calculateXLook(getPlayer()), -0.3, calculateZLook(getPlayer()));
-                else CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get(), calculateXLook(getPlayer()), -0.3, calculateZLook(getPlayer()));
+                if (level.random.nextBoolean()) CSEffectEntity.createInstance(player, null, CSVisualTypes.CRESCENTIA_STRIKE.get(), calculateXLook(player), -0.3, calculateZLook(player));
+                else CSEffectEntity.createInstance(player, null, CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get(), calculateXLook(player), -0.3, calculateZLook(player));
 
-                playRandomBladeSound(getPlayer(), BASE_WEAPON_EFFECTS.length);
+                playRandomBladeSound(player, BASE_WEAPON_EFFECTS.length);
             }
-            CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_AIR_LARGE.get(), 0, -1, 0);
+            CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR_LARGE.get(), 0, -1, 0);
 
-            float offX = (getPlayer().level().random.nextFloat() * 16) - 8;
-            float offY = (getPlayer().level().random.nextFloat() * 16) - 8;
-            float offZ = (getPlayer().level().random.nextFloat() * 16) - 8;
+            float offX = (level.random.nextFloat() * 16) - 8;
+            float offY = (level.random.nextFloat() * 16) - 8;
+            float offZ = (level.random.nextFloat() * 16) - 8;
 
-            CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level(), getPlayer(), getPlayer().getX() + offX, getPlayer().getY() + offY, getPlayer().getZ() + offZ, false);
+            CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, false);
 
-            if (getPlayer().level().random.nextBoolean()) CrescentiaItem.createCrescentiaFirework(getStack(), getPlayer().level(), getPlayer(), getPlayer().getX() + offZ, getPlayer().getY() + offX, getPlayer().getZ() + offY, false);
+            if (level.random.nextBoolean()) CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offZ, player.getY() + offX, player.getZ() + offY, false);
         }
     }
 

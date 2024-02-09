@@ -153,11 +153,9 @@ public class CSEffectEntity extends Entity implements GeoEntity {
     @Nullable
     public static CSEffectEntity getEffectInstance(Player owner, @Nullable Entity toFollow, CSVisualType visual, double offsetX, double offsetY, double offsetZ) {
         if (owner == null) return null;
-
         CSEffectEntity slash = CSEntityTypes.CS_EFFECT.get().create(owner.level());
         slash.setVisualID(visual.getName());
         slash.setAnimationID(visual.getAnimation().getAnimName());
-
         if (toFollow != null) {
             slash.moveTo(toFollow.getX() + offsetX, (toFollow.getY() - 1.5) + offsetY, toFollow.getZ() + offsetZ);
         } else {
@@ -165,14 +163,12 @@ public class CSEffectEntity extends Entity implements GeoEntity {
         }
         slash.setOwnerUuid(owner.getUUID());
         slash.setToFollow(toFollow);
-
         slash.setRandomRotation();
         slash.setXRot(owner.getXRot());
         slash.xRotO = slash.getXRot();
         slash.setYRot(owner.getYRot());
         slash.yRotO = slash.getYRot();
         slash.setRot(slash.getYRot(), slash.getXRot());
-
         return slash;
     }
 
@@ -188,13 +184,20 @@ public class CSEffectEntity extends Entity implements GeoEntity {
        createInstance(owner, toFollow, effectTypes, 0, 0, 0);
     }
 
+    public static void createInstanceLockedPos(Player owner, @Nullable Entity toFollow, CSVisualType effectTypes, double x, double y, double z) {
+        if (owner == null) return;
+        CSEffectEntity slash = getEffectInstance(owner, toFollow, effectTypes, x, y, z);
+        slash.moveTo(x, y, z);
+        slash.setOwnerUuid(owner.getUUID());
+        slash.setToFollow(toFollow);
+        owner.level().addFreshEntity(slash);
+    }
+
     public static void createInstance(Player owner, @Nullable Entity toFollow, CSVisualType effectTypes, double xOffset, double yOffset, double zOffset) {
         if (owner == null) return;
-
         CSEffectEntity slash = getEffectInstance(owner, toFollow, effectTypes, xOffset, yOffset, zOffset);
         slash.setOwnerUuid(owner.getUUID());
         slash.setToFollow(toFollow);
-
         owner.level().addFreshEntity(slash);
     }
 
@@ -216,6 +219,8 @@ public class CSEffectEntity extends Entity implements GeoEntity {
         if (toFollow != null) {
             if (getVisualType() == CSVisualTypes.AQUAFLORA_FLOWER_BIND.get()) {
                 calculateCustomizableSize((float) (toFollow.getBbWidth() - (toFollow.getBbWidth() / 4.5)), -getCustomizableSize());
+            } else {
+                moveTo(toFollow.getX(), this.getY(), toFollow.getZ());
             }
         }
 
@@ -231,9 +236,7 @@ public class CSEffectEntity extends Entity implements GeoEntity {
 
     public void calculateCustomizableSize(float size, double yOff) {
         setYRot(toFollow.getYRot());
-
         this.yRotO = getYRot();
-
         setRot(getYRot(), getXRot());
         setCustomizableSize(size);
         moveTo(toFollow.getX(), toFollow.getY() + yOff, toFollow.getZ());

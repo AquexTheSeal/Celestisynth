@@ -16,10 +16,10 @@ public class BreezebreakerWhirlwindAttack extends BreezebreakerAttack {
 
     @Override
     public AnimationManager.AnimationsList getAnimation() {
-        if (player.getMainHandItem() == stack && getPlayer().getOffhandItem() != stack) return AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_RIGHT;
-        else if (player.getOffhandItem() == stack && getPlayer().getMainHandItem() != stack) return AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_LEFT;
-        else if (player.getOffhandItem() == stack && getPlayer().getMainHandItem() == stack) {
-            boolean shouldShiftRight = getPlayer().getRandom().nextBoolean();
+        if (player.getMainHandItem() == stack && player.getOffhandItem() != stack) return AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_RIGHT;
+        else if (player.getOffhandItem() == stack && player.getMainHandItem() != stack) return AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_LEFT;
+        else if (player.getOffhandItem() == stack && player.getMainHandItem() == stack) {
+            boolean shouldShiftRight = player.getRandom().nextBoolean();
 
             return shouldShiftRight ? AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_RIGHT : AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_SHIFT_LEFT;
         }
@@ -30,7 +30,7 @@ public class BreezebreakerWhirlwindAttack extends BreezebreakerAttack {
     public void startUsing() {
         super.startUsing();
 
-        useAndDamageItem(stack, getPlayer().level(), player, 3);
+        useAndDamageItem(stack, level, player, 3);
     }
 
     @Override
@@ -45,17 +45,17 @@ public class BreezebreakerWhirlwindAttack extends BreezebreakerAttack {
 
     @Override
     public boolean getCondition() {
-        return getPlayer().isCrouching();
+        return player.isCrouching();
     }
 
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 10) {
-            getPlayer().playSound(CSSoundEvents.CS_WIND_STRIKE.get());
-            getPlayer().playSound(CSSoundEvents.CS_WHIRLWIND.get());
+            player.playSound(CSSoundEvents.CS_WIND_STRIKE.get());
+            player.playSound(CSSoundEvents.CS_WHIRLWIND.get());
 
-            if (!player.level().isClientSide()) {
-                SkillCastBreezebreakerTornado tornadoSkillCast = CSEntityTypes.BREEZEBREAKER_TORNADO.get().create(player.level());
+            if (!level.isClientSide()) {
+                SkillCastBreezebreakerTornado tornadoSkillCast = CSEntityTypes.BREEZEBREAKER_TORNADO.get().create(level);
 
                 tornadoSkillCast.setOwnerUuid(player.getUUID());
                 tornadoSkillCast.setAngleX((float) calculateXLook(player));
@@ -64,9 +64,9 @@ public class BreezebreakerWhirlwindAttack extends BreezebreakerAttack {
                 tornadoSkillCast.setAddAngleX((float) calculateXLook(player));
                 tornadoSkillCast.setAddAngleY((float) calculateYLook(player));
                 tornadoSkillCast.setAddAngleZ((float) calculateZLook(player));
-                tornadoSkillCast.moveTo(player.getX(), getPlayer().getY() + 1, getPlayer().getZ());
+                tornadoSkillCast.moveTo(player.getX(), player.getY() + 1, player.getZ());
 
-                getPlayer().level().addFreshEntity(tornadoSkillCast);
+                level.addFreshEntity(tornadoSkillCast);
             }
         }
     }

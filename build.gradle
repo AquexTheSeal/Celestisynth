@@ -75,18 +75,10 @@ repositories {
         name = "CurseMaven Maven"
         url = "https://www.cursemaven.com"
     }
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "Modrinth"
-                url = "https://api.modrinth.com/maven"
-            }
-        }
-        filter {
-            includeGroup "maven.modrinth"
-        }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
     }
-
     maven {
         name = "Geckolib Maven"
         url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
@@ -132,7 +124,7 @@ dependencies {
     shade fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
 
     // Dependencies (Extras)
-    implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:5065424")
+    implementation fg.deobf('maven.modrinth:better-combat:1.8.4+1.20.1-forge')
     implementation fg.deobf("curse.maven:cloth-config-348521:4973441")
 
     implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")

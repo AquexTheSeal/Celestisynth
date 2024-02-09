@@ -45,31 +45,31 @@ public class BreezebreakerWheelAttack extends BreezebreakerAttack {
     @Override
     public void startUsing() {
         super.startUsing();
-        useAndDamageItem(stack, getPlayer().level(), player, 4);
+        useAndDamageItem(stack, level, player, 4);
     }
 
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 10) {
             double range = 7.5;
-            List<Entity> entities = getPlayer().level().getEntitiesOfClass(Entity.class, getPlayer().getBoundingBox().inflate(range, range, 3).move(0, 1, 0));
+            List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, 3).move(0, 1, 0));
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
                         initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.breezebreakerSprintSkillDmg.get() + getSharpnessValue(stack, 1.5F), AttackHurtTypes.NO_KB_PIERCE);
                         target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 1));
-                        sendExpandingParticles(player.level(), ParticleTypes.POOF, target.blockPosition().above(), 45, 0);
+                        sendExpandingParticles(level, ParticleTypes.POOF, target.blockPosition().above(), 45, 0);
                     }
                 }
             }
 
             CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_WHEEL.get(), 0, -1, 0);
             CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_WHEEL_IMPACT.get(), calculateXLook(player) * 3, 1.5 + calculateYLook(player) * 3, calculateZLook(player) * 3);
-            getPlayer().playSound(CSSoundEvents.CS_FIRE_SHOOT.get(), 1.0F, 1.0F);
-            getPlayer().playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
-            getPlayer().playSound(CSSoundEvents.CS_WIND_STRIKE.get());
-            sendExpandingParticles(player.level(), ParticleTypes.END_ROD, getPlayer().blockPosition().above(), 75, 0);
+            player.playSound(CSSoundEvents.CS_FIRE_SHOOT.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundEvents.CS_WIND_STRIKE.get());
+            sendExpandingParticles(level, ParticleTypes.END_ROD, player.blockPosition().above(), 75, 0);
         }
     }
 

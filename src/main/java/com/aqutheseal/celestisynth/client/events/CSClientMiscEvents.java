@@ -88,7 +88,7 @@ public class CSClientMiscEvents {
         float intensity = supportedPlayer.getScreenShakeIntensity();
         float duration = supportedPlayer.getScreenShakeDuration();
 
-        if (duration > 0 && !Minecraft.getInstance().isPaused() && player.level().isClientSide()) {
+        if (duration > 0 && !Minecraft.getInstance().isPaused() && mc.level.isClientSide()) {
             event.setPitch((float) (event.getPitch() + intensity * Math.cos(ticksExistedDelta * 3 + 2) * 25));
             event.setYaw((float) (event.getYaw() + intensity * Math.cos(ticksExistedDelta * 5 + 1) * 25));
             event.setRoll((float) (event.getRoll() + intensity * Math.cos(ticksExistedDelta * 4) * 25));
@@ -133,7 +133,7 @@ public class CSClientMiscEvents {
             elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.shift_notice").withStyle(ChatFormatting.GREEN)));
             addBorders(elementsToAdd);
 
-            if (cs.hasPassive()) {
+            if (cs.getPassiveAmount() > 0) {
                 elementsToAdd.add(Either.left(Component.translatable("item.celestisynth.passive_notice").withStyle(ChatFormatting.GOLD)));
 
                 if (Screen.hasShiftDown() || Screen.hasControlDown()) elementsToAdd.add(Either.left(Component.literal(" ")));

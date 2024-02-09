@@ -17,13 +17,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
-
-import java.util.function.Consumer;
 
 public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
     public static final String BB_COMBO_POINTS = "cs.bbCombo";
@@ -46,11 +43,6 @@ public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        this.initGeo(consumer);
-    }
-
-    @Override
     public ImmutableList<WeaponAttackInstance> getPossibleAttacks(Player player, ItemStack stack, int useDuration) {
         return ImmutableList.of(
                 new BreezebreakerGalestormAttack(player, stack, useDuration),
@@ -69,11 +61,6 @@ public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
     @Override
     public int getPassiveAmount() {
         return 2;
-    }
-
-    @Override
-    public boolean hasPassive() {
-        return true;
     }
 
     @Override

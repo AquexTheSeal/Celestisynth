@@ -15,6 +15,7 @@ import com.google.common.collect.Streams;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -32,15 +33,16 @@ public class CSCommonMiscEvents {
     @SubscribeEvent
     public static void onLivingTickEvent(LivingEvent.LivingTickEvent event) {
 
-        event.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+        LivingEntity entity = event.getEntity();
+        entity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
             if (data.getQuasarImbueSource() != null) {
-                double radius = 0.5 + event.getEntity().getBbWidth();
+                double radius = 0.5 + entity.getBbWidth();
                 double speed = 0.1;
-                double offX = radius * Math.sin(speed * event.getEntity().tickCount);
-                double offY = -Math.sin(event.getEntity().tickCount) * 0.2;
-                double offZ = radius * Math.cos(speed * event.getEntity().tickCount);
-                ParticleUtil.sendParticle(event.getEntity().level(), CSParticleTypes.RAINFALL_ENERGY_SMALL.get(),
-                        event.getEntity().getX() + offX, event.getEntity().getY() + offY + 1, event.getEntity().getZ() + offZ);
+                double offX = radius * Math.sin(speed * entity.tickCount);
+                double offY = -Math.sin(entity.tickCount) * 0.2;
+                double offZ = radius * Math.cos(speed * entity.tickCount);
+                ParticleUtil.sendParticle(entity.level(), CSParticleTypes.RAINFALL_ENERGY_SMALL.get(),
+                        entity.getX() + offX, entity.getY() + offY + 1, entity.getZ() + offZ);
             }
             if (data.getQuasarImbueTime() <= 0) {
                 data.clearQuasarImbue();
@@ -48,19 +50,28 @@ public class CSCommonMiscEvents {
             data.decreaseQuasarImbueTime();
 
             if (data.getFrostbound() > 0) {
-                if (event.getEntity().tickCount % 10 == 0) {
-                    event.getEntity().setTicksFrozen(10);
+                if (entity.tickCount % 10 == 0) {
+                    entity.setTicksFrozen(10);
                 }
-                event.getEntity().addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 2, 4));
-                double radius = 0.8 + event.getEntity().getBbWidth();
+                entity.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 2, 4));
+                double radius = 0.8 + entity.getBbWidth();
                 double speed = 0.2;
-                double offX = radius * Math.sin(speed * event.getEntity().tickCount);
+                double offX = radius * Math.sin(speed * entity.tickCount);
                 double offY = 1;
-                double offZ = radius * Math.cos(speed * event.getEntity().tickCount);
-                ParticleUtil.sendParticle(event.getEntity().level(), ParticleTypes.SNOWFLAKE,
-                        event.getEntity().getX() + offX, event.getEntity().getY() + offY, event.getEntity().getZ() + offZ);
+                double offZ = radius * Math.cos(speed * entity.tickCount);
+                ParticleUtil.sendParticle(entity.level(), ParticleTypes.SNOWFLAKE, entity.getX() + offX, entity.getY() + offY, entity.getZ() + offZ);
+
+                if (entity.isOnFire()) {
+                    if (entity.tickCount % 10 == 0) {
+                        entity.playSound(SoundEvents.FIRE_EXTINGUISH);
+                    }
+                }
             }
-            data.decreaseFrostbound();
+            if (entity.isOnFire()) {
+                data.decreaseFrostbound(5);
+            } else {
+                data.decreaseFrostbound();
+            }
 
             if (data.getPhantomTagTime() <= 0) {
                 data.clearPhantomTag();
@@ -127,7 +138,7 @@ public class CSCommonMiscEvents {
 
         if (itemR instanceof BreezebreakerItem || itemL instanceof BreezebreakerItem) {
             if (entity instanceof Player player) {
-                if (player.level().isClientSide()) AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_JUMP, true);
+                if (entity.level().isClientSide()) AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_JUMP, true);
 
                 player.playSound(CSSoundEvents.CS_HOP.get());
 

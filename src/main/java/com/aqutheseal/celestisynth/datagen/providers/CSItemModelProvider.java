@@ -45,6 +45,8 @@ public class CSItemModelProvider extends ItemModelProvider {
         this.block(CSBlocks.LUNAR_STONE);
         this.block(CSBlocks.ZEPHYR_DEPOSIT);
         this.block(CSBlocks.WINTEREIS);
+
+        this.csCustomModel(CSItems.CELESTIAL_DEBUGGER.get(), getMcLoc("item/handheld"));
     }
 
     public void defaultItem(Collection<RegistryObject<Item>> items) {

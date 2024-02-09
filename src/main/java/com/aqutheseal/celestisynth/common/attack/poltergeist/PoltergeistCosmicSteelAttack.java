@@ -52,20 +52,25 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
 
     @Override
     public boolean getCondition() {
-        return !getPlayer().isShiftKeyDown();
+        return !player.isShiftKeyDown();
     }
 
     @Override
     public void startUsing() {
-        useAndDamageItem(getStack(), getPlayer().level(), getPlayer(), 5);
+        useAndDamageItem(getStack(), level, player, 5);
     }
 
     @Override
     public void tickAttack() {
         boolean isGiantImpact = getTagExtras().getBoolean(IS_IMPACT_LARGE);
 
+        if (getTimerProgress() == 18) {
+            int groundY = getFloorPositionUnderPlayer(level, player.blockPosition()).getY();
+            player.setDeltaMovement(0, groundY - player.getY(), 0);
+        }
+
         if (getTimerProgress() == 20) {
-            getPlayer().moveTo(player.getX(), calculateNonCollidingPos(player.level(), getPlayer().blockPosition()).getY() + 1, getPlayer().getZ());
+            //player.moveTo(player.getX(), getFloorPositionUnderPlayer(level, player.blockPosition()).getY() + 1, player.getZ());
 
             CSVisualType crack =  isGiantImpact ? CSVisualTypes.POLTERGEIST_IMPACT_CRACK_LARGE.get() : CSVisualTypes.POLTERGEIST_IMPACT_CRACK.get();
             double range = isGiantImpact ? 6.5 : 4;
@@ -78,44 +83,44 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
             CSEffectEntity.createInstance(player, null, crack, xx, isGiantImpact ? -1.3 : -0.5, zz);
 
             if (isGiantImpact) {
-                if (!player.level().isClientSide()) {
-                    SkillCastPoltergeistWard projectile = CSEntityTypes.POLTERGEIST_WARD.get().create(player.level());
+                if (!level.isClientSide()) {
+                    SkillCastPoltergeistWard projectile = CSEntityTypes.POLTERGEIST_WARD.get().create(level);
                     projectile.setOwnerUuid(player.getUUID());
-                    projectile.moveTo(player.getX() + xx, getPlayer().getY(), getPlayer().getZ() + zz);
-                    getPlayer().level().addFreshEntity(projectile);
+                    projectile.moveTo(player.getX() + xx, player.getY(), player.getZ() + zz);
+                    level.addFreshEntity(projectile);
                 }
-                shakeScreensForNearbyPlayers(player, getPlayer().level(), 24, 60, 30,  0.035F);
+                shakeScreensForNearbyPlayers(player, level, 24, 60, 30,  0.035F);
             } else {
                 CSEffectEntity.createInstance(player, null, CSVisualTypes.POLTERGEIST_WARD_SUMMON_SMALL.get(), xx, 1, zz);
-                shakeScreensForNearbyPlayers(player, getPlayer().level(), 12, 30, 15,  0.01F);
+                shakeScreensForNearbyPlayers(player, level, 12, 30, 15,  0.01F);
             }
 
             addComboPoint(getStack(), player);
 
             if (getTagController().getInt(SMASH_HEIGHT) > 1) {
-                getPlayer().getCooldowns().removeCooldown(getStack().getItem());
+                player.getCooldowns().removeCooldown(getStack().getItem());
             }
         }
     }
 
     public void doImpact(boolean isGiantImpact, double kbX, double kbZ, double range) {
-        for (Entity entityBatch : iterateEntities(player.level(), createAABB(player.blockPosition().offset((int) kbX, 1, (int) kbZ), range))) {
+        for (Entity entityBatch : iterateEntities(level, createAABB(player.blockPosition().offset((int) kbX, 1, (int) kbZ), range))) {
             if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
                 initiateAbilityAttack(player, target, (isGiantImpact ? (float) (double) CSConfigManager.COMMON.poltergeistSkillDmg.get() * 1.4F : (float) (double) (CSConfigManager.COMMON.poltergeistSkillDmg.get())) + getSharpnessValue(getStack(), 1.2F) + getTagController().getInt(SMASH_HEIGHT), AttackHurtTypes.NO_KB_PIERCE);
                 target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                 target.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0));
                 target.hurtMarked = true;
-                target.setDeltaMovement((target.getX() - (player.getX() + kbX)) / 3, (target.getY() - getPlayer().getY()) / 3, (target.getZ() - (player.getZ() + kbZ)) / 3);
+                target.setDeltaMovement((target.getX() - (player.getX() + kbX)) / 3, (target.getY() - player.getY()) / 3, (target.getZ() - (player.getZ() + kbZ)) / 3);
                 CSWeaponUtil.disableRunningWeapon(target);
 
-                if (!player.level().isClientSide()) {
+                if (!level.isClientSide()) {
                     target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                         data.setPhantomTag(player, 100);
                     });
                 }
             }
 
-            if (entityBatch instanceof Projectile projectile) projectile.remove(Entity.RemovalReason.DISCARDED);
+            if (entityBatch instanceof Projectile projectile) projectile.setDeltaMovement(0, 3, 0);
         }
     }
 
@@ -124,16 +129,15 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
         getTagController().putInt(SMASH_HEIGHT, 0);
     }
 
-    public BlockPos calculateNonCollidingPos(Level level, BlockPos pos) {
+    @Override
+    public BlockPos getFloorPositionUnderPlayer(Level level, BlockPos pos) {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
-
         do {
             mutablePos.move(Direction.DOWN);
             if (CSConfigManager.COMMON.enablePoltergeistHeightDmg.get()) {
                 getTagController().putInt(SMASH_HEIGHT, getTagController().getInt(SMASH_HEIGHT) + 1);
             }
         } while (mutablePos.getY() > level.getMinBuildHeight() && level.getBlockState(mutablePos).isPathfindable(level, mutablePos, PathComputationType.LAND));
-
         return new BlockPos(mutablePos.getX(), mutablePos.getY(), mutablePos.getZ());
     }
 
@@ -142,10 +146,10 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
         boolean isImpactLarge = elementAltsTag.getBoolean(IS_IMPACT_LARGE);
 
         if (!isImpactLarge && elementAltsTag.getInt(SMASH_COUNT_FOR_PASSIVE) < 9) {
-            getPlayer().playSound(SoundEvents.ENDERMAN_TELEPORT);
+            player.playSound(SoundEvents.ENDERMAN_TELEPORT);
             elementAltsTag.putInt(SMASH_COUNT_FOR_PASSIVE, elementAltsTag.getInt(SMASH_COUNT_FOR_PASSIVE) + 1);
         } else if (!isImpactLarge && elementAltsTag.getInt(SMASH_COUNT_FOR_PASSIVE) >= 9) {
-            getPlayer().playSound(SoundEvents.END_PORTAL_SPAWN);
+            player.playSound(SoundEvents.END_PORTAL_SPAWN);
             elementAltsTag.putBoolean(IS_IMPACT_LARGE, true);
         } else if (isImpactLarge) {
             elementAltsTag.putBoolean(IS_IMPACT_LARGE, false);

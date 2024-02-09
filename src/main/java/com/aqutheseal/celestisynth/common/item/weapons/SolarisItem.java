@@ -15,11 +15,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
-
-import java.util.function.Consumer;
 
 public class SolarisItem extends SkilledSwordItem implements CSGeoItem {
 
@@ -48,11 +45,6 @@ public class SolarisItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        this.initGeo(consumer);
-    }
-
-    @Override
     public ImmutableList<WeaponAttackInstance> getPossibleAttacks(Player player, ItemStack stack, int dur) {
         return ImmutableList.of(
                 new SolarisFullRoundAttack(player, stack),
@@ -63,11 +55,6 @@ public class SolarisItem extends SkilledSwordItem implements CSGeoItem {
     @Override
     public int getSkillsAmount() {
         return 2;
-    }
-
-    @Override
-    public boolean hasPassive() {
-        return true;
     }
 
     @Override

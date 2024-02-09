@@ -45,8 +45,9 @@ public abstract class SkilledSwordItem extends SwordItem implements CSWeapon {
                     index++;
                 }
             } else {
-                if (player.getCooldowns().isOnCooldown(heldStack.getItem()) || data.getBoolean(ANIMATION_BEGUN_KEY)) return InteractionResultHolder.fail(heldStack);
-                else {
+                if (player.getCooldowns().isOnCooldown(heldStack.getItem()) || data.getBoolean(ANIMATION_BEGUN_KEY)) {
+                    return InteractionResultHolder.fail(heldStack);
+                } else {
                     player.startUsingItem(interactionHand);
                     return InteractionResultHolder.consume(heldStack);
                 }

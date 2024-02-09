@@ -16,7 +16,7 @@ public class CSBlockstateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        helper.cross(CSBlocks.SOLAR_CRYSTAL.get(), BlockDatagenHelper.RENDER_TYPE_CUTOUT);
+        helper.crossRotatable(CSBlocks.SOLAR_CRYSTAL.get(), BlockDatagenHelper.RENDER_TYPE_CUTOUT);
         helper.cubeAll(CSBlocks.LUNAR_STONE.get());
         helper.cubeAll(CSBlocks.ZEPHYR_DEPOSIT.get());
         helper.cubeAll(CSBlocks.WINTEREIS.get(), BlockDatagenHelper.RENDER_TYPE_TRANSLUCENT);

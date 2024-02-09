@@ -85,7 +85,14 @@ public class CSTagsProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider pProvider) {
-            tag(DamageTypeTags.BYPASSES_INVULNERABILITY).add(CSDamageTypes.RAPID_PLAYER_ATTACK);
+            tag(CSTags.DamageTypes.IS_CELESTIAL_ATTACK)
+                    .add(CSDamageTypes.BASIC_PLAYER_ATTACK)
+                    .add(CSDamageTypes.RAPID_PLAYER_ATTACK)
+            ;
+
+            tag(DamageTypeTags.BYPASSES_COOLDOWN)
+                    .add(CSDamageTypes.RAPID_PLAYER_ATTACK)
+            ;
         }
     }
 }

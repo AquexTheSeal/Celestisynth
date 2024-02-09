@@ -34,14 +34,12 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem {
     public static CSVisualAnimation SPECIAL_RAINFALL = new CSVisualAnimation("animation.cs_effect.special_rainfall", 50);
@@ -80,16 +78,6 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        this.initGeo(consumer);
-    }
-
-    @Override
-    public boolean hasPassive() {
-        return true;
-    }
-
-    @Override
     public int getPassiveAmount() {
         return 1;
     }
@@ -110,9 +98,9 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
             pPlayer.startUsingItem(pHand);
             elementData.putBoolean(ANIMATION_BEGUN_KEY, true);
             if (pHand == InteractionHand.MAIN_HAND) {
-                AnimationManager.playAnimation(pPlayer.level(), AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_RIGHT);
+                AnimationManager.playAnimation(pLevel, AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_RIGHT);
             } else {
-                AnimationManager.playAnimation(pPlayer.level(), AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_LEFT);
+                AnimationManager.playAnimation(pLevel, AnimationManager.AnimationsList.ANIM_RAINFALL_AIM_LEFT);
             }
 
             return InteractionResultHolder.consume(heldStack);
@@ -183,7 +171,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
                     float offY = (-0.5f + random.nextFloat()) * expansionMultiplier;
                     float offZ = (float) Math.sin(angle) * expansionMultiplier;
 
-                    ParticleUtil.sendParticles(player.level(), CSParticleTypes.RAINFALL_ENERGY_SMALL.get(), player.getX(), player.getY(), player.getZ(), 0, offX, offY, offZ);
+                    ParticleUtil.sendParticles(pLevel, CSParticleTypes.RAINFALL_ENERGY_SMALL.get(), player.getX(), player.getY(), player.getZ(), 0, offX, offY, offZ);
                 }
 
                 FloatArrayList angles = new FloatArrayList();

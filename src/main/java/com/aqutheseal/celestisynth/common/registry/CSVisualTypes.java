@@ -60,8 +60,12 @@ public class CSVisualTypes {
     public static final RegistryObject<CSVisualType> RAINFALL_VANISH_CIRCLE = addVisual(new CSVisualType("rainfall_vanish_circle", CSVisualModel.FLAT, CSVisualAnimation.SPIN, 0, 0, 4, false, true, false));
     public static final RegistryObject<CSVisualType> RAINFALL_RAIN = addVisual(new CSVisualType("rainfall_rain", CSVisualModel.FLAT, RainfallSerenityItem.SPECIAL_RAINFALL, 0, 0, 2.5, false, true, false));
 
+    public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH = addVisual(new CSVisualType("frostbound_slash", CSVisualModel.FLAT, CSVisualAnimation.SPIN, 0, 0, 2.5, false, true, true));
+    public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH_INVERTED = addVisual(new CSVisualType("frostbound_slash_inverted", "frostbound_slash", CSVisualModel.FLAT_INVERTED, CSVisualAnimation.SPIN, 0, 0, 2.5, false, true, true));
+    public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH_LARGE = addVisual(new CSVisualType("frostbound_slash_large", "frostbound_slash", CSVisualModel.FLAT, CSVisualAnimation.SPIN, 0, 0, 3.5, false, true, true));
+    public static final RegistryObject<CSVisualType> FROSTBOUND_IMPACT_CRACK = addVisual(new CSVisualType("frostbound_impact_crack", CSVisualModel.FLAT, CSVisualAnimation.noAnimWithLifespan(20), 0, 0, 2.5, false, true, false));
+
     public static RegistryObject<CSVisualType> addVisual(CSVisualType type) {
         return VISUALS.register(type.getName(), () -> type);
     }
-
 }

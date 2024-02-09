@@ -39,14 +39,14 @@ public class BreezebreakerDualGalestormAttack extends BreezebreakerAttack {
 
     @Override
     public boolean getCondition() {
-        return !player.isSprinting() && !player.isCrouching() && getPlayer().onGround() && heldDuration > 5;
+        return !player.isSprinting() && !player.isCrouching() && player.onGround() && heldDuration > 5;
     }
 
     @Override
     public void startUsing() {
         super.startUsing();
 
-        useAndDamageItem(stack, getPlayer().level(), player, 2);
+        useAndDamageItem(stack, level, player, 2);
     }
 
 
@@ -54,23 +54,23 @@ public class BreezebreakerDualGalestormAttack extends BreezebreakerAttack {
     public void tickAttack() {
         if (getTimerProgress() == 6 || getTimerProgress() == 11) {
             double range = 6.0;
-            List<Entity> entities = iterateEntities(player.level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 3), 1, (int) (calculateZLook(player) * 3)), range));
+            List<Entity> entities = iterateEntities(level, createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 3), 1, (int) (calculateZLook(player) * 3)), range));
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
                         initiateAbilityAttack(player, target, (float) (CSConfigManager.COMMON.breezebreakerSkillDmg.get() + getSharpnessValue(stack, 1)), AttackHurtTypes.REGULAR);
                         target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 1));
-                        sendExpandingParticles(player.level(), ParticleTypes.POOF, target.blockPosition().above(), 15, 0);
+                        sendExpandingParticles(level, ParticleTypes.POOF, target.blockPosition().above(), 15, 0);
                     }
                 }
             }
 
-            getPlayer().playSound(CSSoundEvents.CS_WIND_STRIKE.get());
+            player.playSound(CSSoundEvents.CS_WIND_STRIKE.get());
             if (getTimerProgress() == 6) CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_SLASH.get(), calculateXLook(player), 0, calculateZLook(player));
             else CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_SLASH_INVERTED.get(), calculateXLook(player), 0, calculateZLook(player));
 
-            getPlayer().playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
         }
     }
 

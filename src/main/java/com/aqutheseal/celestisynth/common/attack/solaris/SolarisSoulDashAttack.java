@@ -45,14 +45,14 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
 
     @Override
     public boolean getCondition() {
-        return getPlayer().isShiftKeyDown();
+        return player.isShiftKeyDown();
     }
 
     @Override
     public void startUsing() {
         getTagController().putBoolean(STARTED, true);
-        getTagController().putFloat(HEAD_ROT_LOCK_KEY, getPlayer().getYRot());
-        useAndDamageItem(getStack(), getPlayer().level(), getPlayer(), 3);
+        getTagController().putFloat(HEAD_ROT_LOCK_KEY, player.getYRot());
+        useAndDamageItem(getStack(), level, player, 3);
     }
 
     @Override
@@ -64,48 +64,48 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 13) {
-            getPlayer().playSound(CSSoundEvents.CS_STEP.get());
+            player.playSound(CSSoundEvents.CS_STEP.get());
             for (int i = 0; i < 15; i++) {
                 Random rand = new Random();
 
-                if (!getPlayer().level().isClientSide()) ParticleUtil.sendParticles((ServerLevel) getPlayer().level(), ParticleTypes.LARGE_SMOKE, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 0, (-1 + rand.nextFloat(2)) * 0.5, 0.1, (-1 + rand.nextFloat(2)) * 0.5);
+                if (!level.isClientSide()) ParticleUtil.sendParticles((ServerLevel) level, ParticleTypes.LARGE_SMOKE, player.getX(), player.getY(), player.getZ(), 0, (-1 + rand.nextFloat(2)) * 0.5, 0.1, (-1 + rand.nextFloat(2)) * 0.5);
             }
         }
         if (getTimerProgress() > 0 && getTimerProgress() < 24) {
-            if (!getPlayer().level().isClientSide()) {
-                for (int i = 0; i < 10; i++) ParticleUtil.sendParticles((ServerLevel) getPlayer().level(), ParticleTypes.SOUL_FIRE_FLAME, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 0, -1 + new Random().nextFloat(2), 0.1, -1 + new Random().nextFloat(2));
+            if (!level.isClientSide()) {
+                for (int i = 0; i < 10; i++) ParticleUtil.sendParticles((ServerLevel) level, ParticleTypes.SOUL_FIRE_FLAME, player.getX(), player.getY(), player.getZ(), 0, -1 + new Random().nextFloat(2), 0.1, -1 + new Random().nextFloat(2));
             }
 
-            getPlayer().setDeltaMovement(0, 0, 0);
-            getPlayer().hurtMarked = true;
+            player.setDeltaMovement(0, 0, 0);
+            player.hurtMarked = true;
 
         } else if (getTimerProgress() > 23 && getTimerProgress() < 60) {
-            BlockPos blockPosForAttack = getPlayer().blockPosition();
+            BlockPos blockPosForAttack = player.blockPosition();
             int range = 7;
-            List<LivingEntity> entities = getPlayer().level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
+            List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
 
             for (LivingEntity target : entities) {
-                if (target != getPlayer() && !getPlayer().isAlliedTo(target) && target.isAlive()) {
-                    initiateAbilityAttack(getPlayer(), target, (float) ((CSConfigManager.COMMON.solarisSkillDmg.get()) + getSharpnessValue(getStack(), 0.5F)), AttackHurtTypes.RAPID_PIERCE);
+                if (target != player && !player.isAlliedTo(target) && target.isAlive()) {
+                    initiateAbilityAttack(player, target, (float) ((CSConfigManager.COMMON.solarisSkillDmg.get()) + getSharpnessValue(getStack(), 0.5F)), AttackHurtTypes.RAPID_PIERCE);
                     target.setSecondsOnFire(5);
                 }
             }
 
-            getPlayer().playSound(SoundEvents.SWEET_BERRY_BUSH_BREAK);
-            movePlayerInStraightMotion(getPlayer(), getTagController().getInt(HEAD_ROT_LOCK_KEY));
-            CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_BLITZ_SOUL.get());
-            CSEffectEntity.createInstance(getPlayer(), null, CSVisualTypes.SOLARIS_AIR_LARGE.get());
-            playRandomBladeSound(getPlayer(), BASE_WEAPON_EFFECTS.length);
+            player.playSound(SoundEvents.SWEET_BERRY_BUSH_BREAK);
+            movePlayerInStraightMotion(player, getTagController().getInt(HEAD_ROT_LOCK_KEY));
+            CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_BLITZ_SOUL.get());
+            CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR_LARGE.get());
+            playRandomBladeSound(player, BASE_WEAPON_EFFECTS.length);
 
-            BlockPos playerPos = getPlayer().blockPosition();
+            BlockPos playerPos = player.blockPosition();
             double radius = 3;
             double particleCount = 50;
             double angleIncrement = (2 * Math.PI) / particleCount;
 
             for (int i = 0; i < particleCount; i++) {
                 double angle = i * angleIncrement;
-                double rotationX = getPlayer().level().random.nextDouble() * 360.0;
-                double rotationZ = getPlayer().level().random.nextDouble() * 360.0;
+                double rotationX = level.random.nextDouble() * 360.0;
+                double rotationZ = level.random.nextDouble() * 360.0;
                 double x = playerPos.getX() + radius * Math.cos(angle);
                 double y = playerPos.getY() + 1.5;
                 double z = playerPos.getZ() + radius * Math.sin(angle);
@@ -114,9 +114,9 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
                 double motionY = Math.sin(Math.toRadians(rotationZ));
                 double motionZ = Math.cos(Math.toRadians(rotationX)) * Math.cos(Math.toRadians(rotationZ));
 
-                if (!getPlayer().level().isClientSide()) {
-                    ParticleUtil.sendParticles((ServerLevel) getPlayer().level(), ParticleTypes.SOUL_FIRE_FLAME, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
-                    ParticleUtil.sendParticles((ServerLevel) getPlayer().level(), ParticleTypes.SOUL, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
+                if (!level.isClientSide()) {
+                    ParticleUtil.sendParticles((ServerLevel) level, ParticleTypes.SOUL_FIRE_FLAME, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
+                    ParticleUtil.sendParticles((ServerLevel) level, ParticleTypes.SOUL, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
                 }
             }
         }
@@ -129,6 +129,6 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
         double motionX = lookX * speed;
         double motionZ = lookZ * speed;
 
-        getPlayer().setDeltaMovement(motionX, getPlayer().getDeltaMovement().y, motionZ);
+        player.setDeltaMovement(motionX, player.getDeltaMovement().y, motionZ);
     }
 }

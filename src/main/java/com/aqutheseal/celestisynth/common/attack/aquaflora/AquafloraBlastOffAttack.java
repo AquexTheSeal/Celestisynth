@@ -37,32 +37,32 @@ public class AquafloraBlastOffAttack extends AquafloraAttack {
 
     @Override
     public boolean getCondition() {
-        return !getTagController().getBoolean(CHECK_PASSIVE) && getPlayer().isCrouching();
+        return !getTagController().getBoolean(CHECK_PASSIVE) && player.isCrouching();
     }
 
     @Override
     public void startUsing() {
-        List<Entity> surroundingEntities = iterateEntities(getPlayer().level(), createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 4), (int) (2 + (calculateYLook(player) * 3)), (int) (calculateZLook(player) * 4)), 3));
+        List<Entity> surroundingEntities = iterateEntities(level, createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 4), (int) (2 + (calculateYLook(player) * 3)), (int) (calculateZLook(player) * 4)), 3));
 
-        getPlayer().playSound(SoundEvents.WITHER_BREAK_BLOCK, 0.7F, 1.5F);
+        player.playSound(SoundEvents.WITHER_BREAK_BLOCK, 0.7F, 1.5F);
         CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_BASH.get(), calculateXLook(player) * 2, 1.5, calculateZLook(player) * 2);
 
         for (Entity entityBatch : surroundingEntities) {
             if (entityBatch instanceof LivingEntity target) {
                 if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
-                    target.setDeltaMovement((target.getX() - getPlayer().getX()) * 0.4,   1, (target.getZ() - getPlayer().getZ()) * 0.4);
+                    target.setDeltaMovement((target.getX() - player.getX()) * 0.4,   1, (target.getZ() - player.getZ()) * 0.4);
                     initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.aquafloraShiftSkillDmg.get() + getSharpnessValue(getStack(), 1F), AttackHurtTypes.NO_KB_PIERCE);
-                    createHitEffect(getStack(), getPlayer().level(), player, target);
+                    createHitEffect(getStack(), level, player, target);
                     CSWeaponUtil.disableRunningWeapon(target);
                 }
             }
         }
 
-        double check = getPlayer().onGround() ? 0.3 : 0.14;
+        double check = player.onGround() ? 0.3 : 0.14;
 
-        if (getPlayer().level().isClientSide()) shakeScreens(player, 3, 2, 0.015F);
+        if (level.isClientSide()) shakeScreens(player, 3, 2, 0.015F);
 
-        getPlayer().setDeltaMovement(player.getDeltaMovement().add(calculateXLook(player) * check, 0, calculateZLook(player) * check));
+        player.setDeltaMovement(player.getDeltaMovement().add(calculateXLook(player) * check, 0, calculateZLook(player) * check));
     }
 
     @Override

@@ -6,10 +6,12 @@
   "mixins": [
     "AbstractArrowMixin",
     "InventoryMixin",
+    "ItemMixin",
     "LivingEntityMixin",
     "PlayerMixin",
     "RecipeManagerAccessor",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "compat.BCWeaponRegistryMixin"
   ],
   "injectors": {
     "defaultRequire": 1
