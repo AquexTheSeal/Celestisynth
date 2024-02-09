@@ -16,7 +16,7 @@ public class CSSoundProvider extends SoundDefinitionsProvider {
 
     @Override
     public void registerSounds() {
-        this.add(CSSoundEvents.CS_STEP, definition().with(this.simpleSound("step")));
+        this.add(CSSoundEvents.STEP, definition().with(this.simpleSound("step")));
     }
 
     private SoundDefinition.Sound simpleSound(String name) {

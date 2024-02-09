@@ -64,7 +64,7 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 13) {
-            player.playSound(CSSoundEvents.CS_STEP.get());
+            player.playSound(CSSoundEvents.STEP.get());
             for (int i = 0; i < 15; i++) {
                 Random rand = new Random();
 

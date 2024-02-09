@@ -16,12 +16,12 @@ public abstract class WeaponAttackInstance implements CSWeaponUtil {
     public final ItemStack stack;
     public final int heldDuration;
     public static final SoundEvent[] BASE_WEAPON_EFFECTS = {
-            CSSoundEvents.CS_SWORD_SWING.get(),
-            CSSoundEvents.CS_SWORD_SWING_FIRE.get(),
-            CSSoundEvents.CS_AIR_SWING.get(),
-            CSSoundEvents.CS_SWORD_CLASH.get(),
-            CSSoundEvents.CS_FIRE_SHOOT.get(),
-            CSSoundEvents.CS_IMPACT_HIT.get()
+            CSSoundEvents.SWORD_SWING.get(),
+            CSSoundEvents.SWORD_SWING_FIRE.get(),
+            CSSoundEvents.AIR_SWING.get(),
+            CSSoundEvents.SWORD_CLASH.get(),
+            CSSoundEvents.FIRE_SHOOT.get(),
+            CSSoundEvents.IMPACT_HIT.get()
     };
 
     public WeaponAttackInstance(Player player, ItemStack stack, int heldDuration) {

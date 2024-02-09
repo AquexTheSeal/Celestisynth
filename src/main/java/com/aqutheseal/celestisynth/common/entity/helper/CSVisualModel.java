@@ -7,6 +7,7 @@ public class CSVisualModel {
     public static CSVisualModel FLAT_VERTICAL_FRONTFACE = new CSVisualModel("cs_effect_flat_vertical_side");
     public static CSVisualModel SIX_WAY_CROSS = new CSVisualModel("cs_effect_cross");
     public static CSVisualModel WALL = new CSVisualModel("cs_effect_wall");
+    public static CSVisualModel WALL_CROSS = new CSVisualModel("cs_effect_wall_cross");
 
     final String modelName;
 

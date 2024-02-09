@@ -51,8 +51,8 @@ public class BreezebreakerWhirlwindAttack extends BreezebreakerAttack {
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 10) {
-            player.playSound(CSSoundEvents.CS_WIND_STRIKE.get());
-            player.playSound(CSSoundEvents.CS_WHIRLWIND.get());
+            player.playSound(CSSoundEvents.WIND_STRIKE.get());
+            player.playSound(CSSoundEvents.WHIRLWIND.get());
 
             if (!level.isClientSide()) {
                 SkillCastBreezebreakerTornado tornadoSkillCast = CSEntityTypes.BREEZEBREAKER_TORNADO.get().create(level);

@@ -14,9 +14,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -30,12 +32,12 @@ public abstract class EffectControllerEntity extends Entity {
     private static final EntityDataAccessor<Float> ANGLE_ADD_Y = SynchedEntityData.defineId(EffectControllerEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ANGLE_ADD_Z = SynchedEntityData.defineId(EffectControllerEntity.class, EntityDataSerializers.FLOAT);
     public static final SoundEvent[] BASE_WEAPON_EFFECTS = {
-            CSSoundEvents.CS_SWORD_SWING.get(),
-            CSSoundEvents.CS_SWORD_SWING_FIRE.get(),
-            CSSoundEvents.CS_AIR_SWING.get(),
-            CSSoundEvents.CS_SWORD_CLASH.get(),
-            CSSoundEvents.CS_FIRE_SHOOT.get(),
-            CSSoundEvents.CS_IMPACT_HIT.get()
+            CSSoundEvents.SWORD_SWING.get(),
+            CSSoundEvents.SWORD_SWING_FIRE.get(),
+            CSSoundEvents.AIR_SWING.get(),
+            CSSoundEvents.SWORD_CLASH.get(),
+            CSSoundEvents.FIRE_SHOOT.get(),
+            CSSoundEvents.IMPACT_HIT.get()
     };
 
     public EffectControllerEntity(EntityType<?> pEntityType, Level pLevel) {
@@ -86,34 +88,21 @@ public abstract class EffectControllerEntity extends Entity {
         this.remove(RemovalReason.DISCARDED);
     }
 
-    /**
-    @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {
-        UUID potentialOwnerUUID = tag.hasUUID("Owner") ? tag.getUUID("Owner") : tag.getString("Owner") != null ? OldUsersConverter.convertMobOwnerIfNecessary(getServer(), tag.getString("Owner")) : null;
-
-        if (potentialOwnerUUID != null) setOwnerUuid(potentialOwnerUUID);
-        else Celestisynth.LOGGER.warn("Missing Owner UUID for CSControllerEntity! Crashes/unexpected behaviour may occur if the owner is retrieved at any point. Attempting to remove entity from level...");
-
-        setAngleX(tag.getFloat("cs.angleX"));
-        setAngleY(tag.getFloat("cs.angleY"));
-        setAngleZ(tag.getFloat("cs.angleZ"));
-        setAddAngleX(tag.getFloat("cs.angleAddX"));
-        setAddAngleY(tag.getFloat("cs.angleAddY"));
-        setAddAngleZ(tag.getFloat("cs.angleAddZ"));
+    public int getDisappearRange() {
+        return 64;
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {
-        if (getOwnerUuid() != null) tag.putUUID("Owner", getOwnerUuid());
-
-        tag.putFloat("cs.angleX", getAngleX());
-        tag.putFloat("cs.angleY", getAngleY());
-        tag.putFloat("cs.angleZ", getAngleZ());
-        tag.putFloat("cs.angleAddX", getAddAngleX());
-        tag.putFloat("cs.angleAddY", getAddAngleY());
-        tag.putFloat("cs.angleAddZ", getAddAngleZ());
+    public void remove(RemovalReason pReason) {
+        double range = getDisappearRange();
+        List<Entity> surroundingEntities = level().getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + range, getZ() + range, getX() - range, getY() - range, getZ() - range));
+        for (Entity entityBatch : surroundingEntities) {
+            if (entityBatch instanceof CSEffectEntity effect) {
+                if (effect.getToFollow() == this) effect.remove(RemovalReason.DISCARDED);
+            }
+        }
+        super.remove(pReason);
     }
-    **/
 
     public void setOwnerUuid(@Nullable UUID ownerUuid) {
         this.entityData.set(OWNER_UUID, Optional.ofNullable(ownerUuid));

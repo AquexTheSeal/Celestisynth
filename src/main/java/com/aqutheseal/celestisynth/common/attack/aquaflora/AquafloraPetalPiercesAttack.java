@@ -43,7 +43,7 @@ public class AquafloraPetalPiercesAttack extends AquafloraAttack {
     @Override
     public void startUsing() {
         CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_PIERCE_START.get(), calculateXLook(player) * 3, 1.2 + calculateYLook(player) * 3, calculateZLook(player) * 3);
-        player.playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 0.5F);
+        player.playSound(CSSoundEvents.BLING.get(), 0.15F, 0.5F);
 
         if (level.isClientSide()) shakeScreens(player, 15, 5, 0.02F);
     }
@@ -51,14 +51,14 @@ public class AquafloraPetalPiercesAttack extends AquafloraAttack {
     @Override
     public void tickAttack() {
         if (getTimerProgress() >= 0 && getTimerProgress() <= 15) {
-            player.playSound(CSSoundEvents.CS_AIR_SWING.get(), 0.25F, 1.3F + level.random.nextFloat());
+            player.playSound(CSSoundEvents.AIR_SWING.get(), 0.25F, 1.3F + level.random.nextFloat());
             CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_STAB.get(), -0.5 + level.random.nextDouble() + calculateXLook(player) * 3, (-0.5 + level.random.nextDouble()) + (2 + calculateYLook(player) * 3), -0.5 + level.random.nextDouble() + calculateZLook(player) * 3);
 
             List<Entity> entities = iterateEntities(level, createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 4.5), (int) (1 + (calculateYLook(player) * 4.5)), (int) (calculateZLook(player) * 4.5)), 2));
             entities.addAll(iterateEntities(level, createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 3), (int) (1 + (calculateYLook(player) * 3)), (int) (calculateZLook(player) * 3)), 2)));
             entities.addAll(iterateEntities(level, createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 1.5), (int) (1 + (calculateYLook(player) * 1.5)), (int) (calculateZLook(player) * 1.5)), 2)));
 
-            if (!entities.isEmpty()) player.playSound(CSSoundEvents.CS_BLING.get(), 0.15F, 1F + level.random.nextFloat());
+            if (!entities.isEmpty()) player.playSound(CSSoundEvents.BLING.get(), 0.15F, 1F + level.random.nextFloat());
 
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {

@@ -68,7 +68,7 @@ public class SkillCastBreezebreakerTornado extends EffectControllerEntity {
             if (yLevel == 4 || yLevel == 5) CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.SOLARIS_AIR_LARGE_FLAT.get(), getAngleX(), getAngleY() + yLevel, getAngleZ());
         }
 
-        if (tickCount % 20 == 0) level().playSound(level().getPlayerByUUID(getOwnerUuid()), getAngleX(), getAngleY(), getAngleZ(), CSSoundEvents.CS_WHIRLWIND.get(), SoundSource.HOSTILE, 0.10F, 0.5F + random.nextFloat());
+        if (tickCount % 20 == 0) level().playSound(level().getPlayerByUUID(getOwnerUuid()), getAngleX(), getAngleY(), getAngleZ(), CSSoundEvents.WHIRLWIND.get(), SoundSource.HOSTILE, 0.10F, 0.5F + random.nextFloat());
 
         int radius = 2;
         for (int sx = -radius; sx <= radius; sx++) {

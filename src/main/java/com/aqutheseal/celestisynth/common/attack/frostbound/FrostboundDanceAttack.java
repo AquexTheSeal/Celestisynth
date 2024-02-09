@@ -46,7 +46,7 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
     @Override
     public void startUsing() {
         player.setDeltaMovement(0, 0.75, 0);
-        player.playSound(CSSoundEvents.CS_HOP.get());
+        player.playSound(CSSoundEvents.HOP.get());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
             BlockPos groundPos = this.getFloorPositionUnderPlayer(level, player.blockPosition());
             player.setDeltaMovement(0, (groundPos.getY() - player.getY()), 0);
             this.playSoundAt(level, SoundEvents.GLASS_BREAK, groundPos);
-            this.playSoundAt(level, CSSoundEvents.CS_SWORD_CLASH.get(), groundPos);
+            this.playSoundAt(level, CSSoundEvents.SWORD_CLASH.get(), groundPos);
             CSEffectEntity.createInstanceLockedPos(player, null, CSVisualTypes.FROSTBOUND_IMPACT_CRACK.get(), player.getX() + xP, groundPos.getY() - 0.75, player.getZ() + zP);
             for (int i = 0; i < 360; i++) {
                 double xI = xP + Mth.sin(i) * 3;

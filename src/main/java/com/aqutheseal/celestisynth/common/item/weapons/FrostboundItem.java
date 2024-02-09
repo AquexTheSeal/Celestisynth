@@ -4,6 +4,7 @@ import com.aqutheseal.celestisynth.api.item.CSGeoItem;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.attack.frostbound.FrostboundDanceAttack;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
+import com.aqutheseal.celestisynth.common.entity.helper.CSVisualAnimation;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.sounds.SoundEvents;
@@ -15,6 +16,8 @@ import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
 public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
+    public static CSVisualAnimation SPECIAL_ICE_CAST = new CSVisualAnimation("animation.cs_effect.special_ice_cast", 40);
+
     public FrostboundItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);

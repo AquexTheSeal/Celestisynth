@@ -71,7 +71,7 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
 
             if (target == player || target == null) {
                 player.displayClientMessage(Component.translatable("item.celestisynth.aquaflora.skill_3.notice"), true);
-                player.playSound(CSSoundEvents.CS_BLING.get(), 0.25F, 1.5F);
+                player.playSound(CSSoundEvents.BLING.get(), 0.25F, 1.5F);
                 CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_DASH.get(), 0, 0.55, 0);
                 baseStop();
                 return;
@@ -96,7 +96,7 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
             player.setDeltaMovement((toPos.getX() - player.getX()) * 0.25, (toPos.getY() - player.getY()) * 0.25, (toPos.getZ() - player.getZ()) * 0.25);
             //player.moveTo(target.blockPosition().offset((int) offsetX, 1, (int) offsetZ), player.getYRot(), player.getXRot());
             CSEffectEntity.createInstance(player, target, CSVisualTypes.AQUAFLORA_ASSASSINATE.get(), 0, -0.2, 0);
-            player.playSound(CSSoundEvents.CS_WIND_STRIKE.get(), 0.15F, 0.5F);
+            player.playSound(CSSoundEvents.WIND_STRIKE.get(), 0.15F, 0.5F);
 
             double dualWieldMultiplier = checkDualWield(player, AquafloraItem.class) ? 0.52 : 1;
 

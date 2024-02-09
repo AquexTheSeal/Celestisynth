@@ -30,6 +30,7 @@ public class CSClientSetupEvents {
         event.registerEntityRenderer(CSEntityTypes.BREEZEBREAKER_TORNADO.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityTypes.POLTERGEIST_WARD.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityTypes.RAINFALL_RAIN.get(), NullRenderer::new);
+        event.registerEntityRenderer(CSEntityTypes.FROSTBOUND_ICE_CAST.get(), NullRenderer::new);
 
         event.registerEntityRenderer(CSEntityTypes.RAINFALL_ARROW.get(), RainfallArrowRenderer::new);
 

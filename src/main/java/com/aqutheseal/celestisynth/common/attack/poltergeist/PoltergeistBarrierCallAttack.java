@@ -48,7 +48,7 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
         for (Entity entityBatch : iterateEntities(level, createAABB(player.blockPosition().offset((int) (calculateXLook(player) * 2), 0, (int) (calculateZLook(player) * 2)), range))) {
             if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
                 initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.poltergeistShiftSkillDmg.get() + getSharpnessValue(getStack(), 1.2F), AttackHurtTypes.REGULAR);
-                target.playSound(CSSoundEvents.CS_SWORD_CLASH.get(), 0.25F, 0.5F);
+                target.playSound(CSSoundEvents.SWORD_CLASH.get(), 0.25F, 0.5F);
 
                 target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                     data.setPhantomTag(player, 200);

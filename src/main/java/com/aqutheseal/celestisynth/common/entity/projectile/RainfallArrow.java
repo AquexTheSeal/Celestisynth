@@ -155,7 +155,7 @@ public class RainfallArrow extends AbstractArrow implements GeoEntity {
                                         level().addFreshEntity(rainfallArrow);
                                     }
 
-                                    level().playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundEvents.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 0.7f, 2.0F);
+                                    level().playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundEvents.LASER_SHOOT.get(), SoundSource.PLAYERS, 0.7f, 2.0F);
                                     data.clearQuasarImbue();
                                 }
                             });

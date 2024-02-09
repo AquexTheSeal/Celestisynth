@@ -95,5 +95,11 @@
     "sounds": [
       "celestisynth:frozen_slash"
     ]
+  },
+  "ice_cast": {
+    "subtitle": "subtitles.celestisynth.ice_cast",
+    "sounds": [
+      "celestisynth:ice_cast"
+    ]
   }
 }

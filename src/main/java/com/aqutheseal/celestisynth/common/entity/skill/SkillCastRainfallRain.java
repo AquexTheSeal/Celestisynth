@@ -52,7 +52,7 @@ public class SkillCastRainfallRain extends EffectControllerEntity {
         }
 
         if (tickCount >= 20 && tickCount <= 40 && tickCount % 2 == 0) {
-            level().playSound(null, targetPos.getX(), targetPos.getY(), targetPos.getZ(), CSSoundEvents.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, 0.4f, 0.5F + random.nextFloat());
+            level().playSound(null, targetPos.getX(), targetPos.getY(), targetPos.getZ(), CSSoundEvents.LASER_SHOOT.get(), SoundSource.PLAYERS, 0.4f, 0.5F + random.nextFloat());
 
             double rx = -5 + random.nextInt(10);
             double rz = -5 + random.nextInt(10);

@@ -46,7 +46,7 @@ public class AquafloraFlowersAwayAttack extends AquafloraAttack {
 
         List<Entity> entities = iterateEntities(level, createAABB(player.blockPosition(), 12));
 
-        player.playSound(CSSoundEvents.CS_BLING.get(), 0.4F, 0.5F);
+        player.playSound(CSSoundEvents.BLING.get(), 0.4F, 0.5F);
 
         for (Entity target : entities) {
             if (target instanceof LivingEntity lt && target != player && target.isAlive() && !player.isAlliedTo(target)) {

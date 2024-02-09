@@ -66,11 +66,11 @@ public class BreezebreakerDualGalestormAttack extends BreezebreakerAttack {
                 }
             }
 
-            player.playSound(CSSoundEvents.CS_WIND_STRIKE.get());
+            player.playSound(CSSoundEvents.WIND_STRIKE.get());
             if (getTimerProgress() == 6) CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_SLASH.get(), calculateXLook(player), 0, calculateZLook(player));
             else CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_SLASH_INVERTED.get(), calculateXLook(player), 0, calculateZLook(player));
 
-            player.playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundEvents.AIR_SWING.get(), 1.0F, 1.0F);
         }
     }
 

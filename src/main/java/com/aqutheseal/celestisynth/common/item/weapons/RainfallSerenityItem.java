@@ -140,7 +140,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
     public void shiftSkill(Level level, Player player) {
         CSEffectEntity.createInstance(player, null, CSVisualTypes.RAINFALL_VANISH.get(), calculateXLook(player) * 3, 1, calculateZLook(player) * 3);
         CSEffectEntity.createInstance(player, null, CSVisualTypes.RAINFALL_VANISH_CIRCLE.get(), 0, -1.5, 0);
-        player.playSound(CSSoundEvents.CS_VANISH.get());
+        player.playSound(CSSoundEvents.VANISH.get());
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 3, true, false, false));
         player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 100, 0, true, false, false));
     }
@@ -226,7 +226,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
                     pStack.hurtAndBreak(1, player, (livingOwner) -> livingOwner.broadcastBreakEvent(player.getUsedItemHand()));
                 }
 
-                pLevel.playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundEvents.CS_LASER_SHOOT.get(), SoundSource.PLAYERS, (float) (0.7F * curPowerFromUse), (float) (1.0F / (pLevel.getRandom().nextFloat() * 0.4F + 1.2F) + curPowerFromUse * 0.5F));
+                pLevel.playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundEvents.LASER_SHOOT.get(), SoundSource.PLAYERS, (float) (0.7F * curPowerFromUse), (float) (1.0F / (pLevel.getRandom().nextFloat() * 0.4F + 1.2F) + curPowerFromUse * 0.5F));
                 player.awardStat(Stats.ITEM_USED.get(this));
             }
         }

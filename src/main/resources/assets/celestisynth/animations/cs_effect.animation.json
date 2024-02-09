@@ -371,6 +371,35 @@
 					}
 				}
 			}
+		},
+		"animation.cs_effect.special_ice_cast": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"bone": {
+					"rotation": {
+						"vector": ["math.sin(query.anim_time * 360 * 12) * 2", 0, "math.cos(query.anim_time * 360 * 12) * 2"]
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, -13, 0]
+						},
+						"0.5": {
+							"vector": [0, 1, 0],
+							"easing": "easeOutCirc"
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 0, 1]
+						},
+						"0.5": {
+							"vector": [1, 1, 1],
+							"easing": "easeOutCirc"
+						}
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

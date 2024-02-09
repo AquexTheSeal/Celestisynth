@@ -61,7 +61,7 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 13) {
-            player.playSound(CSSoundEvents.CS_STEP.get());
+            player.playSound(CSSoundEvents.STEP.get());
             for (int i = 0; i < 15; i++) {
                 Random rand = new Random();
                 ParticleUtil.sendParticles(level, ParticleTypes.LARGE_SMOKE, player.getX(), player.getY(), player.getZ(), 0, (-1 + rand.nextFloat(2)) * 0.5, 0.1, (-1 + rand.nextFloat(2)) * 0.5);

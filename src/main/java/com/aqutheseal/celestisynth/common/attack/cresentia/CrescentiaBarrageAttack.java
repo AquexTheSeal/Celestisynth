@@ -53,7 +53,7 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
 
     @Override
     public void tickAttack() {
-        if (getTimerProgress() == 15) player.playSound(CSSoundEvents.CS_WHIRLWIND.get(), 0.35F, 0.5F + level.random.nextFloat());
+        if (getTimerProgress() == 15) player.playSound(CSSoundEvents.WHIRLWIND.get(), 0.35F, 0.5F + level.random.nextFloat());
 
         if (getTimerProgress() >= 15 && getTimerProgress() <= 60) {
             double range = 7.0;
@@ -74,7 +74,7 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
                 }
             }
 
-            if (getTimerProgress() % 30 == 0) player.playSound(CSSoundEvents.CS_WHIRLWIND.get(), 0.15F, 1.5F);
+            if (getTimerProgress() % 30 == 0) player.playSound(CSSoundEvents.WHIRLWIND.get(), 0.15F, 1.5F);
 
             if (getTimerProgress() % 3 == 0) {
                 if (level.random.nextBoolean()) CSEffectEntity.createInstance(player, null, CSVisualTypes.CRESCENTIA_STRIKE.get(), calculateXLook(player), -0.3, calculateZLook(player));

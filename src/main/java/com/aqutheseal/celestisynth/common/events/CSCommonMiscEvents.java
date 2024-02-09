@@ -140,7 +140,7 @@ public class CSCommonMiscEvents {
             if (entity instanceof Player player) {
                 if (entity.level().isClientSide()) AnimationManager.playAnimation(AnimationManager.AnimationsList.ANIM_BREEZEBREAKER_JUMP, true);
 
-                player.playSound(CSSoundEvents.CS_HOP.get());
+                player.playSound(CSSoundEvents.HOP.get());
 
                 if (itemR instanceof CSWeapon wp) wp.sendExpandingParticles(entity.level(), ParticleTypes.SMOKE, player.blockPosition(), 75, 0.35F);
                 else {

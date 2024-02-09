@@ -101,8 +101,8 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
             }
 
             player.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
-            player.playSound(CSSoundEvents.CS_IMPACT_HIT.get(), 1.0F, 1.0F);
-            player.playSound(CSSoundEvents.CS_STEP.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundEvents.IMPACT_HIT.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundEvents.STEP.get(), 1.0F, 1.0F);
         }
     }
 

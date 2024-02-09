@@ -66,9 +66,9 @@ public class BreezebreakerWheelAttack extends BreezebreakerAttack {
 
             CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_WHEEL.get(), 0, -1, 0);
             CSEffectEntity.createInstance(player, null, CSVisualTypes.BREEZEBREAKER_WHEEL_IMPACT.get(), calculateXLook(player) * 3, 1.5 + calculateYLook(player) * 3, calculateZLook(player) * 3);
-            player.playSound(CSSoundEvents.CS_FIRE_SHOOT.get(), 1.0F, 1.0F);
-            player.playSound(CSSoundEvents.CS_AIR_SWING.get(), 1.0F, 1.0F);
-            player.playSound(CSSoundEvents.CS_WIND_STRIKE.get());
+            player.playSound(CSSoundEvents.FIRE_SHOOT.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundEvents.AIR_SWING.get(), 1.0F, 1.0F);
+            player.playSound(CSSoundEvents.WIND_STRIKE.get());
             sendExpandingParticles(level, ParticleTypes.END_ROD, player.blockPosition().above(), 75, 0);
         }
     }

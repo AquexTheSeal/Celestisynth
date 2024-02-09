@@ -79,7 +79,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
             doImpact(isGiantImpact, xx, zz, range);
 
             player.playSound(SoundEvents.END_GATEWAY_SPAWN, 1.0F, 1.75F);
-            player.playSound(CSSoundEvents.CS_LOUD_IMPACT.get(), 1.5F, 1.0F);
+            player.playSound(CSSoundEvents.LOUD_IMPACT.get(), 1.5F, 1.0F);
             CSEffectEntity.createInstance(player, null, crack, xx, isGiantImpact ? -1.3 : -0.5, zz);
 
             if (isGiantImpact) {

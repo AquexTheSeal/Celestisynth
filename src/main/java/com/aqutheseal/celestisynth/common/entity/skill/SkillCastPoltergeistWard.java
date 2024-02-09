@@ -78,18 +78,4 @@ public class SkillCastPoltergeistWard extends EffectControllerEntity {
             remove(RemovalReason.DISCARDED);
         }
     }
-
-    @Override
-    public void remove(RemovalReason pReason) {
-        double range = 12;
-        List<Entity> surroundingEntities = level().getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + range, getZ() + range, getX() - range, getY() - range, getZ() - range));
-
-        for (Entity entityBatch : surroundingEntities) {
-            if (entityBatch instanceof CSEffectEntity effect) {
-                if (effect.getToFollow() == this) effect.remove(RemovalReason.DISCARDED);
-            }
-        }
-
-        super.remove(pReason);
-    }
 }
