@@ -50,10 +50,6 @@ public abstract class BaseSkillInstance implements ISkillInstance {
     @Override
     public abstract WeaponAttackInstance getAttack();
 
-    @Nullable
-    @Override
-    public abstract AbstractSkillTree getSkillTree();
-
     @Override
     public int getMinSkillLevel() {
         return minSkillLevel;

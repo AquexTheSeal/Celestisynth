@@ -20,9 +20,6 @@ public interface ISkillInstance {
     @Nullable
     WeaponAttackInstance getAttack();
 
-    @Nullable
-    AbstractSkillTree getSkillTree();
-
     int getMinSkillLevel();
     int getMaxSkillLevel();
 
