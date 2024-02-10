@@ -19,7 +19,7 @@ public class FrostboundCryogenesisAttack extends WeaponAttackInstance {
 
     @Override
     public int getCooldown() {
-        return 160;
+        return 100;
     }
 
     @Override
@@ -36,11 +36,14 @@ public class FrostboundCryogenesisAttack extends WeaponAttackInstance {
     public void startUsing() {
         if (!level.isClientSide()) {
             SkillCastFrostboundIceCast frostboundIceCast = CSEntityTypes.FROSTBOUND_ICE_CAST.get().create(level);
+            double offX = calculateXLook(player) * 3;
+            double offZ = calculateZLook(player) * 3;
+            int floorPos = getFloorPositionUnderPlayerYLevel(level, player.blockPosition().offset((int) offX, 0, (int) offZ));
             frostboundIceCast.setOwnerUuid(player.getUUID());
             frostboundIceCast.setCastLevel(5);
             frostboundIceCast.setAngleX((float) (calculateXLook(player) * 3));
             frostboundIceCast.setAngleZ((float) (calculateZLook(player) * 3));
-            frostboundIceCast.moveTo(player.getX() + (calculateXLook(player) * 3), getFloorPositionUnderPlayerYLevel(level, player.blockPosition()) + 2, player.getZ() + (calculateZLook(player) * 3));
+            frostboundIceCast.moveTo(player.getX() + offX,  floorPos + 2, player.getZ() + offZ);
             level.addFreshEntity(frostboundIceCast);
         }
     }

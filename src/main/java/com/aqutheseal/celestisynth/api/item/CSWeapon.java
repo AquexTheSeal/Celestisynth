@@ -10,7 +10,7 @@ public interface CSWeapon extends CSWeaponUtil {
     int getSkillsAmount();
 
     default int getPassiveAmount() {
-        return 1;
+        return 0;
     }
 
     default boolean hasPassive() {

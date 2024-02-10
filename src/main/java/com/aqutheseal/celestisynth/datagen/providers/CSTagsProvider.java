@@ -8,10 +8,13 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
+import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
@@ -59,6 +62,23 @@ public class CSTagsProvider {
                     .add(Items.HEART_OF_THE_SEA)
                     .add(Items.NETHER_STAR)
                     .add(Items.END_CRYSTAL)
+            ;
+        }
+    }
+
+        public static class EntityTypeHandler extends EntityTypeTagsProvider {
+
+        public EntityTypeHandler(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pLookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+            super(pOutput, pLookupProvider, Celestisynth.MODID, existingFileHelper);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider pProvider) {
+            tag(CSTags.EntityTypes.FROSTBOUND_SENSITIVE)
+                    .add(EntityType.BLAZE, EntityType.GHAST, EntityType.MAGMA_CUBE)
+                    .addOptional(new ResourceLocation("cataclysm", "ignited_revenant"))
+                    .addOptional(new ResourceLocation("cataclysm", "ignis"))
+                    .addOptional(new ResourceLocation("iceandfire", "fire_dragon"))
             ;
         }
     }

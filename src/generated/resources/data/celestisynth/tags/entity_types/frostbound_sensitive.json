@@ -1,0 +1,19 @@
+{
+  "values": [
+    "minecraft:blaze",
+    "minecraft:ghast",
+    "minecraft:magma_cube",
+    {
+      "id": "cataclysm:ignited_revenant",
+      "required": false
+    },
+    {
+      "id": "cataclysm:ignis",
+      "required": false
+    },
+    {
+      "id": "iceandfire:fire_dragon",
+      "required": false
+    }
+  ]
+}

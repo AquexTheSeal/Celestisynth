@@ -10,6 +10,7 @@ import com.aqutheseal.celestisynth.common.item.weapons.BreezebreakerItem;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSParticleTypes;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
+import com.aqutheseal.celestisynth.common.registry.CSTags;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import com.google.common.collect.Streams;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -22,7 +23,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -54,12 +58,18 @@ public class CSCommonMiscEvents {
                     entity.setTicksFrozen(10);
                 }
                 entity.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 2, 4));
+                entity.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.WEAKNESS, 2, 1));
+                entity.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.DIG_SLOWDOWN, 2, 4));
                 double radius = 0.8 + entity.getBbWidth();
                 double speed = 0.2;
                 double offX = radius * Math.sin(speed * entity.tickCount);
                 double offY = 1;
                 double offZ = radius * Math.cos(speed * entity.tickCount);
                 ParticleUtil.sendParticle(entity.level(), ParticleTypes.SNOWFLAKE, entity.getX() + offX, entity.getY() + offY, entity.getZ() + offZ);
+
+                if (entity.getType().is(CSTags.EntityTypes.FROSTBOUND_SENSITIVE) && entity.tickCount % 5 == 0) {
+                    entity.hurt(entity.damageSources().freeze(), 2);
+                }
 
                 if (entity.isOnFire()) {
                     if (entity.tickCount % 10 == 0) {

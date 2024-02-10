@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.entity.base;
 
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
+import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -23,7 +24,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
-public abstract class EffectControllerEntity extends Entity {
+public abstract class EffectControllerEntity extends Entity implements CSWeaponUtil {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(EffectControllerEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Float> ANGLE_X = SynchedEntityData.defineId(EffectControllerEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ANGLE_Y = SynchedEntityData.defineId(EffectControllerEntity.class, EntityDataSerializers.FLOAT);

@@ -44,12 +44,12 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
 
     @Override
     public int getSkillsAmount() {
-        return 1;
+        return 2;
     }
 
     @Override
     public int getPassiveAmount() {
-        return 0;
+        return 1;
     }
 
     @Override

@@ -30,7 +30,7 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
 
     @Override
     public int getCooldown() {
-        return 100;
+        return 160;
     }
 
     @Override
