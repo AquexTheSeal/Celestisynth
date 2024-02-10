@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 
@@ -21,6 +22,16 @@ public class CSTags {
 
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registries.ITEM, new ResourceLocation(Celestisynth.MODID, name));
+        }
+    }
+
+    public static class EntityTypes {
+        private static void init() {}
+
+        public static final TagKey<EntityType<?>> FROSTBOUND_SENSITIVE = tag("frostbound_sensitive");
+
+        private static TagKey<EntityType<?>> tag(String name) {
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(Celestisynth.MODID, name));
         }
     }
 

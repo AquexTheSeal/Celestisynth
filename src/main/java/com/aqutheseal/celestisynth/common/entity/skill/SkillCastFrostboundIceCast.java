@@ -53,43 +53,46 @@ public class SkillCastFrostboundIceCast extends EffectControllerEntity {
         }
 
         if (tickCount == 5) {
-            if (!level().isClientSide()) {
-                SkillCastFrostboundIceCast frostboundIceCast = CSEntityTypes.FROSTBOUND_ICE_CAST.get().create(level());
-                float aX = this.getAngleX();
-                float aZ = this.getAngleZ();
-                frostboundIceCast.setOwnerUuid(ownerUuid);
-                frostboundIceCast.setCastLevel(getCastLevel() - 1);
-                frostboundIceCast.setAngleX(aX);
-                frostboundIceCast.setAngleZ(aZ);
-                frostboundIceCast.moveTo(getX() + aX, getY(), getZ() + aZ);
-                level().addFreshEntity(frostboundIceCast);
+            if (getCastLevel() > 0) {
+                if (!level().isClientSide()) {
+                    SkillCastFrostboundIceCast frostboundIceCast = CSEntityTypes.FROSTBOUND_ICE_CAST.get().create(level());
+                    float aX = this.getAngleX();
+                    float aZ = this.getAngleZ();
+                    int floorPos = getFloorPositionUnderPlayerYLevel(level(), blockPosition().offset((int) aX, 0, (int) aZ));
+                    frostboundIceCast.setOwnerUuid(ownerUuid);
+                    frostboundIceCast.setCastLevel(getCastLevel() - 1);
+                    frostboundIceCast.setAngleX(aX);
+                    frostboundIceCast.setAngleZ(aZ);
+                    frostboundIceCast.moveTo(getX() + aX, floorPos + 2, getZ() + aZ);
+                    level().addFreshEntity(frostboundIceCast);
+                }
             }
         }
 
         if (tickCount == 20 && getCastLevel() > 0) {
             CSEffectEntity.createInstance(ownerPlayer, this, CSVisualTypes.FROSTBOUND_ICE_CAST.get(), 0, 0.5, 0);
-            for (int i = 0; i < 360; i++) {
+            for (int i = 0; i < 360; i = i + 4) {
                 double xI = Mth.sin(i) * 3;
                 double zI = Mth.cos(i) * 3;
-                ParticleUtil.sendParticles(level(), ParticleTypes.SNOWFLAKE, getX(), getY() + 0.5, getZ(), 1, xI / 4, 0, zI / 4);
-                double range = 1.0;
-                List<Entity> entities = level().getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + (range * 3), getZ() + range, getX() - range, getY(), getZ() - range));
-                for (Entity entityBatch : entities) {
-                    if (entityBatch instanceof LivingEntity target) {
-                        if (target != ownerPlayer && target.isAlive()) {
-                            fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) 3, AttackHurtTypes.NO_KB);
-                            target.setDeltaMovement(0, 0.05, 0);
-                            target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
-                                data.setFrostbound(100);
-                            });
-                            target.playSound(SoundEvents.PLAYER_HURT_FREEZE);
-                        }
+                ParticleUtil.sendParticles(level(), ParticleTypes.SNOWFLAKE, getX(), getY() - 1, getZ(), 1, xI / 10, 0.3, zI / 10);
+            }
+            double range = 1.0;
+            List<Entity> entities = level().getEntitiesOfClass(Entity.class, new AABB(getX() + range, getY() + (range * 3), getZ() + range, getX() - range, getY(), getZ() - range));
+            for (Entity entityBatch : entities) {
+                if (entityBatch instanceof LivingEntity target) {
+                    if (target != ownerPlayer && target.isAlive()) {
+                        fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) 3, AttackHurtTypes.NO_KB);
+                        target.setDeltaMovement(0, 0.05, 0);
+                        target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+                            data.setFrostbound(100);
+                        });
+                        target.playSound(SoundEvents.PLAYER_HURT_FREEZE);
                     }
                 }
             }
         }
 
-        if (tickCount == 100) {
+        if (tickCount == 60) {
             this.remove(RemovalReason.DISCARDED);
         }
     }

@@ -79,6 +79,7 @@ public class CSCommonSetupEvents {
             CSTagsProvider.BlockHandler blockTagProvider = new CSTagsProvider.BlockHandler(output, lookup, efh);
             dataGenerator.addProvider(event.includeServer(), blockTagProvider);
             dataGenerator.addProvider(event.includeServer(), new CSTagsProvider.ItemHandler(output, lookup, blockTagProvider.contentsGetter(), efh));
+            dataGenerator.addProvider(event.includeServer(), new CSTagsProvider.EntityTypeHandler(output, lookup, efh));
             dataGenerator.addProvider(event.includeServer(), new CSTagsProvider.BiomeHandler(output, lookup, efh));
 
             otherProviders(output, lookup, efh).forEach(provider -> dataGenerator.addProvider(event.includeServer(), provider));

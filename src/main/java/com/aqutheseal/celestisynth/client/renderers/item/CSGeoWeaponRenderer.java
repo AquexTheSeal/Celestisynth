@@ -8,9 +8,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
@@ -20,6 +23,11 @@ public class CSGeoWeaponRenderer<T extends Item & CSGeoItem> extends GeoItemRend
     public CSGeoWeaponRenderer() {
         super(new CSGeoWeaponModel<>());
         ((CSGeoWeaponModel<T>) getGeoModel()).renderer = this;
+    }
+
+    @Override
+    public RenderType getRenderType(T animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+        return RenderType.entityTranslucentEmissive(texture, false);
     }
 
     @Override
