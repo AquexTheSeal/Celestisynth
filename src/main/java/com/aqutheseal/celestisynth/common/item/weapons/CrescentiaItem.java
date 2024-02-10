@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.item.weapons;
 
 import com.aqutheseal.celestisynth.api.item.CSGeoItem;
+import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.attack.cresentia.CrescentiaBarrageAttack;
 import com.aqutheseal.celestisynth.common.attack.cresentia.CrescentiaDragonAttack;
@@ -10,14 +11,12 @@ import com.google.common.collect.Lists;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
@@ -62,15 +61,14 @@ public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity entity, LivingEntity source) {
-        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 2));
+        entity.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 40, 2));
 
         return super.hurtEnemy(itemStack, entity, source);
     }
 
     @Override
     public void inventoryTick(ItemStack itemStack, @NotNull Level level, @NotNull Entity entity, int itemSlot, boolean isSelected) {
-        if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof CrescentiaItem)) player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2, 0));
-
+        if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof CrescentiaItem)) player.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.DAMAGE_RESISTANCE, 2, 0));
         super.inventoryTick(itemStack, level, entity, itemSlot, isSelected);
     }
 
@@ -95,14 +93,5 @@ public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
         }
         level.createFireworks(x, y, z, 0.01, 0.01, 0.01, itemCompound);
         player.playSound(SoundEvents.FIREWORK_ROCKET_LARGE_BLAST, 1.0F, 0.5F + random.nextFloat());
-    }
-
-    public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
-        LivingEntity entity = event.getEntity();
-        CompoundTag tagR = mainHandItem.getItem().getShareTag(entity.getMainHandItem());
-        CompoundTag tagL = offHandItem.getItem().getShareTag(entity.getOffhandItem());
-        if ((tagR != null && (tagR.getBoolean(ANIMATION_BEGUN_KEY)) || (tagL != null && (tagL.getBoolean(ANIMATION_BEGUN_KEY))))) {
-            event.setAmount(event.getAmount() * 0.7F);
-        }
     }
 }

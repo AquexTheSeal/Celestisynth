@@ -31,7 +31,7 @@ public class CSEntityCapabilityProvider extends CapabilityAttacher {
 
     public static void register() {
         CapabilityAttacher.registerCapability(CSEntityCapability.class);
-        CapabilityAttacher.registerEntityAttacher(LivingEntity.class, CSEntityCapabilityProvider::attach, CSEntityCapabilityProvider::get, true);
+        CapabilityAttacher.registerEntityAttacher(LivingEntity.class, CSEntityCapabilityProvider::attach, CSEntityCapabilityProvider::get, false);
         SimpleEntityCapabilityStatusPacket.register(CSNetworkManager.INSTANCE, CSNetworkManager.PACKET_ID++);
         SimpleEntityCapabilityStatusPacket.registerRetriever(Celestisynth.prefix(CSEntityCapability.ID), CSEntityCapabilityProvider::unwrap);
     }

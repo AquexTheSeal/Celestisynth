@@ -3,6 +3,7 @@ package com.aqutheseal.celestisynth.common.item.weapons;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSGeoItem;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
+import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualAnimation;
 import com.aqutheseal.celestisynth.common.entity.projectile.RainfallArrow;
@@ -20,7 +21,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -141,8 +141,8 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
         CSEffectEntity.createInstance(player, null, CSVisualTypes.RAINFALL_VANISH.get(), calculateXLook(player) * 3, 1, calculateZLook(player) * 3);
         CSEffectEntity.createInstance(player, null, CSVisualTypes.RAINFALL_VANISH_CIRCLE.get(), 0, -1.5, 0);
         player.playSound(CSSoundEvents.VANISH.get());
-        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 3, true, false, false));
-        player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 100, 0, true, false, false));
+        player.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SPEED, 100, 3));
+        player.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.INVISIBILITY, 100, 0));
     }
 
     @Override

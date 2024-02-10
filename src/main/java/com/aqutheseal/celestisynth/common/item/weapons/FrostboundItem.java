@@ -2,6 +2,7 @@ package com.aqutheseal.celestisynth.common.item.weapons;
 
 import com.aqutheseal.celestisynth.api.item.CSGeoItem;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
+import com.aqutheseal.celestisynth.common.attack.frostbound.FrostboundCryogenesisAttack;
 import com.aqutheseal.celestisynth.common.attack.frostbound.FrostboundDanceAttack;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualAnimation;
@@ -36,7 +37,8 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
     @Override
     public ImmutableList<WeaponAttackInstance> getPossibleAttacks(Player player, ItemStack stack, int dur) {
         return ImmutableList.of(
-                new FrostboundDanceAttack(player, stack)
+                new FrostboundDanceAttack(player, stack),
+                new FrostboundCryogenesisAttack(player, stack)
         );
     }
 

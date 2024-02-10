@@ -81,20 +81,26 @@ public class CSCommonMiscEvents {
     }
 
     @SubscribeEvent
-    public static void onLivingAttackEvent(LivingAttackEvent event) {
-        checkAndCancelAttack(event, event.getEntity().getMainHandItem());
-        checkAndCancelAttack(event, event.getEntity().getOffhandItem());
-    }
-
-    @SubscribeEvent
     public static void onLivingHurtEvent(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
         ItemStack itemR = entity.getMainHandItem();
         ItemStack itemL = entity.getOffhandItem();
 
-        if (itemR.getItem() instanceof CSWeapon cs && !(itemL.getItem() instanceof CSWeapon)) cs.onPlayerHurt(event, itemR, itemL);
-        if (itemL.getItem() instanceof CSWeapon cs && !(itemR.getItem() instanceof CSWeapon)) cs.onPlayerHurt(event, itemR, itemL);
-        if (itemR.getItem() instanceof CSWeapon cs && itemL.getItem() instanceof CSWeapon) cs.onPlayerHurt(event, itemR, itemL);
+        if (itemR.getItem() instanceof CSWeapon cs && itemL.getItem() instanceof CSWeapon cs2) {
+            cs.onPlayerHurt(event, itemR);
+            cs2.onPlayerHurt(event, itemR);
+        } else if (itemR.getItem() instanceof CSWeapon cs) {
+            cs.onPlayerHurt(event, itemR);
+        } else if (itemL.getItem() instanceof CSWeapon cs) {
+            cs.onPlayerHurt(event, itemR);
+        }
+    }
+
+    private static void checkAndCancelAttack(LivingHurtEvent event, ItemStack itemStack) {
+        CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+        if (tagElement != null && tagElement.getBoolean(AquafloraSlashFrenzyAttack.ATTACK_ONGOING)) {
+            event.setAmount(event.getAmount() * 0.25F);
+        }
     }
 
     @SubscribeEvent
@@ -160,14 +166,6 @@ public class CSCommonMiscEvents {
 
         for (ItemStack stack : invCompartments) {
             if (!stack.isEmpty() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null) stack.getTag().remove(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-        }
-    }
-
-    private static void checkAndCancelAttack(LivingAttackEvent event, ItemStack itemStack) {
-        CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-
-        if (tagElement != null && tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraSlashFrenzyAttack.ATTACK_ONGOING)) {
-            event.setCanceled(true);
         }
     }
 }

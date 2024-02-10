@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
@@ -77,5 +78,12 @@ public class AquafloraItem extends SkilledSwordItem implements CSGeoItem {
             }
         }
         return super.hurtEnemy(pStack, pTarget, pAttacker);
+    }
+
+    @Override
+    public void onPlayerHurt(LivingHurtEvent event, ItemStack stack) {
+        if (attackController(stack).getBoolean(AquafloraSlashFrenzyAttack.ATTACK_ONGOING)) {
+            event.setAmount(event.getAmount() * 0.25F);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.aqutheseal.celestisynth.common.attack.cresentia;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
+import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.item.weapons.CrescentiaItem;
@@ -10,7 +11,6 @@ import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -64,7 +64,7 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
                         initiateAbilityAttack(player, target, (float) (CSConfigManager.COMMON.crescentiaSkillDmg.get() + getSharpnessValue(getStack(), 0.25F)), AttackHurtTypes.RAPID);
-                        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
+                        target.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                     }
                 }
                 if (entityBatch instanceof Projectile projectile) {

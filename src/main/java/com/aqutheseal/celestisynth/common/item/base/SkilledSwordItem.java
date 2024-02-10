@@ -38,7 +38,7 @@ public abstract class SkilledSwordItem extends SwordItem implements CSWeapon {
                         data.putBoolean(ANIMATION_BEGUN_KEY, true);
                         AnimationManager.playAnimation(level, attack.getAnimation());
                         setAttackIndex(heldStack, index);
-                        attack.startUsing();
+                        attack.baseStart();
                         player.getCooldowns().addCooldown(heldStack.getItem(), attack.getCooldown());
                         break;
                     }

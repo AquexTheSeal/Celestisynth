@@ -65,7 +65,7 @@ public class CSVisualTypes {
     public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH_INVERTED = addVisual(new CSVisualType("frostbound_slash_inverted", "frostbound_slash", CSVisualModel.FLAT_INVERTED, CSVisualAnimation.SPIN, 0, 0, 2.5, false, true, true));
     public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH_LARGE = addVisual(new CSVisualType("frostbound_slash_large", "frostbound_slash", CSVisualModel.FLAT, CSVisualAnimation.SPIN, 0, 0, 3.5, false, true, true));
     public static final RegistryObject<CSVisualType> FROSTBOUND_IMPACT_CRACK = addVisual(new CSVisualType("frostbound_impact_crack", CSVisualModel.FLAT, CSVisualAnimation.noAnimWithLifespan(20), 0, 0, 2.5, false, true, false));
-    public static final RegistryObject<CSVisualType> FROSTBOUND_ICE_CAST = addVisual(new CSVisualType("frostbound_ice_cast", CSVisualModel.WALL_CROSS, FrostboundItem.SPECIAL_ICE_CAST, 0, 0, 2.5, false, true, false));
+    public static final RegistryObject<CSVisualType> FROSTBOUND_ICE_CAST = addVisual(new CSVisualType("frostbound_ice_cast", CSVisualModel.WALL_CROSS, FrostboundItem.SPECIAL_ICE_CAST, 0, 0, 1, false, true, false));
 
     public static RegistryObject<CSVisualType> addVisual(CSVisualType type) {
         return VISUALS.register(type.getName(), () -> type);

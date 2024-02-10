@@ -67,7 +67,7 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
         if (getTimerProgress() >= 15 && getTimerProgress() % (checkDualWield(player, AquafloraItem.class) ? 1 : 5) == 0) {
             Predicate<Entity> filter = (e) -> e != player && e instanceof LivingEntity le && (player.hasLineOfSight(le) || le.hasLineOfSight(player)) &&  le.isAlive() && !player.isAlliedTo(le);
             List<LivingEntity> entities = iterateEntities(level, createAABB(player.blockPosition(), 12)).stream().filter(filter).map(LivingEntity.class::cast).toList();
-            LivingEntity target = entities.size() > 0 ? entities.get(level.random.nextInt(entities.size())) : null;
+            LivingEntity target = !entities.isEmpty() ? entities.get(level.random.nextInt(entities.size())) : null;
 
             if (target == player || target == null) {
                 player.displayClientMessage(Component.translatable("item.celestisynth.aquaflora.skill_3.notice"), true);
@@ -94,13 +94,12 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
             CSEffectEntity.createInstance(player, null, CSVisualTypes.AQUAFLORA_DASH.get(), 0, 0.55, 0);
             BlockPos toPos = target.blockPosition().offset((int) offsetX, 1, (int) offsetZ);
             player.setDeltaMovement((toPos.getX() - player.getX()) * 0.25, (toPos.getY() - player.getY()) * 0.25, (toPos.getZ() - player.getZ()) * 0.25);
-            //player.moveTo(target.blockPosition().offset((int) offsetX, 1, (int) offsetZ), player.getYRot(), player.getXRot());
             CSEffectEntity.createInstance(player, target, CSVisualTypes.AQUAFLORA_ASSASSINATE.get(), 0, -0.2, 0);
             player.playSound(CSSoundEvents.WIND_STRIKE.get(), 0.15F, 0.5F);
 
-            double dualWieldMultiplier = checkDualWield(player, AquafloraItem.class) ? 0.52 : 1;
+            double dualWieldMultiplier = checkDualWield(player, AquafloraItem.class) ? 0.6 : 1;
 
-            initiateAbilityAttack(player, target, (float) (CSConfigManager.COMMON.aquafloraBloomSkillDmg.get() * dualWieldMultiplier) + getSharpnessValue(getStack(), (float) (0.65 * dualWieldMultiplier)), AttackHurtTypes.RAPID_PIERCE);
+            this.initiateAbilityAttack(player, target, (float) (CSConfigManager.COMMON.aquafloraBloomSkillDmg.get() * dualWieldMultiplier) + getSharpnessValue(getStack(), (float) (0.65 * dualWieldMultiplier)), AttackHurtTypes.RAPID_PIERCE);
             createAquafloraFirework(getStack(), level, player, target.getX(), target.getY() + 1, target.getZ());
         }
     }

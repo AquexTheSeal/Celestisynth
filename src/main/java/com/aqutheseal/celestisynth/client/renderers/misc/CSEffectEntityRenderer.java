@@ -48,7 +48,7 @@ public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<C
 
     @Override
     public RenderType getRenderType(CSEffectEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentEmissive(texture);
+        return RenderType.entityTranslucentEmissive(texture, false);
     }
 
     @Override

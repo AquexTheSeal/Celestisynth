@@ -12,7 +12,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
@@ -39,11 +38,9 @@ public class SkillCastBreezebreakerTornado extends EffectControllerEntity {
 
         UUID ownerUuid = getOwnerUuid();
         Player ownerPlayer = ownerUuid == null ? null : this.level().getPlayerByUUID(ownerUuid);
-
         setAngleX(getAngleX() + getAddAngleX());
         setAngleY(getAngleY() + getAddAngleY());
         setAngleZ(getAngleZ() + getAddAngleZ());
-
         double newX = getX() + getAngleX();
         double newY = getY() + getAngleY();
         double newZ = getZ() + getAngleZ();
@@ -56,7 +53,7 @@ public class SkillCastBreezebreakerTornado extends EffectControllerEntity {
             if (entityBatch instanceof LivingEntity target) {
                 if (target != ownerPlayer && target.isAlive()) {
                     fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) CSConfigManager.COMMON.breezebreakerShiftSkillDmg.get(), AttackHurtTypes.RAPID_PIERCE);
-                    target.setDeltaMovement(target.getDeltaMovement().add(0, 0.05 - (target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue() * 0.001), 0));
+                    target.setDeltaMovement(0, 0.05, 0);
                 }
             }
             if (entityBatch instanceof Projectile projectile) projectile.remove(RemovalReason.DISCARDED);
@@ -79,6 +76,8 @@ public class SkillCastBreezebreakerTornado extends EffectControllerEntity {
             }
         }
 
-        if (tickCount == 100 || !level().getBlockState(newPos).isAir()) remove(RemovalReason.DISCARDED);
+        if (tickCount == 100 || !level().getBlockState(newPos).isAir()) {
+            remove(RemovalReason.DISCARDED);
+        }
     }
 }

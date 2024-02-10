@@ -2,6 +2,7 @@ package com.aqutheseal.celestisynth.common.attack.breezebreaker;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
+import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
@@ -10,7 +11,6 @@ import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -65,8 +65,8 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
 
                 initiateAbilityAttack(player, observedLivingTarget, (float) attackDamage, AttackHurtTypes.NO_KB_PIERCE);
                 level.explode(player, observedLivingTarget.getX(), observedLivingTarget.getY(), observedLivingTarget.getZ(), 1.0F, Level.ExplosionInteraction.NONE);
-                observedLivingTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 2));
-                observedLivingTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
+                observedLivingTarget.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.WEAKNESS, 60, 2));
+                observedLivingTarget.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
                 sendExpandingParticles(level, ParticleTypes.FIREWORK, player.blockPosition().above(), 45, 0.2F);
             }
 

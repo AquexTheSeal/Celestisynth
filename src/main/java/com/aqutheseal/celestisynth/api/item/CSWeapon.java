@@ -17,7 +17,7 @@ public interface CSWeapon extends CSWeaponUtil {
         return false;
     }
 
-    default void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
+    default void onPlayerHurt(LivingHurtEvent event, ItemStack stack) {
     }
 
     default void resetExtraValues(ItemStack stack, Player player) {

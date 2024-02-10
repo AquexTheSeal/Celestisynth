@@ -2,12 +2,12 @@ package com.aqutheseal.celestisynth.common.attack.breezebreaker;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
+import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,7 +58,7 @@ public class BreezebreakerWheelAttack extends BreezebreakerAttack {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
                         initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.breezebreakerSprintSkillDmg.get() + getSharpnessValue(stack, 1.5F), AttackHurtTypes.NO_KB_PIERCE);
-                        target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 1));
+                        target.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.WEAKNESS, 40, 1));
                         sendExpandingParticles(level, ParticleTypes.POOF, target.blockPosition().above(), 45, 0);
                     }
                 }

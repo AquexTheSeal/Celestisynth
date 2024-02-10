@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.entity.skill;
 
 import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
+import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.base.EffectControllerEntity;
 import com.aqutheseal.celestisynth.common.item.weapons.CrescentiaItem;
@@ -11,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -64,7 +64,7 @@ public class SkillCastCrescentiaRanged extends EffectControllerEntity {
                 if (target != ownerPlayer && target.isAlive()) {
                     fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) CSConfigManager.COMMON.crescentiaShiftSkillDmg.get(), AttackHurtTypes.RAPID_PIERCE);
                     target.hurt(damageSources().playerAttack(ownerPlayer), (float) ((double) CSConfigManager.COMMON.crescentiaShiftSkillDmg.get()));
-                    target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
+                    target.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                 }
             }
             if (entityBatch instanceof Projectile projectile) {
@@ -101,7 +101,6 @@ public class SkillCastCrescentiaRanged extends EffectControllerEntity {
         if (tickCount == 100 || !level().getBlockState(newPos).isAir()) {
             level().explode(ownerPlayer, newX, newY, newZ, 3.0F, Level.ExplosionInteraction.TNT);
             CrescentiaItem.createCrescentiaFirework(fireworkStack, level(), ownerPlayer, newX, newY, newZ, true);
-
             remove(RemovalReason.DISCARDED);
         }
     }

@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.item.weapons;
 
 import com.aqutheseal.celestisynth.api.item.CSGeoItem;
+import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.attack.breezebreaker.*;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
@@ -9,7 +10,6 @@ import com.aqutheseal.celestisynth.util.ParticleUtil;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -72,7 +72,7 @@ public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
         if (owner instanceof Player playerOwner && (isSelected || playerOwner.getOffhandItem().getItem() instanceof BreezebreakerItem)) sendExpandingParticles(level, ParticleTypes.END_ROD, owner.getX(), owner.getY(), owner.getZ(), 1, 0.1F);
         if (extrasData.getBoolean(AT_BUFF_STATE)) {
             if (owner instanceof Player player) {
-                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, 1));
+                player.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SPEED, 2, 1));
                 double radius = 1.5 + player.getBbWidth();
                 double speed = 0.5;
                 double offX = radius * Math.sin(speed * player.tickCount);
@@ -92,9 +92,12 @@ public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     @Override
-    public void onPlayerHurt(LivingHurtEvent event, ItemStack mainHandItem, ItemStack offHandItem) {
-        if (event.getSource() == event.getEntity().damageSources().fall()) event.setCanceled(true);
-        else event.setAmount(event.getAmount() * 2.3F);
+    public void onPlayerHurt(LivingHurtEvent event, ItemStack stack) {
+        if (event.getSource() == event.getEntity().damageSources().fall()) {
+            event.setCanceled(true);
+        } else {
+            event.setAmount(event.getAmount() * 2.3F);
+        }
     }
 
     @Override

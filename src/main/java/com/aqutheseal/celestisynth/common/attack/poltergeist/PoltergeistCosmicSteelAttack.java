@@ -107,8 +107,8 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
         for (Entity entityBatch : iterateEntities(level, createAABB(player.blockPosition().offset((int) kbX, 1, (int) kbZ), range))) {
             if (entityBatch instanceof LivingEntity target && target != player && target.isAlive() && !player.isAlliedTo(target)) {
                 initiateAbilityAttack(player, target, (isGiantImpact ? (float) (double) CSConfigManager.COMMON.poltergeistSkillDmg.get() * 1.4F : (float) (double) (CSConfigManager.COMMON.poltergeistSkillDmg.get())) + getSharpnessValue(getStack(), 1.2F) + getTagController().getInt(SMASH_HEIGHT), AttackHurtTypes.NO_KB_PIERCE);
-                target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
-                target.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0));
+                target.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
+                target.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.CONFUSION, 100, 0));
                 target.hurtMarked = true;
                 target.setDeltaMovement((target.getX() - (player.getX() + kbX)) / 3, (target.getY() - player.getY()) / 3, (target.getZ() - (player.getZ() + kbZ)) / 3);
                 CSWeaponUtil.disableRunningWeapon(target);

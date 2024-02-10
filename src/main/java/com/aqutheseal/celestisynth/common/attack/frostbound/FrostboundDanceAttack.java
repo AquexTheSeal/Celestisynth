@@ -40,7 +40,7 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
 
     @Override
     public boolean getCondition() {
-        return true;
+        return !player.isShiftKeyDown();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
                 if (entity instanceof LivingEntity target && entity != player) {
                     initiateAbilityAttack(player, target, 8 + getSharpnessValue(stack, 1.75F), AttackHurtTypes.NO_KB);
                     entity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
-                        data.setFrostbound(200);
+                        data.setFrostbound(100);
                     });
                     entity.playSound(SoundEvents.PLAYER_HURT_FREEZE);
                 }
@@ -78,15 +78,15 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
         if (getTimerProgress() == 20) {
             this.playSoundAt(level, CSSoundEvents.FROZEN_SLASH.get(), player.blockPosition().offset((int) xP, 0, (int) zP));
             doAOEAttack(CSVisualTypes.FROSTBOUND_SLASH.get(), xP * 2.5, zP * 2.5, false);
-            player.setDeltaMovement(calculateXLook(player) * 1.5 , 0, calculateZLook(player) * 1.5);
+            player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
         } else if (getTimerProgress() == 30) {
             this.playSoundAt(level, CSSoundEvents.FROZEN_SLASH.get(), player.blockPosition().offset((int) xP, 0, (int) zP));
             doAOEAttack(CSVisualTypes.FROSTBOUND_SLASH_INVERTED.get(), xP * 2.5, zP * 2.5, false);
-            player.setDeltaMovement(calculateXLook(player) * 1.5 , 0, calculateZLook(player) * 1.5);
+            player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
         } else if (getTimerProgress() == 40) {
             this.playSoundAt(level, CSSoundEvents.FROZEN_SLASH.get(), player.blockPosition().offset((int) xP, 0, (int) zP));
             doAOEAttack(CSVisualTypes.FROSTBOUND_SLASH_LARGE.get(), xP * 2.5, zP * 2.5, true);
-            player.setDeltaMovement(calculateXLook(player) * 1.5 , 0, calculateZLook(player) * 1.5);
+            player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
         }
     }
 

@@ -1,12 +1,12 @@
 package com.aqutheseal.celestisynth.common.item.weapons;
 
 import com.aqutheseal.celestisynth.api.item.CSGeoItem;
+import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.attack.solaris.SolarisFullRoundAttack;
 import com.aqutheseal.celestisynth.common.attack.solaris.SolarisSoulDashAttack;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -70,7 +70,7 @@ public class SolarisItem extends SkilledSwordItem implements CSGeoItem {
 
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
-        if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof SolarisItem)) player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2, 0));
+        if (entity instanceof Player player && (isSelected || player.getOffhandItem().getItem() instanceof SolarisItem)) player.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.FIRE_RESISTANCE, 2, 0));
         super.inventoryTick(itemStack, level, entity, itemSlot, isSelected);
     }
 }
