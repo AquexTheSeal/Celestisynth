@@ -23,6 +23,7 @@ public class CSItems {
     public static final RegistryObject<Item> EYEBOMINATION = ITEMS.register("eyebomination", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> STARSTRUCK_SCRAP = ITEMS.register("starstruck_scrap", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> STARSTRUCK_FEATHER = ITEMS.register("starstruck_feather", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> WINTEREIS_SHARD = ITEMS.register("wintereis_shard", () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> TEMPEST_SPAWN_EGG = ITEMS.register("tempest_spawn_egg", () -> new ForgeSpawnEggItem(CSEntityTypes.TEMPEST, 0, 0, new Item.Properties()));
 

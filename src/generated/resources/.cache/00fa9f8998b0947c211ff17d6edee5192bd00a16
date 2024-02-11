@@ -1,4 +1,4 @@
-// 1.20.1	2024-02-08T20:43:53.7157608	Item Models: celestisynth
+// 1.20.1	2024-02-11T21:37:02.8011992	Item Models: celestisynth
 895a727be030a8e9ed3af3419ee5fd0dfff4ae0b assets/celestisynth/models/item/celestial_core.json
 1eca25b258e7ef396110701a40cbbcc4d0ecaa2c assets/celestisynth/models/item/celestial_core_heated.json
 1eaab6ea2de0ea5cde9b990289a835e430eee4e1 assets/celestisynth/models/item/celestial_debugger.json
@@ -11,4 +11,5 @@ df6d1e7ed43cbb2b8c02f9325575d0c83b4c8429 assets/celestisynth/models/item/lunar_s
 7f260e1dab805d799c885c9676d8090b0f385491 assets/celestisynth/models/item/starstruck_scrap.json
 79f131dc30891ca8121f90275847c7fc59e2df77 assets/celestisynth/models/item/supernal_netherite_ingot.json
 dedc545a49925d37836eb73caf1f336c4c74d9eb assets/celestisynth/models/item/wintereis.json
+477eb80d9b57e02c2a0d0db42c9bf8434ed4daa0 assets/celestisynth/models/item/wintereis_shard.json
 bece30b3667cd821d64b7cabb3323d1d1a75d4af assets/celestisynth/models/item/zephyr_deposit.json

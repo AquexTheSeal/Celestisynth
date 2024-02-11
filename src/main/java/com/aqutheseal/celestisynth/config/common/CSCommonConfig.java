@@ -33,6 +33,10 @@ public class CSCommonConfig {
     public final ForgeConfigSpec.ConfigValue<Integer> aquafloraShiftSkillCD;
     public final ForgeConfigSpec.ConfigValue<Integer> aquafloraBloomSkillCD;
     public final ForgeConfigSpec.ConfigValue<Integer> aquafloraBloomShiftSkillCD;
+    public final ForgeConfigSpec.ConfigValue<Double> frostboundSkillDmg;
+    public final ForgeConfigSpec.ConfigValue<Double> frostboundShiftSkillDmg;
+    public final ForgeConfigSpec.ConfigValue<Integer> frostboundSkillCD;
+    public final ForgeConfigSpec.ConfigValue<Integer> frostboundShiftSkillCD;
 
     public final ForgeConfigSpec.ConfigValue<Boolean> enablePoltergeistHeightDmg;
     public final ForgeConfigSpec.ConfigValue<Double> rainfallSerenityArrowDmg;
@@ -79,8 +83,14 @@ public class CSCommonConfig {
         poltergeistSkillCD = skillCooldown(builder, "Poltergeist", "Cosmic Steel Annihilation", 200);
         poltergeistShiftSkillCD = skillCooldown(builder, "Poltergeist", "Barrier Call", 80);
 
-        enablePoltergeistHeightDmg = builder.comment("Enables the increasing of Poltergeist's Cosmic Steel Annihilation damage with smash height.")
-                .define("Enable Height Damage", true);
+        enablePoltergeistHeightDmg = builder.comment("Enables the increasing of Poltergeist's Cosmic Steel Annihilation damage with smash height.").define("Enable Height Damage", true);
+        builder.pop();
+
+        builder.push("Value Modifiers - Frostbound");
+        frostboundSkillDmg = skillDamage(builder, "Frostbound", "Dance of the Seven-Thousand Snowflakes", 17.5);
+        frostboundShiftSkillDmg = skillDamage(builder, "Frostbound", "Calamity Frost Cast", 10.0);
+        frostboundSkillCD = skillCooldown(builder, "Frostbound", "Dance of the Seven-Thousand Snowflakes", 160);
+        frostboundShiftSkillCD = skillCooldown(builder, "Frostbound", "Calamity Frost Cast", 100);
         builder.pop();
 
         builder.push("Value Modifiers - Aquaflora");

@@ -4,6 +4,7 @@ import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastFrostboundIceCast;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
+import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -19,7 +20,7 @@ public class FrostboundCryogenesisAttack extends WeaponAttackInstance {
 
     @Override
     public int getCooldown() {
-        return 100;
+        return CSConfigManager.COMMON.frostboundShiftSkillCD.get();
     }
 
     @Override

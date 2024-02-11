@@ -8,6 +8,7 @@ import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
+import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,7 +31,7 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
 
     @Override
     public int getCooldown() {
-        return 160;
+        return CSConfigManager.COMMON.frostboundSkillCD.get();
     }
 
     @Override
@@ -67,7 +68,7 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
             }
             for (Entity entity : iterateEntities(level, createAABB(groundPos.offset((int) xP, 1, (int) zP), 6, 3))) {
                 if (entity instanceof LivingEntity target && entity != player) {
-                    initiateAbilityAttack(player, target, 8 + getSharpnessValue(stack, 1.75F), AttackHurtTypes.NO_KB);
+                    initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.frostboundSkillDmg.get() + getSharpnessValue(stack, 1.75F), AttackHurtTypes.NO_KB);
                     entity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                         data.setFrostbound(100);
                     });

@@ -8,6 +8,7 @@ import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
+import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -81,7 +82,7 @@ public class SkillCastFrostboundIceCast extends EffectControllerEntity {
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != ownerPlayer && target.isAlive()) {
-                        fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) 3, AttackHurtTypes.NO_KB);
+                        fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) CSConfigManager.COMMON.frostboundShiftSkillDmg.get(), AttackHurtTypes.NO_KB);
                         target.setDeltaMovement(0, 0.05, 0);
                         target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
                             data.setFrostbound(100);

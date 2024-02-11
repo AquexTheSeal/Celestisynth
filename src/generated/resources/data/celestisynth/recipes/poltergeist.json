@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "celestisynth:shaped_celestial_crafting",
   "category": "equipment",
   "key": {
     "a": {

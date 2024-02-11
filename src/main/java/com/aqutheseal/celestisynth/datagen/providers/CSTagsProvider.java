@@ -37,11 +37,13 @@ public class CSTagsProvider {
                     .add(CSBlocks.SOLAR_CRYSTAL.get())
                     .add(CSBlocks.LUNAR_STONE.get())
                     .add(CSBlocks.ZEPHYR_DEPOSIT.get())
+                    .add(CSBlocks.WINTEREIS.get())
                     .add(CSBlocks.CELESTIAL_CRAFTING_TABLE.get())
             ;
             tag(BlockTags.NEEDS_DIAMOND_TOOL)
                     .add(CSBlocks.SOLAR_CRYSTAL.get())
                     .add(CSBlocks.LUNAR_STONE.get())
+                    .add(CSBlocks.WINTEREIS.get())
                     .add(CSBlocks.CELESTIAL_CRAFTING_TABLE.get())
             ;
             tag(Tags.Blocks.NEEDS_NETHERITE_TOOL)

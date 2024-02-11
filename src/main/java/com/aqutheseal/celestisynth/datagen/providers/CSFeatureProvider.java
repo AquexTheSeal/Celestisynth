@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers;
 
@@ -61,20 +62,21 @@ public class CSFeatureProvider {
             ctx.register(CSFeatures.SOLAR_CRATER_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
                     biomeRegistry.getOrThrow(BiomeTags.IS_NETHER),
                     HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.SOLAR_CRATER_PLACED)),
-                    GenerationStep.Decoration.SURFACE_STRUCTURES)
+                    GenerationStep.Decoration.SURFACE_STRUCTURES
+                    )
             );
 
             ctx.register(CSFeatures.LUNAR_CRATER_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
-                            biomeRegistry.getOrThrow(BiomeTags.IS_OVERWORLD),
-                            HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.LUNAR_CRATER_PLACED)),
-                            GenerationStep.Decoration.UNDERGROUND_STRUCTURES
+                    biomeRegistry.getOrThrow(BiomeTags.IS_OVERWORLD),
+                    HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.LUNAR_CRATER_PLACED)),
+                    GenerationStep.Decoration.UNDERGROUND_STRUCTURES
                     )
             );
 
             ctx.register(CSFeatures.ZEPHYR_DEPOSIT_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
-                            biomeRegistry.getOrThrow(BiomeTags.IS_OVERWORLD),
-                            HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.ZEPHYR_DEPOSIT_PLACED)),
-                            GenerationStep.Decoration.SURFACE_STRUCTURES
+                    biomeRegistry.getOrThrow(Tags.Biomes.IS_MOUNTAIN),
+                    HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.ZEPHYR_DEPOSIT_PLACED)),
+                    GenerationStep.Decoration.SURFACE_STRUCTURES
                     )
             );
         }

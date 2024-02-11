@@ -31,7 +31,7 @@ public class PoltergeistItem extends SkilledAxeItem implements CSGeoItem {
 
     @Override
     public String texture(ItemStack stack) {
-        if (attackExtras(stack) != null && attackController(stack).getBoolean(PoltergeistCosmicSteelAttack.IS_IMPACT_LARGE)) {
+        if (attackController(stack).getBoolean(PoltergeistCosmicSteelAttack.IS_IMPACT_LARGE)) {
             return "poltergeist_haunted";
         } else {
             return "poltergeist";

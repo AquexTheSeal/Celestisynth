@@ -9,16 +9,19 @@
       "item": "celestisynth:supernal_netherite_ingot"
     },
     "s": {
-      "item": "celestisynth:solar_crystal"
+      "item": "celestisynth:wintereis_shard"
+    },
+    "t": {
+      "item": "minecraft:iron_ingot"
     }
   },
   "pattern": [
-    "sns",
-    "sis",
-    " n "
+    "ssi",
+    " ns",
+    "t  "
   ],
   "result": {
-    "item": "celestisynth:solaris"
+    "item": "celestisynth:frostbound"
   },
   "show_notification": true
 }

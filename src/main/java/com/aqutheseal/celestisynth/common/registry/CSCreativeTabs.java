@@ -35,7 +35,7 @@ public class CSCreativeTabs {
 
     public static List<RegistryObject<? extends ItemLike>> getBlackList() {
         return List.of(
-                CSItems.TEMPEST_SPAWN_EGG, CSItems.FROSTBOUND, CSBlocks.WINTEREIS
+                CSItems.TEMPEST_SPAWN_EGG, CSItems.CELESTIAL_DEBUGGER
         );
     }
 }

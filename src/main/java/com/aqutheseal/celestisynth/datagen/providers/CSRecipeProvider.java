@@ -147,6 +147,17 @@ public class CSRecipeProvider extends RecipeProvider {
                 .define('i', Ingredient.of(CSItems.CELESTIAL_CORE_HEATED.get()))
                 .unlockedBy("has_item", has(CSItems.STARSTRUCK_FEATHER.get()))
                 .save(consumer, modLoc("rainfall_serenity"));
+
+        CelestialShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, CSItems.FROSTBOUND.get())
+                .pattern("ssi")
+                .pattern(" ns")
+                .pattern("t  ")
+                .define('n', Ingredient.of(CSItems.SUPERNAL_NETHERITE_INGOT.get()))
+                .define('t', Ingredient.of(Items.IRON_INGOT))
+                .define('s', Ingredient.of(CSItems.WINTEREIS_SHARD.get()))
+                .define('i', Ingredient.of(CSItems.CELESTIAL_CORE_HEATED.get()))
+                .unlockedBy("has_item", has(CSItems.WINTEREIS_SHARD.get()))
+                .save(consumer, modLoc("frostbound"));
     }
 
     public TagKey<Item> csItemTag(String name) {

@@ -39,7 +39,7 @@ public class ZephyrDepositFeature extends Feature<NoneFeatureConfiguration> {
 
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
-                double fromCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
+                double fromCenter = Math.sqrt(x * x + z * z);
                 if (fromCenter <= radius) {
                     Vec3 from = new Vec3(pos.getX() + x, pos.getY(), pos.getZ() + z);
 

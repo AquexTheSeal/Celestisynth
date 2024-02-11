@@ -22,6 +22,10 @@
   "item.celestisynth.eyebomination": "Eyebomination",
   "item.celestisynth.starstruck_scrap": "Starstruck Scrap",
   "item.celestisynth.starstruck_feather": "Starstruck Feather",
+  "block.celestisynth.wintereis": "Wintereis",
+  "item.celestisynth.wintereis_shard": "Wintereis Shard",
+
+  "item.celestisynth.celestial_debugger": "The SUPER DUPER Celestial Debugger",
 
   "block.celestisynth.celestial_crafting_table": "Celestial Workbench",
   "gui.celestisynth.celestial_crafting": "Celestial Workbench",
