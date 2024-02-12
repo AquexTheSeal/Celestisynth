@@ -36,7 +36,7 @@ public class CSBlocks {
     );
     public static final RegistryObject<Block> WINTEREIS = registerBlock("wintereis",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.ICE).mapColor(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.AMETHYST)
-                    .requiresCorrectToolForDrops().friction(0.7F).strength(55F, 8.0F)
+                    .requiresCorrectToolForDrops().friction(0.7F).strength(55F, 8.0F).lightLevel((a) -> 3)
             )
     );
 

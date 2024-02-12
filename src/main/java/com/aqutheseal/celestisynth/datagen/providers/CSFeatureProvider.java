@@ -29,25 +29,37 @@ public class CSFeatureProvider {
             ctx.register(CSFeatures.SOLAR_CRATER_CONFIGURED, new ConfiguredFeature<>(CSFeatures.SOLAR_CRATER.get(), new NoneFeatureConfiguration()));
             ctx.register(CSFeatures.LUNAR_CRATER_CONFIGURED, new ConfiguredFeature<>(CSFeatures.LUNAR_CRATER.get(), new NoneFeatureConfiguration()));
             ctx.register(CSFeatures.ZEPHYR_DEPOSIT_CONFIGURED, new ConfiguredFeature<>(CSFeatures.ZEPHYR_DEPOSIT.get(), new NoneFeatureConfiguration()));
+            ctx.register(CSFeatures.WINTEREIS_SPIKES_CONFIGURED, new ConfiguredFeature<>(CSFeatures.WINTEREIS_SPIKES.get(), new NoneFeatureConfiguration()));
         }
     }
 
     public static class PlacedFeatures {
         public static void bootstrap(BootstapContext<PlacedFeature> ctx) {
             ctx.register(CSFeatures.SOLAR_CRATER_PLACED, new PlacedFeature(ctx.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CSFeatures.SOLAR_CRATER_CONFIGURED),
-                    List.of(RarityFilter.onAverageOnceEvery(85), InSquarePlacement.spread(), BiomeFilter.biome())));
-
+                    List.of(
+                            RarityFilter.onAverageOnceEvery(85), InSquarePlacement.spread(), BiomeFilter.biome()
+                    )
+            ));
             ctx.register(CSFeatures.LUNAR_CRATER_PLACED, new PlacedFeature(ctx.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CSFeatures.LUNAR_CRATER_CONFIGURED),
-                    List.of(RarityFilter.onAverageOnceEvery(17),
+                    List.of(
+                            RarityFilter.onAverageOnceEvery(17),
                             HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.aboveBottom(0), VerticalAnchor.absolute(30))),
                             EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), MatchingBlockTagPredicate.ONLY_IN_AIR_PREDICATE, 12),
                             BiomeFilter.biome()
                     )
             ));
-
             ctx.register(CSFeatures.ZEPHYR_DEPOSIT_PLACED, new PlacedFeature(ctx.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CSFeatures.ZEPHYR_DEPOSIT_CONFIGURED),
-                    List.of(RarityFilter.onAverageOnceEvery(7),
+                    List.of(
+                            RarityFilter.onAverageOnceEvery(7),
                             HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.absolute(100), VerticalAnchor.absolute(320))),
+                            BiomeFilter.biome()
+                    )
+            ));
+            ctx.register(CSFeatures.WINTEREIS_SPIKES_PLACED, new PlacedFeature(ctx.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CSFeatures.WINTEREIS_SPIKES_CONFIGURED),
+                    List.of(
+                            CountPlacement.of(2),
+                            HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(60))),
+                            EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), MatchingBlockTagPredicate.ONLY_IN_AIR_PREDICATE, 12),
                             BiomeFilter.biome()
                     )
             ));
@@ -65,18 +77,22 @@ public class CSFeatureProvider {
                     GenerationStep.Decoration.SURFACE_STRUCTURES
                     )
             );
-
             ctx.register(CSFeatures.LUNAR_CRATER_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
                     biomeRegistry.getOrThrow(BiomeTags.IS_OVERWORLD),
                     HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.LUNAR_CRATER_PLACED)),
                     GenerationStep.Decoration.UNDERGROUND_STRUCTURES
                     )
             );
-
             ctx.register(CSFeatures.ZEPHYR_DEPOSIT_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
                     biomeRegistry.getOrThrow(Tags.Biomes.IS_MOUNTAIN),
                     HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.ZEPHYR_DEPOSIT_PLACED)),
                     GenerationStep.Decoration.SURFACE_STRUCTURES
+                    )
+            );
+            ctx.register(CSFeatures.WINTEREIS_SPIKES_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+                            biomeRegistry.getOrThrow(Tags.Biomes.IS_COLD),
+                            HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.WINTEREIS_SPIKES_PLACED)),
+                            GenerationStep.Decoration.UNDERGROUND_STRUCTURES
                     )
             );
         }

@@ -1,6 +1,5 @@
 package com.aqutheseal.celestisynth.common.world.feature;
 
-import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.registry.CSBlocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -81,8 +80,6 @@ public class ZephyrDepositFeature extends Feature<NoneFeatureConfiguration> {
                 }
             }
         }
-
-        Celestisynth.LOGGER.info("DEPOSIT GENERATED AT: " + pos.getX() + " " + pos.getY() + " " + pos.getZ());
         return true;
     }
 
