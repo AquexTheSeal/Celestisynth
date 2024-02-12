@@ -147,7 +147,6 @@ dependencies {
     implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:5058433")
     implementation fg.deobf("curse.maven:citadel-331936:5065861")
     implementation fg.deobf("curse.maven:curios-309927:5066845")
-    implementation fg.deobf("curse.maven:neruina-851046:4882278")
     implementation fg.deobf("curse.maven:embeddium-908741:5077202")
     implementation fg.deobf("curse.maven:oculus-581495:5080444")
 }

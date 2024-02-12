@@ -90,7 +90,7 @@ public class CSFeatureProvider {
                     )
             );
             ctx.register(CSFeatures.WINTEREIS_SPIKES_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
-                            biomeRegistry.getOrThrow(Tags.Biomes.IS_COLD),
+                            biomeRegistry.getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD),
                             HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.WINTEREIS_SPIKES_PLACED)),
                             GenerationStep.Decoration.UNDERGROUND_STRUCTURES
                     )

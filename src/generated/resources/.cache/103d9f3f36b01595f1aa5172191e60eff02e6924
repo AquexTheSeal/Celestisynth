@@ -1,9 +1,9 @@
-// 1.20.1	2024-02-12T21:17:35.9939291	Registries
+// 1.20.1	2024-02-12T22:26:11.753023	Registries
 8457f9dc98bb8277f47b6aa19cbdaf90104459fd data/celestisynth/damage_type/basic_player_attack.json
 1ad7f221cc14ff59b19b4cafd96d04296e1c8f5f data/celestisynth/damage_type/rapid_player_attack.json
 1df435e201c3bf13d1c68ca8695fa43d29863233 data/celestisynth/forge/biome_modifier/lunar_crater.json
 2941b323530e95d886f25a23e92058703bfaf38b data/celestisynth/forge/biome_modifier/solar_crater.json
-93ba161dfd7fc2f9b24eba151d92891a0eb556f3 data/celestisynth/forge/biome_modifier/wintereis_spikes.json
+01e1cdeb93f22a23e18c7bf8086b964c9476aec8 data/celestisynth/forge/biome_modifier/wintereis_spikes.json
 ba9c04464bf1cf56be2e683183fee939728c2ef2 data/celestisynth/forge/biome_modifier/zephyr_deposit.json
 78c6d92a72d3c5f7d38623637186296efff5249d data/celestisynth/worldgen/configured_feature/lunar_crater.json
 3c557478a6b0f028aa7c77d17099e5bb86456464 data/celestisynth/worldgen/configured_feature/solar_crater.json
