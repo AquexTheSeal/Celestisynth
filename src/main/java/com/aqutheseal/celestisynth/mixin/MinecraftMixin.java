@@ -13,9 +13,8 @@ import javax.annotation.Nullable;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
-    @Shadow
-    @Nullable
-    public LocalPlayer player;
+
+    @Shadow @Nullable public LocalPlayer player;
 
     private MinecraftMixin() {
         throw new IllegalAccessError("Attempted to instantiate a Mixin Class!");
@@ -23,7 +22,7 @@ public class MinecraftMixin {
 
     @Inject(method = "handleKeybinds", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/player/Inventory;selected:I", shift = At.Shift.BEFORE), cancellable = true)
     private void celestisynth$handleKeybinds(CallbackInfo info) {
-        if (this.player.getInventory().getSelected().getItem() instanceof CSWeapon && this.player.getInventory().getSelected().getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && this.player.getInventory().getSelected().getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
+        if (player.getInventory().getSelected().getItem() instanceof CSWeapon && this.player.getInventory().getSelected().getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && this.player.getInventory().getSelected().getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
             info.cancel();
         }
     }

@@ -13,6 +13,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import org.jetbrains.annotations.Nullable;
 
 public class CSEntityCapabilityProvider extends CapabilityAttacher {
+
     public static Capability<CSEntityCapability> CAPABILITY = getCapability(new CapabilityToken<>(){});
 
     @SuppressWarnings("ConstantConditions")

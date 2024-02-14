@@ -10,8 +10,7 @@
     "LivingEntityMixin",
     "PlayerMixin",
     "RecipeManagerAccessor",
-    "ServerPlayerMixin",
-    "compat.BCWeaponRegistryMixin"
+    "ServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

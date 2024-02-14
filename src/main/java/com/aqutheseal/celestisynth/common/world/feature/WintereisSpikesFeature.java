@@ -1,6 +1,5 @@
 package com.aqutheseal.celestisynth.common.world.feature;
 
-import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.registry.CSBlocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -63,8 +62,6 @@ public class WintereisSpikesFeature extends Feature<NoneFeatureConfiguration> {
                     }
                 }
             }
-
-            Celestisynth.LOGGER.info("DEPOSIT GENERATED AT: " + pTarget.getX() + " " + pTarget.getY() + " " + pTarget.getZ());
             return true;
         } else {
             return false;
