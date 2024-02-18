@@ -54,7 +54,7 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity entity, LivingEntity source) {
-        entity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+        CSEntityCapabilityProvider.get(entity).ifPresent(data -> {
             data.setFrostbound(100);
         });
         entity.playSound(SoundEvents.PLAYER_HURT_FREEZE);

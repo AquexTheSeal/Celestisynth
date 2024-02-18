@@ -50,7 +50,7 @@ public class PoltergeistBarrierCallAttack extends WeaponAttackInstance {
                 initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.poltergeistShiftSkillDmg.get() + getSharpnessValue(getStack(), 1.2F), AttackHurtTypes.REGULAR);
                 target.playSound(CSSoundEvents.SWORD_CLASH.get(), 0.25F, 0.5F);
 
-                target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+                CSEntityCapabilityProvider.get(target).ifPresent(data -> {
                     data.setPhantomTag(player, 200);
                 });
 

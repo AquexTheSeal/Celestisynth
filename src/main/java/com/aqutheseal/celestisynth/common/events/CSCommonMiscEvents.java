@@ -36,22 +36,28 @@ public class CSCommonMiscEvents {
 
     @SubscribeEvent
     public static void onLivingTickEvent(LivingEvent.LivingTickEvent event) {
-
         LivingEntity entity = event.getEntity();
-        entity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+        CSEntityCapabilityProvider.get(entity).ifPresent(data -> {
             if (data.getQuasarImbueSource() != null) {
                 double radius = 0.5 + entity.getBbWidth();
                 double speed = 0.1;
                 double offX = radius * Math.sin(speed * entity.tickCount);
                 double offY = -Math.sin(entity.tickCount) * 0.2;
                 double offZ = radius * Math.cos(speed * entity.tickCount);
-                ParticleUtil.sendParticle(entity.level(), CSParticleTypes.RAINFALL_ENERGY_SMALL.get(),
-                        entity.getX() + offX, entity.getY() + offY + 1, entity.getZ() + offZ);
+                ParticleUtil.sendParticle(entity.level(), CSParticleTypes.RAINFALL_ENERGY_SMALL.get(), entity.getX() + offX, entity.getY() + offY + 1, entity.getZ() + offZ);
             }
+
             if (data.getQuasarImbueTime() <= 0) {
                 data.clearQuasarImbue();
+            } else {
+                data.decreaseQuasarImbueTime();
             }
-            data.decreaseQuasarImbueTime();
+
+            if (data.getPhantomTagTime() <= 0) {
+                data.clearPhantomTag();
+            } else {
+                data.decreasePhantomTagTime();
+            }
 
             if (data.getFrostbound() > 0) {
                 if (entity.tickCount % 10 == 0) {
@@ -76,17 +82,13 @@ public class CSCommonMiscEvents {
                         entity.playSound(SoundEvents.FIRE_EXTINGUISH);
                     }
                 }
-            }
-            if (entity.isOnFire()) {
-                data.decreaseFrostbound(5);
-            } else {
-                data.decreaseFrostbound();
-            }
 
-            if (data.getPhantomTagTime() <= 0) {
-                data.clearPhantomTag();
+                if (entity.isOnFire()) {
+                    data.decreaseFrostbound(5);
+                } else {
+                    data.decreaseFrostbound();
+                }
             }
-            data.decreasePhantomTagTime();
         });
     }
 
@@ -119,7 +121,7 @@ public class CSCommonMiscEvents {
             CSWeaponUtil.disableRunningWeapon(player);
         }
 
-        event.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+        CSEntityCapabilityProvider.get(event.getEntity()).ifPresent(data -> {
             if (data.getPhantomTagSource() instanceof Player player) {
                 SkillCastPoltergeistWard poltergeistProjectile = CSEntityTypes.POLTERGEIST_WARD.get().create(event.getEntity().level());
                 poltergeistProjectile.setOwnerUuid(player.getUUID());

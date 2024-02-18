@@ -84,7 +84,7 @@ public class SkillCastFrostboundIceCast extends EffectControllerEntity {
                     if (target != ownerPlayer && target.isAlive()) {
                         fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) CSConfigManager.COMMON.frostboundShiftSkillDmg.get(), AttackHurtTypes.NO_KB);
                         target.setDeltaMovement(0, 0.05, 0);
-                        target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+                        CSEntityCapabilityProvider.get(target).ifPresent(data -> {
                             data.setFrostbound(100);
                         });
                         target.playSound(SoundEvents.PLAYER_HURT_FREEZE);

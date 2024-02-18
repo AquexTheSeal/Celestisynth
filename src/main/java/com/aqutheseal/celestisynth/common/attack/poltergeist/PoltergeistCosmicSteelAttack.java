@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -114,7 +113,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
                 CSWeaponUtil.disableRunningWeapon(target);
 
                 if (!level.isClientSide()) {
-                    target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+                    CSEntityCapabilityProvider.get(target).ifPresent(data -> {
                         data.setPhantomTag(player, 100);
                     });
                 }

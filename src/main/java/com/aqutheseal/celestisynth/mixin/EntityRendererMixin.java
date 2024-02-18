@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,11 +27,13 @@ public abstract class EntityRendererMixin<T extends Entity> {
 
     @Inject(method = "render", at = @At("TAIL"))
     public void celestisynth$render(T pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
-        pEntity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
-            if (data.getPhantomTagSource() != null) {
-                renderPhantomFlame(pPoseStack, pBuffer, pEntity);
-            }
-        });
+       if (pEntity instanceof LivingEntity living) {
+           CSEntityCapabilityProvider.get(living).ifPresent(data -> {
+               if (data.getPhantomTagSource() != null) {
+                   renderPhantomFlame(pPoseStack, pBuffer, pEntity);
+               }
+           });
+       }
     }
 
     private static void renderPhantomFlame(PoseStack pMatrixStack, MultiBufferSource pBuffer, Entity pEntity) {

@@ -1,6 +1,5 @@
 package com.aqutheseal.celestisynth.common.capabilities;
 
-import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.manager.CSNetworkManager;
 import dev._100media.capabilitysyncer.core.LivingEntityCapability;
 import dev._100media.capabilitysyncer.network.EntityCapabilityStatusPacket;
@@ -58,8 +57,8 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
 
     public void setPhantomTag(@Nonnull LivingEntity source, int time) {
         this.phantomTagSource = source;
-        this.phantomTagTime = time;
         this.updateTracking();
+        this.phantomTagTime = time;
     }
 
     public @Nullable LivingEntity getPhantomTagSource() {
@@ -71,22 +70,23 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
     }
 
     public void clearPhantomTag() {
-        this.phantomTagSource = null;
-        this.quasarImbueTime = 0;
-        this.updateTracking();
+        if (phantomTagSource != null) {
+            this.phantomTagSource = null;
+            this.updateTracking();
+        }
     }
 
     public void decreasePhantomTagTime() {
         this.phantomTagTime = Math.max(this.phantomTagTime - 1, 0);
-        this.updateTracking();
+        //this.updateTracking();
     }
 
     // QUASAR IMBUE
 
     public void setQuasarImbue(@Nonnull LivingEntity source, int time) {
         this.quasarImbueSource = source;
-        this.quasarImbueTime = time;
         this.updateTracking();
+        this.quasarImbueTime = time;
     }
 
 
@@ -99,14 +99,17 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
     }
 
     public void clearQuasarImbue() {
-        this.quasarImbueSource = null;
-        this.quasarImbueTime = 0;
-        this.updateTracking();
+        if (quasarImbueSource != null) {
+            this.quasarImbueSource = null;
+            this.updateTracking();
+        }
     }
 
     public void decreaseQuasarImbueTime() {
-        this.quasarImbueTime = Math.max(this.quasarImbueTime - 1, 0);
-        this.updateTracking();
+        if (quasarImbueTime > 0) {
+            this.quasarImbueTime = this.quasarImbueTime - 1;
+            //this.updateTracking();
+        }
     }
 
     @Override
@@ -126,7 +129,6 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
 
     @Override
     public void deserializeNBT(CompoundTag nbt, boolean readingFromDisk) {
-
         if (nbt.contains(FROSTBOUND_ID, Tag.TAG_INT)) {
             this.frostBound = nbt.getInt(FROSTBOUND_ID);
         }
@@ -144,7 +146,7 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
 
     @Override
     public EntityCapabilityStatusPacket createUpdatePacket() {
-        return new SimpleEntityCapabilityStatusPacket(this.livingEntity.getId(), Celestisynth.prefix(ID), this);
+        return new SimpleEntityCapabilityStatusPacket(this.livingEntity.getId(), CSEntityCapabilityProvider.CS_ENTITY_CAP_RL, this);
     }
 
     @Override

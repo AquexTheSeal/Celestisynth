@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class RenderLayerMixin {
     @Inject(method = "renderColoredCutoutModel", at = @At("TAIL"))
     private static <T extends LivingEntity> void renderColoredCutoutModel(EntityModel<T> pModel, ResourceLocation pTextureLocation, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pEntity, float pRed, float pGreen, float pBlue, CallbackInfo ci) {
-        pEntity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+        CSEntityCapabilityProvider.get(pEntity).ifPresent(data -> {
             if (data.getFrostbound() > 0) {
                 VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.eyes(pTextureLocation));
                 int i = LivingEntityRenderer.getOverlayCoords(pEntity, 0.0F);

@@ -24,7 +24,7 @@ public class FrostboundGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer<
     @Override
     public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
         if (animatable instanceof LivingEntity living) {
-            living.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+            CSEntityCapabilityProvider.get(living).ifPresent(data -> {
                 if (data.getFrostbound() > 0) {
                     getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, getRenderType(animatable), bufferSource.getBuffer(getRenderType(animatable)), partialTick, packedLight, packedOverlay, 0F, 0.3F, 1.0F, 1.0F);
                 }

@@ -1,8 +1,10 @@
 {
   "creativetab.celestisynth_tab": "Celestisynth",
-  "item.celestisynth.shift_notice": "[Hold SHIFT to view descriptions]",
-  "item.celestisynth.passive_notice": "PASSIVES:",
-  "item.celestisynth.skill_notice": "SKILLS:",
+  "item.celestisynth.test": "SCROLL: %s",
+  "item.celestisynth.scroll_notice": "[Scroll to navigate through abilities]",
+  "item.celestisynth.shift_notice": "[Press Shift or Ctrl to switch pages]",
+  "item.celestisynth.passive_notice": "PASSIVES",
+  "item.celestisynth.skill_notice": "SKILLS",
   "item.celestisynth.celestial_tier": "CELESTIAL GRADE",
 
   "item.celestisynth.armor_stun_immune": "> Immune to interruption while casting weapon skill",

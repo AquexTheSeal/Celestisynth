@@ -79,7 +79,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
 
     @Override
     public int getPassiveAmount() {
-        return 1;
+        return 0;
     }
 
     @Override

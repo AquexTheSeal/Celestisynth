@@ -16,7 +16,9 @@
     "defaultRequire": 1
   },
   "client": [
+    "CreativeModeInventoryScreenMixin",
     "EntityRendererMixin",
+    "InventoryScreenMixin",
     "LivingEntityRendererMixin",
     "MinecraftMixin",
     "RenderLayerMixin"

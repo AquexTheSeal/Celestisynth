@@ -69,7 +69,7 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
             for (Entity entity : iterateEntities(level, createAABB(groundPos.offset((int) xP, 1, (int) zP), 6, 3))) {
                 if (entity instanceof LivingEntity target && entity != player) {
                     initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.frostboundSkillDmg.get() + getSharpnessValue(stack, 1.75F), AttackHurtTypes.NO_KB);
-                    entity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+                    CSEntityCapabilityProvider.get(target).ifPresent(data -> {
                         data.setFrostbound(100);
                     });
                     entity.playSound(SoundEvents.PLAYER_HURT_FREEZE);
@@ -102,7 +102,7 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
         for (Entity entity : iterateEntities(level, createAABB(player.blockPosition().offset((int) xP, 1, (int) zP), isLarge ? 8 : 5, 3))) {
             if (entity instanceof LivingEntity target && entity != player) {
                 initiateAbilityAttack(player, target, 6 + getSharpnessValue(stack, 1.5F), AttackHurtTypes.REGULAR);
-                entity.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+                CSEntityCapabilityProvider.get(target).ifPresent(data -> {
                     data.setFrostbound(60);
                 });
                 entity.playSound(SoundEvents.PLAYER_HURT_FREEZE);

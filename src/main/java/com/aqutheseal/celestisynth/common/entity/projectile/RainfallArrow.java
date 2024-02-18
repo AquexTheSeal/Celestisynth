@@ -111,10 +111,10 @@ public class RainfallArrow extends AbstractArrow implements GeoEntity {
                     }
                 }
 
-                if (pResult instanceof EntityHitResult ehr) {
+                if (pResult instanceof EntityHitResult ehr && ehr.getEntity() instanceof LivingEntity target) {
                     setPierceLevel((byte) (getPierceLevel() + 1));
 
-                    ehr.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
+                    CSEntityCapabilityProvider.get(target).ifPresent(data -> {
                         if (getOwner() instanceof Player player && data.getQuasarImbueSource() == player) {
                             SkillCastRainfallRain projectile = CSEntityTypes.RAINFALL_RAIN.get().create(player.level());
                             projectile.targetPos = new BlockPos(ehr.getEntity().blockPosition());
@@ -126,48 +126,52 @@ public class RainfallArrow extends AbstractArrow implements GeoEntity {
 
                     if (random.nextInt(3) == 1) {
                         for (Entity imbueSource : rawRainfallItem.iterateEntities(level(), rawRainfallItem.createAABB(hitPos, 24))) {
-                            imbueSource.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
-                                if (imbueSource != ehr.getEntity() && getOwner() instanceof Player player && data.getQuasarImbueSource() == player) {
-                                    ehr.getEntity().invulnerableTime = 0;
+                            if (imbueSource instanceof LivingEntity livingSource) {
+                                CSEntityCapabilityProvider.get(livingSource).ifPresent(data -> {
+                                    if (imbueSource != ehr.getEntity() && getOwner() instanceof Player player && data.getQuasarImbueSource() == player) {
+                                        ehr.getEntity().invulnerableTime = 0;
 
-                                    Vec3 from = new Vec3(imbueSource.getX(), imbueSource.getY() + 1.5, imbueSource.getZ());
-                                    Vec3 to = new Vec3(ehr.getEntity().getX(), ehr.getEntity().getY() + 1.5F, ehr.getEntity().getZ());
-                                    createLaser(from, to, false, false);
+                                        Vec3 from = new Vec3(imbueSource.getX(), imbueSource.getY() + 1.5, imbueSource.getZ());
+                                        Vec3 to = new Vec3(ehr.getEntity().getX(), ehr.getEntity().getY() + 1.5F, ehr.getEntity().getZ());
+                                        createLaser(from, to, false, false);
 
-                                    if (!level().isClientSide()) {
-                                        BlockPos imbuePos = new BlockPos((int) imbueSource.getX(), (int) (imbueSource.getY() + 1.5D), (int) imbueSource.getZ());
-                                        RainfallArrow rainfallArrow = new RainfallArrow(level(), player);
+                                        if (!level().isClientSide()) {
+                                            BlockPos imbuePos = new BlockPos((int) imbueSource.getX(), (int) (imbueSource.getY() + 1.5D), (int) imbueSource.getZ());
+                                            RainfallArrow rainfallArrow = new RainfallArrow(level(), player);
 
-                                        rainfallArrow.setOwner(player);
-                                        rainfallArrow.moveTo(imbueSource.position());
-                                        rainfallArrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-                                        rainfallArrow.setOrigin(imbuePos);
-                                        rainfallArrow.setPierceLevel((byte) 3);
-                                        rainfallArrow.setBaseDamage(CSConfigManager.COMMON.rainfallSerenityQuasarArrowDmg.get());
-                                        rainfallArrow.setImbueQuasar(false);
+                                            rainfallArrow.setOwner(player);
+                                            rainfallArrow.moveTo(imbueSource.position());
+                                            rainfallArrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                                            rainfallArrow.setOrigin(imbuePos);
+                                            rainfallArrow.setPierceLevel((byte) 3);
+                                            rainfallArrow.setBaseDamage(CSConfigManager.COMMON.rainfallSerenityQuasarArrowDmg.get());
+                                            rainfallArrow.setImbueQuasar(false);
 
-                                        double offsetHitResultY = ehr.getEntity().getY() + 1.5D;
-                                        double finalDistX = ehr.getEntity().getX() - imbueSource.getX();
-                                        double offsetDistY = offsetHitResultY - imbueSource.getY() + 1.5F;
-                                        double finalDistZ = ehr.getEntity().getZ() - imbueSource.getZ();
+                                            double offsetHitResultY = ehr.getEntity().getY() + 1.5D;
+                                            double finalDistX = ehr.getEntity().getX() - imbueSource.getX();
+                                            double offsetDistY = offsetHitResultY - imbueSource.getY() + 1.5F;
+                                            double finalDistZ = ehr.getEntity().getZ() - imbueSource.getZ();
 
-                                        rainfallArrow.shoot(finalDistX, offsetDistY, finalDistZ, 3.0F, 0);
-                                        level().addFreshEntity(rainfallArrow);
+                                            rainfallArrow.shoot(finalDistX, offsetDistY, finalDistZ, 3.0F, 0);
+                                            level().addFreshEntity(rainfallArrow);
+                                        }
+
+                                        level().playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundEvents.LASER_SHOOT.get(), SoundSource.PLAYERS, 0.7f, 2.0F);
+                                        data.clearQuasarImbue();
                                     }
-
-                                    level().playSound(null, player.getX(), player.getY(), player.getZ(), CSSoundEvents.LASER_SHOOT.get(), SoundSource.PLAYERS, 0.7f, 2.0F);
-                                    data.clearQuasarImbue();
-                                }
-                            });
+                                });
+                            }
                         }
                     }
 
 
-                    ehr.getEntity().getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> {
-                        if (isImbueQuasar() && getOwner() instanceof Player player) {
-                            data.setQuasarImbue(player, 200);
-                        }
-                    });
+                    if (ehr.getEntity() instanceof LivingEntity lt) {
+                        CSEntityCapabilityProvider.get(lt).ifPresent(data -> {
+                            if (isImbueQuasar() && getOwner() instanceof LivingEntity living) {
+                                data.setQuasarImbue(living, 200);
+                            }
+                        });
+                    }
                 }
 
                 playSound(SoundEvents.ENDER_EYE_DEATH, 1.0F, 1.0F + random.nextFloat());
