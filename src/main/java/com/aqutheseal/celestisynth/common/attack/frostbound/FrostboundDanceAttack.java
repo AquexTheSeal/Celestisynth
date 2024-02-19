@@ -2,7 +2,6 @@ package com.aqutheseal.celestisynth.common.attack.frostbound;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
-import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
@@ -19,7 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class FrostboundDanceAttack extends WeaponAttackInstance {
+public class FrostboundDanceAttack extends FrostboundAttack {
     public FrostboundDanceAttack(Player player, ItemStack stack) {
         super(player, stack);
     }
@@ -75,19 +74,23 @@ public class FrostboundDanceAttack extends WeaponAttackInstance {
                     entity.playSound(SoundEvents.PLAYER_HURT_FREEZE);
                 }
             }
+            shootShard(4);
         }
         if (getTimerProgress() == 20) {
             this.playSoundAt(level, CSSoundEvents.FROZEN_SLASH.get(), player.blockPosition().offset((int) xP, 0, (int) zP));
             doAOEAttack(CSVisualTypes.FROSTBOUND_SLASH.get(), xP * 2.5, zP * 2.5, false);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
+            shootShard(3);
         } else if (getTimerProgress() == 30) {
             this.playSoundAt(level, CSSoundEvents.FROZEN_SLASH.get(), player.blockPosition().offset((int) xP, 0, (int) zP));
             doAOEAttack(CSVisualTypes.FROSTBOUND_SLASH_INVERTED.get(), xP * 2.5, zP * 2.5, false);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
+            shootShard(3);
         } else if (getTimerProgress() == 40) {
             this.playSoundAt(level, CSSoundEvents.FROZEN_SLASH.get(), player.blockPosition().offset((int) xP, 0, (int) zP));
             doAOEAttack(CSVisualTypes.FROSTBOUND_SLASH_LARGE.get(), xP * 2.5, zP * 2.5, true);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
+            shootShard(6);
         }
     }
 

@@ -2,6 +2,7 @@ package com.aqutheseal.celestisynth.common.registry;
 
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.common.entity.projectile.FrostboundShard;
 import com.aqutheseal.celestisynth.common.entity.projectile.RainfallArrow;
 import com.aqutheseal.celestisynth.common.entity.skill.*;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
@@ -37,6 +38,9 @@ public class CSEntityTypes {
     );
 
     public static final RegistryObject<EntityType<RainfallArrow>> RAINFALL_ARROW = ENTITY_TYPES.register("rainfall_arrow", () -> EntityType.Builder.<RainfallArrow>of(RainfallArrow::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F).clientTrackingRange(32).updateInterval(20).build(Celestisynth.prefix("rainfall_arrow").toString())
+            .sized(1F, 1F).clientTrackingRange(32).updateInterval(20).build(Celestisynth.prefix("rainfall_arrow").toString())
+    );
+    public static final RegistryObject<EntityType<FrostboundShard>> FROSTBOUND_SHARD = ENTITY_TYPES.register("frostbound_shard", () -> EntityType.Builder.<FrostboundShard>of(FrostboundShard::new, MobCategory.MISC)
+            .sized(3F, 3F).clientTrackingRange(32).updateInterval(20).build(Celestisynth.prefix("frostbound_shard").toString())
     );
 }

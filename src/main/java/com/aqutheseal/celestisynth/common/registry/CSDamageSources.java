@@ -34,6 +34,10 @@ public class CSDamageSources {
         return this.source(CSDamageTypes.BASIC_PLAYER_ATTACK, pPlayer);
     }
 
+    public DamageSource rapidPlayerAttack() {
+        return this.source(CSDamageTypes.RAPID_PLAYER_ATTACK);
+    }
+
     public DamageSource rapidPlayerAttack(Player pPlayer) {
         return this.source(CSDamageTypes.RAPID_PLAYER_ATTACK, pPlayer);
     }

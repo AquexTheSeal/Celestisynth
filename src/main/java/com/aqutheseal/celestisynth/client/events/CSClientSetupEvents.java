@@ -6,6 +6,8 @@ import com.aqutheseal.celestisynth.client.particles.RainfallBeamParticle;
 import com.aqutheseal.celestisynth.client.particles.RainfallEnergyParticle;
 import com.aqutheseal.celestisynth.client.renderers.blockentity.CelestialCraftingTableBlockEntityRenderer;
 import com.aqutheseal.celestisynth.client.renderers.entity.boss.TempestBossRenderer;
+import com.aqutheseal.celestisynth.client.models.entity.projectile.FrostboundShardModel;
+import com.aqutheseal.celestisynth.client.renderers.entity.projectile.FrostboundShardRenderer;
 import com.aqutheseal.celestisynth.client.renderers.entity.projectile.RainfallArrowRenderer;
 import com.aqutheseal.celestisynth.client.renderers.misc.CSEffectEntityRenderer;
 import com.aqutheseal.celestisynth.client.renderers.misc.NullRenderer;
@@ -33,8 +35,14 @@ public class CSClientSetupEvents {
         event.registerEntityRenderer(CSEntityTypes.FROSTBOUND_ICE_CAST.get(), NullRenderer::new);
 
         event.registerEntityRenderer(CSEntityTypes.RAINFALL_ARROW.get(), RainfallArrowRenderer::new);
+        event.registerEntityRenderer(CSEntityTypes.FROSTBOUND_SHARD.get(), FrostboundShardRenderer::new);
 
         event.registerBlockEntityRenderer(CSBlockEntityTypes.CELESTIAL_CRAFTING_TABLE_TILE.get(), context -> new CelestialCraftingTableBlockEntityRenderer());
+    }
+
+    @SubscribeEvent
+    public static void onRegisterLayerDefinitionsEvent(final EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(FrostboundShardModel.LAYER_LOCATION, FrostboundShardModel::createBodyLayer);
     }
 
     @SubscribeEvent

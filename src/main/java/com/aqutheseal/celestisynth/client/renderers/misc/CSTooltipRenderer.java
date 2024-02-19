@@ -4,13 +4,10 @@ import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.common.registry.CSRarityTypes;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -83,7 +80,10 @@ public class CSTooltipRenderer {
                                 .withStyle(shouldHighlight ? highlightedAbilityColor : defaultAbilityColor))
                         );
                         if (shouldHighlight) {
-                            elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".passive_desc_" + v).withStyle(descColor).withStyle(ChatFormatting.ITALIC)));
+                            elementsToAdd.add(Either.left(Component.literal(" - ")
+                                    .append(Component.translatable("item.celestisynth." + name + ".passive_desc_" + v))
+                                    .withStyle(descColor).withStyle(ChatFormatting.ITALIC))
+                            );
                         }
                         if (shouldHighlight) {
                             elementsToAdd.add(Either.left(empty));
@@ -104,7 +104,10 @@ public class CSTooltipRenderer {
                         );
                         if (shouldHighlight) {
                             elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".condition_" + v).withStyle(abilityConditionColor)));
-                            elementsToAdd.add(Either.left(Component.translatable("item.celestisynth." + name + ".desc_" + v).withStyle(descColor).withStyle(ChatFormatting.ITALIC)));
+                            elementsToAdd.add(Either.left(Component.literal(" - ")
+                                    .append(Component.translatable("item.celestisynth." + name + ".desc_" + v))
+                                    .withStyle(descColor).withStyle(ChatFormatting.ITALIC))
+                            );
                         }
                         if (shouldHighlight) {
                             elementsToAdd.add(Either.left(empty));
@@ -132,7 +135,6 @@ public class CSTooltipRenderer {
 
     public static void manageKeyPress(double keyCode) {
         if (keyCode == 340 || keyCode == 341) {
-            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.ENDER_EYE_DEATH, 1.0F));
             menu = menu + 1 == Integer.MAX_VALUE ? 0 : menu + 1;
         }
     }
