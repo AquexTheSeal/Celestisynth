@@ -34,7 +34,7 @@ public class CSEntityTypes {
             .sized(0.5F, 0.5F).clientTrackingRange(16).build(Celestisynth.prefix("rainfall_rain").toString())
     );
     public static final RegistryObject<EntityType<SkillCastFrostboundIceCast>> FROSTBOUND_ICE_CAST = ENTITY_TYPES.register("frostbound_ice_cast", () -> EntityType.Builder.of(SkillCastFrostboundIceCast::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F).clientTrackingRange(16).build(Celestisynth.prefix("rainfall_rain").toString())
+            .sized(0.3F, 0.3F).clientTrackingRange(16).build(Celestisynth.prefix("rainfall_rain").toString())
     );
 
     public static final RegistryObject<EntityType<RainfallArrow>> RAINFALL_ARROW = ENTITY_TYPES.register("rainfall_arrow", () -> EntityType.Builder.<RainfallArrow>of(RainfallArrow::new, MobCategory.MISC)

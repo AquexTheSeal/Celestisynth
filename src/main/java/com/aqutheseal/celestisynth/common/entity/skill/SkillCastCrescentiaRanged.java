@@ -63,7 +63,6 @@ public class SkillCastCrescentiaRanged extends EffectControllerEntity {
             if (entityBatch instanceof LivingEntity target) {
                 if (target != ownerPlayer && target.isAlive()) {
                     fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) CSConfigManager.COMMON.crescentiaShiftSkillDmg.get(), AttackHurtTypes.RAPID_PIERCE);
-                    target.hurt(damageSources().playerAttack(ownerPlayer), (float) ((double) CSConfigManager.COMMON.crescentiaShiftSkillDmg.get()));
                     target.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                 }
             }

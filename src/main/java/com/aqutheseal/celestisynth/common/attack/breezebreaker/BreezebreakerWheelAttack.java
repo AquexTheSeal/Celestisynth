@@ -57,7 +57,7 @@ public class BreezebreakerWheelAttack extends BreezebreakerAttack {
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
-                        initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.breezebreakerSprintSkillDmg.get() + getSharpnessValue(stack, 1.5F), AttackHurtTypes.NO_KB_PIERCE);
+                        initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.breezebreakerMidairSkillDmg.get() + getSharpnessValue(stack, 1.5F), AttackHurtTypes.NO_KB_PIERCE);
                         target.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.WEAKNESS, 40, 1));
                         sendExpandingParticles(level, ParticleTypes.POOF, target.blockPosition().above(), 45, 0);
                     }

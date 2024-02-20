@@ -13,7 +13,7 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 public class FrostboundGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> {
 
-    public FrostboundGeoLayer(GeoRenderer entityRendererIn) {
+    public FrostboundGeoLayer(GeoRenderer<T> entityRendererIn) {
         super(entityRendererIn);
     }
 

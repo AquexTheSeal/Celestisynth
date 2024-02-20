@@ -32,7 +32,7 @@ public class FrostboundShard extends ThrowableProjectile {
             double xx = random.nextGaussian() * 0.02;
             double yy = random.nextGaussian() * 0.02;
             double zz = random.nextGaussian() * 0.02;
-            ParticleUtil.sendParticle(level(), ParticleTypes.SNOWFLAKE, getX(), getY(), getZ(), xx, yy, zz);
+            ParticleUtil.sendParticle(level(), ParticleTypes.SNOWFLAKE, getX(), getY() + 1, getZ(), xx, yy, zz);
         }
     }
 
