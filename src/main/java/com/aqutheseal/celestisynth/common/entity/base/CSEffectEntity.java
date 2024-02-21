@@ -188,8 +188,6 @@ public class CSEffectEntity extends Entity implements GeoEntity {
         if (owner == null) return;
         CSEffectEntity slash = getEffectInstance(owner, toFollow, effectTypes, x, y, z);
         slash.moveTo(x, y, z);
-        slash.setOwnerUuid(owner.getUUID());
-        slash.setToFollow(toFollow);
         owner.level().addFreshEntity(slash);
     }
 

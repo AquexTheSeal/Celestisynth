@@ -8,6 +8,7 @@ public class CSVisualAnimation {
     public static CSVisualAnimation SWEEP_LTOR = new CSVisualAnimation("animation.cs_effect.sweep_ltor", 15);
     public static CSVisualAnimation STRETCH = new CSVisualAnimation("animation.cs_effect.stretch", 15);
     public static CSVisualAnimation GOO = new CSVisualAnimation("animation.cs_effect.goo", Integer.MAX_VALUE);
+    public static CSVisualAnimation SPIN_EXPAND = new CSVisualAnimation("animation.cs_effect.spin_expand", 15);
 
     private final String animName;
     private final int lifespan;

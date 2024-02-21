@@ -6,11 +6,13 @@ import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.attack.frostbound.FrostboundCryogenesisAttack;
 import com.aqutheseal.celestisynth.common.attack.frostbound.FrostboundDanceAttack;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
+import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualAnimation;
 import com.aqutheseal.celestisynth.common.entity.projectile.FrostboundShard;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
+import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -120,6 +122,7 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
             if (target != null) {
                 FrostboundShard shard = new FrostboundShard(CSEntityTypes.FROSTBOUND_SHARD.get(), player, level);
                 shard.moveTo(player.getX() + xx, shard.getY() + yy, player.getZ() + zz);
+                CSEffectEntity.createInstance(player, null, CSVisualTypes.FROSTBOUND_SHARD_PULSE.get(), xx, yy + 2, zz);
                 double d0 = target.getX() - (player.getX() + xx);
                 double d1 = target.getY((double) 1 / 3) - (shard.getY() + yy);
                 double d2 = target.getZ() - (player.getZ() + zz);

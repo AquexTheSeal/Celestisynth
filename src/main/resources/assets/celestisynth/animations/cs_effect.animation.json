@@ -66,8 +66,9 @@
 						"0.0": {
 							"vector": [0, 90, 0]
 						},
-						"0.5": {
-							"vector": [0, -90, 0]
+						"0.75": {
+							"vector": [0, -180, 0],
+							"easing": "easeInOutSine"
 						}
 					},
 					"scale": {
@@ -75,7 +76,8 @@
 							"vector": [1, 1, 1]
 						},
 						"0.75": {
-							"vector": [0, 0, 0]
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
 						}
 					}
 				}
@@ -83,17 +85,6 @@
 		},
 		"animation.cs_effect.none": {
 			"animation_length": 2
-		},
-		"animation.bp_effect.slow_rotation": {
-			"loop": true,
-			"animation_length": 4,
-			"bones": {
-				"bone": {
-					"rotation": {
-						"vector": [0, "math.sin(query.anim_time * 90) * 5", 0]
-					}
-				}
-			}
 		},
 		"animation.cs_effect.slow_rotation": {
 			"loop": true,
@@ -396,6 +387,31 @@
 						"0.5": {
 							"vector": [1, 1, 1],
 							"easing": "easeOutCirc"
+						}
+					}
+				}
+			}
+		},
+		"animation.cs_effect.spin_expand": {
+			"loop": true,
+			"animation_length": 0.75,
+			"bones": {
+				"bone": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, -90, 0]
+						},
+						"0.75": {
+							"vector": [0, 180, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.75": {
+							"vector": [1, 1, 1],
+							"easing": "easeOutQuad"
 						}
 					}
 				}
