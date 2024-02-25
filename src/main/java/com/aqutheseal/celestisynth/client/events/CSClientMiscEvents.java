@@ -5,11 +5,13 @@ import com.aqutheseal.celestisynth.api.mixin.PlayerMixinSupport;
 import com.aqutheseal.celestisynth.client.renderers.entity.layer.FrostboundGeoLayer;
 import com.aqutheseal.celestisynth.client.renderers.misc.CSTooltipRenderer;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraSlashFrenzyAttack;
+import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.item.weapons.AquafloraItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.ViewportEvent;
@@ -40,6 +42,15 @@ public class CSClientMiscEvents {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onLivingRender(RenderLivingEvent event) {
+        CSEntityCapabilityProvider.get(event.getEntity()).ifPresent(data -> {
+            if (data.getTrueInvisibility() > 0) {
+                event.setCanceled(true);
+            }
+        });
     }
 
     @SubscribeEvent

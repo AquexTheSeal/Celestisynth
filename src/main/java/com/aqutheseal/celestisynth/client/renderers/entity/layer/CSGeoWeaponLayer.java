@@ -28,7 +28,7 @@ public class CSGeoWeaponLayer<T extends Item & CSGeoItem> extends GeoRenderLayer
 
     @Override
     public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-        getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, getRenderTypeEyes(animatable), bufferSource.getBuffer(getRenderTypeEyes(animatable)), partialTick, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+        getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, getRenderTypeEyes(animatable), bufferSource.getBuffer(getRenderTypeEyes(animatable)), partialTick, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 0.5F);
         if (geoRenderer.getCurrentItemStack().isEnchanted()) {
             getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, getRenderTypeGlint(), bufferSource.getBuffer(getRenderTypeGlint()), partialTick, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
         }

@@ -59,6 +59,10 @@ public class CSCommonMiscEvents {
                 data.decreasePhantomTagTime();
             }
 
+            if (data.getTrueInvisibility() > 0) {
+                data.decreaseTrueInvisibility();
+            }
+
             if (data.getFrostbound() > 0) {
                 if (entity.tickCount % 10 == 0) {
                     entity.setTicksFrozen(10);
@@ -81,9 +85,6 @@ public class CSCommonMiscEvents {
                     if (entity.tickCount % 10 == 0) {
                         entity.playSound(SoundEvents.FIRE_EXTINGUISH);
                     }
-                }
-
-                if (entity.isOnFire()) {
                     data.decreaseFrostbound(5);
                 } else {
                     data.decreaseFrostbound();

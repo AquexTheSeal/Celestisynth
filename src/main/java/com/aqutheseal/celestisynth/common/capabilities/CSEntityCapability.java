@@ -13,15 +13,17 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class CSEntityCapability extends LivingEntityCapability implements CSCapabilityHelper {
-    public static final String ID = "celestisynthCapabilities";
+    public static final String ID = "celestisynthEntityCapabilities";
 
     public static final String FROSTBOUND_ID = "cs.frostBound";
+    public static final String TRUE_INVISIBILITY_ID = "cs.trueInvisibility";
     public static final String PHANTOM_TAG_SOURCE_ID = "cs.phantomTagSource";
     public static final String PHANTOM_TAG_TIME_ID = "cs.phantomTagTime";
     public static final String QUASAR_IMBUE_SOURCE_ID = "cs.quasarImbueSource";
     public static final String QUASAR_IMBUE_TIME_ID = "cs.quasarImbueTime";
 
     private int frostBound;
+    private int trueInvisibility;
     private @Nullable LivingEntity phantomTagSource;
     private int phantomTagTime;
     private @Nullable LivingEntity quasarImbueSource;
@@ -53,6 +55,28 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
        decreaseFrostbound(1);
     }
 
+    // TRUE INVISIBILITY
+
+    public int getTrueInvisibility() {
+        return trueInvisibility;
+    }
+
+    public void setTrueInvisibility(int value) {
+        if (this.trueInvisibility < value) {
+            this.trueInvisibility = value;
+            this.updateTracking();
+        }
+    }
+
+    public void decreaseTrueInvisibility(int value) {
+        this.trueInvisibility = Math.max(trueInvisibility - value, 0);
+        this.updateTracking();
+    }
+
+    public void decreaseTrueInvisibility() {
+        decreaseTrueInvisibility(1);
+    }
+
     // PHANTOM TAG
 
     public void setPhantomTag(@Nonnull LivingEntity source, int time) {
@@ -78,7 +102,6 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
 
     public void decreasePhantomTagTime() {
         this.phantomTagTime = Math.max(this.phantomTagTime - 1, 0);
-        //this.updateTracking();
     }
 
     // QUASAR IMBUE
@@ -108,7 +131,6 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
     public void decreaseQuasarImbueTime() {
         if (quasarImbueTime > 0) {
             this.quasarImbueTime = this.quasarImbueTime - 1;
-            //this.updateTracking();
         }
     }
 
@@ -117,6 +139,7 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
         CompoundTag nbt = new CompoundTag();
 
         nbt.putInt(FROSTBOUND_ID, this.frostBound);
+        nbt.putInt(TRUE_INVISIBILITY_ID, this.trueInvisibility);
 
         nbt.putInt(PHANTOM_TAG_SOURCE_ID, this.phantomTagSource != null ? this.phantomTagSource.getId() : 0);
         nbt.putInt(PHANTOM_TAG_TIME_ID, this.phantomTagTime);
@@ -131,6 +154,10 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
     public void deserializeNBT(CompoundTag nbt, boolean readingFromDisk) {
         if (nbt.contains(FROSTBOUND_ID, Tag.TAG_INT)) {
             this.frostBound = nbt.getInt(FROSTBOUND_ID);
+        }
+
+        if (nbt.contains(TRUE_INVISIBILITY_ID, Tag.TAG_INT)) {
+            this.trueInvisibility = nbt.getInt(TRUE_INVISIBILITY_ID);
         }
 
         if (checkBoth(nbt, Tag.TAG_INT, PHANTOM_TAG_SOURCE_ID, PHANTOM_TAG_TIME_ID)) {

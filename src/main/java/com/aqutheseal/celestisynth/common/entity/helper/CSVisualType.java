@@ -1,14 +1,10 @@
 package com.aqutheseal.celestisynth.common.entity.helper;
 
-import net.minecraft.sounds.SoundEvent;
-import org.jetbrains.annotations.Nullable;
-
 public class CSVisualType {
     private final String name;
     private final String texture;
     private final CSVisualModel model;
     private final CSVisualAnimation animation;
-    @Nullable private final SoundEvent effectSound;
     private final int frames;
     private final int framesSpeed;
     private final double scale;
@@ -16,12 +12,11 @@ public class CSVisualType {
     private final boolean fadeOut;
     private final boolean specialProperties;
 
-    public CSVisualType(String name, String texture, CSVisualModel model, CSVisualAnimation animation, @Nullable SoundEvent effectSound, int frames, int framesSpeed, double scale, boolean rotateRandomly, boolean fadeOut, boolean specialProperties) {
+    public CSVisualType(String name, String texture, CSVisualModel model, CSVisualAnimation animation, int frames, int framesSpeed, double scale, boolean rotateRandomly, boolean fadeOut, boolean specialProperties) {
         this.name = name;
         this.texture = texture;
         this.model = model;
         this.animation = animation;
-        this.effectSound = effectSound;
         this.frames = frames;
         this.framesSpeed = framesSpeed;
         this.scale = scale;
@@ -30,12 +25,12 @@ public class CSVisualType {
         this.specialProperties = specialProperties;
     }
 
-    public CSVisualType(String name, String texture, CSVisualModel model, CSVisualAnimation animation, int frames, int framesSpeed, double scale, boolean rotateRandomly, boolean fadeOut, boolean specialProperties) {
-        this(name, texture, model, animation, null, frames, framesSpeed, scale, rotateRandomly, fadeOut, specialProperties);
+    public CSVisualType(String texture, CSVisualModel model, CSVisualAnimation animation, int frames, int framesSpeed, double scale, boolean rotateRandomly, boolean fadeOut, boolean specialProperties) {
+        this(texture, texture, model, animation, frames, framesSpeed, scale, rotateRandomly, fadeOut, specialProperties);
     }
 
-    public CSVisualType(String texture, CSVisualModel model, CSVisualAnimation animation, int frames, int framesSpeed, double scale, boolean rotateRandomly, boolean fadeOut, boolean specialProperties) {
-        this(texture, texture, model, animation, null, frames, framesSpeed, scale, rotateRandomly, fadeOut, specialProperties);
+    public static CSVisualType createSkin(String skin, CSVisualType parent) {
+        return new CSVisualType(parent.name + "_" + skin, "skin/" + parent.texture + "_" + skin, parent.model, parent.animation, parent.frames, parent.framesSpeed, parent.scale, parent.rotateRandomly, parent.fadeOut, parent.specialProperties);
     }
 
     public String getName() {
@@ -52,10 +47,6 @@ public class CSVisualType {
 
     public CSVisualAnimation getAnimation() {
         return animation;
-    }
-
-    public SoundEvent getEffectSound() {
-        return effectSound;
     }
 
     public int getFrames() {

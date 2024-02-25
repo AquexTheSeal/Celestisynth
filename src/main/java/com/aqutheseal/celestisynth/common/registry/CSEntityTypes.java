@@ -38,7 +38,7 @@ public class CSEntityTypes {
             .sized(0.3F, 0.3F).clientTrackingRange(16).build(Celestisynth.prefix("rainfall_rain").toString())
     );
     public static final RegistryObject<EntityType<RainfallLaserMarker>> RAINFALL_LASER_MARKER = ENTITY_TYPES.register("rainfall_laser_marker", () -> EntityType.Builder.of(RainfallLaserMarker::new, MobCategory.MISC)
-            .sized(0.3F, 0.3F).clientTrackingRange(16).build(Celestisynth.prefix("rainfall_laser_marker").toString())
+            .sized(0.0F, 0.0F).clientTrackingRange(16).build(Celestisynth.prefix("rainfall_laser_marker").toString())
     );
 
     public static final RegistryObject<EntityType<RainfallArrow>> RAINFALL_ARROW = ENTITY_TYPES.register("rainfall_arrow", () -> EntityType.Builder.<RainfallArrow>of(RainfallArrow::new, MobCategory.MISC)

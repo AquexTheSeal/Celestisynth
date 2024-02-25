@@ -14,7 +14,9 @@ public class CSEffectEntityModel extends GeoModel<CSEffectEntity> {
 
     @Override
     public ResourceLocation getTextureResource(CSEffectEntity animatable) {
-        return animatable.getVisualType().getFrames() > 0 ? Celestisynth.prefix("textures/entity/" + animatable.getVisualType().getTexture() + "/" + animatable.getVisualType().getTexture() + animatable.getFrameLevel() + ".png") : Celestisynth.prefix("textures/entity/" + animatable.getVisualType().getTexture() + ".png");
+        return animatable.getVisualType().getFrames() > 0 ?
+                Celestisynth.prefix("textures/entity/visuals/" + animatable.getVisualType().getTexture() + "/" + animatable.getVisualType().getTexture() + animatable.getFrameLevel() + ".png") :
+                Celestisynth.prefix("textures/entity/visuals/" + animatable.getVisualType().getTexture() + ".png");
     }
 
     @Override

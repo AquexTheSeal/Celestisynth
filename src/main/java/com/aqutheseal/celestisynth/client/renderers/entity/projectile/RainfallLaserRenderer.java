@@ -6,16 +6,14 @@ import com.aqutheseal.celestisynth.common.entity.projectile.RainfallLaserMarker;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.Mth;
 
 public class RainfallLaserRenderer extends EntityRenderer<RainfallLaserMarker> {
     private static final ResourceLocation ARROW_TEXTURE = Celestisynth.prefix("textures/entity/projectile/rainfall_arrow.png");
@@ -33,41 +31,19 @@ public class RainfallLaserRenderer extends EntityRenderer<RainfallLaserMarker> {
 
     @Override
     public void render(RainfallLaserMarker entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light) {
-//        poseStack.pushPose();
-//        poseStack.translate(0, 1, 0);
-//        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
-//        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 90.0F));
-//
-//        Vec3 to = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-//        Vec3 from = new Vec3(entity.getOrigin().getX(), entity.getOrigin().getY(), entity.getOrigin().getZ());
-//        double distance = to.distanceTo(from);
-//        for (float i = 0; i < distance; i += 0.1F) {
-//            poseStack.translate(0, i, 0);
-//            VertexConsumer VertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(entity)));
-//            this.model.renderToBuffer(poseStack, VertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-//            VertexConsumer VertexConsumer2 = buffer.getBuffer(RenderType.eyes(this.getTextureLocation(entity)));
-//            this.model.renderToBuffer(poseStack, VertexConsumer2, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-//        }
-//        poseStack.popPose();
         poseStack.pushPose();
         float scale = 0.4f;
-        float length = 32 * scale * scale;
-        float f = entity.tickCount + partialTicks;
-        poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() - 180.0F));
-        poseStack.mulPose(Axis.XP.rotationDegrees(-entity.getXRot() - 90));
-        poseStack.scale(scale, scale, scale);
+        float progress = (float) entity.tickCount / 5;
+        float size = Mth.clampedLerp(scale, 0, progress);
 
-        Vec3 to = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-        Vec3 from = new Vec3(entity.getOrigin().getX(), entity.getOrigin().getY(), entity.getOrigin().getZ());
-        double distance = to.distanceTo(from);
-
-        VertexConsumer consumer = buffer.getBuffer(RenderType.eyes(ARROW_TEXTURE));
-        for (float i = 0; i < distance * 4; i += length) {
-            poseStack.translate(0, length, 0);
-            poseStack.pushPose();
-            poseStack.mulPose(Axis.YP.rotationDegrees(f * 5));
-            this.model.renderToBuffer(poseStack, consumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-            poseStack.popPose();
+        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - (90.0F)));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + (90.0F)));
+        poseStack.scale(size, scale, size);
+        {
+            VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucent(ARROW_TEXTURE));
+            this.model.renderToBuffer(poseStack, consumer, light, OverlayTexture.NO_OVERLAY, 1, 1,  entity.isQuasar() ? 1 : 0, 1);
+            VertexConsumer consumer2 = buffer.getBuffer(RenderType.eyes(ARROW_TEXTURE));
+            this.model.renderToBuffer(poseStack, consumer2, light, OverlayTexture.NO_OVERLAY, 1, 1,  entity.isQuasar() ? 1 : 0, 0.5F);
         }
         poseStack.popPose();
         super.render(entity, yaw, partialTicks, poseStack, buffer, light);
@@ -76,15 +52,5 @@ public class RainfallLaserRenderer extends EntityRenderer<RainfallLaserMarker> {
     @Override
     public ResourceLocation getTextureLocation(RainfallLaserMarker entity) {
         return ARROW_TEXTURE;
-    }
-
-    @Override
-    protected int getBlockLightLevel(RainfallLaserMarker pEntity, BlockPos pPos) {
-        return 15;
-    }
-
-    @Override
-    protected int getSkyLightLevel(RainfallLaserMarker pEntity, BlockPos pPos) {
-        return 15;
     }
 }

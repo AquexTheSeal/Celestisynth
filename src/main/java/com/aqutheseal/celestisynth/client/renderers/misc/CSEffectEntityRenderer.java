@@ -41,6 +41,12 @@ public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<C
     }
 
     @Override
+    public void renderFinal(PoseStack poseStack, CSEffectEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.renderFinal(poseStack, animatable, model, bufferSource, bufferSource.getBuffer(RenderType.entityTranslucentEmissive(getTextureLocation(animatable))), partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
+    @Override
     public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack, CSEffectEntity animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
         float f = (float) animatable.getVisualType().getScale();
         super.scaleModelForRender(widthScale * f, heightScale * f, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
@@ -48,7 +54,7 @@ public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<C
 
     @Override
     public RenderType getRenderType(CSEffectEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentEmissive(texture, false);
+        return RenderType.entityTranslucent(texture, false);
     }
 
     @Override

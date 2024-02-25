@@ -5,6 +5,7 @@ import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
+import com.aqutheseal.celestisynth.common.entity.helper.skinset.FrostboundSlashSkinSet;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
@@ -19,6 +20,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class FrostboundDanceAttack extends FrostboundAttack {
+    public final FrostboundSlashSkinSet skinSet = FrostboundSlashSkinSet.of(stack);
+
     public FrostboundDanceAttack(Player player, ItemStack stack) {
         super(player, stack);
     }
@@ -77,18 +80,18 @@ public class FrostboundDanceAttack extends FrostboundAttack {
             shootShard(4);
         }
         if (getTimerProgress() == 20) {
-            this.playSoundAt(level, CSSoundEvents.FROZEN_SLASH.get(), player.blockPosition().offset((int) xP, 0, (int) zP));
-            doAOEAttack(CSVisualTypes.FROSTBOUND_SLASH.get(), xP * 2.5, zP * 2.5, false);
+            this.playSoundAt(level, skinSet.frozenSlashSound(), player.blockPosition().offset((int) xP, 0, (int) zP));
+            doAOEAttack(skinSet.frozenSlashEffect(), xP * 2.5, zP * 2.5, false);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
             shootShard(3);
         } else if (getTimerProgress() == 30) {
-            this.playSoundAt(level, CSSoundEvents.FROZEN_SLASH.get(), player.blockPosition().offset((int) xP, 0, (int) zP));
-            doAOEAttack(CSVisualTypes.FROSTBOUND_SLASH_INVERTED.get(), xP * 2.5, zP * 2.5, false);
+            this.playSoundAt(level, skinSet.frozenSlashSound(), player.blockPosition().offset((int) xP, 0, (int) zP));
+            doAOEAttack(skinSet.frozenSlashInvertEffect(), xP * 2.5, zP * 2.5, false);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
             shootShard(3);
         } else if (getTimerProgress() == 40) {
-            this.playSoundAt(level, CSSoundEvents.FROZEN_SLASH.get(), player.blockPosition().offset((int) xP, 0, (int) zP));
-            doAOEAttack(CSVisualTypes.FROSTBOUND_SLASH_LARGE.get(), xP * 2.5, zP * 2.5, true);
+            this.playSoundAt(level, skinSet.frozenSlashSound(), player.blockPosition().offset((int) xP, 0, (int) zP));
+            doAOEAttack(skinSet.frozenSlashLargeEffect(), xP * 2.5, zP * 2.5, true);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
             shootShard(6);
         }
@@ -100,7 +103,7 @@ public class FrostboundDanceAttack extends FrostboundAttack {
             double sizeMult = isLarge ? 3 : 1;
             double xI = xP + Mth.sin(i) * 3;
             double zI = zP + Mth.cos(i) * 3;
-            ParticleUtil.sendParticles(level, ParticleTypes.SNOWFLAKE, player.getX() + xI, player.getY() + 0.5, player.getZ() + zI, 1, (xI / 10) * sizeMult, 0, (zI / 10) * sizeMult);
+            ParticleUtil.sendParticles(level, skinSet.frozenSlashParticle(), player.getX() + xI, player.getY() + 0.5, player.getZ() + zI, 1, (xI / 10) * sizeMult, 0, (zI / 10) * sizeMult);
         }
         for (Entity entity : iterateEntities(level, createAABB(player.blockPosition().offset((int) xP, 1, (int) zP), isLarge ? 8 : 5, 3))) {
             if (entity instanceof LivingEntity target && entity != player) {

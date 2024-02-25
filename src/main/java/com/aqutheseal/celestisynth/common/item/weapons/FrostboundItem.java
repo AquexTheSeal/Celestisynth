@@ -13,6 +13,7 @@ import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
+import com.aqutheseal.celestisynth.util.SkinUtil;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -41,6 +42,15 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
     @Override
     public String geoIdentifier() {
         return "frostbound";
+    }
+
+    @Override
+    public String texture(ItemStack stack) {
+        if (SkinUtil.isUsingAquaSkin(stack)) {
+            return "skin/frostbound_seabreeze";
+        } else {
+            return CSGeoItem.super.texture(stack);
+        }
     }
 
     @Override

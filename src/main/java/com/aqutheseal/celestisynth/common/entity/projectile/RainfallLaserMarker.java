@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 
 public class RainfallLaserMarker extends EffectControllerEntity {
     private static final EntityDataAccessor<BlockPos> ORIGIN = SynchedEntityData.defineId(RainfallLaserMarker.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Boolean> IS_QUASAR = SynchedEntityData.defineId(RainfallLaserMarker.class, EntityDataSerializers.BOOLEAN);
 
     public RainfallLaserMarker(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -21,12 +22,13 @@ public class RainfallLaserMarker extends EffectControllerEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ORIGIN, BlockPos.ZERO);
+        this.entityData.define(IS_QUASAR, true);
     }
 
     @Override
     public void tick() {
         this.baseTick();
-        if (tickCount >= 20) {
+        if (tickCount >= 5) {
             this.discard();
         }
     }
@@ -37,6 +39,14 @@ public class RainfallLaserMarker extends EffectControllerEntity {
 
     public void setOrigin(BlockPos origin) {
         this.entityData.set(ORIGIN, origin);
+    }
+
+    public boolean isQuasar() {
+        return this.entityData.get(IS_QUASAR);
+    }
+
+    public void setQuasar(boolean quasar) {
+        this.entityData.set(IS_QUASAR, quasar);
     }
 
     @Override

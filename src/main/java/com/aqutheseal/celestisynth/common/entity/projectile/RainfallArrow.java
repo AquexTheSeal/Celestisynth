@@ -188,15 +188,23 @@ public class RainfallArrow extends AbstractArrow {
     }
 
     public void markForLaser(double x, double y, double z) {
-        if (!level().isClientSide) {
-            RainfallLaserMarker marker = CSEntityTypes.RAINFALL_LASER_MARKER.get().create(level());
-            marker.moveTo(x, y, z);
-            marker.setYRot(getYRot());
-            marker.setXRot(getXRot());
-            marker.yRotO = yRotO;
-            marker.xRotO = xRotO;
-            marker.setOrigin(getOrigin());
-            level().addFreshEntity(marker);
+        Vec3 to = new Vec3(x, y, z);
+        Vec3 from = new Vec3(getOrigin().getX(), getOrigin().getY(), getOrigin().getZ());
+        double distance = to.distanceTo(from);
+        Vec3 direction = to.subtract(from).normalize();
+        for (double i = 0; i <= distance; i += 0.5) {
+            Vec3 laserPos = from.add(direction.scale(i));
+            if (!level().isClientSide) {
+                RainfallLaserMarker marker = CSEntityTypes.RAINFALL_LASER_MARKER.get().create(level());
+                marker.moveTo(laserPos.x, laserPos.y, laserPos.z);
+                marker.setYRot(getYRot());
+                marker.setXRot(getXRot());
+                marker.yRotO = yRotO;
+                marker.xRotO = xRotO;
+                marker.setOrigin(getOrigin());
+                marker.setQuasar(this.isImbueQuasar());
+                level().addFreshEntity(marker);
+            }
         }
     }
 
