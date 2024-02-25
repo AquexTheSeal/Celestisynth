@@ -14,7 +14,7 @@ import net.minecraft.world.entity.Entity;
 
 public class FrostboundShardModel<T extends Entity> extends EntityModel<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Celestisynth.prefix("textures/entity/projectile/frostbound_shard.png"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Celestisynth.prefix("frostbound_shard_model.png"), "main");
 	private final ModelPart shard;
 
 	public FrostboundShardModel(ModelPart root) {

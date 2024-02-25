@@ -10,7 +10,6 @@ import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,20 +29,12 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class RainfallArrow extends AbstractArrow implements GeoEntity {
+public class RainfallArrow extends AbstractArrow {
     private static final EntityDataAccessor<Boolean> IS_STRONG = SynchedEntityData.defineId(RainfallArrow.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_FLAMING = SynchedEntityData.defineId(RainfallArrow.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<BlockPos> ORIGIN = SynchedEntityData.defineId(RainfallArrow.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<Boolean> SHOULD_IMBUE_QUASAR = SynchedEntityData.defineId(RainfallArrow.class, EntityDataSerializers.BOOLEAN);
-
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private final RainfallSerenityItem rawRainfallItem = (RainfallSerenityItem) CSItems.RAINFALL_SERENITY.get();
 
@@ -60,6 +51,7 @@ public class RainfallArrow extends AbstractArrow implements GeoEntity {
     }
 
     public void createLaser(Vec3 from, Vec3 to, boolean isMainArrow, boolean strictLoading) {
+        /**
         double distance = from.distanceTo(to);
         Vec3 direction = to.subtract(from).normalize();
 
@@ -73,6 +65,7 @@ public class RainfallArrow extends AbstractArrow implements GeoEntity {
 
             ParticleUtil.sendParticles(level(), curParticle, particlePos.x, particlePos.y, particlePos.z, 1, 0, 0, 0);
         }
+         **/
     }
 
     @Override
@@ -83,12 +76,14 @@ public class RainfallArrow extends AbstractArrow implements GeoEntity {
             if (tickCount == 2) {
                 Vec3 from = new Vec3(getOrigin().getX(), getOrigin().getY(), getOrigin().getZ());
                 Vec3 to = new Vec3(getX(), getY(), getZ());
-
                 createLaser(from, to, true, true);
             }
         }
 
-        if (tickCount > 1) remove(RemovalReason.DISCARDED);
+        if (tickCount > 2) {
+            markForLaser(getX(), getY(), getZ());
+            remove(RemovalReason.DISCARDED);
+        }
     }
 
     @Override
@@ -192,17 +187,28 @@ public class RainfallArrow extends AbstractArrow implements GeoEntity {
         }
     }
 
+    public void markForLaser(double x, double y, double z) {
+        if (!level().isClientSide) {
+            RainfallLaserMarker marker = CSEntityTypes.RAINFALL_LASER_MARKER.get().create(level());
+            marker.moveTo(x, y, z);
+            marker.setYRot(getYRot());
+            marker.setXRot(getXRot());
+            marker.yRotO = yRotO;
+            marker.xRotO = xRotO;
+            marker.setOrigin(getOrigin());
+            level().addFreshEntity(marker);
+        }
+    }
+
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-
         hitEffect(pResult, pResult.getBlockPos());
     }
 
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
-
         hitEffect(pResult, pResult.getEntity().blockPosition());
     }
 
@@ -255,21 +261,6 @@ public class RainfallArrow extends AbstractArrow implements GeoEntity {
 
     public void setImbueQuasar(boolean imbueAllow) {
         this.entityData.set(SHOULD_IMBUE_QUASAR, imbueAllow);
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
-    }
-
-    public boolean isControlledByLocalInstance() {
-        return true;
-    }
-
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, (state) -> {
-            return state.setAndContinue(RawAnimation.begin().thenLoop("animation.rainfall_arrow.idle"));
-        }));
     }
 
     @Override

@@ -14,7 +14,6 @@ import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -190,12 +189,11 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
                 }
                 for (float angle : angles) {
                     if (!pLevel.isClientSide) {
-                        BlockPos originPos = new BlockPos((int) player.getX(), (int) (player.getY() + 1.5), (int) player.getZ());
                         RainfallArrow rainfallArrow = new RainfallArrow(pLevel, player);
 
                         rainfallArrow = (RainfallArrow) customArrow(rainfallArrow);
                         rainfallArrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-                        rainfallArrow.setOrigin(originPos);
+                        rainfallArrow.setOrigin(player.blockPosition().above());
                         rainfallArrow.setPierceLevel((byte) 3);
                         rainfallArrow.setBaseDamage(CSConfigManager.COMMON.rainfallSerenityArrowDmg.get() + (pLevel.random.nextDouble() * 3));
                         rainfallArrow.setImbueQuasar(true);

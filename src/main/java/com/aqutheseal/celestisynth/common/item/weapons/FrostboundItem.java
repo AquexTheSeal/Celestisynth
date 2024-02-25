@@ -122,7 +122,7 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
             if (target != null) {
                 FrostboundShard shard = new FrostboundShard(CSEntityTypes.FROSTBOUND_SHARD.get(), player, level);
                 shard.moveTo(player.getX() + xx, shard.getY() + yy, player.getZ() + zz);
-                CSEffectEntity.createInstance(player, null, CSVisualTypes.FROSTBOUND_SHARD_PULSE.get(), xx, yy + 2, zz);
+                CSEffectEntity.createInstance(player, null, CSVisualTypes.FROSTBOUND_SHARD_PULSE.get(), xx, yy + 3, zz);
                 double d0 = target.getX() - (player.getX() + xx);
                 double d1 = target.getY((double) 1 / 3) - (shard.getY() + yy);
                 double d2 = target.getZ() - (player.getZ() + zz);

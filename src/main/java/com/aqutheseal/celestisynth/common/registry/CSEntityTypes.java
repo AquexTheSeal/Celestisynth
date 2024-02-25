@@ -4,6 +4,7 @@ import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.projectile.FrostboundShard;
 import com.aqutheseal.celestisynth.common.entity.projectile.RainfallArrow;
+import com.aqutheseal.celestisynth.common.entity.projectile.RainfallLaserMarker;
 import com.aqutheseal.celestisynth.common.entity.skill.*;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
 import net.minecraft.world.entity.EntityType;
@@ -35,6 +36,9 @@ public class CSEntityTypes {
     );
     public static final RegistryObject<EntityType<SkillCastFrostboundIceCast>> FROSTBOUND_ICE_CAST = ENTITY_TYPES.register("frostbound_ice_cast", () -> EntityType.Builder.of(SkillCastFrostboundIceCast::new, MobCategory.MISC)
             .sized(0.3F, 0.3F).clientTrackingRange(16).build(Celestisynth.prefix("rainfall_rain").toString())
+    );
+    public static final RegistryObject<EntityType<RainfallLaserMarker>> RAINFALL_LASER_MARKER = ENTITY_TYPES.register("rainfall_laser_marker", () -> EntityType.Builder.of(RainfallLaserMarker::new, MobCategory.MISC)
+            .sized(0.3F, 0.3F).clientTrackingRange(16).build(Celestisynth.prefix("rainfall_laser_marker").toString())
     );
 
     public static final RegistryObject<EntityType<RainfallArrow>> RAINFALL_ARROW = ENTITY_TYPES.register("rainfall_arrow", () -> EntityType.Builder.<RainfallArrow>of(RainfallArrow::new, MobCategory.MISC)
