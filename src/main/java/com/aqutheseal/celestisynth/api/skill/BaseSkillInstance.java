@@ -8,10 +8,10 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseSkillInstance implements ISkillInstance {
-    protected final Component skillName;
-    protected final Component skillDescription;
+    protected Component skillName;
+    protected Component skillDescription;
     protected final Component skillCriterionDescription;
-    protected final ResourceLocation skillIcon;
+    protected ResourceLocation skillIcon;
     protected final int minSkillLevel;
     protected final int maxSkillLevel;
     protected final int skillCooldown;
@@ -102,7 +102,19 @@ public abstract class BaseSkillInstance implements ISkillInstance {
     public abstract void setAttack(@Nullable WeaponAttackInstance newAttack, boolean interruptCurrentAttack);
 
     @Override
-    public abstract void setDescription(Component newDescription);
+    public void setName(Component newName) {
+        this.skillName = newName;
+    }
+
+    @Override
+    public void setDescription(Component newDescription) {
+        this.skillDescription = newDescription;
+    }
+
+    @Override
+    public void setIcon(ResourceLocation skillIcon) {
+        this.skillIcon = skillIcon;
+    }
 
     @Override
     public abstract CompoundTag serializeToNBT();

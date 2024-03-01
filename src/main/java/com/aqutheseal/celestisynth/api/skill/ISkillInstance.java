@@ -38,7 +38,9 @@ public interface ISkillInstance {
     void onSkillDeactivated(Player owner);
     void setSkillLevel(int newSkillLevel);
     void setAttack(@Nullable WeaponAttackInstance newAttack, boolean interruptCurrentAttack);
+    void setName(Component newName);
     void setDescription(Component newDescription);
+    void setIcon(ResourceLocation newIcon);
 
     CompoundTag serializeToNBT();
 }

@@ -6,4 +6,5 @@ import net.minecraft.resources.ResourceLocation;
 public abstract class AbstractSkillTree {
     protected Component treeName;
     protected ResourceLocation treeIconLoc;
+    protected ResourceLocation treeBgLoc;
 }
