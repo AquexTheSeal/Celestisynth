@@ -51,14 +51,9 @@ public interface CSWeaponUtil {
         DamageSource regularDamage = new CSDamageSources(target.level().registryAccess()).basicPlayerAttack(holder);
         DamageSource rapidDamage = new CSDamageSources(target.level().registryAccess()).rapidPlayerAttack(holder);
 
-        DamageSource finalDamageSource;
-        if (damageSource != null) {
-            finalDamageSource = damageSource;
-        } else {
-            finalDamageSource = attackHurtType.isRapid() ? rapidDamage : regularDamage;
-        }
+        DamageSource finalDamageSource = damageSource == null ? attackHurtType.isRapid() ? rapidDamage : regularDamage : damageSource;
 
-        if (!attackHurtType.doKnockback()) {
+        if (!attackHurtType.doKnockback()) { //TODO Attrib mods instead (Aqu WHY ARE YOU DO THIS!?!? :died:)
             double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
             target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1000);
             attack(holder, target, damage, finalDamageSource, attackHurtType);
