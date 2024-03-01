@@ -28,7 +28,11 @@ public class ItemMixin {
     @Inject(method = "inventoryTick", at = @At("HEAD"))
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected, CallbackInfo ci) {
         pStack.getCapability(CSItemStackCapabilityProvider.CAPABILITY).ifPresent(data -> {
-            data.useAquaSkin(SkinUtil.getAquaSkinWhitelist().contains(pEntity.getUUID()));
+            if (SkinUtil.getAquaSkinWhitelist().contains(pEntity.getUUID())) {
+                data.setSkinIndex(1);
+            } else {
+                data.setSkinIndex(0);
+            }
         });
     }
 }

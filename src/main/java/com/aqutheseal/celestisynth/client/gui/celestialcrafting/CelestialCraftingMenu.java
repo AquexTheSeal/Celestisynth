@@ -120,9 +120,9 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
             if (pIndex == 0) {
                 this.access.execute((curLevel, targetPos) -> targetSlotItem.getItem().onCraftedBy(targetSlotItem, curLevel, pPlayer));
-
-                if (!moveItemStackTo(targetSlotItem, 10, 46, true)) return ItemStack.EMPTY;
-
+                if (!moveItemStackTo(targetSlotItem, 10, 46, true)) {
+                    return ItemStack.EMPTY;
+                }
                 targetSlot.onQuickCraft(targetSlotItem, targetStack);
             } else if (pIndex >= 10 && pIndex < 46) {
                 if (!moveItemStackTo(targetSlotItem, 1, 10, false)) {

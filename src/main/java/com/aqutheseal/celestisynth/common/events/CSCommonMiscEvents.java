@@ -3,19 +3,14 @@ package com.aqutheseal.celestisynth.common.events;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
-import com.aqutheseal.celestisynth.common.attack.aquaflora.AquafloraSlashFrenzyAttack;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
 import com.aqutheseal.celestisynth.common.item.weapons.BreezebreakerItem;
-import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
-import com.aqutheseal.celestisynth.common.registry.CSParticleTypes;
-import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
-import com.aqutheseal.celestisynth.common.registry.CSTags;
+import com.aqutheseal.celestisynth.common.registry.*;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import com.google.common.collect.Streams;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -106,13 +101,6 @@ public class CSCommonMiscEvents {
             cs.onPlayerHurt(event, itemR);
         } else if (itemL.getItem() instanceof CSWeapon cs) {
             cs.onPlayerHurt(event, itemR);
-        }
-    }
-
-    private static void checkAndCancelAttack(LivingHurtEvent event, ItemStack itemStack) {
-        CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-        if (tagElement != null && tagElement.getBoolean(AquafloraSlashFrenzyAttack.ATTACK_ONGOING)) {
-            event.setAmount(event.getAmount() * 0.25F);
         }
     }
 

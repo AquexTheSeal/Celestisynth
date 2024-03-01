@@ -1,0 +1,48 @@
+{
+  "parent": "bettercombat:claymore",
+  "attributes": {
+    "attack_range": 5.0,
+    "attacks": [
+      {
+        "angle": 150.0,
+        "animation": "bettercombat:one_handed_slash_horizontal_right",
+        "damage_multiplier": 1.1,
+        "hitbox": "HORIZONTAL_PLANE",
+        "swing_sound": {
+          "id": "bettercombat:scythe_slash",
+          "pitch": 1.0,
+          "randomness": 0.1,
+          "volume": 1.0
+        },
+        "upswing": 0.5
+      },
+      {
+        "angle": 150.0,
+        "animation": "bettercombat:one_handed_slash_horizontal_left",
+        "hitbox": "HORIZONTAL_PLANE",
+        "swing_sound": {
+          "id": "bettercombat:scythe_slash",
+          "pitch": 1.0,
+          "randomness": 0.1,
+          "volume": 1.0
+        },
+        "upswing": 0.5
+      },
+      {
+        "angle": 0.0,
+        "animation": "bettercombat:one_handed_slam",
+        "damage_multiplier": 1.2,
+        "hitbox": "FORWARD_BOX",
+        "swing_sound": {
+          "id": "bettercombat:claymore_slam",
+          "pitch": 1.0,
+          "randomness": 0.1,
+          "volume": 1.0
+        },
+        "upswing": 0.5
+      }
+    ],
+    "pose": "bettercombat:pose_two_handed_heavy",
+    "two_handed": true
+  }
+}

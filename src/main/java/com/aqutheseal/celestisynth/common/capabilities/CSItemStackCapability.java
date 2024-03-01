@@ -7,30 +7,30 @@ import net.minecraft.world.item.ItemStack;
 public class CSItemStackCapability extends ItemStackCapability implements CSCapabilityHelper {
     public static final String ID = "celestisynthItemStackCapabilities";
 
-    public static final String AQUA_SKIN = "cs.aquaSkin";
-    private boolean aquaSkin;
+    public static final String SKIN_INDEX = "cs.aquaSkin";
+    private int skinIndex;
 
     protected CSItemStackCapability(ItemStack itemStack) {
         super(itemStack);
     }
 
-    public boolean usingAquaSkin() {
-        return aquaSkin;
+    public int getSkinIndex() {
+        return skinIndex;
     }
 
-    public void useAquaSkin(boolean value) {
-        aquaSkin = value;
+    public void setSkinIndex(int value) {
+        skinIndex = value;
     }
 
     @Override
     public CompoundTag serializeNBT(boolean savingToDisk) {
         CompoundTag nbt = new CompoundTag();
-        nbt.putBoolean(AQUA_SKIN, this.aquaSkin);
+        nbt.putInt(SKIN_INDEX, this.skinIndex);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt, boolean readingFromDisk) {
-        this.aquaSkin = nbt.getBoolean(AQUA_SKIN);
+        this.skinIndex = nbt.getInt(SKIN_INDEX);
     }
 }

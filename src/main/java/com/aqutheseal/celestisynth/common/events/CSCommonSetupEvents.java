@@ -3,11 +3,9 @@ package com.aqutheseal.celestisynth.common.events;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
-import com.aqutheseal.celestisynth.common.registry.CSCapabilities;
-import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
-import com.aqutheseal.celestisynth.common.registry.CSItems;
-import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
+import com.aqutheseal.celestisynth.common.registry.*;
 import com.aqutheseal.celestisynth.datagen.providers.*;
+import com.aqutheseal.celestisynth.datagen.providers.compat.CSBetterCombatProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
@@ -25,6 +23,7 @@ import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -41,6 +40,11 @@ public class CSCommonSetupEvents {
     }
 
     public static class CSModSetupEvents {
+
+        @SubscribeEvent
+        public static void onEntityAttributeModification(EntityAttributeModificationEvent event) {
+            CSAttributes.modifyEntityAttributes(event);
+        }
 
         @SubscribeEvent
         public static void onRegistryCreatingEvent(NewRegistryEvent event) {
@@ -81,6 +85,7 @@ public class CSCommonSetupEvents {
             dataGenerator.addProvider(event.includeServer(), new CSTagsProvider.ItemHandler(output, lookup, blockTagProvider.contentsGetter(), efh));
             dataGenerator.addProvider(event.includeServer(), new CSTagsProvider.EntityTypeHandler(output, lookup, efh));
             dataGenerator.addProvider(event.includeServer(), new CSTagsProvider.BiomeHandler(output, lookup, efh));
+            dataGenerator.addProvider(event.includeServer(), new CSBetterCombatProvider(output));
 
             otherProviders(output, lookup, efh).forEach(provider -> dataGenerator.addProvider(event.includeServer(), provider));
         }

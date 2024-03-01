@@ -40,6 +40,10 @@ public class CSItemModelProvider extends ItemModelProvider {
         exemptions.add(CSItems.TEMPEST_SPAWN_EGG);
 
         this.defaultItem(CSItems.ITEMS.getEntries());
+        this.defaultItem(CSItems.SOLAR_CRYSTAL_HELMET);
+        this.defaultItem(CSItems.SOLAR_CRYSTAL_CHESTPLATE);
+        this.defaultItem(CSItems.SOLAR_CRYSTAL_LEGGINGS);
+        this.defaultItem(CSItems.SOLAR_CRYSTAL_BOOTS);
 
         this.csCustomModel(CSBlocks.SOLAR_CRYSTAL.get().asItem(), getMcLoc("item/generated"));
         this.block(CSBlocks.LUNAR_STONE);
@@ -69,6 +73,13 @@ public class CSItemModelProvider extends ItemModelProvider {
                 this.getBuilder(name).parent(modelType).texture("layer0", ITEM_FOLDER + "/" + name);
             }
         }
+    }
+
+    public void defaultItem(RegistryObject<Item> item) {
+        String name = item.getId().getPath();
+        Item getItem = item.get();
+        ModelFile.ExistingModelFile modelType = getItem instanceof DiggerItem || getItem instanceof SwordItem ? getMcLoc("item/handheld") : getMcLoc("item/generated");
+        this.getBuilder(name).parent(modelType).texture("layer0", ITEM_FOLDER + "/" + name);
     }
 
     public void block(RegistryObject<Block> blockItem) {

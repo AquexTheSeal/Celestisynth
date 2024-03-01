@@ -46,7 +46,7 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
 
     @Override
     public String texture(ItemStack stack) {
-        if (SkinUtil.isUsingAquaSkin(stack)) {
+        if (SkinUtil.getSkinIndex(stack) == 1) {
             return "skin/frostbound_seabreeze";
         } else {
             return CSGeoItem.super.texture(stack);

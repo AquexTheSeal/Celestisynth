@@ -6,6 +6,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 public final class CSRegistryManager {
 
     protected static void registerRegistries(IEventBus modBus) {
+        CSAttributes.ATTRIBUTES.register(modBus);
         CSEntityTypes.ENTITY_TYPES.register(modBus);
         CSItems.ITEMS.register(modBus);
         CSBlocks.BLOCKS.register(modBus);

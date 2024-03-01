@@ -59,7 +59,6 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
             double range = 7.0;
             double rangeSq = Mth.square(range);
             List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range).move(calculateXLook(player), 0, calculateZLook(player)));
-
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
@@ -73,23 +72,17 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
                     projectile.remove(Entity.RemovalReason.DISCARDED);
                 }
             }
-
             if (getTimerProgress() % 30 == 0) player.playSound(CSSoundEvents.WHIRLWIND.get(), 0.15F, 1.5F);
-
             if (getTimerProgress() % 3 == 0) {
                 if (level.random.nextBoolean()) CSEffectEntity.createInstance(player, null, CSVisualTypes.CRESCENTIA_STRIKE.get(), calculateXLook(player), -0.3, calculateZLook(player));
                 else CSEffectEntity.createInstance(player, null, CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get(), calculateXLook(player), -0.3, calculateZLook(player));
-
                 playRandomBladeSound(player, BASE_WEAPON_EFFECTS.length);
             }
             CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR_LARGE.get(), 0, -1, 0);
-
             float offX = (level.random.nextFloat() * 16) - 8;
             float offY = (level.random.nextFloat() * 16) - 8;
             float offZ = (level.random.nextFloat() * 16) - 8;
-
             CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, false);
-
             if (level.random.nextBoolean()) CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offZ, player.getY() + offX, player.getZ() + offY, false);
         }
     }

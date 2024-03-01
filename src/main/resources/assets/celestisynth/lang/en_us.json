@@ -1,17 +1,14 @@
 {
   "creativetab.celestisynth_tab": "Celestisynth",
+
+  "attribute.celestisynth.celestial_damage": "Celestial Weapon Damage",
+
   "item.celestisynth.test": "SCROLL: %s",
   "item.celestisynth.scroll_notice": "[Scroll to navigate through abilities]",
   "item.celestisynth.shift_notice": "[Press Shift or Ctrl to switch pages]",
   "item.celestisynth.passive_notice": "PASSIVES",
   "item.celestisynth.skill_notice": "SKILLS",
   "item.celestisynth.celestial_tier": "CELESTIAL GRADE",
-
-  "item.celestisynth.armor_stun_immune": "> Immune to interruption while casting weapon skill",
-  "item.celestisynth.armor_damage_reflection_percent": "+%s% damage reflection to the attacker",
-  "item.celestisynth.armor_damage_reflection_addition": "+%s damage reflection to the attacker",
-  "item.celestisynth.armor_mob_effect_duration_multiplier": "x%s mob effect duration received",
-  "item.celestisynth.armor_skill_damage_multiplier": "x%s damage for weapon skills",
 
   "item.celestisynth.celestial_core": "Celestial Core",
   "item.celestisynth.celestial_core_heated": "Heated Celestial Core",
@@ -27,6 +24,10 @@
   "block.celestisynth.wintereis": "Wintereis",
   "item.celestisynth.wintereis_shard": "Wintereis Shard",
 
+  "item.celestisynth.solar_crystal_helmet": "Solar Crystal Helmet",
+  "item.celestisynth.solar_crystal_chestplate": "Solar Crystal Chestplate",
+  "item.celestisynth.solar_crystal_leggings": "Solar Crystal Leggings",
+  "item.celestisynth.solar_crystal_boots": "Solar Crystal Boots",
   "item.celestisynth.celestial_debugger": "The SUPER DUPER Celestial Debugger",
 
   "block.celestisynth.celestial_crafting_table": "Celestial Workbench",

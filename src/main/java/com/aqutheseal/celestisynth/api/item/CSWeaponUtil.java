@@ -3,6 +3,7 @@ package com.aqutheseal.celestisynth.api.item;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.common.network.util.ChangeCameraTypePacket;
 import com.aqutheseal.celestisynth.common.network.util.ShakeScreenServerPacket;
+import com.aqutheseal.celestisynth.common.registry.CSAttributes;
 import com.aqutheseal.celestisynth.common.registry.CSDamageSources;
 import com.aqutheseal.celestisynth.manager.CSNetworkManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
@@ -52,19 +53,22 @@ public interface CSWeaponUtil {
         DamageSource rapidDamage = new CSDamageSources(target.level().registryAccess()).rapidPlayerAttack(holder);
 
         DamageSource finalDamageSource;
+
         if (damageSource != null) {
             finalDamageSource = damageSource;
         } else {
             finalDamageSource = attackHurtType.isRapid() ? rapidDamage : regularDamage;
         }
 
+        float finalDamage = (float) (damage * holder.getAttributeValue(CSAttributes.CELESTIAL_DAMAGE.get()));
+
         if (!attackHurtType.doKnockback()) {
             double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
             target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1000);
-            attack(holder, target, damage, finalDamageSource, attackHurtType);
+            attack(holder, target, finalDamage, finalDamageSource, attackHurtType);
             target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(preAttribute);
         } else {
-            attack(holder, target, damage, finalDamageSource, attackHurtType);
+            attack(holder, target, finalDamage, finalDamageSource, attackHurtType);
         }
     }
 

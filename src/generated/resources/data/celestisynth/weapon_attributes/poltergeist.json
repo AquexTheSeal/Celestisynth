@@ -1,0 +1,46 @@
+{
+  "parent": "bettercombat:sword",
+  "attributes": {
+    "attack_range": 3.5,
+    "attacks": [
+      {
+        "angle": 90.0,
+        "animation": "bettercombat:two_handed_slam_heavy",
+        "damage_multiplier": 1.2,
+        "hitbox": "FORWARD_BOX",
+        "swing_sound": {
+          "id": "bettercombat:mace_slam",
+          "pitch": 1.0,
+          "randomness": 0.1,
+          "volume": 1.0
+        },
+        "upswing": 0.75
+      },
+      {
+        "angle": 90.0,
+        "animation": "bettercombat:two_handed_slash_horizontal_right",
+        "hitbox": "HORIZONTAL_PLANE",
+        "swing_sound": {
+          "id": "bettercombat:mace_slash",
+          "pitch": 1.0,
+          "randomness": 0.1,
+          "volume": 1.0
+        },
+        "upswing": 0.6
+      },
+      {
+        "angle": 90.0,
+        "animation": "bettercombat:two_handed_slash_horizontal_left",
+        "hitbox": "HORIZONTAL_PLANE",
+        "swing_sound": {
+          "id": "bettercombat:mace_slash",
+          "pitch": 1.0,
+          "randomness": 0.1,
+          "volume": 1.0
+        },
+        "upswing": 0.6
+      }
+    ],
+    "two_handed": false
+  }
+}

@@ -37,7 +37,7 @@ public class CSFeatureProvider {
         public static void bootstrap(BootstapContext<PlacedFeature> ctx) {
             ctx.register(CSFeatures.SOLAR_CRATER_PLACED, new PlacedFeature(ctx.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CSFeatures.SOLAR_CRATER_CONFIGURED),
                     List.of(
-                            RarityFilter.onAverageOnceEvery(85), InSquarePlacement.spread(), BiomeFilter.biome()
+                            RarityFilter.onAverageOnceEvery(85), CountOnEveryLayerPlacement.of(1), BiomeFilter.biome()
                     )
             ));
             ctx.register(CSFeatures.LUNAR_CRATER_PLACED, new PlacedFeature(ctx.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CSFeatures.LUNAR_CRATER_CONFIGURED),

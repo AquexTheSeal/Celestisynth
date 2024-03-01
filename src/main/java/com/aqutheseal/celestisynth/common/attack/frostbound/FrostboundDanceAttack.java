@@ -20,7 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class FrostboundDanceAttack extends FrostboundAttack {
-    public final FrostboundSlashSkinSet skinSet = FrostboundSlashSkinSet.of(stack);
+    public final FrostboundSlashSkinSet skinSet = FrostboundSlashSkinSet.of(stack, player);
 
     public FrostboundDanceAttack(Player player, ItemStack stack) {
         super(player, stack);
@@ -81,17 +81,17 @@ public class FrostboundDanceAttack extends FrostboundAttack {
         }
         if (getTimerProgress() == 20) {
             this.playSoundAt(level, skinSet.frozenSlashSound(), player.blockPosition().offset((int) xP, 0, (int) zP));
-            doAOEAttack(skinSet.frozenSlashEffect(), xP * 2.5, zP * 2.5, false);
+            doAOEAttack(skinSet.frozenSlashEffect(xP, zP), xP * 2.5, zP * 2.5, false);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
             shootShard(3);
         } else if (getTimerProgress() == 30) {
             this.playSoundAt(level, skinSet.frozenSlashSound(), player.blockPosition().offset((int) xP, 0, (int) zP));
-            doAOEAttack(skinSet.frozenSlashInvertEffect(), xP * 2.5, zP * 2.5, false);
+            doAOEAttack(skinSet.frozenSlashInvertEffect(xP, zP), xP * 2.5, zP * 2.5, false);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
             shootShard(3);
         } else if (getTimerProgress() == 40) {
             this.playSoundAt(level, skinSet.frozenSlashSound(), player.blockPosition().offset((int) xP, 0, (int) zP));
-            doAOEAttack(skinSet.frozenSlashLargeEffect(), xP * 2.5, zP * 2.5, true);
+            doAOEAttack(skinSet.frozenSlashLargeEffect(xP, zP), xP * 2.5, zP * 2.5, true);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
             shootShard(6);
         }
@@ -100,10 +100,12 @@ public class FrostboundDanceAttack extends FrostboundAttack {
     public void doAOEAttack(CSVisualType visual, double xP, double zP, boolean isLarge) {
         CSEffectEntity.createInstance(player, player, visual, xP, isLarge ? 0.15 : 0.25, zP);
         for (int i = 0; i < 360; i++) {
-            double sizeMult = isLarge ? 3 : 1;
+            double sizeMult = isLarge ? 2 : 0.5;
             double xI = xP + Mth.sin(i) * 3;
             double zI = zP + Mth.cos(i) * 3;
-            ParticleUtil.sendParticles(level, skinSet.frozenSlashParticle(), player.getX() + xI, player.getY() + 0.5, player.getZ() + zI, 1, (xI / 10) * sizeMult, 0, (zI / 10) * sizeMult);
+            ParticleUtil.sendParticle(level, skinSet.frozenSlashParticle(), player.getX() + xI, player.getY() + 0.5, player.getZ() + zI,
+                    Mth.sin(i) * sizeMult, 0, Mth.cos(i) * sizeMult
+            );
         }
         for (Entity entity : iterateEntities(level, createAABB(player.blockPosition().offset((int) xP, 1, (int) zP), isLarge ? 8 : 5, 3))) {
             if (entity instanceof LivingEntity target && entity != player) {

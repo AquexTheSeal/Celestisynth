@@ -105,6 +105,10 @@ repositories {
         name = "100Media Maven"
         url = "https://maven.100media.dev/"
     }
+    maven {
+        name = "IllusiveC4 Maven"
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 configurations {
@@ -124,12 +128,19 @@ dependencies {
     // Dependencies (Shadowed)
     shade fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
 
-    // Dependencies (Extras)
+    // Dependencies (Integrations)
     implementation fg.deobf('maven.modrinth:better-combat:1.8.4+1.20.1-forge')
     implementation fg.deobf("curse.maven:cloth-config-348521:4973441")
 
+    implementation fg.deobf("curse.maven:simply-swords-659887:5116912")
+    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
+
     implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:5.7.0+1.20.1")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:5.7.0+1.20.1:api")
+
+    // Dependencies (Extras)
     implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:${jer_version}")
     implementation fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:${jeed_version}")
 
@@ -142,12 +153,14 @@ dependencies {
     compileOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}:api")
     runtimeOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}")
 
-    // Dependencies (Extras) (Temp)
+    implementation fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:5144912")
+    runtimeOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:3.1.0+1.20")
+    compileOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:3.1.0+1.20")
+
     implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:5051316")
     implementation fg.deobf("curse.maven:selene-499980:5068161")
     implementation fg.deobf("curse.maven:l_ender-s-cataclysm-551586:5058433")
     implementation fg.deobf("curse.maven:citadel-331936:5065861")
-    implementation fg.deobf("curse.maven:curios-309927:5066845")
     implementation fg.deobf("curse.maven:spark-361579:4587309")
     implementation fg.deobf("curse.maven:embeddium-908741:5077202")
     implementation fg.deobf("curse.maven:oculus-581495:5080444")
