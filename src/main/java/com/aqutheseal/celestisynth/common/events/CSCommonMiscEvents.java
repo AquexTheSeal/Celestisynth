@@ -1,6 +1,7 @@
 package com.aqutheseal.celestisynth.common.events;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
+import com.aqutheseal.celestisynth.api.item.CSArmorItem;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
@@ -16,6 +17,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -101,6 +103,12 @@ public class CSCommonMiscEvents {
             cs.onPlayerHurt(event, itemR);
         } else if (itemL.getItem() instanceof CSWeapon cs) {
             cs.onPlayerHurt(event, itemR);
+        }
+
+        for (ArmorItem.Type armorType : ArmorItem.Type.values()) {
+            if (entity.getItemBySlot(armorType.getSlot()).getItem() instanceof CSArmorItem armor) {
+                armor.hurtWearer(event);
+            }
         }
     }
 

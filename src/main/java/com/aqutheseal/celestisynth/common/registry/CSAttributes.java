@@ -15,11 +15,15 @@ public class CSAttributes {
     public static final RegistryObject<Attribute> CELESTIAL_DAMAGE = ATTRIBUTES.register("celestial_damage", () ->
             new RangedAttribute("attribute.celestisynth.celestial_damage", 1, -1024.0, 1024.0)
     );
+    public static final RegistryObject<Attribute> CELESTIAL_DAMAGE_REDUCTION = ATTRIBUTES.register("celestial_damage_reduction", () ->
+            new RangedAttribute("attribute.celestisynth.celestial_damage_reduction", 1, -1024.0, 1024.0)
+    );
 
     @SubscribeEvent
     public static void modifyEntityAttributes(EntityAttributeModificationEvent event) {
         event.getTypes().forEach((entity) -> {
             event.add(entity, CELESTIAL_DAMAGE.get());
+            event.add(entity, CELESTIAL_DAMAGE_REDUCTION.get());
         });
     }
 }

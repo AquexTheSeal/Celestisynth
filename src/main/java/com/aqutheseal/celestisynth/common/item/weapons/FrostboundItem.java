@@ -8,11 +8,11 @@ import com.aqutheseal.celestisynth.common.attack.frostbound.FrostboundDanceAttac
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualAnimation;
+import com.aqutheseal.celestisynth.common.entity.helper.skinset.FrostboundSlashSkinSet;
 import com.aqutheseal.celestisynth.common.entity.projectile.FrostboundShard;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
-import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.util.SkinUtil;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.sounds.SoundEvents;
@@ -95,7 +95,7 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
                     double xx = pLevel.random.nextGaussian() * 3;
                     double yy = pLevel.random.nextDouble() * 2;
                     double zz = pLevel.random.nextGaussian() * 3;
-                    this.shootShard(player, xx, yy, zz);
+                    this.shootShard(player, pStack, xx, yy, zz);
                 }
             }
         }
@@ -111,14 +111,17 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
         return UseAnim.TOOT_HORN;
     }
 
-    public void shootShard(Player player, double xx, double yy, double zz) {
-        FrostboundItem.shootShard(this, player, player.level(), xx, yy, zz);
+    public void shootShard(Player player, ItemStack stack, double xx, double yy, double zz) {
+        final FrostboundSlashSkinSet skinSet = FrostboundSlashSkinSet.of(stack, player);
+        FrostboundItem.shootShard(this, stack, player, player.level(), xx, yy, zz);
         if (getShard(player) != ItemStack.EMPTY) {
-            player.playSound(SoundEvents.BLAZE_SHOOT);
+            float pitch = (float) (player.getRandom().nextGaussian() * 0.5);
+            player.playSound(skinSet.frozenShardPulseSound(), 0.2F, 1 + pitch);
         }
     }
 
-    public static void shootShard(CSWeaponUtil util, Player player, Level level, double xx, double yy, double zz) {
+    public static void shootShard(CSWeaponUtil util, ItemStack stack, Player player, Level level, double xx, double yy, double zz) {
+        final FrostboundSlashSkinSet skinSet = FrostboundSlashSkinSet.of(stack, player);
         ItemStack shardStack = getShard(player);
         if (shardStack != ItemStack.EMPTY) {
             LivingEntity target = null;
@@ -132,7 +135,7 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
             if (target != null) {
                 FrostboundShard shard = new FrostboundShard(CSEntityTypes.FROSTBOUND_SHARD.get(), player, level);
                 shard.moveTo(player.getX() + xx, shard.getY() + yy, player.getZ() + zz);
-                CSEffectEntity.createInstance(player, null, CSVisualTypes.FROSTBOUND_SHARD_PULSE.get(), xx, yy + 3, zz);
+                CSEffectEntity.createInstance(player, null, skinSet.frozenShardPulseEffect(), xx, yy + 3, zz);
                 double d0 = target.getX() - (player.getX() + xx);
                 double d1 = target.getY((double) 1 / 3) - (shard.getY() + yy);
                 double d2 = target.getZ() - (player.getZ() + zz);

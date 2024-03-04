@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 public class ItemMixin {
 
     @Inject(method = "initializeClient", at = @At("TAIL"), remap = false)
-    public void initGeoRenderer(Consumer<IClientItemExtensions> consumer, CallbackInfo ci) {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer, CallbackInfo ci) {
         if (this instanceof CSGeoItem geoItem) {
             geoItem.initGeo(consumer);
         }

@@ -4,11 +4,14 @@ import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +24,13 @@ public abstract class SkilledAxeItem extends AxeItem implements CSWeapon {
 
     public SkilledAxeItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> additional = ImmutableMultimap.builder();
+        additional.putAll(this.defaultModifiers);
+        this.addExtraAttributes(additional);
+        this.defaultModifiers = additional.build();
+    }
+
+    public void addExtraAttributes(ImmutableMultimap.Builder<Attribute, AttributeModifier> map) {
     }
 
     public abstract ImmutableList<WeaponAttackInstance> getPossibleAttacks(Player player, ItemStack stack, int useDuration);

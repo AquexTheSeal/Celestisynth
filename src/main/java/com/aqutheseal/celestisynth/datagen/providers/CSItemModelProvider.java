@@ -36,14 +36,18 @@ public class CSItemModelProvider extends ItemModelProvider {
         exemptions.add(CSItems.AQUAFLORA);
         exemptions.add(CSItems.RAINFALL_SERENITY);
         exemptions.add(CSItems.FROSTBOUND);
-
         exemptions.add(CSItems.TEMPEST_SPAWN_EGG);
 
         this.defaultItem(CSItems.ITEMS.getEntries());
+
         this.defaultItem(CSItems.SOLAR_CRYSTAL_HELMET);
         this.defaultItem(CSItems.SOLAR_CRYSTAL_CHESTPLATE);
         this.defaultItem(CSItems.SOLAR_CRYSTAL_LEGGINGS);
         this.defaultItem(CSItems.SOLAR_CRYSTAL_BOOTS);
+        this.defaultItem(CSItems.LUNAR_STONE_HELMET);
+        this.defaultItem(CSItems.LUNAR_STONE_CHESTPLATE);
+        this.defaultItem(CSItems.LUNAR_STONE_LEGGINGS);
+        this.defaultItem(CSItems.LUNAR_STONE_BOOTS);
 
         this.csCustomModel(CSBlocks.SOLAR_CRYSTAL.get().asItem(), getMcLoc("item/generated"));
         this.block(CSBlocks.LUNAR_STONE);
@@ -51,6 +55,7 @@ public class CSItemModelProvider extends ItemModelProvider {
         this.block(CSBlocks.WINTEREIS);
 
         this.csCustomModel(CSItems.CELESTIAL_DEBUGGER.get(), getMcLoc("item/handheld"));
+
     }
 
     public void defaultItem(Collection<RegistryObject<Item>> items) {

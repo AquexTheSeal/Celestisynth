@@ -1,0 +1,4 @@
+// 1.20.1	2024-03-03T21:57:17.9324299	Global Loot Modifiers : celestisynth
+08136f85ac9a3a46d1a717ebac09d8f9b760bc28 data/celestisynth/loot_modifiers/nether_structures_modifier.json
+5603cb1fe581ec0e54afa006f790dc82dfc21c54 data/celestisynth/loot_modifiers/underground_dungeons_modifier.json
+8ac33f4b5e7ad2eb19b4cddc25eb48c3ededc7de data/forge/loot_modifiers/global_loot_modifiers.json

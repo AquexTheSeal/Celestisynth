@@ -101,5 +101,23 @@
     "sounds": [
       "celestisynth:ice_cast"
     ]
+  },
+  "ground_impact_water": {
+    "subtitle": "subtitles.celestisynth.ground_impact_water",
+    "sounds": [
+      "celestisynth:ground_impact_water"
+    ]
+  },
+  "slash_water": {
+    "subtitle": "subtitles.celestisynth.slash_water",
+    "sounds": [
+      "celestisynth:slash_water"
+    ]
+  },
+  "water_cast": {
+    "subtitle": "subtitles.celestisynth.water_cast",
+    "sounds": [
+      "celestisynth:water_cast"
+    ]
   }
 }

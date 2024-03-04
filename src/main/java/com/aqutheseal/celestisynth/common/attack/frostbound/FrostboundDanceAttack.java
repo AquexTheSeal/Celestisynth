@@ -7,11 +7,9 @@ import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
 import com.aqutheseal.celestisynth.common.entity.helper.skinset.FrostboundSlashSkinSet;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
-import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -61,12 +59,12 @@ public class FrostboundDanceAttack extends FrostboundAttack {
             BlockPos groundPos = this.getFloorPositionUnderPlayer(level, player.blockPosition());
             player.setDeltaMovement(0, (groundPos.getY() - player.getY()), 0);
             this.playSoundAt(level, SoundEvents.GLASS_BREAK, groundPos);
-            this.playSoundAt(level, CSSoundEvents.SWORD_CLASH.get(), groundPos);
-            CSEffectEntity.createInstanceLockedPos(player, null, CSVisualTypes.FROSTBOUND_IMPACT_CRACK.get(), player.getX() + xP, groundPos.getY() - 0.75, player.getZ() + zP);
+            this.playSoundAt(level, skinSet.frozenImpactSound(), groundPos);
+            CSEffectEntity.createInstanceLockedPos(player, null, skinSet.frozenImpactEffect(), player.getX() + xP, groundPos.getY() - 0.75, player.getZ() + zP);
             for (int i = 0; i < 360; i++) {
                 double xI = xP + Mth.sin(i) * 3;
                 double zI = zP + Mth.cos(i) * 3;
-                ParticleUtil.sendParticles(level, ParticleTypes.SNOWFLAKE, player.getX() + xI, groundPos.getY() + 1.5, player.getZ() + zI, 1, (xI / 5), 0, (zI / 5));
+                ParticleUtil.sendParticles(level, skinSet.snowParticle(), player.getX() + xI, groundPos.getY() + 1.5, player.getZ() + zI, 1, (xI / 5), 0, (zI / 5));
             }
             for (Entity entity : iterateEntities(level, createAABB(groundPos.offset((int) xP, 1, (int) zP), 6, 3))) {
                 if (entity instanceof LivingEntity target && entity != player) {
@@ -81,17 +79,17 @@ public class FrostboundDanceAttack extends FrostboundAttack {
         }
         if (getTimerProgress() == 20) {
             this.playSoundAt(level, skinSet.frozenSlashSound(), player.blockPosition().offset((int) xP, 0, (int) zP));
-            doAOEAttack(skinSet.frozenSlashEffect(xP, zP), xP * 2.5, zP * 2.5, false);
+            doAOEAttack(skinSet.frozenSlashEffect(), xP * 2.5, zP * 2.5, false);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
             shootShard(3);
         } else if (getTimerProgress() == 30) {
             this.playSoundAt(level, skinSet.frozenSlashSound(), player.blockPosition().offset((int) xP, 0, (int) zP));
-            doAOEAttack(skinSet.frozenSlashInvertEffect(xP, zP), xP * 2.5, zP * 2.5, false);
+            doAOEAttack(skinSet.frozenSlashInvertEffect(), xP * 2.5, zP * 2.5, false);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
             shootShard(3);
         } else if (getTimerProgress() == 40) {
             this.playSoundAt(level, skinSet.frozenSlashSound(), player.blockPosition().offset((int) xP, 0, (int) zP));
-            doAOEAttack(skinSet.frozenSlashLargeEffect(xP, zP), xP * 2.5, zP * 2.5, true);
+            doAOEAttack(skinSet.frozenSlashLargeEffect(), xP * 2.5, zP * 2.5, true);
             player.setDeltaMovement(calculateXLook(player) * 1.5 , 0.25, calculateZLook(player) * 1.5);
             shootShard(6);
         }
@@ -103,7 +101,7 @@ public class FrostboundDanceAttack extends FrostboundAttack {
             double sizeMult = isLarge ? 2 : 0.5;
             double xI = xP + Mth.sin(i) * 3;
             double zI = zP + Mth.cos(i) * 3;
-            ParticleUtil.sendParticle(level, skinSet.frozenSlashParticle(), player.getX() + xI, player.getY() + 0.5, player.getZ() + zI,
+            ParticleUtil.sendParticle(level, skinSet.snowParticle(), player.getX() + xI, player.getY() + 0.5, player.getZ() + zI,
                     Mth.sin(i) * sizeMult, 0, Mth.cos(i) * sizeMult
             );
         }

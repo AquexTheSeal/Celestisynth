@@ -65,13 +65,15 @@ public class CSVisualTypes {
     public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH = addVisual(FrostboundSlashSkinSet.FROSTBOUND_SLASH);
     public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH_INVERTED = addVisual(FrostboundSlashSkinSet.FROSTBOUND_SLASH_INVERTED);
     public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH_LARGE = addVisual(FrostboundSlashSkinSet.FROSTBOUND_SLASH_LARGE);
-    public static final RegistryObject<CSVisualType> FROSTBOUND_IMPACT_CRACK = addVisual(new CSVisualType("frostbound_impact_crack", CSVisualModel.FLAT, CSVisualAnimation.noAnimWithLifespan(20), 0, 0, 2.5, false, true, false));
+    public static final RegistryObject<CSVisualType> FROSTBOUND_IMPACT_CRACK = addVisual(FrostboundSlashSkinSet.FROSTBOUND_IMPACT_CRACK);
     public static final RegistryObject<CSVisualType> FROSTBOUND_ICE_CAST = addVisual(new CSVisualType("frostbound_ice_cast", CSVisualModel.WALL_CROSS, FrostboundItem.SPECIAL_ICE_CAST, 0, 0, 1, false, true, false));
-    public static final RegistryObject<CSVisualType> FROSTBOUND_SHARD_PULSE = addVisual(new CSVisualType("frostbound_shard_pulse", CSVisualModel.FLAT_VERTICAL_FRONTFACE, CSVisualAnimation.SPIN_EXPAND, 0, 0, 1, false, true, false));
+    public static final RegistryObject<CSVisualType> FROSTBOUND_SHARD_PULSE = addVisual(FrostboundSlashSkinSet.FROSTBOUND_SHARD_PULSE);
 
     public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH_SEABR = addVisual(CSVisualType.createSkin("seabreeze", FrostboundSlashSkinSet.FROSTBOUND_SLASH));
     public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH_INVERTED_SEABR = addVisual(CSVisualType.createSkin("seabreeze", FrostboundSlashSkinSet.FROSTBOUND_SLASH_INVERTED));
     public static final RegistryObject<CSVisualType> FROSTBOUND_SLASH_LARGE_SEABR = addVisual(CSVisualType.createSkin("seabreeze", FrostboundSlashSkinSet.FROSTBOUND_SLASH_LARGE));
+    public static final RegistryObject<CSVisualType> FROSTBOUND_IMPACT_CRACK_SEABR = addVisual(CSVisualType.createSkin("seabreeze", FrostboundSlashSkinSet.FROSTBOUND_IMPACT_CRACK));
+    public static final RegistryObject<CSVisualType> FROSTBOUND_SHARD_PULSE_SEABR = addVisual(CSVisualType.createSkin("seabreeze", FrostboundSlashSkinSet.FROSTBOUND_SHARD_PULSE));
 
     public static RegistryObject<CSVisualType> addVisual(CSVisualType type) {
         return VISUALS.register(type.getName(), () -> type);

@@ -60,7 +60,7 @@ public interface CSWeaponUtil {
             finalDamageSource = attackHurtType.isRapid() ? rapidDamage : regularDamage;
         }
 
-        float finalDamage = (float) (damage * holder.getAttributeValue(CSAttributes.CELESTIAL_DAMAGE.get()));
+        float finalDamage = (float) ((damage * holder.getAttributeValue(CSAttributes.CELESTIAL_DAMAGE.get())) / target.getAttributeValue(CSAttributes.CELESTIAL_DAMAGE_REDUCTION.get()));
 
         if (!attackHurtType.doKnockback()) {
             double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();

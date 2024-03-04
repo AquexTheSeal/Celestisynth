@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:item/handheld",
+  "loader": "forge:separate_transforms",
+  "base": {
+    "parent": "celestisynth:item/celestial_spell_book_model"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "celestisynth:item/celestial_spell_book_gui"
+    }
+  }
+}

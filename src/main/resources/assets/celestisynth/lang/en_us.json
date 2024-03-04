@@ -2,6 +2,7 @@
   "creativetab.celestisynth_tab": "Celestisynth",
 
   "attribute.celestisynth.celestial_damage": "Celestial Weapon Damage",
+  "attribute.celestisynth.celestial_damage_reduction": "Celestial Weapon Damage Reduction",
 
   "item.celestisynth.test": "SCROLL: %s",
   "item.celestisynth.scroll_notice": "[Scroll to navigate through abilities]",
@@ -29,6 +30,8 @@
   "item.celestisynth.solar_crystal_leggings": "Solar Crystal Leggings",
   "item.celestisynth.solar_crystal_boots": "Solar Crystal Boots",
   "item.celestisynth.celestial_debugger": "The SUPER DUPER Celestial Debugger",
+
+  "item.celestisynth.celestial_spell_book": "Celestial Spell Book",
 
   "block.celestisynth.celestial_crafting_table": "Celestial Workbench",
   "gui.celestisynth.celestial_crafting": "Celestial Workbench",

@@ -29,6 +29,11 @@ public class CelestialShapedRecipe extends ShapedRecipe implements CelestialCraf
         return CSRecipeTypes.CELESTIAL_CRAFTING_TYPE.get();
     }
 
+    @Override
+    public CraftingBookCategory category() {
+        return super.category();
+    }
+
     public static class Serializer implements RecipeSerializer<CelestialShapedRecipe> {
         final RegistryAccess registryAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
 

@@ -1,5 +1,6 @@
 package com.aqutheseal.celestisynth.manager;
 
+import com.aqutheseal.celestisynth.common.compat.CompatRegistryManager;
 import com.aqutheseal.celestisynth.common.registry.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 
@@ -21,5 +22,7 @@ public final class CSRegistryManager {
         CSStructures.STRUCTURE_TYPE.register(modBus);
         CSStructures.STRUCTURE_PIECE.register(modBus);
         CSCreativeTabs.CREATIVE_MODE_TABS.register(modBus);
+        CSLootModifiers.LOOT_MODIFIERS.register(modBus);
+        CompatRegistryManager.registerIntegratedRegistries(modBus);
     }
 }

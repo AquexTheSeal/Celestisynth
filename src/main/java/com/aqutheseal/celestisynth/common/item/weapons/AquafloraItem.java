@@ -3,17 +3,24 @@ package com.aqutheseal.celestisynth.common.item.weapons;
 import com.aqutheseal.celestisynth.api.item.CSGeoItem;
 import com.aqutheseal.celestisynth.common.attack.aquaflora.*;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
+import com.aqutheseal.celestisynth.common.compat.CSCompatManager;
 import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
+import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
+
+import java.util.UUID;
 
 public class AquafloraItem extends SkilledSwordItem implements CSGeoItem {
     public AquafloraItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
@@ -53,6 +60,14 @@ public class AquafloraItem extends SkilledSwordItem implements CSGeoItem {
                 new AquafloraSlashFrenzyAttack(player, stack, useDuration),
                 new AquafloraFlowersAwayAttack(player, stack, useDuration)
         );
+    }
+
+    @Override
+    public void addExtraAttributes(ImmutableMultimap.Builder<Attribute, AttributeModifier> map) {
+        if (CSCompatManager.checkIronsSpellbooks()) {
+            map.put(AttributeRegistry.NATURE_SPELL_POWER.get(), new AttributeModifier(UUID.randomUUID(), "Item nature spell power", 0.1, AttributeModifier.Operation.MULTIPLY_BASE));
+            map.put(AttributeRegistry.NATURE_MAGIC_RESIST.get(), new AttributeModifier(UUID.randomUUID(), "Item nature resist", 0.2, AttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
 
     @Override

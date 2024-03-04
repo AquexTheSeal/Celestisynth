@@ -6,6 +6,7 @@ import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
 import com.aqutheseal.celestisynth.common.registry.*;
 import com.aqutheseal.celestisynth.datagen.providers.*;
 import com.aqutheseal.celestisynth.datagen.providers.compat.CSBetterCombatProvider;
+import com.aqutheseal.celestisynth.datagen.providers.compat.CSGlobalLootModifiersProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
@@ -86,11 +87,11 @@ public class CSCommonSetupEvents {
             dataGenerator.addProvider(event.includeServer(), new CSTagsProvider.EntityTypeHandler(output, lookup, efh));
             dataGenerator.addProvider(event.includeServer(), new CSTagsProvider.BiomeHandler(output, lookup, efh));
             dataGenerator.addProvider(event.includeServer(), new CSBetterCombatProvider(output));
+            dataGenerator.addProvider(event.includeServer(), new CSGlobalLootModifiersProvider(output));
 
             otherProviders(output, lookup, efh).forEach(provider -> dataGenerator.addProvider(event.includeServer(), provider));
         }
 
-        //TODO: Move to datagen -> [ Structure, Structure Set ]
         public static List<DataProvider> otherProviders(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, ExistingFileHelper efh) {
             RegistrySetBuilder builder = new RegistrySetBuilder()
                     .add(Registries.DAMAGE_TYPE, CSDamageTypeProvider::bootstrap)

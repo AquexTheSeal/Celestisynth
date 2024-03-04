@@ -5,7 +5,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public interface CSWeapon extends CSWeaponUtil {
-    String ATTACK_INDEX_KEY = "cs.AttackIndex";
 
     int getSkillsAmount();
 

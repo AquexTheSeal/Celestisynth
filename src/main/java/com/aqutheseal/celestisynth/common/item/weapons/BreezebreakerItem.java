@@ -4,14 +4,19 @@ import com.aqutheseal.celestisynth.api.item.CSGeoItem;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.attack.breezebreaker.*;
+import com.aqutheseal.celestisynth.common.compat.CSCompatManager;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
 import com.aqutheseal.celestisynth.common.registry.CSParticleTypes;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
+import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -21,6 +26,8 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
+
+import java.util.UUID;
 
 public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
     public static final String BB_COMBO_POINTS = "cs.bbCombo";
@@ -51,6 +58,13 @@ public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
                 new BreezebreakerWhirlwindAttack(player, stack, useDuration),
                 new BreezebreakerWindRoarAttack(player, stack, useDuration)
         );
+    }
+
+    @Override
+    public void addExtraAttributes(ImmutableMultimap.Builder<Attribute, AttributeModifier> map) {
+        if (CSCompatManager.checkIronsSpellbooks()) {
+            map.put(AttributeRegistry.NATURE_SPELL_POWER.get(), new AttributeModifier(UUID.randomUUID(), "Item nature spell power", 0.25, AttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
 
     @Override

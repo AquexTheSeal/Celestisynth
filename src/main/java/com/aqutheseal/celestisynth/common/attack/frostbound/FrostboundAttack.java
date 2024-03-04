@@ -28,6 +28,6 @@ public abstract class FrostboundAttack extends WeaponAttackInstance {
     }
 
     public void shootShard(double xx, double yy, double zz) {
-        FrostboundItem.shootShard(this, player, level, xx, yy, zz);
+        FrostboundItem.shootShard(this, stack, player, level, xx, yy, zz);
     }
 }

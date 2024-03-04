@@ -64,7 +64,7 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
         player.setXRot(90);
         setCameraAngle(player, 1);
 
-        if (getTimerProgress() >= 15 && getTimerProgress() % (checkDualWield(player, AquafloraItem.class) ? 1 : 5) == 0) {
+        if (getTimerProgress() >= 15 && getTimerProgress() % (checkDualWield(player, AquafloraItem.class) ? 2 : 5) == 0) {
             Predicate<Entity> filter = (e) -> e != player && e instanceof LivingEntity le && (player.hasLineOfSight(le) || le.hasLineOfSight(player)) &&  le.isAlive() && !player.isAlliedTo(le);
             List<LivingEntity> entities = iterateEntities(level, createAABB(player.blockPosition(), 12)).stream().filter(filter).map(LivingEntity.class::cast).toList();
             LivingEntity target = !entities.isEmpty() ? entities.get(level.random.nextInt(entities.size())) : null;

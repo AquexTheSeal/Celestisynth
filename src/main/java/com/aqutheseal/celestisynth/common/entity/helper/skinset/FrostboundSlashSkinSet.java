@@ -1,6 +1,5 @@
 package com.aqutheseal.celestisynth.common.entity.helper.skinset;
 
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSSkinSet;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualAnimation;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualModel;
@@ -20,6 +19,8 @@ public class FrostboundSlashSkinSet extends CSSkinSet {
     public static final CSVisualType FROSTBOUND_SLASH = new CSVisualType("frostbound_slash", CSVisualModel.FLAT, CSVisualAnimation.SPIN, 0, 0, 2.5, false, true, true);
     public static final CSVisualType FROSTBOUND_SLASH_INVERTED = new CSVisualType("frostbound_slash_inverted", "frostbound_slash", CSVisualModel.FLAT_INVERTED, CSVisualAnimation.SPIN, 0, 0, 2.5, false, true, true);
     public static final CSVisualType FROSTBOUND_SLASH_LARGE = new CSVisualType("frostbound_slash_large", "frostbound_slash", CSVisualModel.FLAT, CSVisualAnimation.SPIN, 0, 0, 3.5, false, true, true);
+    public static final CSVisualType FROSTBOUND_IMPACT_CRACK = new CSVisualType("frostbound_impact_crack", CSVisualModel.FLAT, CSVisualAnimation.noAnimWithLifespan(20), 0, 0, 2.5, false, true, false);
+    public static final CSVisualType FROSTBOUND_SHARD_PULSE = new CSVisualType("frostbound_shard_pulse", CSVisualModel.FLAT_VERTICAL_FRONTFACE, CSVisualAnimation.SPIN_EXPAND, 0, 0, 1, false, true, false);
 
     public FrostboundSlashSkinSet(ItemStack stack, Player player) {
         super(stack, player);
@@ -29,17 +30,31 @@ public class FrostboundSlashSkinSet extends CSSkinSet {
         return new FrostboundSlashSkinSet(stack, player);
     }
 
-    public CSVisualType frozenSlashEffect(double xP, double zP) {
+    public CSVisualType frozenShardPulseEffect() {
         if (SkinUtil.getSkinIndex(stack) == 1) {
-            CSEffectEntity.createInstance(player, player, CSVisualTypes.SOLARIS_BLITZ_SOUL.get(), xP, 0.25, zP);
-            CSEffectEntity.createInstance(player, player, CSVisualTypes.SOLARIS_BLITZ_SOUL.get(), xP, 0.25, zP);
+            return CSVisualTypes.FROSTBOUND_SHARD_PULSE_SEABR.get();
+        } else {
+            return CSVisualTypes.FROSTBOUND_SHARD_PULSE.get();
+        }
+    }
+
+    public SoundEvent frozenShardPulseSound() {
+        if (SkinUtil.getSkinIndex(stack) == 1) {
+            return CSSoundEvents.WATER_CAST.get();
+        } else {
+            return SoundEvents.BLAZE_SHOOT;
+        }
+    }
+
+    public CSVisualType frozenSlashEffect() {
+        if (SkinUtil.getSkinIndex(stack) == 1) {
             return CSVisualTypes.FROSTBOUND_SLASH_SEABR.get();
         } else {
             return CSVisualTypes.FROSTBOUND_SLASH.get();
         }
     }
 
-    public CSVisualType frozenSlashInvertEffect(double xP, double zP) {
+    public CSVisualType frozenSlashInvertEffect() {
         if (SkinUtil.getSkinIndex(stack) == 1) {
             return CSVisualTypes.FROSTBOUND_SLASH_INVERTED_SEABR.get();
         } else {
@@ -47,7 +62,7 @@ public class FrostboundSlashSkinSet extends CSSkinSet {
         }
     }
 
-    public CSVisualType frozenSlashLargeEffect(double xP, double zP) {
+    public CSVisualType frozenSlashLargeEffect() {
         if (SkinUtil.getSkinIndex(stack) == 1) {
             return CSVisualTypes.FROSTBOUND_SLASH_LARGE_SEABR.get();
         } else {
@@ -55,17 +70,34 @@ public class FrostboundSlashSkinSet extends CSSkinSet {
         }
     }
 
-    public SimpleParticleType frozenSlashParticle() {
+    public CSVisualType frozenImpactEffect() {
         if (SkinUtil.getSkinIndex(stack) == 1) {
-            return CSParticleTypes.RAINFALL_BEAM.get();
+            return CSVisualTypes.FROSTBOUND_IMPACT_CRACK_SEABR.get();
+        } else {
+            return CSVisualTypes.FROSTBOUND_IMPACT_CRACK.get();
+        }
+    }
+
+
+    public SimpleParticleType snowParticle() {
+        if (SkinUtil.getSkinIndex(stack) == 1) {
+            return CSParticleTypes.WATER_DROP.get();
         } else {
             return ParticleTypes.SNOWFLAKE;
         }
     }
 
+    public SoundEvent frozenImpactSound() {
+        if (SkinUtil.getSkinIndex(stack) == 1) {
+            return CSSoundEvents.GROUND_IMPACT_WATER.get();
+        } else {
+            return CSSoundEvents.SWORD_CLASH.get();
+        }
+    }
+
     public SoundEvent frozenSlashSound() {
         if (SkinUtil.getSkinIndex(stack) == 1) {
-            return SoundEvents.PLAYER_HURT_DROWN;
+            return CSSoundEvents.SLASH_WATER.get();
         } else {
             return CSSoundEvents.FROZEN_SLASH.get();
         }

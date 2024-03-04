@@ -26,6 +26,9 @@ public class CSSoundEvents {
     public static final RegistryObject<SoundEvent> VANISH = createSound("vanish");
     public static final RegistryObject<SoundEvent> FROZEN_SLASH = createSound("frozen_slash");
     public static final RegistryObject<SoundEvent> ICE_CAST = createSound("ice_cast");
+    public static final RegistryObject<SoundEvent> GROUND_IMPACT_WATER = createSound("ground_impact_water");
+    public static final RegistryObject<SoundEvent> SLASH_WATER = createSound("slash_water");
+    public static final RegistryObject<SoundEvent> WATER_CAST = createSound("water_cast");
 
     public static RegistryObject<SoundEvent> createSound(String name) {
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(Celestisynth.prefix(name)));

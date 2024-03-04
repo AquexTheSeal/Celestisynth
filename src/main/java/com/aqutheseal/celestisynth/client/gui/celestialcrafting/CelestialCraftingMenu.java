@@ -3,8 +3,10 @@ package com.aqutheseal.celestisynth.client.gui.celestialcrafting;
 import com.aqutheseal.celestisynth.common.events.CSRecipeBookSetupEvents;
 import com.aqutheseal.celestisynth.common.recipe.celestialcrafting.CelestialCraftingRecipe;
 import com.aqutheseal.celestisynth.common.registry.CSBlocks;
+import com.aqutheseal.celestisynth.common.registry.CSItems;
 import com.aqutheseal.celestisynth.common.registry.CSMenuTypes;
 import com.aqutheseal.celestisynth.common.registry.CSRecipeTypes;
+import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -20,6 +22,9 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
+    public static final RecipeBookCategories CELESTIAL_CRAFTING_SEARCH = RecipeBookCategories.create("celestial_crafting", new ItemStack(CSItems.CELESTIAL_CORE.get()));
+    public static final RecipeBookCategories CELESTIAL_WEAPONS = RecipeBookCategories.create("celestial_weapons", new ItemStack(CSItems.SUPERNAL_NETHERITE_INGOT.get()));
+
     private final ContainerLevelAccess access;
     private final Player player;
     private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 3, 3);
@@ -28,7 +33,6 @@ public class CelestialCraftingMenu extends RecipeBookMenu<CraftingContainer> {
     public CelestialCraftingMenu(int pContainerId, Inventory pPlayerInventory) {
         this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
     }
-
 
     public CelestialCraftingMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
         super(CSMenuTypes.CELESTIAL_CRAFTING.get(), pContainerId);

@@ -28,12 +28,16 @@ public class CSItems {
     public static final RegistryObject<Item> STARSTRUCK_FEATHER = ITEMS.register("starstruck_feather", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> WINTEREIS_SHARD = ITEMS.register("wintereis_shard", () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> TEMPEST_SPAWN_EGG = ITEMS.register("tempest_spawn_egg", () -> new ForgeSpawnEggItem(CSEntityTypes.TEMPEST, 0, 0, new Item.Properties()));
-
     public static final RegistryObject<Item> SOLAR_CRYSTAL_HELMET = ITEMS.register("solar_crystal_helmet", () -> new CSArmorItem(CSArmorMaterials.SOLAR_CRYSTAL, ArmorItem.Type.HELMET, new Item.Properties().fireResistant().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SOLAR_CRYSTAL_CHESTPLATE = ITEMS.register("solar_crystal_chestplate", () -> new CSArmorItem(CSArmorMaterials.SOLAR_CRYSTAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().fireResistant().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SOLAR_CRYSTAL_LEGGINGS = ITEMS.register("solar_crystal_leggings", () -> new CSArmorItem(CSArmorMaterials.SOLAR_CRYSTAL, ArmorItem.Type.LEGGINGS, new Item.Properties().fireResistant().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SOLAR_CRYSTAL_BOOTS = ITEMS.register("solar_crystal_boots", () -> new CSArmorItem(CSArmorMaterials.SOLAR_CRYSTAL, ArmorItem.Type.BOOTS, new Item.Properties().fireResistant().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> LUNAR_STONE_HELMET = ITEMS.register("lunar_stone_helmet", () -> new CSArmorItem(CSArmorMaterials.LUNAR_STONE, ArmorItem.Type.HELMET, new Item.Properties().fireResistant().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> LUNAR_STONE_CHESTPLATE = ITEMS.register("lunar_stone_chestplate", () -> new CSArmorItem(CSArmorMaterials.LUNAR_STONE, ArmorItem.Type.CHESTPLATE, new Item.Properties().fireResistant().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> LUNAR_STONE_LEGGINGS = ITEMS.register("lunar_stone_leggings", () -> new CSArmorItem(CSArmorMaterials.LUNAR_STONE, ArmorItem.Type.LEGGINGS, new Item.Properties().fireResistant().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> LUNAR_STONE_BOOTS = ITEMS.register("lunar_stone_boots", () -> new CSArmorItem(CSArmorMaterials.LUNAR_STONE, ArmorItem.Type.BOOTS, new Item.Properties().fireResistant().rarity(Rarity.RARE)));
+
+    public static final RegistryObject<Item> TEMPEST_SPAWN_EGG = ITEMS.register("tempest_spawn_egg", () -> new ForgeSpawnEggItem(CSEntityTypes.TEMPEST, 0, 0, new Item.Properties()));
 
     public static final RegistryObject<Item> SOLARIS = ITEMS.register("solaris", () -> new SolarisItem(Tiers.NETHERITE,  7 - 4, -2.5F, (new Item.Properties()).fireResistant().rarity(CSRarityTypes.CELESTIAL)));
     public static final RegistryObject<Item> CRESCENTIA = ITEMS.register("crescentia", () -> new CrescentiaItem(Tiers.NETHERITE, 8 - 4, -2.7F, (new Item.Properties()).fireResistant().rarity(CSRarityTypes.CELESTIAL)));
