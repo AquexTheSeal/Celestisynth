@@ -35,7 +35,7 @@ import java.util.UUID;
 
 public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
     public static HumanoidModel.ArmPose CRESCENTIA_POSE = HumanoidModel.ArmPose.create("CRESCENTIA", false, (model, entity, arm) -> {
-        float rotation = (entity.isSprinting() ? 40 : 0) + Mth.sin((float) entity.tickCount / 12) * 10;
+        float rotation = (entity.isSprinting() ? 30 : -10) + Mth.sin((float) entity.tickCount / 22.5F) * 10;
         float running = entity.isSprinting() ? 40 + (Mth.cos((float) entity.tickCount / 8) * 5) : 0;
         if (arm == HumanoidArm.RIGHT) {
             model.rightArm.zRot = (float) Math.toRadians(30 + rotation);

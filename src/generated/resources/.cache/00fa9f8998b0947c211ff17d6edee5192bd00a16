@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-03T15:40:28.1327559	Item Models: celestisynth
+// 1.20.1	2024-03-05T20:50:13.3876995	Item Models: celestisynth
 895a727be030a8e9ed3af3419ee5fd0dfff4ae0b assets/celestisynth/models/item/celestial_core.json
 1eca25b258e7ef396110701a40cbbcc4d0ecaa2c assets/celestisynth/models/item/celestial_core_heated.json
 1eaab6ea2de0ea5cde9b990289a835e430eee4e1 assets/celestisynth/models/item/celestial_debugger.json
@@ -6,6 +6,10 @@ ff4f859ffb01df6bbe2c9449944d3cd907747157 assets/celestisynth/models/item/celesti
 d4f5402a3800dde0a56764a64d90c27d2cf252ed assets/celestisynth/models/item/eyebomination.json
 df6d1e7ed43cbb2b8c02f9325575d0c83b4c8429 assets/celestisynth/models/item/lunar_scrap.json
 438f25333e156f19e0d44f0b316d49cb7bb6e10f assets/celestisynth/models/item/lunar_stone.json
+b30a96e6ae0c918eef68bd2fb97999130232c18c assets/celestisynth/models/item/lunar_stone_boots.json
+2b1de92eb8d808eb6cca44e7366876e4a7109a4d assets/celestisynth/models/item/lunar_stone_chestplate.json
+5d3bf806bb958e4febdbee29334ded7a8bbd6de9 assets/celestisynth/models/item/lunar_stone_helmet.json
+029a47924df7d2e256ace16b3ac54c013f854496 assets/celestisynth/models/item/lunar_stone_leggings.json
 3b400f85d9a80d8ceee08fcae843deb5b27cee4f assets/celestisynth/models/item/solar_crystal.json
 b5354f6395829a31866a3f4b8f61f2bc3504b984 assets/celestisynth/models/item/solar_crystal_boots.json
 fc45ad3adae08f2e4eb5875f4cf6ed2c9cdf0c3b assets/celestisynth/models/item/solar_crystal_chestplate.json

@@ -66,11 +66,10 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
         if (getTimerProgress() == 18) {
             int groundY = getFloorPositionUnderPlayer(level, player.blockPosition()).getY();
             player.setDeltaMovement(0, groundY - player.getY(), 0);
+            player.fallDistance = 0;
         }
 
         if (getTimerProgress() == 20) {
-            //player.moveTo(player.getX(), getFloorPositionUnderPlayer(level, player.blockPosition()).getY() + 1, player.getZ());
-
             CSVisualType crack =  isGiantImpact ? CSVisualTypes.POLTERGEIST_IMPACT_CRACK_LARGE.get() : CSVisualTypes.POLTERGEIST_IMPACT_CRACK.get();
             double range = isGiantImpact ? 6.5 : 4;
             double xx = calculateXLook(player) * 3;

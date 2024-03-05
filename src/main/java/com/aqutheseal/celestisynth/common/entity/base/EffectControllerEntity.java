@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkHooks;
@@ -21,11 +22,11 @@ import net.minecraftforge.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
 public abstract class EffectControllerEntity extends Entity implements CSWeaponUtil {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(EffectControllerEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<ItemStack> ORIGIN_ITEM = SynchedEntityData.defineId(EffectControllerEntity.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Float> ANGLE_X = SynchedEntityData.defineId(EffectControllerEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ANGLE_Y = SynchedEntityData.defineId(EffectControllerEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ANGLE_Z = SynchedEntityData.defineId(EffectControllerEntity.class, EntityDataSerializers.FLOAT);
@@ -45,19 +46,11 @@ public abstract class EffectControllerEntity extends Entity implements CSWeaponU
         super(pEntityType, pLevel);
     }
 
-    public void playRandomBladeSound(Entity entity, int length) {
-        SoundEvent randomSound = BASE_WEAPON_EFFECTS[entity.level().getRandom().nextInt(length)];
-
-        entity.playSound(randomSound, 0.35F, 0.5F + new Random().nextFloat());
-    }
-
     @Override
     public void tick() {
         super.tick();
-
         UUID ownerUuid = getOwnerUuid();
         Player ownerPlayer = ownerUuid == null ? null : level().getPlayerByUUID(ownerUuid);
-
         if (ownerPlayer == null || ownerPlayer.isDeadOrDying()) remove(RemovalReason.DISCARDED);
     }
 
@@ -71,6 +64,7 @@ public abstract class EffectControllerEntity extends Entity implements CSWeaponU
     @Override
     protected void defineSynchedData() {
         this.entityData.define(OWNER_UUID, Optional.empty());
+        this.entityData.define(ORIGIN_ITEM, ItemStack.EMPTY);
         this.entityData.define(ANGLE_X, 0F);
         this.entityData.define(ANGLE_Y, 0F);
         this.entityData.define(ANGLE_Z, 0F);
@@ -112,6 +106,14 @@ public abstract class EffectControllerEntity extends Entity implements CSWeaponU
     @Nullable
     public UUID getOwnerUuid() {
         return this.entityData.get(OWNER_UUID).orElse(null);
+    }
+
+    public void setOriginItem(ItemStack stack) {
+        this.entityData.set(ORIGIN_ITEM, stack);
+    }
+
+    public ItemStack getOriginItem() {
+        return this.entityData.get(ORIGIN_ITEM);
     }
 
     public void setAngleX(float angleX) {

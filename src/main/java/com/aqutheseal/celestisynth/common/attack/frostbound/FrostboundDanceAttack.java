@@ -66,6 +66,7 @@ public class FrostboundDanceAttack extends FrostboundAttack {
                 double zI = zP + Mth.cos(i) * 3;
                 ParticleUtil.sendParticles(level, skinSet.snowParticle(), player.getX() + xI, groundPos.getY() + 1.5, player.getZ() + zI, 1, (xI / 5), 0, (zI / 5));
             }
+            if (level.isClientSide()) shakeScreens(player, 5, 4, 0.0015F);
             for (Entity entity : iterateEntities(level, createAABB(groundPos.offset((int) xP, 1, (int) zP), 6, 3))) {
                 if (entity instanceof LivingEntity target && entity != player) {
                     initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.frostboundSkillDmg.get() + getSharpnessValue(stack, 1.75F), AttackHurtTypes.NO_KB);

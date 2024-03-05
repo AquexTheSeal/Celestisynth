@@ -61,6 +61,7 @@ public class SkillCastFrostboundIceCast extends EffectControllerEntity {
                     float aZ = this.getAngleZ();
                     int floorPos = getFloorPositionUnderPlayerYLevel(level(), blockPosition().offset((int) aX, 0, (int) aZ));
                     frostboundIceCast.setOwnerUuid(ownerUuid);
+                    frostboundIceCast.setOriginItem(getOriginItem());
                     frostboundIceCast.setCastLevel(getCastLevel() - 1);
                     frostboundIceCast.setAngleX(aX);
                     frostboundIceCast.setAngleZ(aZ);
@@ -91,6 +92,7 @@ public class SkillCastFrostboundIceCast extends EffectControllerEntity {
                     }
                 }
             }
+            shakeScreensForNearbyPlayers(ownerPlayer, level(), 15, 20, 15, 0.02F);
         }
 
         if (tickCount == 60) {

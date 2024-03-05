@@ -41,6 +41,7 @@ public class FrostboundCryogenesisAttack extends WeaponAttackInstance {
             double offZ = calculateZLook(player) * 3;
             int floorPos = getFloorPositionUnderPlayerYLevel(level, player.blockPosition().offset((int) offX, 0, (int) offZ));
             frostboundIceCast.setOwnerUuid(player.getUUID());
+            frostboundIceCast.setOriginItem(stack);
             frostboundIceCast.setCastLevel(5);
             frostboundIceCast.setAngleX((float) (calculateXLook(player) * 3));
             frostboundIceCast.setAngleZ((float) (calculateZLook(player) * 3));
