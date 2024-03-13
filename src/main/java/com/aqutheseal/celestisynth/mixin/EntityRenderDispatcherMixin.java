@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.mixin;
 
-import com.aqutheseal.celestisynth.common.entity.base.EffectControllerEntity;
+import com.aqutheseal.celestisynth.api.entity.EffectControllerEntity;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

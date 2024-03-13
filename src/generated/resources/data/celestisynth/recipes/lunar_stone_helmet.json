@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "g": {
+      "item": "minecraft:gold_block"
+    },
+    "x": {
+      "item": "celestisynth:lunar_stone"
+    }
+  },
+  "pattern": [
+    "xgx",
+    "x x"
+  ],
+  "result": {
+    "item": "celestisynth:lunar_stone_helmet"
+  },
+  "show_notification": true
+}

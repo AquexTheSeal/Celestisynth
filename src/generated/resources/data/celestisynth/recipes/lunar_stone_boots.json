@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "g": {
+      "item": "minecraft:gold_block"
+    },
+    "x": {
+      "item": "celestisynth:lunar_stone"
+    }
+  },
+  "pattern": [
+    "x x",
+    "xgx"
+  ],
+  "result": {
+    "item": "celestisynth:lunar_stone_boots"
+  },
+  "show_notification": true
+}

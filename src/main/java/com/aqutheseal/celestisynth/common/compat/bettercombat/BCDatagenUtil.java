@@ -1,4 +1,4 @@
-package com.aqutheseal.celestisynth.datagen.providers.compat;
+package com.aqutheseal.celestisynth.common.compat.bettercombat;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -17,12 +17,12 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class BaseBetterCombatProvider implements DataProvider {
+public abstract class BCDatagenUtil implements DataProvider {
     public final Map<String, Pair<RegistryObject<? extends ItemLike>, AttributesContainer>> data = new TreeMap<>();
     public final PackOutput output;
     public final String modid;
 
-    public BaseBetterCombatProvider(PackOutput output, String modid) {
+    public BCDatagenUtil(PackOutput output, String modid) {
         this.output = output;
         this.modid = modid;
     }

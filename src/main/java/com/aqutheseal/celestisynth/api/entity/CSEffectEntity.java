@@ -1,4 +1,4 @@
-package com.aqutheseal.celestisynth.common.entity.base;
+package com.aqutheseal.celestisynth.api.entity;
 
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualType;
@@ -46,6 +46,55 @@ public class CSEffectEntity extends Entity implements GeoEntity {
     public CSEffectEntity(EntityType<? extends CSEffectEntity> type, Level level) {
         super(type, level);
         this.noCulling = true;
+    }
+
+    @Nullable
+    public static CSEffectEntity getEffectInstance(Player owner, @Nullable Entity toFollow, CSVisualType visual, double offsetX, double offsetY, double offsetZ) {
+        if (owner == null) return null;
+        CSEffectEntity slash = CSEntityTypes.CS_EFFECT.get().create(owner.level());
+        slash.setVisualID(visual.getName());
+        slash.setAnimationID(visual.getAnimation().getAnimName());
+        if (toFollow != null) {
+            slash.moveTo(toFollow.getX() + offsetX, (toFollow.getY() - 1.5) + offsetY, toFollow.getZ() + offsetZ);
+        } else {
+            slash.moveTo(owner.getX()  + offsetX, (owner.getY() - 1.5) + offsetY, owner.getZ() + offsetZ);
+        }
+        slash.setOwnerUuid(owner.getUUID());
+        slash.setToFollow(toFollow);
+        slash.setRandomRotation();
+        slash.setXRot(owner.getXRot());
+        slash.xRotO = slash.getXRot();
+        slash.setYRot(owner.getYRot());
+        slash.yRotO = slash.getYRot();
+        slash.setRot(slash.getYRot(), slash.getXRot());
+        return slash;
+    }
+
+    public void setRandomRotation() {
+        int rotationX = random.nextInt(360);
+        int rotationZ = random.nextInt(360);
+
+        setRotationX(rotationX);
+        setRotationZ(rotationZ);
+    }
+
+    public static void createInstance(Player owner, @Nullable Entity toFollow, CSVisualType effectTypes) {
+        createInstance(owner, toFollow, effectTypes, 0, 0, 0);
+    }
+
+    public static void createInstanceLockedPos(Player owner, @Nullable Entity toFollow, CSVisualType effectTypes, double x, double y, double z) {
+        if (owner == null) return;
+        CSEffectEntity slash = getEffectInstance(owner, toFollow, effectTypes, x, y, z);
+        slash.moveTo(x, y, z);
+        owner.level().addFreshEntity(slash);
+    }
+
+    public static void createInstance(Player owner, @Nullable Entity toFollow, CSVisualType effectTypes, double xOffset, double yOffset, double zOffset) {
+        if (owner == null) return;
+        CSEffectEntity slash = getEffectInstance(owner, toFollow, effectTypes, xOffset, yOffset, zOffset);
+        slash.setOwnerUuid(owner.getUUID());
+        slash.setToFollow(toFollow);
+        owner.level().addFreshEntity(slash);
     }
 
     public boolean isControlledByLocalInstance() {
@@ -148,55 +197,6 @@ public class CSEffectEntity extends Entity implements GeoEntity {
 
     public void setLifespan(int value) {
         lifespan = value;
-    }
-
-    @Nullable
-    public static CSEffectEntity getEffectInstance(Player owner, @Nullable Entity toFollow, CSVisualType visual, double offsetX, double offsetY, double offsetZ) {
-        if (owner == null) return null;
-        CSEffectEntity slash = CSEntityTypes.CS_EFFECT.get().create(owner.level());
-        slash.setVisualID(visual.getName());
-        slash.setAnimationID(visual.getAnimation().getAnimName());
-        if (toFollow != null) {
-            slash.moveTo(toFollow.getX() + offsetX, (toFollow.getY() - 1.5) + offsetY, toFollow.getZ() + offsetZ);
-        } else {
-            slash.moveTo(owner.getX()  + offsetX, (owner.getY() - 1.5) + offsetY, owner.getZ() + offsetZ);
-        }
-        slash.setOwnerUuid(owner.getUUID());
-        slash.setToFollow(toFollow);
-        slash.setRandomRotation();
-        slash.setXRot(owner.getXRot());
-        slash.xRotO = slash.getXRot();
-        slash.setYRot(owner.getYRot());
-        slash.yRotO = slash.getYRot();
-        slash.setRot(slash.getYRot(), slash.getXRot());
-        return slash;
-    }
-
-    public void setRandomRotation() {
-        int rotationX = random.nextInt(360);
-        int rotationZ = random.nextInt(360);
-
-        setRotationX(rotationX);
-        setRotationZ(rotationZ);
-    }
-
-    public static void createInstance(Player owner, @Nullable Entity toFollow, CSVisualType effectTypes) {
-       createInstance(owner, toFollow, effectTypes, 0, 0, 0);
-    }
-
-    public static void createInstanceLockedPos(Player owner, @Nullable Entity toFollow, CSVisualType effectTypes, double x, double y, double z) {
-        if (owner == null) return;
-        CSEffectEntity slash = getEffectInstance(owner, toFollow, effectTypes, x, y, z);
-        slash.moveTo(x, y, z);
-        owner.level().addFreshEntity(slash);
-    }
-
-    public static void createInstance(Player owner, @Nullable Entity toFollow, CSVisualType effectTypes, double xOffset, double yOffset, double zOffset) {
-        if (owner == null) return;
-        CSEffectEntity slash = getEffectInstance(owner, toFollow, effectTypes, xOffset, yOffset, zOffset);
-        slash.setOwnerUuid(owner.getUUID());
-        slash.setToFollow(toFollow);
-        owner.level().addFreshEntity(slash);
     }
 
     @Override

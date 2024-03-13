@@ -1,0 +1,39 @@
+{
+  "parent": "celestisynth:place_celestial_table",
+  "criteria": {
+    "criteria": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "celestisynth:keres"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.celestisynth.obtain_keres.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "celestisynth:keres",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.celestisynth.obtain_keres.title"
+    }
+  },
+  "requirements": [
+    [
+      "criteria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

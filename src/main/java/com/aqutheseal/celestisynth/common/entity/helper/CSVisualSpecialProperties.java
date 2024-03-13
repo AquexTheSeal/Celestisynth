@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.common.entity.helper;
 
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -60,5 +60,10 @@ public class CSVisualSpecialProperties {
         x1.add(CSVisualTypes.RAINFALL_SHOOT.get());
 
         if (x1.contains(animatable.getVisualType())) poseStack.mulPose(Axis.XP.rotationDegrees(180F + lerpBodyRot - 15f));
+
+        List<CSVisualType> x4 = new ArrayList<>();
+        x4.add(CSVisualTypes.BREEZEBREAKER_WHEEL.get());
+
+        if (x4.contains(animatable.getVisualType()))  poseStack.mulPose(Axis.YP.rotationDegrees(180));
     }
 }

@@ -1,10 +1,8 @@
 package com.aqutheseal.celestisynth.common.registry;
 
 import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
-import com.aqutheseal.celestisynth.common.entity.projectile.FrostboundShard;
-import com.aqutheseal.celestisynth.common.entity.projectile.RainfallArrow;
-import com.aqutheseal.celestisynth.common.entity.projectile.RainfallLaserMarker;
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
+import com.aqutheseal.celestisynth.common.entity.projectile.*;
 import com.aqutheseal.celestisynth.common.entity.skill.*;
 import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
 import net.minecraft.world.entity.EntityType;
@@ -46,5 +44,11 @@ public class CSEntityTypes {
     );
     public static final RegistryObject<EntityType<FrostboundShard>> FROSTBOUND_SHARD = ENTITY_TYPES.register("frostbound_shard", () -> EntityType.Builder.<FrostboundShard>of(FrostboundShard::new, MobCategory.MISC)
             .sized(3F, 3F).clientTrackingRange(32).updateInterval(20).build(Celestisynth.prefix("frostbound_shard").toString())
+    );
+    public static final RegistryObject<EntityType<SolarisBomb>> SOLARIS_BOMB = ENTITY_TYPES.register("solaris_bomb", () -> EntityType.Builder.<SolarisBomb>of(SolarisBomb::new, MobCategory.MISC)
+            .sized(1F, 1F).clientTrackingRange(32).updateInterval(20).build(Celestisynth.prefix("solaris_bomb").toString())
+    );
+    public static final RegistryObject<EntityType<CrescentiaDragon>> CRESCENTIA_DRAGON = ENTITY_TYPES.register("crescentia_dragon", () -> EntityType.Builder.<CrescentiaDragon>of(CrescentiaDragon::new, MobCategory.MISC)
+            .sized(1.6F, 1.0F).clientTrackingRange(32).updateInterval(20).build(Celestisynth.prefix("crescentia_dragon").toString())
     );
 }

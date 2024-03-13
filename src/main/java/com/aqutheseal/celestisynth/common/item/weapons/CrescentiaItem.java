@@ -11,14 +11,12 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -30,22 +28,9 @@ import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
-    public static HumanoidModel.ArmPose CRESCENTIA_POSE = HumanoidModel.ArmPose.create("CRESCENTIA", false, (model, entity, arm) -> {
-        float rotation = (entity.isSprinting() ? 30 : -10) + Mth.sin((float) entity.tickCount / 22.5F) * 10;
-        float running = entity.isSprinting() ? 40 + (Mth.cos((float) entity.tickCount / 8) * 5) : 0;
-        if (arm == HumanoidArm.RIGHT) {
-            model.rightArm.zRot = (float) Math.toRadians(30 + rotation);
-            model.rightArm.xRot = (float) Math.toRadians(30 + running);
-        } else {
-            model.leftArm.zRot = -((float) Math.toRadians(30 + rotation));
-            model.leftArm.xRot = (float) Math.toRadians(30 + running);
-        }
-    });
-
     public CrescentiaItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
@@ -67,11 +52,6 @@ public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
                 new CrescentiaBarrageAttack(player, stack),
                 new CrescentiaDragonAttack(player, stack)
         );
-    }
-
-    @Override
-    public HumanoidModel.ArmPose getArmPose() {
-        return CRESCENTIA_POSE;
     }
 
     @Override
@@ -105,7 +85,7 @@ public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     public static void createCrescentiaFirework(ItemStack itemStack, Level level, Player player, double x, double y, double z, boolean isBig) {
-        Random random = new Random();
+        RandomSource random = level.random;
         ItemStack star = new ItemStack(Items.FIREWORK_STAR);
         CompoundTag compoundtag = star.getOrCreateTagElement("Explosion");
         List<Integer> list = Lists.newArrayList();
@@ -119,7 +99,6 @@ public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
         if (starCompound != null) {
             listtag.add(starCompound);
         }
-        itemCompound.putByte("Flight", (byte) 3);
         if (!listtag.isEmpty()) {
             itemCompound.put("Explosions", listtag);
         }

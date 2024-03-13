@@ -43,6 +43,6 @@
       }
     ],
     "pose": "bettercombat:pose_two_handed_heavy",
-    "two_handed": true
+    "two_handed": false
   }
 }

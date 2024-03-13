@@ -48,7 +48,7 @@ public class CSArmorItem extends ArmorItem implements CSWeaponUtil {
         }
         if (material == CSArmorMaterials.LUNAR_STONE) {
             if (event.getSource().is(DamageTypeTags.IS_EXPLOSION)) {
-                event.setAmount(event.getAmount() * 0.90F);
+                event.setAmount(event.getAmount() * 0.9F);
             }
         }
     }

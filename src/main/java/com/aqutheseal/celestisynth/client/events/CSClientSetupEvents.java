@@ -3,18 +3,18 @@ package com.aqutheseal.celestisynth.client.events;
 import com.aqutheseal.celestisynth.client.gui.celestialcrafting.CelestialCraftingScreen;
 import com.aqutheseal.celestisynth.client.models.entity.projectile.FrostboundShardModel;
 import com.aqutheseal.celestisynth.client.models.entity.projectile.RainfallLaserModel;
-import com.aqutheseal.celestisynth.client.particles.BreezebrokenParticle;
-import com.aqutheseal.celestisynth.client.particles.RainfallBeamParticle;
-import com.aqutheseal.celestisynth.client.particles.RainfallEnergyParticle;
-import com.aqutheseal.celestisynth.client.particles.WaterDropParticle;
+import com.aqutheseal.celestisynth.client.models.entity.projectile.SolarisBombModel;
+import com.aqutheseal.celestisynth.client.particles.*;
 import com.aqutheseal.celestisynth.client.renderers.blockentity.CelestialCraftingTableBlockEntityRenderer;
 import com.aqutheseal.celestisynth.client.renderers.entity.boss.TempestBossRenderer;
+import com.aqutheseal.celestisynth.client.renderers.entity.projectile.CrescentiaDragonRenderer;
 import com.aqutheseal.celestisynth.client.renderers.entity.projectile.FrostboundShardRenderer;
 import com.aqutheseal.celestisynth.client.renderers.entity.projectile.RainfallLaserRenderer;
+import com.aqutheseal.celestisynth.client.renderers.entity.projectile.SolarisBombRenderer;
 import com.aqutheseal.celestisynth.client.renderers.misc.CSEffectEntityRenderer;
 import com.aqutheseal.celestisynth.client.renderers.misc.NullRenderer;
 import com.aqutheseal.celestisynth.common.compat.CSCompatManager;
-import com.aqutheseal.celestisynth.common.compat.spellbooks.ISSCompatItemRegistry;
+import com.aqutheseal.celestisynth.common.compat.spellbooks.ISSCompatItems;
 import com.aqutheseal.celestisynth.common.registry.CSBlockEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSMenuTypes;
@@ -43,7 +43,8 @@ public class CSClientSetupEvents {
         event.registerEntityRenderer(CSEntityTypes.RAINFALL_LASER_MARKER.get(), RainfallLaserRenderer::new);
         event.registerEntityRenderer(CSEntityTypes.RAINFALL_ARROW.get(), NullRenderer::new);
         event.registerEntityRenderer(CSEntityTypes.FROSTBOUND_SHARD.get(), FrostboundShardRenderer::new);
-
+        event.registerEntityRenderer(CSEntityTypes.SOLARIS_BOMB.get(), SolarisBombRenderer::new);
+        event.registerEntityRenderer(CSEntityTypes.CRESCENTIA_DRAGON.get(), CrescentiaDragonRenderer::new);
         event.registerBlockEntityRenderer(CSBlockEntityTypes.CELESTIAL_CRAFTING_TABLE_TILE.get(), context -> new CelestialCraftingTableBlockEntityRenderer());
     }
 
@@ -51,6 +52,7 @@ public class CSClientSetupEvents {
     public static void onRegisterLayerDefinitionsEvent(final EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(FrostboundShardModel.LAYER_LOCATION, FrostboundShardModel::createBodyLayer);
         event.registerLayerDefinition(RainfallLaserModel.LAYER_LOCATION, RainfallLaserModel::createBodyLayer);
+        event.registerLayerDefinition(SolarisBombModel.LAYER_LOCATION, SolarisBombModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -60,7 +62,7 @@ public class CSClientSetupEvents {
         });
 
         if (CSCompatManager.checkIronsSpellbooks()) {
-            ISSCompatItemRegistry.SPELLBOOKS_ITEMS.getEntries().stream().filter(item -> item.get() instanceof SpellBook).forEach((item) ->
+            ISSCompatItems.SPELLBOOKS_ITEMS.getEntries().stream().filter(item -> item.get() instanceof SpellBook).forEach((item) ->
                     CuriosRendererRegistry.register(item.get(), SpellBookCurioRenderer::new)
             );
         }
@@ -74,6 +76,9 @@ public class CSClientSetupEvents {
         event.registerSpriteSet(CSParticleTypes.RAINFALL_ENERGY.get(), RainfallEnergyParticle.Provider::new);
         event.registerSpriteSet(CSParticleTypes.RAINFALL_ENERGY_SMALL.get(), RainfallEnergyParticle.Small.Provider::new);
         event.registerSpriteSet(CSParticleTypes.WATER_DROP.get(), WaterDropParticle.Provider::new);
+        event.registerSpriteSet(CSParticleTypes.KERES_OMEN.get(), SlowFallParticle.Provider::new);
+        event.registerSpriteSet(CSParticleTypes.KERES_ASH.get(), SlowFallParticle.Ash.Provider::new);
+        event.registerSpriteSet(CSParticleTypes.SOLARIS_FLAME.get(), SlowFallParticle.Provider::new);
     }
 
 }

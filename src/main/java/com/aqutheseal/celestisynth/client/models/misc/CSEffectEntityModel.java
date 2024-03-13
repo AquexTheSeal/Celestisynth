@@ -1,7 +1,7 @@
 package com.aqutheseal.celestisynth.client.models.misc;
 
 import com.aqutheseal.celestisynth.Celestisynth;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 

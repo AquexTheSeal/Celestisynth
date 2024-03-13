@@ -3,7 +3,7 @@ package com.aqutheseal.celestisynth.common.attack.solaris;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
@@ -11,7 +11,6 @@ import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -44,7 +43,7 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
 
     @Override
     public boolean getCondition() {
-        return !player.isShiftKeyDown();
+        return player.onGround() && !player.isShiftKeyDown();
     }
 
     @Override
@@ -83,17 +82,16 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
                     target.setSecondsOnFire(5);
                 }
             }
-            player.playSound(SoundEvents.SWEET_BERRY_BUSH_BREAK);
             if (getTagController().getInt(DIRECTION_INDEX_KEY) == 0) {
                 movePlayerInCircularMotion(player, getTimerProgress(), false);
-                CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_BLITZ.get());
+                CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_BLITZ.get(), 0, 2.5, 0);
                 CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR.get());
-                playRandomBladeSound(player, 4);
+                dashSound(1 + (player.getRandom().nextGaussian() / 2));
             } else if (getTagController().getInt(DIRECTION_INDEX_KEY) == 1) {
                 movePlayerInCircularMotion(player, getTimerProgress(), true);
-                CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_BLITZ.get());
+                CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_BLITZ.get(), 0, 2.5, 0);
                 CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR.get());
-                playRandomBladeSound(player, 4);
+               dashSound(1 + (player.getRandom().nextGaussian() / 2));
             }
 
             BlockPos playerPos = player.blockPosition();
@@ -103,8 +101,8 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
 
             for (int i = 0; i < particleCount; i++) {
                 double angle = i * angleIncrement;
-                double rotationX = level.random.nextDouble() * 360.0;
-                double rotationZ = level.random.nextDouble() * 360.0;
+                double rotationX = level.random.nextDouble() * 360;
+                double rotationZ = level.random.nextDouble() * 360;
                 double x = playerPos.getX() + radius * Math.cos(angle);
                 double y = playerPos.getY() + 1.5;
                 double z = playerPos.getZ() + radius * Math.sin(angle);
@@ -112,6 +110,22 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
                 double motionY = Math.sin(Math.toRadians(rotationZ));
                 double motionZ = Math.cos(Math.toRadians(rotationX)) * Math.cos(Math.toRadians(rotationZ));
                 if (!level.isClientSide()) ParticleUtil.sendParticles((ServerLevel) level, ParticleTypes.FLAME, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
+            }
+        }
+    }
+
+    private void dashSound(double pitch) {
+        if (player.getRandom().nextBoolean()) {
+            if (player.getRandom().nextBoolean()) {
+                player.playSound(CSSoundEvents.SWORD_SWING.get(), (float) 0.2, (float) pitch);
+            } else {
+                player.playSound(CSSoundEvents.AIR_SWING.get(),  (float) 0.2, (float) pitch);
+            }
+        } else {
+            if (player.getRandom().nextBoolean()) {
+                player.playSound(CSSoundEvents.SWORD_SWING_FIRE.get(), (float) 0.2, (float) pitch);
+            } else {
+                player.playSound(CSSoundEvents.IMPACT_HIT.get(), (float) 0.2, (float) pitch);
             }
         }
     }

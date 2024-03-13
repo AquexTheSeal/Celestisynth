@@ -1,12 +1,14 @@
 package com.aqutheseal.celestisynth.datagen.providers.compat;
 
 import com.aqutheseal.celestisynth.Celestisynth;
+import com.aqutheseal.celestisynth.common.compat.bettercombat.BCDatagenUtil;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
+import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import net.bettercombat.api.AttributesContainer;
 import net.bettercombat.api.WeaponAttributes;
 import net.minecraft.data.PackOutput;
 
-public class CSBetterCombatProvider extends BaseBetterCombatProvider {
+public class CSBetterCombatProvider extends BCDatagenUtil {
     public CSBetterCombatProvider(PackOutput output) {
         super(output, Celestisynth.MODID);
     }
@@ -19,6 +21,70 @@ public class CSBetterCombatProvider extends BaseBetterCombatProvider {
         this.poltergeistInit();
         this.aquafloraInit();
         this.frostboundInit();
+        this.keresInit();
+    }
+
+    public void keresInit() {
+        addAttribute(CSItems.KERES, new AttributesContainer(
+                "bettercombat:claymore",
+                new WeaponAttributes(
+                        7.0,
+                        "bettercombat:pose_two_handed_polearm",
+                        null,
+                        false,
+                        null,
+                        new WeaponAttributes.Attack[]{
+                                new WeaponAttributes.Attack(
+                                        null,
+                                        WeaponAttributes.HitBoxShape.HORIZONTAL_PLANE,
+                                        1.0, 150.0, 0.25,
+                                        "bettercombat:one_handed_slash_horizontal_right",
+                                        new WeaponAttributes.Sound("bettercombat:glaive_slash_quick"),
+                                        null
+                                ),
+                                new WeaponAttributes.Attack(
+                                        null,
+                                        WeaponAttributes.HitBoxShape.HORIZONTAL_PLANE,
+                                        1.0, 150.0, 0.25,
+                                        "bettercombat:one_handed_slash_horizontal_left",
+                                        new WeaponAttributes.Sound("bettercombat:glaive_slash_quick"),
+                                        null
+                                ),
+                                new WeaponAttributes.Attack(
+                                        null,
+                                        WeaponAttributes.HitBoxShape.HORIZONTAL_PLANE,
+                                        1.2, 360, 0.5,
+                                        "bettercombat:two_handed_spin",
+                                        new WeaponAttributes.Sound("bettercombat:staff_spin"),
+                                        null
+                                ),
+                                new WeaponAttributes.Attack(
+                                        null,
+                                        WeaponAttributes.HitBoxShape.FORWARD_BOX,
+                                        1.1, 0, 0.25,
+                                        "bettercombat:two_handed_stab_left",
+                                        new WeaponAttributes.Sound("bettercombat:spear_stab"),
+                                        null
+                                ),
+                                new WeaponAttributes.Attack(
+                                        null,
+                                        WeaponAttributes.HitBoxShape.FORWARD_BOX,
+                                        1.1, 0, 0.25,
+                                        "bettercombat:two_handed_stab_right",
+                                        new WeaponAttributes.Sound("bettercombat:spear_stab"),
+                                        null
+                                ),
+                                new WeaponAttributes.Attack(
+                                        null,
+                                        WeaponAttributes.HitBoxShape.HORIZONTAL_PLANE,
+                                        1.3, 360, 0.5,
+                                        "bettercombat:two_handed_spin",
+                                        new WeaponAttributes.Sound("bettercombat:staff_spin"),
+                                        null
+                                ),
+                        }
+                )
+        ));
     }
 
     public void frostboundInit() {
@@ -28,7 +94,7 @@ public class CSBetterCombatProvider extends BaseBetterCombatProvider {
                         5.0,
                         "bettercombat:pose_two_handed_heavy",
                         null,
-                        true,
+                        false,
                         null,
                         new WeaponAttributes.Attack[]{
                                 new WeaponAttributes.Attack(
@@ -218,28 +284,28 @@ public class CSBetterCombatProvider extends BaseBetterCombatProvider {
                                         null, WeaponAttributes.HitBoxShape.HORIZONTAL_PLANE,
                                         1.0, 90.0, 0.5,
                                         "bettercombat:two_handed_slash_horizontal_left",
-                                        new WeaponAttributes.Sound("bettercombat:rapier_slash"),
+                                        new WeaponAttributes.Sound(CSSoundEvents.SWORD_SWING_FIRE.getId().toString()),
                                         null
                                 ),
                                 new  WeaponAttributes.Attack(
                                         null, WeaponAttributes.HitBoxShape.HORIZONTAL_PLANE,
                                         1.0, 90.0, 0.5,
                                         "bettercombat:two_handed_slash_horizontal_right",
-                                        new WeaponAttributes.Sound("bettercombat:rapier_slash"),
+                                        new WeaponAttributes.Sound(CSSoundEvents.SWORD_SWING_FIRE.getId().toString()),
                                         null
                                 ),
                                 new WeaponAttributes.Attack(
                                         null, WeaponAttributes.HitBoxShape.FORWARD_BOX,
                                         1.1, 0.0, 0.5,
                                         "bettercombat:two_handed_stab_left",
-                                        new WeaponAttributes.Sound("bettercombat:rapier_stab"),
+                                        new WeaponAttributes.Sound(CSSoundEvents.FIRE_SHOOT.getId().toString()),
                                         null
                                 ),
                                 new WeaponAttributes.Attack(
                                         null, WeaponAttributes.HitBoxShape.FORWARD_BOX,
                                         1.1, 0.0, 0.5,
                                         "bettercombat:two_handed_stab_right",
-                                        new WeaponAttributes.Sound("bettercombat:rapier_stab"),
+                                        new WeaponAttributes.Sound(CSSoundEvents.FIRE_SHOOT.getId().toString()),
                                         null
                                 )
                         }

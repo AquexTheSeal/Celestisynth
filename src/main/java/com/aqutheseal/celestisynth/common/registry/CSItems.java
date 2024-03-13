@@ -46,6 +46,7 @@ public class CSItems {
     public static final RegistryObject<Item> AQUAFLORA = ITEMS.register("aquaflora", () -> new AquafloraItem(Tiers.NETHERITE, 2 - 4, -1.1F, (new Item.Properties()).fireResistant().rarity(CSRarityTypes.CELESTIAL)));
     public static final RegistryObject<Item> RAINFALL_SERENITY = ITEMS.register("rainfall_serenity", () -> new RainfallSerenityItem((new Item.Properties()).fireResistant().durability(1200).rarity(CSRarityTypes.CELESTIAL)));
     public static final RegistryObject<Item> FROSTBOUND = ITEMS.register("frostbound", () -> new FrostboundItem(Tiers.NETHERITE,  9 - 4, -2.7F, (new Item.Properties()).fireResistant().rarity(CSRarityTypes.CELESTIAL)));
+    public static final RegistryObject<Item> KERES = ITEMS.register("keres", () -> new KeresItem(Tiers.NETHERITE,  10 - 4, -2.9F, (new Item.Properties()).fireResistant().rarity(CSRarityTypes.CELESTIAL)));
 
     public static final RegistryObject<Item> CELESTIAL_DEBUGGER = ITEMS.register("celestial_debugger", () -> new CelestialDebuggerItem(new Item.Properties().rarity(Rarity.EPIC)));
 

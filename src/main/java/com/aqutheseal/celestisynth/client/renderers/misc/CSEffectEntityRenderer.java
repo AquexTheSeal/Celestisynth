@@ -2,7 +2,7 @@ package com.aqutheseal.celestisynth.client.renderers.misc;
 
 import com.aqutheseal.celestisynth.client.models.misc.CSEffectEntityModel;
 import com.aqutheseal.celestisynth.client.renderers.entity.projectile.SilencedRotationProjectileRenderer;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualSpecialProperties;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -30,13 +30,11 @@ public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<C
         float lerpBodyRot = Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot()) - 165;
         float ageInTicks = animatable.tickCount + partialTick;
         applyRotations(animatable, poseStack, ageInTicks, lerpBodyRot, partialTick);
-
         if (animatable.getVisualType().isRotateRandomly() && !animatable.getVisualType().hasSpecialProperties()) {
             poseStack.mulPose(Axis.XP.rotationDegrees(animatable.getRotationX()));
             poseStack.mulPose(Axis.ZP.rotationDegrees(animatable.getRotationZ()));
         }
         CSVisualSpecialProperties.set(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 

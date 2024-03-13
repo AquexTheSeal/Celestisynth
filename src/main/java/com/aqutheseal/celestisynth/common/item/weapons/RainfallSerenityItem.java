@@ -6,7 +6,7 @@ import com.aqutheseal.celestisynth.api.item.CSWeapon;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import com.aqutheseal.celestisynth.common.compat.CSCompatManager;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualAnimation;
 import com.aqutheseal.celestisynth.common.entity.projectile.RainfallArrow;
 import com.aqutheseal.celestisynth.common.registry.CSParticleTypes;

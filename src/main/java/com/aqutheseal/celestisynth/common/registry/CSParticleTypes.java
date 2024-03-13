@@ -16,4 +16,7 @@ public class CSParticleTypes {
     public static final RegistryObject<SimpleParticleType> RAINFALL_ENERGY = PARTICLE_TYPES.register("rainfall_energy", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> RAINFALL_ENERGY_SMALL = PARTICLE_TYPES.register("rainfall_energy_small", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> WATER_DROP = PARTICLE_TYPES.register("water_drop", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> KERES_OMEN = PARTICLE_TYPES.register("keres_omen", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> KERES_ASH = PARTICLE_TYPES.register("keres_ash", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> SOLARIS_FLAME = PARTICLE_TYPES.register("solaris_flame", () -> new SimpleParticleType(true));
 }

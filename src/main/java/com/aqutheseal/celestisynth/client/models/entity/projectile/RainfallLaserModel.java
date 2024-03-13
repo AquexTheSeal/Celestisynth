@@ -1,7 +1,8 @@
-package com.aqutheseal.celestisynth.client.models.entity.projectile;// Made with Blockbench 4.9.3
+package com.aqutheseal.celestisynth.client.models.entity.projectile;
+
+// Made with Blockbench 4.9.3
 // Exported for Minecraft version 1.17 or later with Mojang mappings
 // Paste this class into your mod and generate all required imports
-
 
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,7 +15,6 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
 
 public class RainfallLaserModel<T extends Entity> extends EntityModel<T> {
-	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Celestisynth.prefix("rainfall_arrow_model"), "main");
 	private final ModelPart bone;
 

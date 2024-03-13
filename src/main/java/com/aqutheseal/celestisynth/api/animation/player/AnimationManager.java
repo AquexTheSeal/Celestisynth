@@ -13,6 +13,7 @@ import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.IExtensibleEnum;
 import net.minecraftforge.fml.ModList;
@@ -97,19 +98,25 @@ public class AnimationManager {
 
         final @Nullable String path;
         final int id;
+        final String modid;
 
-        AnimationsList(@Nullable String file) {
-            path = file;
-            id = animIndex++;
+        AnimationsList(@Nullable String file, String modid) {
+            this.path = file;
+            this.id = animIndex++;
+            this.modid = modid;
         }
 
-        public static AnimationsList create(String name, String file) {
+        AnimationsList(@Nullable String file) {
+            this(file, Celestisynth.MODID);
+        }
+
+        public static AnimationsList create(String name, String file, String modid) {
             throw new IllegalStateException("Enum not extended");
         }
 
         public @Nullable KeyframeAnimation getAnimation() {
             if (getPath() != null) {
-                return PlayerAnimationRegistry.getAnimation(Celestisynth.prefix(getPath()));
+                return PlayerAnimationRegistry.getAnimation(new ResourceLocation(modid, getPath()));
             } else {
                 return null;
             }

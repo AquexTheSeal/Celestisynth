@@ -1,16 +1,15 @@
 package com.aqutheseal.celestisynth.common.entity.skill;
 
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
+import com.aqutheseal.celestisynth.api.entity.EffectControllerEntity;
 import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
-import com.aqutheseal.celestisynth.common.entity.base.EffectControllerEntity;
 import com.aqutheseal.celestisynth.common.item.weapons.CrescentiaItem;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -68,7 +67,6 @@ public class SkillCastCrescentiaRanged extends EffectControllerEntity {
             }
             if (entityBatch instanceof Projectile projectile) {
                 CrescentiaItem.createCrescentiaFirework(fireworkStack, level(), ownerPlayer, projectile.getX(), projectile.getY(), projectile.getZ(), true);
-                projectile.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
                 projectile.remove(RemovalReason.DISCARDED);
             }
         }
@@ -77,7 +75,6 @@ public class SkillCastCrescentiaRanged extends EffectControllerEntity {
             float offX = (random.nextFloat() * 20) - 10;
             float offY = (random.nextFloat() * 20) - 10;
             float offZ = (random.nextFloat() * 20) - 10;
-
             CrescentiaItem.createCrescentiaFirework(fireworkStack, level(), ownerPlayer, (getX() + getAngleX()) + offX, (getY() + getAngleY()) + offY,  (getZ() + getAngleZ()) + offZ, false);
             CrescentiaItem.createCrescentiaFirework(fireworkStack, level(), ownerPlayer, getAngleX() + offZ, (getAngleY() - 1.5) + offX,  getAngleZ() + offY, false);
         }

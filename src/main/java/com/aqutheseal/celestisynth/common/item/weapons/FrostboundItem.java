@@ -6,7 +6,8 @@ import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
 import com.aqutheseal.celestisynth.common.attack.frostbound.FrostboundCryogenesisAttack;
 import com.aqutheseal.celestisynth.common.attack.frostbound.FrostboundDanceAttack;
 import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvider;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.common.compat.bettercombat.SwingParticleContainer;
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.entity.helper.CSVisualAnimation;
 import com.aqutheseal.celestisynth.common.entity.helper.skinset.FrostboundSlashSkinSet;
 import com.aqutheseal.celestisynth.common.entity.projectile.FrostboundShard;
@@ -15,6 +16,7 @@ import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
 import com.aqutheseal.celestisynth.util.SkinUtil;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,6 +27,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
@@ -64,6 +67,11 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
                 new FrostboundDanceAttack(player, stack),
                 new FrostboundCryogenesisAttack(player, stack)
         );
+    }
+
+    @Override
+    public @Nullable SwingParticleContainer getSwingContainer() {
+        return new SwingParticleContainer(ParticleTypes.SNOWFLAKE, 1.5F);
     }
 
     @Override

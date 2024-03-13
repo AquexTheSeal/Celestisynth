@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "g": {
+      "item": "minecraft:gold_block"
+    },
+    "x": {
+      "item": "celestisynth:lunar_stone"
+    }
+  },
+  "pattern": [
+    "x x",
+    "xgx",
+    "xxx"
+  ],
+  "result": {
+    "item": "celestisynth:lunar_stone_chestplate"
+  },
+  "show_notification": true
+}

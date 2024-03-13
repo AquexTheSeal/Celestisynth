@@ -3,10 +3,7 @@ package com.aqutheseal.celestisynth.manager;
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.network.animation.SetAnimationServerPacket;
 import com.aqutheseal.celestisynth.common.network.animation.SetAnimationToAllPacket;
-import com.aqutheseal.celestisynth.common.network.util.CSSpawnParticlePacket;
-import com.aqutheseal.celestisynth.common.network.util.ChangeCameraTypePacket;
-import com.aqutheseal.celestisynth.common.network.util.ShakeScreenServerPacket;
-import com.aqutheseal.celestisynth.common.network.util.ShakeScreenToAllPacket;
+import com.aqutheseal.celestisynth.common.network.util.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -41,6 +38,12 @@ public class CSNetworkManager {
                 .encoder(ShakeScreenServerPacket::toBytes)
                 .consumerMainThread(ShakeScreenServerPacket::handle)
                 .add();
+
+        INSTANCE.messageBuilder(C2SParticlePacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SParticlePacket::new)
+                .encoder(C2SParticlePacket::toBytes)
+                .consumerMainThread(C2SParticlePacket::handle)
+                .add();
     }
 
     private static void registerS2CPackets() {
@@ -56,10 +59,10 @@ public class CSNetworkManager {
                 .consumerMainThread(ShakeScreenToAllPacket::handle)
                 .add();
 
-        INSTANCE.messageBuilder(CSSpawnParticlePacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(CSSpawnParticlePacket::new)
-                .encoder(CSSpawnParticlePacket::toBytes)
-                .consumerMainThread(CSSpawnParticlePacket::handle)
+        INSTANCE.messageBuilder(S2CGroupedParticlePacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(S2CGroupedParticlePacket::new)
+                .encoder(S2CGroupedParticlePacket::toBytes)
+                .consumerMainThread(S2CGroupedParticlePacket::handle)
                 .add();
 
         INSTANCE.messageBuilder(SetAnimationToAllPacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_CLIENT)

@@ -6,7 +6,7 @@ import com.aqutheseal.celestisynth.common.entity.tempestboss.TempestBoss;
 import com.aqutheseal.celestisynth.common.registry.*;
 import com.aqutheseal.celestisynth.datagen.providers.*;
 import com.aqutheseal.celestisynth.datagen.providers.compat.CSBetterCombatProvider;
-import com.aqutheseal.celestisynth.datagen.providers.compat.CSGlobalLootModifiersProvider;
+import com.aqutheseal.celestisynth.datagen.providers.CSGlobalLootModifiersProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;

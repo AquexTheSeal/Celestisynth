@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "b": {
+      "item": "irons_spellbooks:ruined_book"
+    },
+    "c": {
+      "item": "celestisynth:celestial_core_heated"
+    },
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "x": {
+      "item": "celestisynth:celestial_netherite_ingot"
+    }
+  },
+  "pattern": [
+    "xcx",
+    "xbp",
+    "xcx"
+  ],
+  "result": {
+    "item": "celestisynth:celestial_spell_book"
+  },
+  "show_notification": true
+}

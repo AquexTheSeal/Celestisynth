@@ -8,7 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class ISSCompatItemRegistry {
+public class ISSCompatItems {
     public static final DeferredRegister<Item> SPELLBOOKS_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Celestisynth.MODID);
 
     public static final RegistryObject<Item> CELESTIAL_SPELLBOOK = SPELLBOOKS_ITEMS.register("celestial_spell_book", () ->

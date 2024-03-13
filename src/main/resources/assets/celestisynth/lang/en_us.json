@@ -59,7 +59,7 @@
 
   "item.celestisynth.solaris": "Solaris",
   "advancement.celestisynth.obtain_solaris.title": "A Million Degrees Above",
-  "advancement.celestisynth.obtain_solaris.description": "Obtain a Solaris",
+  "advancement.celestisynth.obtain_solaris.description": "Obtain the Solaris",
 
   "item.celestisynth.solaris.passive_1": "Ember's Blessing",
   "item.celestisynth.solaris.passive_desc_1": "The player gains fire immunity while holding the item - normal attacks with this item sets the target on fire for a few seconds.",
@@ -76,7 +76,7 @@
 
   "item.celestisynth.crescentia": "Crescentia",
   "advancement.celestisynth.obtain_crescentia.title": "Beautiful Fireworks",
-  "advancement.celestisynth.obtain_crescentia.description": "Obtain a Crescentia",
+  "advancement.celestisynth.obtain_crescentia.description": "Obtain the Crescentia",
 
   "item.celestisynth.crescentia.passive_1": "Heavy-Hitter",
   "item.celestisynth.crescentia.passive_desc_1": "The player gains a level of damage resistance while holding the item - normal attacks with this item slows down the target for a few seconds.",
@@ -93,7 +93,7 @@
 
   "item.celestisynth.breezebreaker": "Breezebreaker",
   "advancement.celestisynth.obtain_breezebreaker.title": "Swift and Sound",
-  "advancement.celestisynth.obtain_breezebreaker.description": "Obtain a Breezebreaker",
+  "advancement.celestisynth.obtain_breezebreaker.description": "Obtain the Breezebreaker",
 
   "item.celestisynth.breezebreaker.passive_1": "Agile",
   "item.celestisynth.breezebreaker.passive_desc_1": "The player gains a huge jump boost and fall damage immunity while holding the item, but takes 2.3x damage from all the other damage sources.",
@@ -125,7 +125,7 @@
 
   "item.celestisynth.poltergeist": "Poltergeist",
   "advancement.celestisynth.obtain_poltergeist.title": "A Haunted Axe",
-  "advancement.celestisynth.obtain_poltergeist.description": "Obtain a Poltergeist",
+  "advancement.celestisynth.obtain_poltergeist.description": "Obtain the Poltergeist",
 
   "item.celestisynth.poltergeist.passive_1": "Phantom Tag",
   "item.celestisynth.poltergeist.passive_desc_1": "All skills of this weapon tags every affected entity with a Phantom Tag. Slain foes with the tag become monstrous Aberrants that draw in nearby entities for 5 seconds.",
@@ -142,7 +142,7 @@
 
   "item.celestisynth.aquaflora": "Aquaflora",
   "advancement.celestisynth.obtain_aquaflora.title": "When the flowers bloom that day",
-  "advancement.celestisynth.obtain_aquaflora.description": "Obtain an Aquaflora",
+  "advancement.celestisynth.obtain_aquaflora.description": "Obtain the Aquaflora",
 
   "item.celestisynth.aquaflora.passive_1": "Swipethrough",
   "item.celestisynth.aquaflora.passive_desc_1": "Every skill cast gives 3 seconds of speed to the caster.",
@@ -168,7 +168,7 @@
 
   "item.celestisynth.rainfall_serenity": "Rainfall Serenity",
   "advancement.celestisynth.obtain_rainfall_serenity.title": "Beyond the Earth's Atmosphere",
-  "advancement.celestisynth.obtain_rainfall_serenity.description": "Obtain a Rainfall Serenity",
+  "advancement.celestisynth.obtain_rainfall_serenity.description": "Obtain the Rainfall Serenity",
 
   "item.celestisynth.rainfall_serenity.passive_1": "",
   "item.celestisynth.rainfall_serenity.passive_desc_1": "",
@@ -185,7 +185,7 @@
 
   "item.celestisynth.frostbound": "Frostbound",
   "advancement.celestisynth.obtain_frostbound.title": "The Treasure of Boreas",
-  "advancement.celestisynth.obtain_frostbound.description": "Obtain a Frostbound",
+  "advancement.celestisynth.obtain_frostbound.description": "Obtain the Frostbound",
 
   "item.celestisynth.frostbound.passive_1": "Whispering Cold",
   "item.celestisynth.frostbound.passive_desc_1": "Inflicting harm upon a target using this weapon induces a frostbound condition, significantly diminishing their strength and reducing their speed.",
@@ -198,11 +198,17 @@
   "item.celestisynth.frostbound.condition_2": "Activate: Right-click while holding SHIFT",
   "item.celestisynth.frostbound.desc_2": "Calls forth a maximum of five sizable ice formations in front of the caster, causing damage to entities and bestowing upon them a frostbound effect.",
 
-  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< advancement [NON-WEAPONS] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>":  "",
+  "------------------- KERES ------------------":  "",
+
+  "item.celestisynth.keres": "Keres",
+  "advancement.celestisynth.obtain_keres.title": "The Ultimate Demonic Pact",
+  "advancement.celestisynth.obtain_keres.description": "Obtain the Keres",
+
+  "{o}================{o} ADVANCEMENTS [NON-WEAPONS] {o}================{o}":  "",
 
   "advancement.celestisynth.obtain_core.title": "Onto a Majestic Journey!",
   "advancement.celestisynth.obtain_core.description": "Craft a Celestial Core",
-  "advancement.celestisynth.obtain_supernal_ingot.title": "Oh no, not another Netherite!",
+  "advancement.celestisynth.obtain_supernal_ingot.title": "Oh no, not another Netherite ingot!",
   "advancement.celestisynth.obtain_supernal_ingot.description": "Obtain a Supernal Netherite Ingot",
   "advancement.celestisynth.obtain_celestial_ingot.title": "Perhaps, this one's different?",
   "advancement.celestisynth.obtain_celestial_ingot.description": "Obtain a Celestial Netherite Ingot",

@@ -1,12 +1,15 @@
 package com.aqutheseal.celestisynth.api.item;
 
 import com.aqutheseal.celestisynth.client.renderers.item.CSGeoWeaponRenderer;
+import com.aqutheseal.celestisynth.common.compat.bettercombat.SwingParticleContainer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -33,8 +36,14 @@ public interface CSGeoItem extends GeoItem {
 
     GeoAnimatable cacheItem();
 
+    @OnlyIn(Dist.CLIENT)
     default HumanoidModel.ArmPose getArmPose() {
         return HumanoidModel.ArmPose.ITEM;
+    }
+
+    // Only works with BetterCombat installed.
+    default @Nullable SwingParticleContainer getSwingContainer() {
+        return null;
     }
 
     @Override
@@ -42,6 +51,7 @@ public interface CSGeoItem extends GeoItem {
         return GeckoLibUtil.createInstanceCache(cacheItem());
     }
 
+    @OnlyIn(Dist.CLIENT)
     default <T extends Item & CSGeoItem> void initGeo(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
             private CSGeoWeaponRenderer<T> renderer;
@@ -52,7 +62,8 @@ public interface CSGeoItem extends GeoItem {
                 return this.renderer;
             }
 
-            @Nullable @Override public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
+            @Override
+            public HumanoidModel.@Nullable ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
                 return CSGeoItem.this.getArmPose();
             }
         });

@@ -4,7 +4,7 @@ import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.item.weapons.CrescentiaItem;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
@@ -72,10 +72,15 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
                     projectile.remove(Entity.RemovalReason.DISCARDED);
                 }
             }
-            if (getTimerProgress() % 30 == 0) player.playSound(CSSoundEvents.WHIRLWIND.get(), 0.15F, 1.5F);
-            if (getTimerProgress() % 3 == 0) {
-                if (level.random.nextBoolean()) CSEffectEntity.createInstance(player, null, CSVisualTypes.CRESCENTIA_STRIKE.get(), calculateXLook(player), -0.3, calculateZLook(player));
-                else CSEffectEntity.createInstance(player, null, CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get(), calculateXLook(player), -0.3, calculateZLook(player));
+            if (getTimerProgress() % 30 == 0) {
+                player.playSound(CSSoundEvents.WHIRLWIND.get(), 0.15F, 1F + (float) (player.getRandom().nextGaussian() * 0.25));
+            }
+            if (getTimerProgress() % 5 == 0) {
+                if (level.random.nextBoolean()) {
+                    CSEffectEntity.createInstance(player, null, CSVisualTypes.CRESCENTIA_STRIKE.get(), calculateXLook(player), -0.3, calculateZLook(player));
+                } else {
+                    CSEffectEntity.createInstance(player, null, CSVisualTypes.CRESCENTIA_STRIKE_INVERTED.get(), calculateXLook(player), -0.3, calculateZLook(player));
+                }
                 playRandomBladeSound(player, BASE_WEAPON_EFFECTS.length);
             }
             CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR_LARGE.get(), 0, -1, 0);
@@ -83,7 +88,9 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
             float offY = (level.random.nextFloat() * 16) - 8;
             float offZ = (level.random.nextFloat() * 16) - 8;
             CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, false);
-            if (level.random.nextBoolean()) CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offZ, player.getY() + offX, player.getZ() + offY, false);
+            if (level.random.nextBoolean()) {
+                CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offZ, player.getY() + offX, player.getZ() + offY, false);
+            }
         }
     }
 

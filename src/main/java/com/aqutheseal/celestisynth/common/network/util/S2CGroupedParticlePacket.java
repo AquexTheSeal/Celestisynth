@@ -10,8 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
-public class CSSpawnParticlePacket {
-
+public class S2CGroupedParticlePacket {
     private final double x;
     private final double y;
     private final double z;
@@ -25,7 +24,7 @@ public class CSSpawnParticlePacket {
     private final boolean overrideLimiter;
     private final ParticleType<?> particle;
 
-    public <T extends ParticleType<?>> CSSpawnParticlePacket(T pParticle, boolean pOverrideLimiter, double pX, double pY, double pZ, float pXDist, float pYDist, float pZDist, float xSpeed, float ySpeed, float zSpeed, int pCount) {
+    public <T extends ParticleType<?>> S2CGroupedParticlePacket(T pParticle, boolean pOverrideLimiter, double pX, double pY, double pZ, float pXDist, float pYDist, float pZDist, float xSpeed, float ySpeed, float zSpeed, int pCount) {
         this.particle = pParticle;
         this.overrideLimiter = pOverrideLimiter;
         this.x = pX;
@@ -40,7 +39,7 @@ public class CSSpawnParticlePacket {
         this.count = pCount;
     }
 
-    public CSSpawnParticlePacket(FriendlyByteBuf buffer) {
+    public S2CGroupedParticlePacket(FriendlyByteBuf buffer) {
         ParticleType<?> particletype = ForgeRegistries.PARTICLE_TYPES.getValue(buffer.readResourceLocation());
         this.overrideLimiter = buffer.readBoolean();
         this.x = buffer.readDouble();
@@ -141,7 +140,6 @@ public class CSSpawnParticlePacket {
                 double d6 = getXSpeed();
                 double d7 = getYSpeed();
                 double d8 = getZSpeed();
-
                 try {
                     minecraft.level.addAlwaysVisibleParticle((ParticleOptions) getParticle(), true, getX() + d1, getY() + d3, getZ() + d5, d6, d7, d8);
                 } catch (Throwable throwable) {

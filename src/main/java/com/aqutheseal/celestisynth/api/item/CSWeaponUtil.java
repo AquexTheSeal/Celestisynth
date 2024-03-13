@@ -76,14 +76,6 @@ public interface CSWeaponUtil {
         initiateAbilityAttack(holder, target, damage, null, attackHurtType);
     }
 
-    default CompoundTag attackController(ItemStack stack) {
-        return stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
-    }
-
-    default CompoundTag attackExtras(ItemStack stack) {
-        return stack.getOrCreateTagElement(CSWeapon.CS_EXTRAS_ELEMENT);
-    }
-
     private void attack(Player holder, LivingEntity target, float damage, DamageSource damageSource, AttackHurtTypes attackHurtType) {
         if (attackHurtType.isRapid()) {
             target.invulnerableTime = 0;
@@ -94,6 +86,14 @@ public interface CSWeaponUtil {
         } else {
             useAndDamageItem(target.getUseItem(), target.level(), target, (int) (damage / 3));
         }
+    }
+
+    default CompoundTag attackController(ItemStack stack) {
+        return stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+    }
+
+    default CompoundTag attackExtras(ItemStack stack) {
+        return stack.getOrCreateTagElement(CSWeapon.CS_EXTRAS_ELEMENT);
     }
 
     static MobEffectInstance nonVisiblePotionEffect(MobEffect effect, int ticks, int amplifier) {
@@ -117,12 +117,16 @@ public interface CSWeaponUtil {
     default void useAndDamageItem(ItemStack pStack, Level pLevel, LivingEntity targetOwnerEntity, int damageAmount) {
         if (!pLevel.isClientSide) {
             pStack.hurtAndBreak(damageAmount, targetOwnerEntity, (ownerEntity) -> {
-                if (targetOwnerEntity.getMainHandItem() == pStack) ownerEntity.broadcastBreakEvent(InteractionHand.MAIN_HAND);
-                else if (targetOwnerEntity.getOffhandItem() == pStack) ownerEntity.broadcastBreakEvent(InteractionHand.OFF_HAND);
+                if (targetOwnerEntity.getMainHandItem() == pStack) {
+                    ownerEntity.broadcastBreakEvent(InteractionHand.MAIN_HAND);
+                } else if (targetOwnerEntity.getOffhandItem() == pStack) {
+                    ownerEntity.broadcastBreakEvent(InteractionHand.OFF_HAND);
+                }
             });
         }
-
-        if (targetOwnerEntity instanceof Player ownerPlayer) ownerPlayer.awardStat(Stats.ITEM_USED.get(pStack.getItem()));
+        if (targetOwnerEntity instanceof Player ownerPlayer) {
+            ownerPlayer.awardStat(Stats.ITEM_USED.get(pStack.getItem()));
+        }
     }
 
     default void sendExpandingParticles(Level level, ParticleType<?> particleType, double x, double y, double z, int amount, float expansionMultiplier) {
@@ -131,7 +135,6 @@ public interface CSWeaponUtil {
             float offX = (-0.5f + random.nextFloat()) * expansionMultiplier;
             float offY = (-0.5f + random.nextFloat()) * expansionMultiplier;
             float offZ = (-0.5f + random.nextFloat()) * expansionMultiplier;
-
             ParticleUtil.sendParticles(level, particleType, x, y, z, 0, offX, offY, offZ);
         }
     }

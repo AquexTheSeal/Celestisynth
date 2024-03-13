@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.util;
 
-import com.aqutheseal.celestisynth.common.network.util.CSSpawnParticlePacket;
+import com.aqutheseal.celestisynth.common.network.util.S2CGroupedParticlePacket;
 import com.aqutheseal.celestisynth.manager.CSNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -16,7 +16,7 @@ public final class ParticleUtil {
     }
 
     public static <T extends ParticleType<?>> int sendParticles(ServerLevel serverWorld, T pType, double pPosX, double pPosY, double pPosZ, int pParticleCount, double pXOffset, double pYOffset, double pZOffset, double pXSpeed, double pYSpeed, double pZSpeed) {
-        CSSpawnParticlePacket sspawnparticlepacket = new CSSpawnParticlePacket(pType, false, pPosX, pPosY, pPosZ, (float)pXOffset, (float)pYOffset, (float)pZOffset, (float)pXSpeed, (float)pYSpeed, (float)pZSpeed, pParticleCount);
+        S2CGroupedParticlePacket sspawnparticlepacket = new S2CGroupedParticlePacket(pType, false, pPosX, pPosY, pPosZ, (float)pXOffset, (float)pYOffset, (float)pZOffset, (float)pXSpeed, (float)pYSpeed, (float)pZSpeed, pParticleCount);
         int i = 0;
 
         for(int j = 0; j < serverWorld.players().size(); ++j) {
@@ -49,7 +49,7 @@ public final class ParticleUtil {
         return sendParticles(serverWorld, pType, pPosX, pPosY, pPosZ, pParticleCount, 0, 0, 0, pXSpeed, pYSpeed, pZSpeed);
     }
 
-    private static boolean sendParticles(ServerPlayer pPlayer, double pPosX, double pPosY, double pPosZ, CSSpawnParticlePacket packet) {
+    private static boolean sendParticles(ServerPlayer pPlayer, double pPosX, double pPosY, double pPosZ, S2CGroupedParticlePacket packet) {
         if (pPlayer.level().isClientSide()) {
             return false;
         } else {

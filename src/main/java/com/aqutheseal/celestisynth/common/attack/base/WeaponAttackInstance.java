@@ -99,7 +99,6 @@ public abstract class WeaponAttackInstance implements CSWeaponUtil {
 
     public static void playRandomBladeSound(Entity entity, int length) {
         SoundEvent randomSound = BASE_WEAPON_EFFECTS[entity.level().getRandom().nextInt(length)];
-
-        entity.playSound(randomSound, 0.35F, 0.5F + entity.level().getRandom().nextFloat());
+        entity.playSound(randomSound, 0.15F, 0.5F + entity.level().getRandom().nextFloat());
     }
 }

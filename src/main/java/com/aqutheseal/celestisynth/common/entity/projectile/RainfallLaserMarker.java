@@ -1,6 +1,6 @@
 package com.aqutheseal.celestisynth.common.entity.projectile;
 
-import com.aqutheseal.celestisynth.common.entity.base.EffectControllerEntity;
+import com.aqutheseal.celestisynth.api.entity.EffectControllerEntity;
 import com.aqutheseal.celestisynth.common.registry.CSItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;

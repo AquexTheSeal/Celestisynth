@@ -1,4 +1,4 @@
-package com.aqutheseal.celestisynth.datagen.providers.compat;
+package com.aqutheseal.celestisynth.datagen.providers;
 
 import com.aqutheseal.celestisynth.Celestisynth;
 import com.aqutheseal.celestisynth.common.registry.CSLootTables;

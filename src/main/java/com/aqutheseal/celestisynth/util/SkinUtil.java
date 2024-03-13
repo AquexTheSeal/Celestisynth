@@ -12,7 +12,7 @@ public class SkinUtil {
 
     public static List<UUID> getAquaSkinWhitelist() {
         List<UUID> whitelist = new ArrayList<>();
-        whitelist.add(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"));
+        whitelist.add(UUID.fromString("1004d7f3-e6ff-372d-afa5-7ea0a6397074"));
         whitelist.add(UUID.fromString("4cbe462d-50b3-4c85-add1-b7e4d5b5673b"));
         return whitelist;
     }

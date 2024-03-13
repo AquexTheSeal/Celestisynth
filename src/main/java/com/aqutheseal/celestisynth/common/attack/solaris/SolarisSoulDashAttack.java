@@ -3,7 +3,7 @@ package com.aqutheseal.celestisynth.common.attack.solaris;
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
 import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.common.entity.base.CSEffectEntity;
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
@@ -11,7 +11,6 @@ import com.aqutheseal.celestisynth.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -91,17 +90,14 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
                 }
             }
 
-            player.playSound(SoundEvents.SWEET_BERRY_BUSH_BREAK);
             movePlayerInStraightMotion(player, getTagController().getInt(HEAD_ROT_LOCK_KEY));
-            CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_BLITZ_SOUL.get());
+            CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_BLITZ_SOUL.get(), 0, 2.5, 0);
             CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR_LARGE.get());
-            playRandomBladeSound(player, BASE_WEAPON_EFFECTS.length);
-
+            dashSound(0.5 + (player.getRandom().nextGaussian() / 2));
             BlockPos playerPos = player.blockPosition();
             double radius = 3;
             double particleCount = 50;
             double angleIncrement = (2 * Math.PI) / particleCount;
-
             for (int i = 0; i < particleCount; i++) {
                 double angle = i * angleIncrement;
                 double rotationX = level.random.nextDouble() * 360.0;
@@ -109,15 +105,28 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
                 double x = playerPos.getX() + radius * Math.cos(angle);
                 double y = playerPos.getY() + 1.5;
                 double z = playerPos.getZ() + radius * Math.sin(angle);
-
                 double motionX = Math.sin(Math.toRadians(rotationX)) * Math.cos(Math.toRadians(rotationZ));
                 double motionY = Math.sin(Math.toRadians(rotationZ));
                 double motionZ = Math.cos(Math.toRadians(rotationX)) * Math.cos(Math.toRadians(rotationZ));
-
                 if (!level.isClientSide()) {
                     ParticleUtil.sendParticles((ServerLevel) level, ParticleTypes.SOUL_FIRE_FLAME, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
-                    ParticleUtil.sendParticles((ServerLevel) level, ParticleTypes.SOUL, x + 0.5, y, z + 0.5, 0, motionX, motionY, motionZ);
                 }
+            }
+        }
+    }
+
+    private void dashSound(double pitch) {
+        if (player.getRandom().nextBoolean()) {
+            if (player.getRandom().nextBoolean()) {
+                player.playSound(CSSoundEvents.SWORD_SWING.get(), (float) 0.2, (float) pitch);
+            } else {
+                player.playSound(CSSoundEvents.AIR_SWING.get(),  (float) 0.2, (float) pitch);
+            }
+        } else {
+            if (player.getRandom().nextBoolean()) {
+                player.playSound(CSSoundEvents.SWORD_SWING_FIRE.get(), (float) 0.2, (float) pitch);
+            } else {
+                player.playSound(CSSoundEvents.IMPACT_HIT.get(), (float) 0.2, (float) pitch);
             }
         }
     }
@@ -128,7 +137,6 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
         double lookZ = Math.cos(Math.toRadians(yRot));
         double motionX = lookX * speed;
         double motionZ = lookZ * speed;
-
         player.setDeltaMovement(motionX, player.getDeltaMovement().y, motionZ);
     }
 }

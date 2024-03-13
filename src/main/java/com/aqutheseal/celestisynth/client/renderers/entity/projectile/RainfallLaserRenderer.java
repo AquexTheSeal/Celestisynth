@@ -35,7 +35,6 @@ public class RainfallLaserRenderer extends EntityRenderer<RainfallLaserMarker> {
         float scale = 0.4f;
         float progress = (float) entity.tickCount / 5;
         float size = Mth.clampedLerp(scale, 0, progress);
-
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - (90.0F)));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + (90.0F)));
         poseStack.scale(size, scale, size);

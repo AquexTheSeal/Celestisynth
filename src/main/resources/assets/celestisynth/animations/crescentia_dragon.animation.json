@@ -1,0 +1,45 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.crescentia_dragon.idle": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"head": {
+					"rotation": {
+						"vector": ["-math.sin(query.anim_time * 180) * 15", 0, 0]
+					},
+					"position": {
+						"vector": [0, "-math.cos(query.anim_time * 180) * 1", 0]
+					}
+				},
+				"upperjaw": {
+					"rotation": {
+						"vector": [-30, 0, 0]
+					}
+				},
+				"lowerjaw": {
+					"rotation": {
+						"vector": [20, 0, 0]
+					}
+				},
+				"body": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time * 180) * 15", 0, 0]
+					}
+				},
+				"body2": {
+					"rotation": {
+						"vector": ["math.sin(query.anim_time * 180) * 15", 0, 0]
+					}
+				},
+				"body3": {
+					"rotation": {
+						"vector": ["(math.sin(query.anim_time * 180) +math.sin(query.anim_time * 180)) * 15", 0, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
