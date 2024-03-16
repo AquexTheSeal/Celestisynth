@@ -115,7 +115,4 @@ public abstract class BaseSkillInstance implements ISkillInstance {
     public void setIcon(ResourceLocation skillIcon) {
         this.skillIcon = skillIcon;
     }
-
-    @Override
-    public abstract CompoundTag serializeToNBT();
 }

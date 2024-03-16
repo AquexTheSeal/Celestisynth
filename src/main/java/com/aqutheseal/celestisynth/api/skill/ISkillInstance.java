@@ -41,6 +41,4 @@ public interface ISkillInstance {
     void setName(Component newName);
     void setDescription(Component newDescription);
     void setIcon(ResourceLocation newIcon);
-
-    CompoundTag serializeToNBT();
 }
