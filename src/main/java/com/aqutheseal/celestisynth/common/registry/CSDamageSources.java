@@ -7,7 +7,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 
@@ -16,6 +17,10 @@ public class CSDamageSources {
 
     public CSDamageSources(RegistryAccess pRegistry) {
         this.damageTypes = pRegistry.registryOrThrow(Registries.DAMAGE_TYPE);
+    }
+
+    public static CSDamageSources instance(Level level) {
+        return new CSDamageSources(level.registryAccess());
     }
 
     private DamageSource source(ResourceKey<DamageType> pDamageTypeKey) {
@@ -30,7 +35,7 @@ public class CSDamageSources {
         return new DamageSource(this.damageTypes.getHolderOrThrow(pDamageTypeKey), pCausingEntity, pDirectEntity);
     }
 
-    public DamageSource basicPlayerAttack(Player pPlayer) {
+    public DamageSource basicPlayerAttack(LivingEntity pPlayer) {
         return this.source(CSDamageTypes.BASIC_PLAYER_ATTACK, pPlayer);
     }
 
@@ -38,7 +43,16 @@ public class CSDamageSources {
         return this.source(CSDamageTypes.RAPID_PLAYER_ATTACK);
     }
 
-    public DamageSource rapidPlayerAttack(Player pPlayer) {
+    public DamageSource rapidPlayerAttack(LivingEntity pPlayer) {
         return this.source(CSDamageTypes.RAPID_PLAYER_ATTACK, pPlayer);
     }
+
+    public DamageSource basicPlayerAttackWithoutKB(LivingEntity pPlayer) {
+        return this.source(CSDamageTypes.BASIC_PLAYER_ATTACK_NOKB, pPlayer);
+    }
+
+    public DamageSource rapidPlayerAttackWithoutKB(LivingEntity pPlayer) {
+        return this.source(CSDamageTypes.RAPID_PLAYER_ATTACK_NOKB, pPlayer);
+    }
+
 }

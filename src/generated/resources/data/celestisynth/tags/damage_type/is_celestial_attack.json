@@ -1,6 +1,8 @@
 {
   "values": [
     "celestisynth:basic_player_attack",
-    "celestisynth:rapid_player_attack"
+    "celestisynth:rapid_player_attack",
+    "celestisynth:basic_player_attack_nokb",
+    "celestisynth:rapid_player_attack_nokb"
   ]
 }

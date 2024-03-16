@@ -1,22 +1,23 @@
 package com.aqutheseal.celestisynth.common.attack.cresentia;
 
 import com.aqutheseal.celestisynth.api.animation.player.AnimationManager;
+import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
 import com.aqutheseal.celestisynth.api.item.AttackHurtTypes;
 import com.aqutheseal.celestisynth.api.item.CSWeaponUtil;
 import com.aqutheseal.celestisynth.common.attack.base.WeaponAttackInstance;
-import com.aqutheseal.celestisynth.api.entity.CSEffectEntity;
+import com.aqutheseal.celestisynth.common.entity.projectile.CrescentiaDragon;
 import com.aqutheseal.celestisynth.common.item.weapons.CrescentiaItem;
 import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
 import com.aqutheseal.celestisynth.common.registry.CSVisualTypes;
 import com.aqutheseal.celestisynth.manager.CSConfigManager;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -53,15 +54,22 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
 
     @Override
     public void tickAttack() {
-        if (getTimerProgress() == 15) player.playSound(CSSoundEvents.WHIRLWIND.get(), 0.35F, 0.5F + level.random.nextFloat());
+        List<CrescentiaDragon> dragons = level.getEntitiesOfClass(CrescentiaDragon.class, player.getBoundingBox().inflate(128)).stream().filter(e -> e.getOwner() == player).toList();
+        for (CrescentiaDragon dragon : dragons) {
+            Vec3 opp = player.position().add(0, 1, 0).subtract(dragon.position()).normalize().scale(0.25);
+            dragon.push(opp.x(), opp.y(), opp.z());
+        }
+
+        if (getTimerProgress() == 15) {
+            player.playSound(CSSoundEvents.WHIRLWIND.get(), 0.35F, 0.5F + level.random.nextFloat());
+        }
 
         if (getTimerProgress() >= 15 && getTimerProgress() <= 60) {
-            double range = 7.0;
-            double rangeSq = Mth.square(range);
+            double range = 6.0;
             List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(range, range, range).move(calculateXLook(player), 0, calculateZLook(player)));
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
-                    if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) < rangeSq) {
+                    if (target != player && target.isAlive() && !player.isAlliedTo(target) && target.distanceToSqr(player) <= range * range) {
                         initiateAbilityAttack(player, target, (float) (CSConfigManager.COMMON.crescentiaSkillDmg.get() + getSharpnessValue(getStack(), 0.25F)), AttackHurtTypes.RAPID);
                         target.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                     }
@@ -83,13 +91,15 @@ public class CrescentiaBarrageAttack extends WeaponAttackInstance {
                 }
                 playRandomBladeSound(player, BASE_WEAPON_EFFECTS.length);
             }
-            CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR_LARGE.get(), 0, -1, 0);
-            float offX = (level.random.nextFloat() * 16) - 8;
-            float offY = (level.random.nextFloat() * 16) - 8;
-            float offZ = (level.random.nextFloat() * 16) - 8;
-            CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, false);
-            if (level.random.nextBoolean()) {
-                CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offZ, player.getY() + offX, player.getZ() + offY, false);
+            if (getTimerProgress() % 2 == 0) {
+                CSEffectEntity.createInstance(player, null, CSVisualTypes.SOLARIS_AIR_LARGE.get(), 0, -1, 0);
+                float offX = (level.random.nextFloat() * 16) - 8;
+                float offY = (level.random.nextFloat() * 16) - 8;
+                float offZ = (level.random.nextFloat() * 16) - 8;
+                CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offX, player.getY() + offY, player.getZ() + offZ, false);
+                if (level.random.nextBoolean()) {
+                    CrescentiaItem.createCrescentiaFirework(getStack(), level, player, player.getX() + offZ, player.getY() + offX, player.getZ() + offY, false);
+                }
             }
         }
     }

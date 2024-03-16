@@ -7,12 +7,14 @@ import com.aqutheseal.celestisynth.common.attack.cresentia.CrescentiaBarrageAtta
 import com.aqutheseal.celestisynth.common.attack.cresentia.CrescentiaDragonAttack;
 import com.aqutheseal.celestisynth.common.compat.CSCompatManager;
 import com.aqutheseal.celestisynth.common.item.base.SkilledSwordItem;
+import com.aqutheseal.celestisynth.common.registry.CSParticleTypes;
+import com.aqutheseal.celestisynth.util.ParticleUtil;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Lists;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
@@ -21,7 +23,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -86,23 +91,48 @@ public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
 
     public static void createCrescentiaFirework(ItemStack itemStack, Level level, Player player, double x, double y, double z, boolean isBig) {
         RandomSource random = level.random;
-        ItemStack star = new ItemStack(Items.FIREWORK_STAR);
-        CompoundTag compoundtag = star.getOrCreateTagElement("Explosion");
-        List<Integer> list = Lists.newArrayList();
-        DyeColor[] allowedColors = new DyeColor[]{DyeColor.LIGHT_BLUE, DyeColor.WHITE, DyeColor.BLUE, DyeColor.MAGENTA, DyeColor.YELLOW, DyeColor.ORANGE};
-        list.add(allowedColors[random.nextInt(allowedColors.length)].getFireworkColor());
-        compoundtag.putIntArray("Colors", list);
-        compoundtag.putByte("Type", (byte)(isBig ? FireworkRocketItem.Shape.LARGE_BALL.getId() : FireworkRocketItem.Shape.SMALL_BALL.getId()));
-        CompoundTag itemCompound = itemStack.getOrCreateTagElement("Fireworks");
-        ListTag listtag = new ListTag();
-        CompoundTag starCompound = star.getTagElement("Explosion");
-        if (starCompound != null) {
-            listtag.add(starCompound);
+        ParticleType<?>[] particleTypes = new ParticleType<?>[]{
+                CSParticleTypes.CRESCENTIA_FIREWORK_PURPLE.get(),
+                CSParticleTypes.CRESCENTIA_FIREWORK_PINK.get(),
+                CSParticleTypes.CRESCENTIA_FIREWORK_BLUE.get()
+        };
+        ParticleType<?> firework = particleTypes[random.nextInt(particleTypes.length)];
+        for (int i = 0; i < 45; i++) {
+            double xx = random.nextGaussian() * (isBig ? 0.15 : 0.05);
+            double yy = random.nextGaussian() * (isBig ? 0.15 : 0.05);
+            double zz = random.nextGaussian() * (isBig ? 0.15 : 0.05);
+            ParticleUtil.sendParticle(level, firework, x, y, z, xx, yy, zz);
         }
-        if (!listtag.isEmpty()) {
-            itemCompound.put("Explosions", listtag);
-        }
-        level.createFireworks(x, y, z, 0.01, 0.01, 0.01, itemCompound);
+        ParticleUtil.sendParticle(level, ParticleTypes.FLASH, x, y, z);
         player.playSound(SoundEvents.FIREWORK_ROCKET_LARGE_BLAST, 1.0F, 0.5F + random.nextFloat());
+
+//        RandomSource random = level.random;
+//        ItemStack star = new ItemStack(Items.FIREWORK_STAR);
+//        CompoundTag compoundtag = star.getOrCreateTagElement("Explosion");
+//        List<Integer> list = Lists.newArrayList();
+//        DyeColor[] allowedColors = new DyeColor[]{DyeColor.LIGHT_BLUE, DyeColor.WHITE, DyeColor.BLUE, DyeColor.MAGENTA, DyeColor.YELLOW, DyeColor.ORANGE};
+//        list.add(allowedColors[random.nextInt(allowedColors.length)].getFireworkColor());
+//        compoundtag.putIntArray("Colors", list);
+//        compoundtag.putByte("Type", (byte)(isBig ? FireworkRocketItem.Shape.LARGE_BALL.getId() : FireworkRocketItem.Shape.SMALL_BALL.getId()));
+//        CompoundTag itemCompound = itemStack.getOrCreateTagElement("Fireworks");
+//        ListTag listtag = new ListTag();
+//        CompoundTag starCompound = star.getTagElement("Explosion");
+//        if (starCompound != null) {
+//            listtag.add(starCompound);
+//        }
+//        if (!listtag.isEmpty()) {
+//            itemCompound.put("Explosions", listtag);
+//        }
+//        level.createFireworks(x, y, z, 0.01, 0.01, 0.01, itemCompound);
+//        player.playSound(SoundEvents.FIREWORK_ROCKET_LARGE_BLAST, 1.0F, 0.5F + random.nextFloat());
+    }
+
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        List<Enchantment> enchantments = new ObjectArrayList<>();
+        enchantments.add(Enchantments.MULTISHOT);
+
+        if (enchantments.contains(enchantment)) return true;
+
+        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 }

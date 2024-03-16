@@ -92,7 +92,7 @@ public class SolarisItem extends SkilledSwordItem implements CSGeoItem {
 
     @Override
     public int getPassiveAmount() {
-        return 1;
+        return 2;
     }
 
     @Override

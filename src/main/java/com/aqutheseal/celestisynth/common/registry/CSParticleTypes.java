@@ -19,4 +19,7 @@ public class CSParticleTypes {
     public static final RegistryObject<SimpleParticleType> KERES_OMEN = PARTICLE_TYPES.register("keres_omen", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> KERES_ASH = PARTICLE_TYPES.register("keres_ash", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> SOLARIS_FLAME = PARTICLE_TYPES.register("solaris_flame", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> CRESCENTIA_FIREWORK_PURPLE = PARTICLE_TYPES.register("crescentia_firework_purple", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> CRESCENTIA_FIREWORK_PINK = PARTICLE_TYPES.register("crescentia_firework_pink", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> CRESCENTIA_FIREWORK_BLUE = PARTICLE_TYPES.register("crescentia_firework_blue", () -> new SimpleParticleType(true));
 }

@@ -8,10 +8,7 @@ import com.aqutheseal.celestisynth.common.capabilities.CSEntityCapabilityProvide
 import com.aqutheseal.celestisynth.common.entity.projectile.SolarisBomb;
 import com.aqutheseal.celestisynth.common.entity.skill.SkillCastPoltergeistWard;
 import com.aqutheseal.celestisynth.common.item.weapons.BreezebreakerItem;
-import com.aqutheseal.celestisynth.common.registry.CSEntityTypes;
-import com.aqutheseal.celestisynth.common.registry.CSParticleTypes;
-import com.aqutheseal.celestisynth.common.registry.CSSoundEvents;
-import com.aqutheseal.celestisynth.common.registry.CSTags;
+import com.aqutheseal.celestisynth.common.registry.*;
 import com.aqutheseal.celestisynth.util.ParticleUtil;
 import com.google.common.collect.Streams;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -24,10 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 

@@ -63,7 +63,7 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
             if (observedLivingTarget != null) {
                 double attackDamage = CSConfigManager.COMMON.breezebreakerSprintSkillDmg.get() + getSharpnessValue(stack, 1);
 
-                initiateAbilityAttack(player, observedLivingTarget, (float) attackDamage, AttackHurtTypes.NO_KB_PIERCE);
+                initiateAbilityAttack(player, observedLivingTarget, (float) attackDamage, AttackHurtTypes.NO_KB);
                 level.explode(player, observedLivingTarget.getX(), observedLivingTarget.getY(), observedLivingTarget.getZ(), 1.0F, Level.ExplosionInteraction.NONE);
                 observedLivingTarget.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.WEAKNESS, 60, 2));
                 observedLivingTarget.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));

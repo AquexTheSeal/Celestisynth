@@ -10,6 +10,7 @@ import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -56,6 +57,10 @@ public class CrescentiaDragonAttack extends WeaponAttackInstance {
             angles.add(0.0F);
             angles.add(-30.0F);
             angles.add(30.0F);
+            if (stack.getEnchantmentLevel(Enchantments.MULTISHOT) > 0) {
+                angles.add(-15.0F);
+                angles.add(15.0F);
+            }
             if (!level.isClientSide()) {
                 for (float i : angles) {
                     CrescentiaDragon dragon = new CrescentiaDragon(CSEntityTypes.CRESCENTIA_DRAGON.get(), player, level);

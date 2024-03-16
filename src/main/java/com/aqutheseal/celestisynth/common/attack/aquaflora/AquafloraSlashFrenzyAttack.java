@@ -99,7 +99,7 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
 
             double dualWieldMultiplier = checkDualWield(player, AquafloraItem.class) ? 0.6 : 1;
 
-            this.initiateAbilityAttack(player, target, (float) (CSConfigManager.COMMON.aquafloraBloomSkillDmg.get() * dualWieldMultiplier) + getSharpnessValue(getStack(), (float) (0.65 * dualWieldMultiplier)), AttackHurtTypes.RAPID_PIERCE);
+            this.initiateAbilityAttack(player, target, (float) (CSConfigManager.COMMON.aquafloraBloomSkillDmg.get() * dualWieldMultiplier) + getSharpnessValue(getStack(), (float) (0.65 * dualWieldMultiplier)), AttackHurtTypes.RAPID_NO_KB);
             createAquafloraFirework(getStack(), level, player, target.getX(), target.getY() + 1, target.getZ());
         }
     }

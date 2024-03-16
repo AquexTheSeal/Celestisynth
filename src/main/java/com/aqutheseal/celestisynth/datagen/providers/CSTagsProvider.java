@@ -110,6 +110,8 @@ public class CSTagsProvider {
             tag(CSTags.DamageTypes.IS_CELESTIAL_ATTACK)
                     .add(CSDamageTypes.BASIC_PLAYER_ATTACK)
                     .add(CSDamageTypes.RAPID_PLAYER_ATTACK)
+                    .add(CSDamageTypes.BASIC_PLAYER_ATTACK_NOKB)
+                    .add(CSDamageTypes.RAPID_PLAYER_ATTACK_NOKB)
             ;
 
             tag(DamageTypeTags.BYPASSES_COOLDOWN)

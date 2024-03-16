@@ -52,7 +52,7 @@ public class SkillCastBreezebreakerTornado extends EffectControllerEntity {
         for (Entity entityBatch : entities) {
             if (entityBatch instanceof LivingEntity target) {
                 if (target != ownerPlayer && target.isAlive()) {
-                    fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) CSConfigManager.COMMON.breezebreakerShiftSkillDmg.get(), AttackHurtTypes.RAPID_PIERCE);
+                    fromInterfaceWeapon().initiateAbilityAttack(ownerPlayer, target, (float) (double) CSConfigManager.COMMON.breezebreakerShiftSkillDmg.get(), AttackHurtTypes.RAPID_NO_KB);
                     target.setDeltaMovement(0, 0.05, 0);
                 }
             }

@@ -12,6 +12,6 @@ public class ISSCompatItems {
     public static final DeferredRegister<Item> SPELLBOOKS_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Celestisynth.MODID);
 
     public static final RegistryObject<Item> CELESTIAL_SPELLBOOK = SPELLBOOKS_ITEMS.register("celestial_spell_book", () ->
-            new SimpleAttributeSpellBook(10, SpellRarity.LEGENDARY, ISSItemUtil.createCelestialSpellbookAttributes())
+            new SimpleAttributeSpellBook(14, SpellRarity.LEGENDARY, ISSItemUtil.createCelestialSpellbookAttributes())
     );
 }

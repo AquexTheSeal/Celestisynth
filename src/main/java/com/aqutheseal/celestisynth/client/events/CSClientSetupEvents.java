@@ -79,6 +79,10 @@ public class CSClientSetupEvents {
         event.registerSpriteSet(CSParticleTypes.KERES_OMEN.get(), SlowFallParticle.Provider::new);
         event.registerSpriteSet(CSParticleTypes.KERES_ASH.get(), SlowFallParticle.Ash.Provider::new);
         event.registerSpriteSet(CSParticleTypes.SOLARIS_FLAME.get(), SlowFallParticle.Provider::new);
+        event.registerSpriteSet(CSParticleTypes.CRESCENTIA_FIREWORK_PURPLE.get(), CrescentiaFireworkParticle.Purple::new);
+        event.registerSpriteSet(CSParticleTypes.CRESCENTIA_FIREWORK_PINK.get(), CrescentiaFireworkParticle.Pink::new);
+        event.registerSpriteSet(CSParticleTypes.CRESCENTIA_FIREWORK_BLUE.get(), CrescentiaFireworkParticle.Blue::new);
+
     }
 
 }

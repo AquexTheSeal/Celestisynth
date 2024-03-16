@@ -26,7 +26,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -46,18 +45,25 @@ public interface CSWeaponUtil {
     String ANIMATION_TIMER_KEY = "cs.animationTimer";
     String ANIMATION_BEGUN_KEY = "cs.hasAnimationBegun";
 
-    default void initiateAbilityAttack(Player holder, LivingEntity target, float damage, DamageSource damageSource, AttackHurtTypes attackHurtType) {
+    default void initiateAbilityAttack(LivingEntity holder, LivingEntity target, float damage, DamageSource damageSource, AttackHurtTypes attackHurtType) {
         if (damage == 0) return;
 
         DamageSource regularDamage = new CSDamageSources(target.level().registryAccess()).basicPlayerAttack(holder);
         DamageSource rapidDamage = new CSDamageSources(target.level().registryAccess()).rapidPlayerAttack(holder);
+        DamageSource regularDamageNoKB = new CSDamageSources(target.level().registryAccess()).basicPlayerAttackWithoutKB(holder);
+        DamageSource rapidDamageNoKB = new CSDamageSources(target.level().registryAccess()).rapidPlayerAttackWithoutKB(holder);
 
         DamageSource finalDamageSource;
 
         if (damageSource != null) {
             finalDamageSource = damageSource;
         } else {
-            finalDamageSource = attackHurtType.isRapid() ? rapidDamage : regularDamage;
+            finalDamageSource = switch (attackHurtType) {
+                case REGULAR -> regularDamage;
+                case NO_KB -> regularDamageNoKB;
+                case RAPID -> rapidDamage;
+                case RAPID_NO_KB -> rapidDamageNoKB;
+            };
         }
 
         float finalDamage = (float) ((damage * holder.getAttributeValue(CSAttributes.CELESTIAL_DAMAGE.get())) / target.getAttributeValue(CSAttributes.CELESTIAL_DAMAGE_REDUCTION.get()));
@@ -72,20 +78,16 @@ public interface CSWeaponUtil {
         }
     }
 
-    default void initiateAbilityAttack(Player holder, LivingEntity target, float damage, AttackHurtTypes attackHurtType) {
+    default void initiateAbilityAttack(LivingEntity holder, LivingEntity target, float damage, AttackHurtTypes attackHurtType) {
         initiateAbilityAttack(holder, target, damage, null, attackHurtType);
     }
 
-    private void attack(Player holder, LivingEntity target, float damage, DamageSource damageSource, AttackHurtTypes attackHurtType) {
+    private void attack(LivingEntity holder, LivingEntity target, float damage, DamageSource damageSource, AttackHurtTypes attackHurtType) {
         if (attackHurtType.isRapid()) {
             target.invulnerableTime = 0;
         }
-        if (!(attackHurtType.isBlockable() && target.getUseItem().getItem() instanceof ShieldItem)) {
-            target.hurt(damageSource, damage);
-            target.doEnchantDamageEffects(holder, target);
-        } else {
-            useAndDamageItem(target.getUseItem(), target.level(), target, (int) (damage / 3));
-        }
+        target.hurt(damageSource, damage);
+        target.doEnchantDamageEffects(holder, target);
     }
 
     default CompoundTag attackController(ItemStack stack) {

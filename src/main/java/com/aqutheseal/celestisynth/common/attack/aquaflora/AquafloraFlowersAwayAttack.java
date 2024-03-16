@@ -51,7 +51,7 @@ public class AquafloraFlowersAwayAttack extends AquafloraAttack {
         for (Entity target : entities) {
             if (target instanceof LivingEntity lt && target != player && target.isAlive() && !player.isAlliedTo(target)) {
                 CSEffectEntity.createInstance(player, target, CSVisualTypes.AQUAFLORA_FLOWER_BIND.get());
-                initiateAbilityAttack(player, lt, (float) (double) CSConfigManager.COMMON.aquafloraBloomShiftSkillDmg.get(), AttackHurtTypes.NO_KB_PIERCE);
+                initiateAbilityAttack(player, lt, (float) (double) CSConfigManager.COMMON.aquafloraBloomShiftSkillDmg.get(), AttackHurtTypes.NO_KB);
                 target.setDeltaMovement((player.getX() - target.getX()) * 0.35, (player.getY() - target.getY()) * 0.35, (player.getZ() - target.getZ()) * 0.35);
             }
         }

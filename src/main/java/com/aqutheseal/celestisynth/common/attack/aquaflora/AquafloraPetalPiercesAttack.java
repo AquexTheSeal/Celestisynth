@@ -63,7 +63,7 @@ public class AquafloraPetalPiercesAttack extends AquafloraAttack {
             for (Entity entityBatch : entities) {
                 if (entityBatch instanceof LivingEntity target) {
                     if (target != player && target.isAlive() && !player.isAlliedTo(target)) {
-                        initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.aquafloraSkillDmg.get() + getSharpnessValue(getStack(), 0.15F), AttackHurtTypes.RAPID_PIERCE);
+                        initiateAbilityAttack(player, target, (float) (double) CSConfigManager.COMMON.aquafloraSkillDmg.get() + getSharpnessValue(getStack(), 0.15F), AttackHurtTypes.RAPID_NO_KB);
                         createHitEffect(getStack(), level, player, target);
                     }
                 }

@@ -36,24 +36,15 @@
 
   "item.celestisynth.celestial_debugger": "The SUPER DUPER Celestial Debugger",
 
-  "item.celestisynth.celestial_spell_book": "Celestial Spell Book",
+  "item.celestisynth.celestial_spell_book": "The Celestial Genesis",
 
   "block.celestisynth.celestial_crafting_table": "Celestial Workbench",
   "gui.celestisynth.celestial_crafting": "Celestial Workbench",
 
+  "death.attack.regular_player_attack": "%s was slain by %s.",
   "death.attack.rapid_player_attack": "%s was damaged by %s repeatedly until death.",
-
-  "advancement.celestisynth.obtain_celestial_core.title": "Down to the Core",
-  "advancement.celestisynth.obtain_celestial_core.description": "The dawn of a celestial journey! Obtain a Celestial Core.",
-
-  "advancement.celestisynth.obtain_supernal_netherite_ingot.title": "Eruption",
-  "advancement.celestisynth.obtain_supernal_netherite_ingot.description": "Obtain a Supernal Netherite Ingot, an important material to craft Celestial weaponry.",
-
-  "advancement.celestisynth.obtain_celestial_netherite_ingot.title": "Celestial Emergence",
-  "advancement.celestisynth.obtain_celestial_netherite_ingot.description": "Obtain a Celestial Netherite Ingot, an important material to craft Celestial weaponry.",
-
-  "advancement.celestisynth.place_celestial_table.title": "A Lost Memory",
-  "advancement.celestisynth.place_celestial_table.description": "Place a Celestial Table, the root of Celestisynth weaponry.",
+  "death.attack.regular_player_attack_nokb": "%s was slain by %s.",
+  "death.attack.rapid_player_attack_nokb": "%s was damaged by %s repeatedly until death.",
 
   "------------------- SOLARIS ------------------":  "",
 
@@ -63,6 +54,9 @@
 
   "item.celestisynth.solaris.passive_1": "Ember's Blessing",
   "item.celestisynth.solaris.passive_desc_1": "The player gains fire immunity while holding the item - normal attacks with this item sets the target on fire for a few seconds.",
+
+  "item.celestisynth.solaris.passive_2": "Solar Bomb Formation",
+  "item.celestisynth.solaris.passive_desc_2": "When holding the right-button with the Solaris, the player can summon up to 5 solar bombs that will circle around them. Hurting a target redirects a solar bomb to them.",
 
   "item.celestisynth.solaris.skill_1": "Spinning Flames - Full Round",
   "item.celestisynth.solaris.condition_1": "Activate: Right-click",
@@ -85,9 +79,9 @@
   "item.celestisynth.crescentia.condition_1": "Activate: Right-click",
   "item.celestisynth.crescentia.desc_1": "Unleash a dazzling barrage of strikes on nearby entities, accompanied by a mesmerizing firework display.",
 
-  "item.celestisynth.crescentia.skill_2": "Dragon Crescent Boom",
+  "item.celestisynth.crescentia.skill_2": " Eye of the Dragon",
   "item.celestisynth.crescentia.condition_2": "Activate: Right-click while holding SHIFT",
-  "item.celestisynth.crescentia.desc_2": "Unleash a long-ranged barrage of slashes, cutting through any entity in its path.",
+  "item.celestisynth.crescentia.desc_2": "Unleash a set of dragon-like projectiles, dragging enemies along with it whilst continuously slashing them.",
 
   "------------------- BREEZEBREAKER ------------------":  "",
 
@@ -190,6 +184,9 @@
   "item.celestisynth.frostbound.passive_1": "Whispering Cold",
   "item.celestisynth.frostbound.passive_desc_1": "Inflicting harm upon a target using this weapon induces a frostbound condition, significantly diminishing their strength and reducing their speed.",
 
+  "item.celestisynth.frostbound.passive_2": "Icicle Array",
+  "item.celestisynth.frostbound.passive_desc_2": "When holding the right-button with the Frostbound, the weapon consumes Frostbound Shards and shoots them out towards nearby random entities, freezing them for a few seconds.",
+
   "item.celestisynth.frostbound.skill_1": "Dance of the Seven-Thousand Snowflakes",
   "item.celestisynth.frostbound.condition_1": "Activate: Right-click",
   "item.celestisynth.frostbound.desc_1": "Executes a rhythmic movement sequence that inflicts damage on nearby entities multiple times, afflicting them with a frostbound effect.",
@@ -206,6 +203,14 @@
 
   "{o}================{o} ADVANCEMENTS [NON-WEAPONS] {o}================{o}":  "",
 
+  "advancement.celestisynth.place_celestial_table.title": "A Lost Memory",
+  "advancement.celestisynth.place_celestial_table.description": "Place a Celestial Table, the root of Celestisynth weaponry.",
+  "advancement.celestisynth.obtain_celestial_core.title": "Down to the Core",
+  "advancement.celestisynth.obtain_celestial_core.description": "The dawn of a celestial journey! Obtain a Celestial Core.",
+  "advancement.celestisynth.obtain_supernal_netherite_ingot.title": "Eruption",
+  "advancement.celestisynth.obtain_supernal_netherite_ingot.description": "Obtain a Supernal Netherite Ingot, an important material to craft Celestial weaponry.",
+  "advancement.celestisynth.obtain_celestial_netherite_ingot.title": "Celestial Emergence",
+  "advancement.celestisynth.obtain_celestial_netherite_ingot.description": "Obtain a Celestial Netherite Ingot, an important material to craft Celestial weaponry.",
   "advancement.celestisynth.obtain_core.title": "Onto a Majestic Journey!",
   "advancement.celestisynth.obtain_core.description": "Craft a Celestial Core",
   "advancement.celestisynth.obtain_supernal_ingot.title": "Oh no, not another Netherite ingot!",

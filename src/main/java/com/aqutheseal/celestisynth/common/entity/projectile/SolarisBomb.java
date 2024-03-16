@@ -125,7 +125,7 @@ public class SolarisBomb extends ThrowableProjectile implements CSWeaponUtil {
         }
         for (LivingEntity targets : level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.6, 1.6, 1.6))) {
             if (getOwner() instanceof Player player) {
-                initiateAbilityAttack(player, targets, 2, AttackHurtTypes.RAPID_PIERCE);
+                initiateAbilityAttack(player, targets, 2, AttackHurtTypes.RAPID_NO_KB);
                 targets.setSecondsOnFire(2);
             }
         }

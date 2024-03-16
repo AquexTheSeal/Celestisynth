@@ -22,6 +22,8 @@ import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import java.util.UUID;
 
 public class KeresItem extends SkilledSwordItem implements CSGeoItem {
+    public static final String ATTACK_SPEED_STACK = "cs.keresStack";
+
     public KeresItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
@@ -70,7 +72,9 @@ public class KeresItem extends SkilledSwordItem implements CSGeoItem {
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity entity, LivingEntity source) {
         boolean flag = super.hurtEnemy(itemStack, entity, source);
         if (flag) {
-            source.heal((float) (getDamage() * 0.15));
+            source.heal((float) (getDamage() * 0.1));
+            this.attackController(itemStack).putInt(ATTACK_SPEED_STACK, this.attackController(itemStack).getInt(ATTACK_SPEED_STACK) + 1);
+            int speedAdd = this.attackController(itemStack).getInt(ATTACK_SPEED_STACK);
         }
         return flag;
     }
