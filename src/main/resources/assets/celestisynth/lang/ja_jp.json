@@ -1,0 +1,200 @@
+{
+  "creativetab.celestisynth_tab": "Celestisynth",
+  "item.celestisynth.shift_notice": "[SHIFTキーを長押しで詳細を表示]",
+  "item.celestisynth.passive_notice": "特殊能力:",
+  "item.celestisynth.skill_notice": "スキル:",
+  "item.celestisynth.celestial_tier": "セレスティアルグレード",
+
+  "item.celestisynth.armor_stun_immune": "> 武器スキルの詠唱中に中断に対する耐性を得る",
+  "item.celestisynth.armor_damage_reflection_percent": "+%s%の確率で攻撃された者にダメージを反射する",
+  "item.celestisynth.armor_damage_reflection_addition": "攻撃された者に+%sダメージを与える",
+  "item.celestisynth.armor_mob_effect_duration_multiplier": "x%s モブ効果持続時間の受け取る",
+  "item.celestisynth.armor_skill_damage_multiplier": "武器スキルに対する x%s のダメージ",
+
+  "item.celestisynth.celestial_core": "セレスティアルコア",
+  "item.celestisynth.celestial_core_heated": "加熱されたセレスティアルコア",
+  "item.celestisynth.supernal_netherite_ingot": "スーパーナルネザライトインゴット",
+  "item.celestisynth.celestial_netherite_ingot": "セレスティアルネザライトインゴット",
+  "item.celestisynth.lunar_scrap": "月の欠片",
+  "block.celestisynth.solar_crystal": "ソーラークリスタル",
+  "block.celestisynth.lunar_stone": "月の石",
+  "block.celestisynth.zephyr_deposit": "風の鉱床",
+  "item.celestisynth.eyebomination": "アイボミネーション",
+  "item.celestisynth.starstruck_scrap": "星降る欠片",
+  "item.celestisynth.starstruck_feather": "星降る羽根",
+  "block.celestisynth.wintereis": "冬の氷",
+  "item.celestisynth.wintereis_shard": "冬の氷の欠片",
+
+  "item.celestisynth.celestial_debugger": "スーパーデューパーセレスティアルデバッガー",
+
+  "block.celestisynth.celestial_crafting_table": "天体の作業台",
+  "gui.celestisynth.celestial_crafting": "天体の作業台",
+
+  "death.attack.rapid_player_attack": "%s は %s によって死ぬまで繰り返しダメージを受けた",
+
+  "advancement.celestisynth.obtain_celestial_core.title": "核心に迫る",
+  "advancement.celestisynth.obtain_celestial_core.description": "天空の旅の幕開け！ セレスティアルコアを入手する",
+
+  "advancement.celestisynth.obtain_supernal_netherite_ingot.title": "噴火",
+  "advancement.celestisynth.obtain_supernal_netherite_ingot.description": "天の武器を作成するための重要な材料であるスーパーナルネザライトインゴットを入手する",
+
+  "advancement.celestisynth.obtain_celestial_netherite_ingot.title": "天体の出現",
+  "advancement.celestisynth.obtain_celestial_netherite_ingot.description": "天の武器を作成するための重要な材料である天体のネザライトインゴットを入手します。",
+
+  "advancement.celestisynth.place_celestial_table.title": "失われた記憶",
+  "advancement.celestisynth.place_celestial_table.description": "このMODの武器を作るための作業台、天体の作業台を作る",
+
+  "------------------- SOLARIS ------------------":  "",
+
+  "item.celestisynth.solaris": "ソラリス",
+  "advancement.celestisynth.obtain_solaris.title": "百万度上空",
+  "advancement.celestisynth.obtain_solaris.description": "ソラリスを入手する",
+
+  "item.celestisynth.solaris.passive_1": "残り火ノ祝福",
+  "item.celestisynth.solaris.passive_desc_1": "プレイヤーはアイテムを保持している間、火災に対する耐性を獲得する。そしてこのアイテムによる通常の攻撃はターゲットを数秒間炎上させる。",
+
+  "item.celestisynth.solaris.skill_1": "スピニングフレイムズ - フルラウンド",
+  "item.celestisynth.solaris.condition_1": "使用条件: 右クリック",
+  "item.celestisynth.solaris.desc_1": "優雅な炎のスピンでダメージを与え、近くの敵をを焼き払います。",
+
+  "item.celestisynth.solaris.skill_2": "スピニングフレイムズ - ソウルストレートダッシュ",
+  "item.celestisynth.solaris.condition_2": "使用条件: SHIFTを押しながら右クリック",
+  "item.celestisynth.solaris.desc_2": "前方にダッシュし、進路上にある存在を攻撃し、一時的に燃やす。",
+
+  "------------------- CRESCENTIA ------------------":  "",
+
+  "item.celestisynth.crescentia": "クレセンティア",
+  "advancement.celestisynth.obtain_crescentia.title": "美しき花火",
+  "advancement.celestisynth.obtain_crescentia.description": "クレセンティアを入手する",
+
+  "item.celestisynth.crescentia.passive_1": "ヘビーヒッター",
+  "item.celestisynth.crescentia.passive_desc_1": "プレイヤーはアイテムを保持している間、ダメージ耐性のレベルを獲得します。このアイテムによる通常の攻撃は、数秒間ターゲットの速度を低下させます。",
+
+  "item.celestisynth.crescentia.skill_1": "月ノ祝賀弾幕",
+  "item.celestisynth.crescentia.condition_1": "使用条件: 右クリック",
+  "item.celestisynth.crescentia.desc_1": "美しい花火とともに、近くの存在に目もくらむような集中攻撃を放つ。",
+
+  "item.celestisynth.crescentia.skill_2": "ドラゴンクレセントブーム",
+  "item.celestisynth.crescentia.condition_2": "使用条件: SHIFTを押しながら右クリック",
+  "item.celestisynth.crescentia.desc_2": "長距離の斬撃を放ち、その進路にあるあらゆる存在を切り裂く。",
+
+  "------------------- BREEZEBREAKER ------------------":  "",
+
+  "item.celestisynth.breezebreaker": "ブリーズブレーカー",
+  "advancement.celestisynth.obtain_breezebreaker.title": "素早い音と音",
+  "advancement.celestisynth.obtain_breezebreaker.description": "ブリーズブレーカーを入手する",
+
+  "item.celestisynth.breezebreaker.passive_1": "機敏",
+  "item.celestisynth.breezebreaker.passive_desc_1": "プレイヤーはアイテムを保持している間、大きなジャンプブーストと落下ダメージ耐性を獲得するが、他のすべてのダメージソースから2.3倍のダメージを受ける。",
+
+  "item.celestisynth.breezebreaker.passive_2": "慈悲深キ魂",
+  "item.celestisynth.breezebreaker.passive_desc_2": "15回スキルを使うごとに、このパッシブがアクティブまたは非アクティブになります。 アクティブの間、プレイヤーは速度が向上し、スキルのクールダウンが半分に短縮されます。 効果は8秒後に切れます。",
+
+  "item.celestisynth.breezebreaker.skill_1": "ゲイルストーム",
+  "item.celestisynth.breezebreaker.condition_1": "使用条件: 右クリック",
+  "item.celestisynth.breezebreaker.desc_1": "強力な風斬りを繰り出し、着弾と同時に大ダメージを与える。",
+
+  "item.celestisynth.breezebreaker.skill_2": "デュアルゲイルストーム",
+  "item.celestisynth.breezebreaker.condition_2": "使用条件: 右クリックを 0.5 秒以上押し続ける",
+  "item.celestisynth.breezebreaker.desc_2": "ゲイルストームを2回連続で行い、容赦ない風斬りの猛攻撃で敵を圧倒する。",
+
+  "item.celestisynth.breezebreaker.skill_3": "全力疾走ノ贅沢",
+  "item.celestisynth.breezebreaker.condition_3": "使用条件: SHIFTを押しながら右クリック",
+  "item.celestisynth.breezebreaker.desc_3": "破壊的な竜巻を召喚し、不運にも道を横切ったあらゆる存在を切り裂く",
+
+  "item.celestisynth.breezebreaker.skill_4": "風ノ咆哮",
+  "item.celestisynth.breezebreaker.condition_4": "使用条件: ダッシュ中に右クリック",
+  "item.celestisynth.breezebreaker.desc_4": "素早く前進し、途中で最初に遭遇した敵にに大きなダメージを与える。",
+
+  "item.celestisynth.breezebreaker.skill_5": "疾風ノ死ノ輪",
+  "item.celestisynth.breezebreaker.condition_5": "使用条件: 空中で右クリック",
+  "item.celestisynth.breezebreaker.desc_5": "プレイヤーの周囲にそびえ立つ垂直方向の風の輪を作り出し、その破壊的な力で近くの存在を消滅させます。",
+
+  "------------------- POLTERGEIST ------------------":  "",
+
+  "item.celestisynth.poltergeist": "ポルターガイスト",
+  "advancement.celestisynth.obtain_poltergeist.title": "幽霊の斧",
+  "advancement.celestisynth.obtain_poltergeist.description": "ポルターガイストを入手する",
+
+  "item.celestisynth.poltergeist.passive_1": "ファントムタグ",
+  "item.celestisynth.poltergeist.passive_desc_1": "この武器のすべてのスキルは、影響を受けるすべてのエンティティにファントム タグを付けます。 タグを付けて殺された敵は、5秒間近くの存在を引き寄せる巨大なアベラントになる。",
+
+  "item.celestisynth.poltergeist.skill_1": "コズミック・スチール・アナイアレーション",
+  "item.celestisynth.poltergeist.condition_1": "使用条件: 右クリック",
+  "item.celestisynth.poltergeist.desc_1": "広範囲に重大なダメージを与える強力な攻撃を実行し、複数の敵を壊滅させる。 10 回の連続攻撃に続いてさらに壊滅的な打撃を与えると、巨大な衝撃が生じ、異常な存在が召喚されます。 このアビリティのクールダウンは、空中でキャストすると即座にリセットされる。",
+
+  "item.celestisynth.poltergeist.skill_2": "バリアコール",
+  "item.celestisynth.poltergeist.condition_2": "使用条件: SHIFTを押しながら右クリック",
+  "item.celestisynth.poltergeist.desc_2": "プレーヤーを強制的に後方に推進しながら、入ってくる発射物を粉砕できる保護バリアを作成する。",
+
+  "------------------- AQUAFLORA ------------------":  "",
+
+  "item.celestisynth.aquaflora": "アクアフローラ",
+  "advancement.celestisynth.obtain_aquaflora.title": "あの日花が咲く頃",
+  "advancement.celestisynth.obtain_aquaflora.description": "アクアフローラを入手する",
+
+  "item.celestisynth.aquaflora.passive_1": "スワイプスルー",
+  "item.celestisynth.aquaflora.passive_desc_1": "スキルを使うたびに、3秒間移動速度が上昇する。",
+
+  "item.celestisynth.aquaflora.skill_1": "ペタルピアス",
+  "item.celestisynth.aquaflora.condition_1": "使用条件: 右クリック",
+  "item.celestisynth.aquaflora.desc_1": "エンティティを貫通できる一連の攻撃をする。",
+
+  "item.celestisynth.aquaflora.skill_2": "ブラスティング・オブトゥギャザー",
+  "item.celestisynth.aquaflora.condition_2": "使用条件: SHIFTを押しながら右クリック",
+  "item.celestisynth.aquaflora.desc_2": "エンティティのグループに対して頭突きを使用して、それらを押しのけ、大ダメージを与える。 この能力を使うとブルーミング状態が開始され、武器のスキルセットが変化する。",
+
+  "item.celestisynth.aquaflora.skill_3": "途方モナキ狂乱ノ斬撃",
+  "item.celestisynth.aquaflora.condition_3": "使用条件: ブルーミング状態で右クリック",
+  "item.celestisynth.aquaflora.desc_3": "このスキルの実行中、プレイヤーは範囲内のエンティティに最大20回の個別攻撃を与えながらダメージを受けなくなる。 同じ武器を二刀流で使用すると、ダメージは減少するが、プレイヤーは最大40回以上の攻撃を実行できる。",
+  "item.celestisynth.aquaflora.skill_3.notice": "近くにエンティティがいない",
+
+  "item.celestisynth.aquaflora.skill_4": "フラワーズ・アウェイ",
+  "item.celestisynth.aquaflora.condition_4": "使用条件: ブルーミング状態でSHIFTを押しながら右クリック",
+  "item.celestisynth.aquaflora.desc_4": "後方ダッシュした後、近くのエンティティを引き寄せる花のエフェクトを残す。 この能力はブルーミング状態を無効化し、武器のスキルセットを変更する。",
+
+  "------------------- RAINFALL_SERENITY ------------------":  "",
+
+  "item.celestisynth.rainfall_serenity": "レインフォールセレニティ",
+  "advancement.celestisynth.obtain_rainfall_serenity.title": "地球の大気圏を超えて",
+  "advancement.celestisynth.obtain_rainfall_serenity.description": "レインフォール・セレニティを入手する",
+
+  "item.celestisynth.rainfall_serenity.passive_1": "",
+  "item.celestisynth.rainfall_serenity.passive_desc_1": "",
+
+  "item.celestisynth.rainfall_serenity.skill_1": "永遠二、ソシテ永遠ニ空を駆けケ抜ケテ...",
+  "item.celestisynth.rainfall_serenity.condition_1": "使用条件: 弓を最大まで溜める",
+  "item.celestisynth.rainfall_serenity.desc_1": "弓が放たれると、すべてのエンティティを貫通できるレーザーが放射され、それぞれ「クエーサーマーク」が5秒間マークされる。このマークは、近くのエンティティをトリガーして、マークされたターゲットにレーザーを発射する。",
+
+  "item.celestisynth.rainfall_serenity.skill_2": "クエーサーレインフォール",
+  "item.celestisynth.rainfall_serenity.condition_2": "使用条件:再度エンティティを武器で攻撃する",
+  "item.celestisynth.rainfall_serenity.desc_2": "レーザーが「クエーサー マーク」のあるターゲットに当たると、上にポータルが出現し、ターゲットの周囲にレーザーが降り注ぐ。",
+
+  "------------------- FROSTBOUND ------------------":  "",
+
+  "item.celestisynth.frostbound": "フロストバウンド",
+  "advancement.celestisynth.obtain_frostbound.title": "ボレアスの宝",
+  "advancement.celestisynth.obtain_frostbound.description": "フロストバウンドを入手する",
+
+  "item.celestisynth.frostbound.passive_1": "囁ク様ナ寒さ",
+  "item.celestisynth.frostbound.passive_desc_1": "この武器を使用してターゲットに攻撃を加えると、凍りつき状態が引き起こされ、ターゲットの力と速度が低下する。",
+
+  "item.celestisynth.frostbound.skill_1": "七千雪ノ舞踏会",
+  "item.celestisynth.frostbound.condition_1": "使用条件: 右クリック",
+  "item.celestisynth.frostbound.desc_1": "リズミカルな動きシーケンスを実行して、近くのエンティティに複数回ダメージを与え、凍りつきの効果を与える。",
+
+  "item.celestisynth.frostbound.skill_2": "カラミティフロストキャスト",
+  "item.celestisynth.frostbound.condition_2": "使用条件: SHIFTを押しながら右クリック",
+  "item.celestisynth.frostbound.desc_2": "術者の前に最大 5つの大きな氷の形成を呼び出し、実体にダメージを与え、凍りつき効果を与える。",
+
+  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< advancement [NON-WEAPONS] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>":  "",
+
+  "advancement.celestisynth.obtain_core.title": "雄大な旅へ！",
+  "advancement.celestisynth.obtain_core.description": "セレスティアルコアを作成する",
+  "advancement.celestisynth.obtain_supernal_ingot.title": "いや、別のネザライトではない！",
+  "advancement.celestisynth.obtain_supernal_ingot.description": "スーパーナルネザライトインゴットを入手する",
+  "advancement.celestisynth.obtain_celestial_ingot.title": "もしかして、これは違う？",
+  "advancement.celestisynth.obtain_celestial_ingot.description": "セレスティアルネザライトインゴットを入手する",
+  "advancement.celestisynth.placed_celestial_table.title": "さらにレベルアップ",
+  "advancement.celestisynth.placed_celestial_table.description": "天体の作業台を設置する"
+}
