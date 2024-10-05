@@ -116,7 +116,7 @@ public class CSTagsProvider {
         protected void addTags(HolderLookup.Provider pProvider) {
             tag(CSTags.Structures.NETHER_MONOLITH_SPAWN)
                     .add(BuiltinStructures.FORTRESS)
-                    .addOptionalTag(new ResourceLocation(CSIntegrationManager.YUNGS_BETTER_FORTRESSES_MODID, "fortress"))
+                    .addOptionalTag(new ResourceLocation(CSIntegrationManager.YUNGS_BETTER_FORTRESSES_MODID, "better_fortresses"))
             ;
         }
     }

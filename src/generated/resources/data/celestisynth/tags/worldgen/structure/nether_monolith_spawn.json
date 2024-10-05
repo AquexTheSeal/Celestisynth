@@ -2,7 +2,7 @@
   "values": [
     "minecraft:fortress",
     {
-      "id": "#betterfortresses:fortress",
+      "id": "#betterfortresses:better_fortresses",
       "required": false
     }
   ]

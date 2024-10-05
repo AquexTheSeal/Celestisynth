@@ -4,7 +4,7 @@
     "type": "celestisynth:star_monolith",
     "maxCount": 1,
     "minCount": 1,
-    "weight": 20
+    "weight": 5
   },
   "structure_tags": "celestisynth:nether_monolith_spawn"
 }

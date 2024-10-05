@@ -384,9 +384,9 @@ public class StarMonolith extends Mob implements GeoEntity, FixedMovesetEntity, 
         super.setNoGravity(true);
     }
 
-    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        return false;
-    }
+//    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+//        return false;
+//    }
 
     protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHitIn) {
     }
