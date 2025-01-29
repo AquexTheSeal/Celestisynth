@@ -66,6 +66,7 @@
   "effect.celestisynth.cursebane.description": "Decreases any regeneration effects affecting the entity",
 
   "enchantment.celestisynth.pulsation": "Pulsation",
+  "enchantment.celestisynth.pulsation.desc": "Increases the knockback strengh and damage of the weapon.",
 
   "commands.celestisynth.clear_animation": "Animation cleared successfully",
 
