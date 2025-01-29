@@ -1,6 +1,8 @@
 {
   "creativetab.celestisynth_tab": "Celestisynth",
 
+  "rarity.celestial.name": "Celestial",
+
   "attribute.celestisynth.celestial_damage": "Celestial Weapon Damage",
   "attribute.celestisynth.celestial_damage_reduction": "Celestial Weapon Damage Reduction",
 
