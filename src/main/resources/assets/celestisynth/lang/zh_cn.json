@@ -1,9 +1,24 @@
 {
-  "itemGroup.celestisynth.celestisynth_tab": "天神剑技",
-  "item.celestisynth.shift_notice": "[按住 SHIFT 以查看描述]",
+  "creativetab.celestisynth_tab": "天神剑技",
+
+  "attribute.celestisynth.celestial_damage": "天神武器伤害",
+  "attribute.celestisynth.celestial_damage_reduction": "天神武器伤害减免",
+
+  "entity.celestisynth.star_monolith": "天神圣碑",
+  "entity.celestisynth.traverser": "穿行者",
+  "entity.celestisynth.rainfall_turret": "星落炮台",
+
+  "block.celestisynth.no_more_celestial_workbench": "此物品已不可用。请在工作台中将此方块转换为星辉工厂！",
+  "item.celestisynth.test": "卷轴：%s",
+  "item.celestisynth.scroll_notice": "[滚动以浏览技能]",
+  "item.celestisynth.shift_notice": "[按住 Shift 或 Ctrl 以切换页面]",
   "item.celestisynth.passive_notice": "被动技能：",
   "item.celestisynth.skill_notice": "主动技能：",
   "item.celestisynth.celestial_tier": "天神造物",
+  "item.celestisynth.starlit_fuel_amount": "星辉燃料量：%s",
+
+  "item.celestisynth.solar_crystal_armor_bonus": "在受到伤害时，盔甲会爆发出一圈火焰，对周围目标造成伤害并点燃它们。每件盔甲都会提升火焰爆发的伤害及燃烧持续时间。",
+  "item.celestisynth.lunar_stone_armor_bonus": "当穿戴者受到伤害时，盔甲有 1/5 的几率大幅减免所受伤害。每件护甲都会提高伤害减免数值。",
 
   "item.celestisynth.celestial_core": "天神核心",
   "item.celestisynth.celestial_core_heated": "活跃的天神核心",
@@ -16,18 +31,62 @@
   "item.celestisynth.eyebomination": "魔眼燃石",
   "item.celestisynth.starstruck_scrap": "星耀残料",
   "item.celestisynth.starstruck_feather": "星耀羽毛",
-
+  "block.celestisynth.wintereis": "冬霜冰晶",
+  "item.celestisynth.wintereis_shard": "冬霜冰晶碎片",
+  "item.celestisynth.crimson_piece": "绯红残片",
+  "item.celestisynth.traverser_spawn_egg": "穿行者刷怪蛋",
+  "item.celestisynth.star_monolith": "空白天神圣碑",
+  "item.celestisynth.star_monolith_blood": "血符文天神圣碑",
   "block.celestisynth.celestial_crafting_table": "天界工作台",
-  "gui.celestisynth.celestial_crafting": "天界工作台",
+  "block.celestisynth.starlit_factory": "星辉工厂",
+  "item.celestisynth.solar_crystal_helmet": "日曜结晶头盔",
+  "item.celestisynth.solar_crystal_chestplate": "日曜结晶胸甲",
+  "item.celestisynth.solar_crystal_leggings": "日曜结晶护腿",
+  "item.celestisynth.solar_crystal_boots": "日曜结晶靴子",
+  "item.celestisynth.lunar_stone_helmet": "月明净石头盔",
+  "item.celestisynth.lunar_stone_chestplate": "月明净石胸甲",
+  "item.celestisynth.lunar_stone_leggings": "月明净石护腿",
+  "item.celestisynth.lunar_stone_boots": "月明净石靴子",
+  
+  "item.celestisynth.celestial_debugger": "超级天神调试工具",
+
+  "item.celestisynth.celestial_spell_book": "天神创世纪",
+
+  "container.celestisynth.starlit_factory": "星辉工厂",
+
+  "tip.celestisynth.starlit_factory_0": "你知道吗？谧静星落可以附上弩的附魔，例如多重射击、穿透和快速装填。",
+  "tip.celestisynth.starlit_factory_1": "嚎鬼威力无穷，运用得当方显神威！",
+  "tip.celestisynth.starlit_factory_2": "血符文天神圣碑自然生成在下界要塞之中，因此需要当心穿行者！它们迅捷、警觉且技能多样！",
+  "tip.celestisynth.starlit_factory_3": "你有没有想象过在 PvP 当中使用这些武器会是什么样子？嗯，我想过。",
+  "tip.celestisynth.starlit_factory_4": "冥魇是该模组中最具破坏力的武器，请谨慎使用！",
+
+  "effect.celestisynth.hellbane": "地狱克星",
+  "effect.celestisynth.hellbane.description": "增强实体的生命恢复效果",
+  "effect.celestisynth.cursebane": "诅咒克星",
+  "effect.celestisynth.cursebane.description": "削弱实体的生命恢复效果",
+
+  "enchantment.celestisynth.pulsation": "脉动涌流",
+
+  "commands.celestisynth.clear_animation": "动画清除成功",
+
+  "death.attack.basic_player_attack": "%s被%s杀死了。",
+  "death.attack.rapid_player_attack": "%s被%s反复折磨至死。",
+  "death.attack.basic_player_attack_nokb": "%s被%s杀死了。",
+  "death.attack.rapid_player_attack_nokb": "%s被%s反复折磨至死。",
+  "death.attack.erasure": "%s被%s完全抹除了。",
+  "death.attack.pulsation": "%s给予%s澎湃的能量。",
 
   "------------------- SOLARIS ------------------": "",
 
   "item.celestisynth.solaris": "炎日",
   "advancements.celestisynth.obtained_solaris.title": "炎至百万度",
-  "advancements.celestisynth.obtained_solaris.description": "获得神剑炎日",
+  "advancements.celestisynth.obtained_solaris.description": "获得炎日",
 
   "item.celestisynth.solaris.passive_1": "余烬之祝",
-  "item.celestisynth.solaris.passive_desc_1": "使用者在手持此物时免疫火焰 - 普通攻击会使攻击对象着火。",
+  "item.celestisynth.solaris.passive_desc_1": "使用者在手持此武器时免疫火焰 - 普通攻击会使攻击对象着火。",
+
+  "item.celestisynth.solaris.passive_2": "曜辉天陨",
+  "item.celestisynth.solaris.passive_desc_2": "手持炎日并长按右键时，使用者可召唤最多五颗日耀炸弹环绕自身。攻击目标时，一颗日耀炸弹会同时飞向该目标。",
 
   "item.celestisynth.solaris.skill_1": "烈焰圆舞 - 红镜之圆",
   "item.celestisynth.solaris.condition_1": "激活方式：右键单击",
@@ -35,7 +94,12 @@
 
   "item.celestisynth.solaris.skill_2": "烈焰圆舞 - 灼骨直照",
   "item.celestisynth.solaris.condition_2": "激活方式：按住 SHIFT 并右键单击",
-  "item.celestisynth.solaris.desc_2": "向前冲刺, 撞击并暂时引燃其路径上的实体。",
+  "item.celestisynth.solaris.desc_2": "向前冲刺，撞击并暂时引燃其路径上的实体。",
+
+  "chant.celestisynth.solaris": "魂若炽阳。",
+  "chant.celestisynth.solaris1": "烈日轮回。",
+  "chant.celestisynth.solaris2": "不灭之志。",
+  "chant.celestisynth.solaris3": "灵魂追猎。",
 
   "------------------- CRESCENTIA ------------------": "",
 
@@ -44,7 +108,7 @@
   "advancements.celestisynth.obtained_crescentia.description": "获得初月",
 
   "item.celestisynth.crescentia.passive_1": "引力重击",
-  "item.celestisynth.crescentia.passive_desc_1": "使用者在手持此物时得到一级的抗性提升 - 普通攻击会使攻击对象减速几秒。",
+  "item.celestisynth.crescentia.passive_desc_1": "使用者在手持此武器时获得一级抗性提升 - 普通攻击会使攻击对象减速几秒。",
 
   "item.celestisynth.crescentia.skill_1": "月庆之幕",
   "item.celestisynth.crescentia.condition_1": "激活方式：右键单击",
@@ -53,6 +117,11 @@
   "item.celestisynth.crescentia.skill_2": "新月龙吟",
   "item.celestisynth.crescentia.condition_2": "激活方式：按住 SHIFT 并右键单击",
   "item.celestisynth.crescentia.desc_2": "释放远距离的劈砍，切开其路径上的一切实体。",
+  
+  "chant.celestisynth.crescentia": "命运星火。",
+  "chant.celestisynth.crescentia1": "宿命庆典。",
+  "chant.celestisynth.crescentia2": "皓月游龙。",
+  "chant.celestisynth.crescentia3": "吾令汝现。",
 
   "------------------- BREEZEBREAKER ------------------": "",
 
@@ -61,7 +130,7 @@
   "advancements.celestisynth.obtained_breezebreaker.description": "获得肆风",
 
   "item.celestisynth.breezebreaker.passive_1": "迅敏之风",
-  "item.celestisynth.breezebreaker.passive_desc_1": "使用者在手持此物时得到强力的跳跃提升并免疫摔落伤害，然而同时来自其它攻击源的伤害增至原来的 2.3 倍。",
+  "item.celestisynth.breezebreaker.passive_desc_1": "使用者在手持此武器时得到强力的跳跃提升并免疫摔落伤害，然而来自其它攻击源的伤害增至原来的 2.3 倍。",
 
   "item.celestisynth.breezebreaker.passive_2": "善息之灵",
   "item.celestisynth.breezebreaker.passive_desc_2": "每放出 15 次主动技能都会激活或禁用此项被动。激活状态下，使用者将获得速度提升，且技能冷却时间减半。此效果会在 8 秒钟后消失。",
@@ -76,7 +145,7 @@
 
   "item.celestisynth.breezebreaker.skill_3": "激厉旋风",
   "item.celestisynth.breezebreaker.condition_3": "激活方式：按住 SHIFT 并右键单击",
-  "item.celestisynth.breezebreaker.desc_3": "召唤毁灭性的龙卷风，撕碎未能侥幸逃出其路径上的一切实体。",
+  "item.celestisynth.breezebreaker.desc_3": "召唤毁灭性的龙卷风，撕碎其路径上未能侥幸逃出的一切实体。",
 
   "item.celestisynth.breezebreaker.skill_4": "劲风怒号",
   "item.celestisynth.breezebreaker.condition_4": "激活方式：冲刺时右键单击",
@@ -84,7 +153,7 @@
 
   "item.celestisynth.breezebreaker.skill_5": "疾落死轮",
   "item.celestisynth.breezebreaker.condition_5": "激活方式：腾空时右键单击",
-  "item.celestisynth.breezebreaker.desc_5": "在使用者周围产生竖直的强力风轮, 通过其骇人的力量抹除周围的实体。",
+  "item.celestisynth.breezebreaker.desc_5": "在使用者周围产生竖直的强力风轮，通过其骇人的力量抹除周围的实体。",
 
   "------------------- POLTERGEIST ------------------": "",
 
@@ -93,15 +162,15 @@
   "advancements.celestisynth.obtained_poltergeist.description": "获得嚎鬼",
 
   "item.celestisynth.poltergeist.passive_1": "恶鬼凝视",
-  "item.celestisynth.poltergeist.passive_desc_1": "恶鬼会凝视所有被这把武器技能伤害的敌人，杀死被恶鬼凝视的敌人则会召唤多目恶鬼，在5秒内持续拉取并伤害附近的敌人。",
+  "item.celestisynth.poltergeist.passive_desc_1": "恶鬼会凝视所有被这把武器技能伤害的敌人，杀死被恶鬼凝视的敌人则会召唤多目恶鬼，在 5 秒内持续拉取并伤害附近的敌人。",
 
   "item.celestisynth.poltergeist.skill_1": "炼狱湮灭",
-  "item.celestisynth.poltergeist.condition_1": "激活方式: 单击右键",
-  "item.celestisynth.poltergeist.desc_1": "进行一次湮灭重击，对范围内敌人造成巨大伤害，在使用十次湮灭炼狱后会睁开鬼眼，强化下次湮灭，并直接召唤出恶鬼。在空中使用湮灭会重置此技能冷却。",
+  "item.celestisynth.poltergeist.condition_1": "激活方式：右键单击",
+  "item.celestisynth.poltergeist.desc_1": "进行一次湮灭重击，对范围内敌人造成巨大伤害，在使用十次炼狱湮灭后会睁开鬼眼，强化下次湮灭，并直接召唤出恶鬼。在空中使用湮灭会重置此技能冷却。",
 
-  "item.celestisynth.poltergeist.skill_2": "生者勿进",
-  "item.celestisynth.poltergeist.condition_2": "激活方式:按住SHIFT单击右键",
-  "item.celestisynth.poltergeist.desc_2": "向后闪避，并制造一个能够阻挡投射物的炼狱屏障。",
+  "item.celestisynth.poltergeist.skill_2": "生者勿近",
+  "item.celestisynth.poltergeist.condition_2": "激活方式：按住 SHIFT 并右键单击",
+  "item.celestisynth.poltergeist.desc_2": "向后闪避，并制造一个能够阻挡弹射物的炼狱屏障。",
 
   "------------------- AQUAFLORA ------------------": "",
 
@@ -109,21 +178,25 @@
   "advancements.celestisynth.obtained_aquaflora.title": "待那花开之日",
   "advancements.celestisynth.obtained_aquaflora.description": "获得莲华",
 
+  "item.celestisynth.aquaflora.passive_1": "疾行之华",
+  "item.celestisynth.aquaflora.passive_desc_1": "每次释放技能后，获得 3 秒的加速效果。",
+
   "item.celestisynth.aquaflora.skill_1": "乱花葬",
-  "item.celestisynth.aquaflora.condition_1": "激活方式:单击右键",
+  "item.celestisynth.aquaflora.condition_1": "激活方式：右键单击",
   "item.celestisynth.aquaflora.desc_1": "能够穿透前方一排实体进行狂风骤雨般的刺击。",
 
   "item.celestisynth.aquaflora.skill_2": "回天璇",
-  "item.celestisynth.aquaflora.condition_2": "激活方式:按住SHIFT单击右键",
+  "item.celestisynth.aquaflora.condition_2": "激活方式：按住 SHIFT 并右键单击",
   "item.celestisynth.aquaflora.desc_2": "伤害并推开前方所有实体。使用此技能会使莲华绽放，进入极诣姿态。",
 
   "item.celestisynth.aquaflora.skill_3": "镜花水月",
-  "item.celestisynth.aquaflora.condition_3": "激活方式：极诣姿态下单击右键",
-  "item.celestisynth.aquaflora.desc_3": "对范围内实体进行最多20次伤害，双持此武器会使次数最多增加到40+次，但伤害有所降低。使用镜花水月人物会免疫伤害。",
+  "item.celestisynth.aquaflora.condition_3": "激活方式：极诣姿态下右键单击",
+  "item.celestisynth.aquaflora.desc_3": "对范围内实体进行最多 20 次伤害，双持此武器会使次数最多增加到 40+ 次，但伤害有所降低。使用镜花水月人物会免疫伤害。",
+  "item.celestisynth.aquaflora.skill_3.notice": "无法定位到附近的实体。",
 
   "item.celestisynth.aquaflora.skill_4": "花舞游龙击",
-  "item.celestisynth.aquaflora.condition_4": "激活方式：在极诣状态下按住SHIFT单击鼠标右键",
-  "item.celestisynth.aquaflora.desc_4": "向后回避，在原地留下一个吸附附近实体的莲花。使用该技能会退出极诣姿态，回归莲华初始姿态。",
+  "item.celestisynth.aquaflora.condition_4": "激活方式：在极诣状态下按住 SHIFT 并右键单击",
+  "item.celestisynth.aquaflora.desc_4": "向后回避，在原地留下一个吸引附近实体的莲花。使用该技能会退出极诣姿态，回归莲华初始姿态。",
 
   "------------------- RAINFALL_SERENITY ------------------": "",
 
@@ -131,25 +204,88 @@
   "advancements.celestisynth.obtained_rainfall_serenity.title": "破越地球大气",
   "advancements.celestisynth.obtained_rainfall_serenity.description": "获得谧静星落",
 
-  "item.celestisynth.rainfall_serenity.passive_1": "",
-  "item.celestisynth.rainfall_serenity.passive_desc_1": "",
-
   "item.celestisynth.rainfall_serenity.skill_1": "穿越天际，亘古长存",
   "item.celestisynth.rainfall_serenity.condition_1": "激活方式：拉满弓",
-  "item.celestisynth.rainfall_serenity.desc_1": "释放弓箭时，发射出一道可以穿透无限敌人数量的激光，并为每个敌人打上“类星体标记”，标记持续 5 秒。这个标记会触发附近的实体向被标记的目标发射激光。",
+  "item.celestisynth.rainfall_serenity.desc_1": "弓释放时发射出一道可穿透所有实体的激光，并为每个敌人打上持续 5 秒的“类星标记”。这个标记会使附近的实体向被标记的目标发射激光。",
 
-  "item.celestisynth.rainfall_serenity.skill_2": "类星体标记",
+  "item.celestisynth.rainfall_serenity.skill_2": "类星雨落",
   "item.celestisynth.rainfall_serenity.condition_2": "激活方式：使用武器击中实体",
-  "item.celestisynth.rainfall_serenity.desc_2": "当激光击中目标实体时，周围所有被打上“类星体标记”的实体都会有 25% 的概率立即将自己的激光射向首个被击中的实体。",
+  "item.celestisynth.rainfall_serenity.desc_2": "当激光命中带有“类星标记”的目标时，会在其上方生成一个传送门，并从周围降下激光雨。",
 
-  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ADVANCEMENTS [NON-WEAPONS] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>": "",
+  "item.celestisynth.rainfall_serenity.skill_3": "宁静真义",
+  "item.celestisynth.rainfall_serenity.condition_3": "激活方式：按住 SHIFT 并右键单击",
+  "item.celestisynth.rainfall_serenity.desc_3": "大幅提升移动速度，并激活持续 5 秒的“真实隐身”。",
 
-  "advancements.celestisynth.obtained_core.title": "迈向辉煌之旅！",
-  "advancements.celestisynth.obtained_core.description": "制作一个天神核心",
-  "advancements.celestisynth.obtained_supernal_ingot.title": "哦，不，不是另一个下界合金！",
-  "advancements.celestisynth.obtained_supernal_ingot.description": "获得一个神圣下界合金锭。",
-  "advancements.celestisynth.obtained_celestial_ingot.title": "也许，不尽相同？",
-  "advancements.celestisynth.obtained_celestial_ingot.description": "获得一个天界合金锭",
-  "advancements.celestisynth.placed_celestial_table.title": "进一步提高水平！",
-  "advancements.celestisynth.placed_celestial_table.description": "放置一个天界工作台"
+  "item.celestisynth.rainfall_serenity.skill_4": "星渊机关",
+  "item.celestisynth.rainfall_serenity.condition_4": "激活方式：将武器丢弃到地面上",
+  "item.celestisynth.rainfall_serenity.desc_4": "将该武器丢弃到地面上后，武器将化作炮台，自动锁定并攻击周围敌对目标。",
+
+  "------------------- FROSTBOUND ------------------":  "",
+
+  "item.celestisynth.frostbound": "霜缚",
+  "advancement.celestisynth.obtain_frostbound.title": "寒霜北境秘宝",
+  "advancement.celestisynth.obtain_frostbound.description": "获得霜缚",
+
+  "item.celestisynth.frostbound.passive_1": "寒霜低语",
+  "item.celestisynth.frostbound.passive_desc_1": "使用该武器攻击目标时，会施加霜缚状态，大幅削弱目标的力量并降低其速度。",
+
+  "item.celestisynth.frostbound.passive_2": "寒霜冰列",
+  "item.celestisynth.frostbound.passive_desc_2": "持有霜缚时按住右键，武器将消耗霜缚碎片并向附近随机实体发射，短暂冰冻目标。",
+
+  "item.celestisynth.frostbound.skill_1": "七千雪舞",
+  "item.celestisynth.frostbound.condition_1": "激活方式：右键单击",
+  "item.celestisynth.frostbound.desc_1": "执行一段节奏感十足的动作序列，对附近实体造成多次伤害并施加霜缚效果。",
+
+  "item.celestisynth.frostbound.skill_2": "寒霜绝唱",
+  "item.celestisynth.frostbound.condition_2": "激活方式：按住 SHIFT 并右键单击",
+  "item.celestisynth.frostbound.desc_2": "在施法者前方召唤最多五个巨大的冰柱，对目标造成伤害并施加霜缚效果。",
+
+  "------------------- KERES ------------------":  "",
+
+  "item.celestisynth.keres": "冥魇",
+  "advancement.celestisynth.obtain_keres.title": "至高恶魔誓约",
+  "advancement.celestisynth.obtain_keres.description": "获得冥魇",
+
+  "item.celestisynth.keres.passive_1": "地狱连斩",
+  "item.celestisynth.keres.passive_desc_1": "连续攻击目标 5 次后，使用者获得地狱克星效果 - 增加冥魇的生命窃取效果，并持续向附近敌人发射追踪的暗影弹射物。",
+  "item.celestisynth.keres.passive_2": "鲜血献祭",
+  "item.celestisynth.keres.passive_desc_2": "使用冥魇释放技能时，使用者每隔数秒献祭 1.5 点生命值，但每次技能命中目标时都会一定程度上恢复生命值。",
+  "item.celestisynth.keres.passive_3": "诅咒凋零",
+  "item.celestisynth.keres.passive_desc_3": "技能命中目标时，使目标获得诅咒克星效果，持续 5 秒。该效果显著降低目标的治疗速度。",
+
+  "item.celestisynth.keres.skill_1": "猩红威临",
+  "item.celestisynth.keres.condition_1": "激活方式：右键单击",
+  "item.celestisynth.keres.desc_1": "释放多重无视护甲的斩击波，斩击数量与“鲜血献祭”的程度成正比。",
+  "item.celestisynth.keres.skill_2": "绝境哀歌",
+  "item.celestisynth.keres.condition_2": "激活方式：按住 SHIFT 并右键单击",
+  "item.celestisynth.keres.desc_2": "跳向目标地点并在周围释放冲击波，跳跃距离与“鲜血献祭”的程度成正比。",
+  "item.celestisynth.keres.skill_3": "罪孽永灭",
+  "item.celestisynth.keres.condition_3": "按住右键超过 10 秒",
+  "item.celestisynth.keres.desc_3": "释放一道巨大的裂刃，清除路径上的方块并对目标造成巨额伤害。此技能无视所有护甲。",
+
+  "item.celestisynth.keres.notice": "无法献祭血液，需要恢复生命值。",
+  "item.celestisynth.keres.notice1": "血祭。",
+
+  "chant.celestisynth.keres": "愿鲜血倾泻……",
+  "chant.celestisynth.keres1": "源于黑暗……",
+  "chant.celestisynth.keres2": "湮灭苍生！",
+
+  "{o}================{o} ADVANCEMENTS [NON-WEAPONS] {o}================{o}":  "",
+
+  "advancement.celestisynth.place_celestial_table.title": "一段遗失的记忆",
+  "advancement.celestisynth.place_celestial_table.description": "放置一个天界工作台，它是天神武器之源。",
+  "advancement.celestisynth.obtain_celestial_core.title": "深入核心的旅途",
+  "advancement.celestisynth.obtain_celestial_core.description": "天神之旅启程！获得一个天神核心。",
+  "advancement.celestisynth.obtain_supernal_netherite_ingot.title": "烈焰噬天的爆发",
+  "advancement.celestisynth.obtain_supernal_netherite_ingot.description": "获得一个神圣的下界合金锭，它是制作天神武器的重要材料。",
+  "advancement.celestisynth.obtain_celestial_netherite_ingot.title": "天神之力的涌现",
+  "advancement.celestisynth.obtain_celestial_netherite_ingot.description": "获得一个天界合金锭，它是制作天神武器的重要材料。",
+  "advancement.celestisynth.obtain_core.title": "迈向神圣之旅！",
+  "advancement.celestisynth.obtain_core.description": "制作一个天神核心",
+  "advancement.celestisynth.obtain_supernal_ingot.title": "哦，不，不是另一个下界合金！",
+  "advancement.celestisynth.obtain_supernal_ingot.description": "获得一个神圣下界合金锭",
+  "advancement.celestisynth.obtain_celestial_ingot.title": "也许，不尽相同？",
+  "advancement.celestisynth.obtain_celestial_ingot.description": "获得一个天界合金锭",
+  "advancement.celestisynth.placed_celestial_table.title": "进一步提高水平！",
+  "advancement.celestisynth.placed_celestial_table.description": "放置一个天界工作台"
 }
