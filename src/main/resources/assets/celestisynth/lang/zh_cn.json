@@ -10,7 +10,7 @@
 
   "block.celestisynth.no_more_celestial_workbench": "此物品已不可用。请在工作台中将此方块转换为星辉工厂！",
   "item.celestisynth.test": "卷轴：%s",
-  "item.celestisynth.scroll_notice": "[滚动以浏览技能]",
+  "item.celestisynth.scroll_notice": "[滚动滚轮以浏览技能]",
   "item.celestisynth.shift_notice": "[按住 Shift 或 Ctrl 以切换页面]",
   "item.celestisynth.passive_notice": "被动技能：",
   "item.celestisynth.skill_notice": "主动技能：",
@@ -55,7 +55,7 @@
   "container.celestisynth.starlit_factory": "星辉工厂",
 
   "tip.celestisynth.starlit_factory_0": "你知道吗？谧静星落可以附上弩的附魔，例如多重射击、穿透和快速装填。",
-  "tip.celestisynth.starlit_factory_1": "嚎鬼威力无穷，运用得当方显神威！",
+  "tip.celestisynth.starlit_factory_1": "巨斧嚎鬼威力无穷，运用得当方显神威！",
   "tip.celestisynth.starlit_factory_2": "血符文天神圣碑自然生成在下界要塞之中，因此需要当心穿行者！它们迅捷、警觉且技能多样！",
   "tip.celestisynth.starlit_factory_3": "你有没有想象过在 PvP 当中使用这些武器会是什么样子？嗯，我想过。",
   "tip.celestisynth.starlit_factory_4": "冥魇是该模组中最具破坏力的武器，请谨慎使用！",
@@ -79,8 +79,8 @@
   "------------------- SOLARIS ------------------": "",
 
   "item.celestisynth.solaris": "炎日",
-  "advancements.celestisynth.obtained_solaris.title": "炎至百万度",
-  "advancements.celestisynth.obtained_solaris.description": "获得炎日",
+  "advancement.celestisynth.obtained_solaris.title": "炎至百万度",
+  "advancement.celestisynth.obtained_solaris.description": "获得炎日",
 
   "item.celestisynth.solaris.passive_1": "余烬之祝",
   "item.celestisynth.solaris.passive_desc_1": "使用者在手持此武器时免疫火焰 - 普通攻击会使攻击对象着火。",
@@ -96,16 +96,16 @@
   "item.celestisynth.solaris.condition_2": "激活方式：按住 SHIFT 并右键单击",
   "item.celestisynth.solaris.desc_2": "向前冲刺，撞击并暂时引燃其路径上的实体。",
 
-  "chant.celestisynth.solaris": "魂若炽阳。",
-  "chant.celestisynth.solaris1": "烈日轮回。",
+  "chant.celestisynth.solaris": "魂即炽阳。",
+  "chant.celestisynth.solaris1": "烈日疾旋。",
   "chant.celestisynth.solaris2": "不灭之志。",
   "chant.celestisynth.solaris3": "灵魂追猎。",
 
   "------------------- CRESCENTIA ------------------": "",
 
   "item.celestisynth.crescentia": "初月",
-  "advancements.celestisynth.obtained_crescentia.title": "绮丽之烟火",
-  "advancements.celestisynth.obtained_crescentia.description": "获得初月",
+  "advancement.celestisynth.obtained_crescentia.title": "绮丽之烟火",
+  "advancement.celestisynth.obtained_crescentia.description": "获得初月",
 
   "item.celestisynth.crescentia.passive_1": "引力重击",
   "item.celestisynth.crescentia.passive_desc_1": "使用者在手持此武器时获得一级抗性提升 - 普通攻击会使攻击对象减速几秒。",
@@ -116,7 +116,7 @@
 
   "item.celestisynth.crescentia.skill_2": "新月龙吟",
   "item.celestisynth.crescentia.condition_2": "激活方式：按住 SHIFT 并右键单击",
-  "item.celestisynth.crescentia.desc_2": "释放远距离的劈砍，切开其路径上的一切实体。",
+  "item.celestisynth.crescentia.desc_2": "释放一组龙形飞弹，拖拽敌人并对其进行连续斩击。",
   
   "chant.celestisynth.crescentia": "命运星火。",
   "chant.celestisynth.crescentia1": "宿命庆典。",
@@ -126,8 +126,8 @@
   "------------------- BREEZEBREAKER ------------------": "",
 
   "item.celestisynth.breezebreaker": "肆风",
-  "advancements.celestisynth.obtained_breezebreaker.title": "迅疾而声厉",
-  "advancements.celestisynth.obtained_breezebreaker.description": "获得肆风",
+  "advancement.celestisynth.obtained_breezebreaker.title": "迅疾而声厉",
+  "advancement.celestisynth.obtained_breezebreaker.description": "获得肆风",
 
   "item.celestisynth.breezebreaker.passive_1": "迅敏之风",
   "item.celestisynth.breezebreaker.passive_desc_1": "使用者在手持此武器时得到强力的跳跃提升并免疫摔落伤害，然而来自其它攻击源的伤害增至原来的 2.3 倍。",
@@ -158,15 +158,15 @@
   "------------------- POLTERGEIST ------------------": "",
 
   "item.celestisynth.poltergeist": "嚎鬼",
-  "advancements.celestisynth.obtained_poltergeist.title": "鬼啸神嚎之斧",
-  "advancements.celestisynth.obtained_poltergeist.description": "获得嚎鬼",
+  "advancement.celestisynth.obtained_poltergeist.title": "鬼啸神嚎之斧",
+  "advancement.celestisynth.obtained_poltergeist.description": "获得嚎鬼",
 
   "item.celestisynth.poltergeist.passive_1": "恶鬼凝视",
-  "item.celestisynth.poltergeist.passive_desc_1": "恶鬼会凝视所有被这把武器技能伤害的敌人，杀死被恶鬼凝视的敌人则会召唤多目恶鬼，在 5 秒内持续拉取并伤害附近的敌人。",
+  "item.celestisynth.poltergeist.passive_desc_1": "恶鬼会凝视所有被这把武器技能伤害的敌人，杀死被恶鬼凝视的敌人则会召唤多目恶鬼，在 5 秒内持续吸引附近的敌人。",
 
   "item.celestisynth.poltergeist.skill_1": "炼狱湮灭",
   "item.celestisynth.poltergeist.condition_1": "激活方式：右键单击",
-  "item.celestisynth.poltergeist.desc_1": "进行一次湮灭重击，对范围内敌人造成巨大伤害，在使用十次炼狱湮灭后会睁开鬼眼，强化下次湮灭，并直接召唤出恶鬼。在空中使用湮灭会重置此技能冷却。",
+  "item.celestisynth.poltergeist.desc_1": "进行一次湮灭重击，对范围内敌人造成巨大伤害。在使用十次炼狱湮灭后会睁开鬼眼，强化下次湮灭，并直接召唤出恶鬼。在鬼眼睁开之时击杀实体或在空中时使用攻击，会重置此技能冷却。",
 
   "item.celestisynth.poltergeist.skill_2": "生者勿近",
   "item.celestisynth.poltergeist.condition_2": "激活方式：按住 SHIFT 并右键单击",
@@ -179,7 +179,7 @@
   "advancements.celestisynth.obtained_aquaflora.description": "获得莲华",
 
   "item.celestisynth.aquaflora.passive_1": "疾行之华",
-  "item.celestisynth.aquaflora.passive_desc_1": "每次释放技能后，获得 3 秒的加速效果。",
+  "item.celestisynth.aquaflora.passive_desc_1": "每次释放技能后，获得 3 秒的速度效果。",
 
   "item.celestisynth.aquaflora.skill_1": "乱花葬",
   "item.celestisynth.aquaflora.condition_1": "激活方式：右键单击",
@@ -196,13 +196,13 @@
 
   "item.celestisynth.aquaflora.skill_4": "花舞游龙击",
   "item.celestisynth.aquaflora.condition_4": "激活方式：在极诣状态下按住 SHIFT 并右键单击",
-  "item.celestisynth.aquaflora.desc_4": "向后回避，在原地留下一个吸引附近实体的莲花。使用该技能会退出极诣姿态，回归莲华初始姿态。",
+  "item.celestisynth.aquaflora.desc_4": "向后闪避，在原地留下一个吸引附近实体的莲花。使用该技能会退出极诣姿态，回归莲华初始姿态。",
 
   "------------------- RAINFALL_SERENITY ------------------": "",
 
   "item.celestisynth.rainfall_serenity": "谧静星落",
-  "advancements.celestisynth.obtained_rainfall_serenity.title": "破越地球大气",
-  "advancements.celestisynth.obtained_rainfall_serenity.description": "获得谧静星落",
+  "advancement.celestisynth.obtained_rainfall_serenity.title": "破越地球大气",
+  "advancement.celestisynth.obtained_rainfall_serenity.description": "获得谧静星落",
 
   "item.celestisynth.rainfall_serenity.skill_1": "穿越天际，亘古长存",
   "item.celestisynth.rainfall_serenity.condition_1": "激活方式：拉满弓",
@@ -214,7 +214,7 @@
 
   "item.celestisynth.rainfall_serenity.skill_3": "宁静真义",
   "item.celestisynth.rainfall_serenity.condition_3": "激活方式：按住 SHIFT 并右键单击",
-  "item.celestisynth.rainfall_serenity.desc_3": "大幅提升移动速度，并激活持续 5 秒的“真实隐身”。",
+  "item.celestisynth.rainfall_serenity.desc_3": "大幅提升移动速度，并激活持续 5 秒的“隐身真义”。",
 
   "item.celestisynth.rainfall_serenity.skill_4": "星渊机关",
   "item.celestisynth.rainfall_serenity.condition_4": "激活方式：将武器丢弃到地面上",
@@ -227,10 +227,10 @@
   "advancement.celestisynth.obtain_frostbound.description": "获得霜缚",
 
   "item.celestisynth.frostbound.passive_1": "寒霜低语",
-  "item.celestisynth.frostbound.passive_desc_1": "使用该武器攻击目标时，会施加霜缚状态，大幅削弱目标的力量并降低其速度。",
+  "item.celestisynth.frostbound.passive_desc_1": "使用该武器攻击目标时，会对目标施加霜缚状态，大幅削弱目标的力量并降低其速度。",
 
   "item.celestisynth.frostbound.passive_2": "寒霜冰列",
-  "item.celestisynth.frostbound.passive_desc_2": "持有霜缚时按住右键，武器将消耗霜缚碎片并向附近随机实体发射，短暂冰冻目标。",
+  "item.celestisynth.frostbound.passive_desc_2": "手持霜缚时按住右键，武器将消耗霜缚碎片并向附近随机实体发射，短暂冰冻目标。",
 
   "item.celestisynth.frostbound.skill_1": "七千雪舞",
   "item.celestisynth.frostbound.condition_1": "激活方式：右键单击",
@@ -247,7 +247,7 @@
   "advancement.celestisynth.obtain_keres.description": "获得冥魇",
 
   "item.celestisynth.keres.passive_1": "地狱连斩",
-  "item.celestisynth.keres.passive_desc_1": "连续攻击目标 5 次后，使用者获得地狱克星效果 - 增加冥魇的生命窃取效果，并持续向附近敌人发射追踪的暗影弹射物。",
+  "item.celestisynth.keres.passive_desc_1": "连续攻击目标 5 次后，使用者获得地狱克星效果 - 增加冥魇的生命窃取效果，并持续向附近敌人发射追踪的暗影飞弹。",
   "item.celestisynth.keres.passive_2": "鲜血献祭",
   "item.celestisynth.keres.passive_desc_2": "使用冥魇释放技能时，使用者每隔数秒献祭 1.5 点生命值，但每次技能命中目标时都会一定程度上恢复生命值。",
   "item.celestisynth.keres.passive_3": "诅咒凋零",
