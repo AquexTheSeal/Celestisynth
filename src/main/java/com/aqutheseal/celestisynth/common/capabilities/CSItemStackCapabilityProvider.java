@@ -1,14 +1,19 @@
 package com.aqutheseal.celestisynth.common.capabilities;
 
 import com.aqutheseal.celestisynth.Celestisynth;
+import com.aqutheseal.celestisynth.api.item.CSWeapon;
+import com.aqutheseal.celestisynth.api.item.CSArmorItem;
 import dev._100media.capabilitysyncer.core.CapabilityAttacher;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import org.jetbrains.annotations.Nullable;
+
+
 
 public class CSItemStackCapabilityProvider extends CapabilityAttacher {
     private static final Class<CSItemStackCapability> CAPABILITY_CLASS = CSItemStackCapability.class;
