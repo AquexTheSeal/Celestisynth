@@ -1,7 +1,10 @@
 
 ![celestisynth_banner](https://github.com/AquexTheSeal/Celestisynth/assets/85479639/36ac5f88-2c2f-4d2b-a904-f0aca9b0233c)
+[<img alt="Curseforge Downloads" src="https://cf.way2muchnoise.eu/872712.svg?badge_style=for_the_badge"/>](https://www.curseforge.com/minecraft/mc-mods/celestisynth)
+[<img alt="Curseforge Versions" src="https://cf.way2muchnoise.eu/versions/872712.svg?badge_style=for_the_badge"/>](https://www.curseforge.com/minecraft/mc-mods/celestisynth)
+[<img alt="Discord Server" src="https://img.shields.io/discord/913637215312150568?color=%23876EEE&label=Discord&logo=Discord&logoColor=%23ffffff&style=for-the-badge"/>](https://www.discordlinkhere.com) <!--- add the discord link since i dont have it -->
 
-![Curseforge Downloads](https://cf.way2muchnoise.eu/872712.svg?badge_style=for_the_badge) ![Curseforge Versions](https://cf.way2muchnoise.eu/versions/872712.svg?badge_style=for_the_badge) ![Discord Server](https://img.shields.io/discord/913637215312150568?color=%23876EEE&label=Discord&logo=Discord&logoColor=%23ffffff&style=for-the-badge) ![GitHub contributors](https://img.shields.io/github/contributors/AquexTheSeal/Celestisynth?color=%23876eee&logo=GitHub&style=for-the-badge) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/AquexTheSeal/Celestisynth?color=%23876EEE&logo=GitHub&style=for-the-badge) 
+![GitHub contributors](https://img.shields.io/github/contributors/AquexTheSeal/Celestisynth?color=%23876eee&logo=GitHub&style=for-the-badge) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/AquexTheSeal/Celestisynth?color=%23876EEE&logo=GitHub&style=for-the-badge) 
 
 
 ### Welcome to the Celestisynth repository!
