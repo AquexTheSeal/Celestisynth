@@ -238,12 +238,13 @@ publishMods {
     type = STABLE
 
     modLoaders.add("forge")
+    modLoaders.add("neoforge")
 
     curseforge {
         projectId = "872712"
         projectSlug = "celestisynth"
         accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
-        announcementTitle = "New Celestisynth CurseForge Release!"
+        announcementTitle = "New Celestisynth CurseForge Release! [v${mc_version}-${mod_version}]"
 
         getMinecraftVersions().add(mc_version)
         requires("geckolib")
@@ -253,7 +254,7 @@ publishMods {
     modrinth {
         projectId = "2ocGk7mG"
         accessToken = providers.environmentVariable("MODRINTH_API_KEY")
-        announcementTitle = "New Celestisynth Modrinth Release!"
+        announcementTitle = "New Celestisynth Modrinth Release! [v${mc_version}-${mod_version}]"
 
         getMinecraftVersions().add(mc_version)
         requires("geckolib")

@@ -9,6 +9,7 @@
 
 ### Additions/Changes
 
+- Updated to the latest version of Forge (47.4.5)
 - Updated weapon chants.
 - Updated Keres overlay.
 - Added config option to disable Keres griefing. Made Keres respect mob griefing gamerule.
