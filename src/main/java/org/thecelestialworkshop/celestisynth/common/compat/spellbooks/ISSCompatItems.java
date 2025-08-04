@@ -1,0 +1,17 @@
+package org.thecelestialworkshop.celestisynth.common.compat.spellbooks;
+
+import org.thecelestialworkshop.celestisynth.Celestisynth;
+import io.redspace.ironsspellbooks.api.spells.SpellRarity;
+import io.redspace.ironsspellbooks.item.spell_books.SimpleAttributeSpellBook;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+public class ISSCompatItems {
+    public static final DeferredRegister<Item> SPELLBOOKS_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Celestisynth.MODID);
+
+    public static final RegistryObject<Item> CELESTIAL_SPELLBOOK = SPELLBOOKS_ITEMS.register("celestial_spell_book", () ->
+            new SimpleAttributeSpellBook(14, SpellRarity.LEGENDARY, ISSItemUtil.createCelestialSpellbookAttributes())
+    );
+}

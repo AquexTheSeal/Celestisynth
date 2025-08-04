@@ -5,7 +5,6 @@ plugins {
     id("idea")
     id("maven-publish")
     id("org.parchmentmc.librarian.forgegradle") version("${librarian_plugin_version}")
-    id("com.github.johnrengelman.shadow") version("${shadow_plugin_version}")
     id("me.modmuss50.mod-publish-plugin") version("${publisher_version}")
 }
 
@@ -36,7 +35,7 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
-            jvmArgs "-Xms8G", "-Xmx12G", "-XX:+AllowEnhancedClassRedefinition", "-XX:HotswapAgent=fatjar", "-XX:+UseG1GC", "-XX:+UnlockExperimentalVMOptions", "-XX:MaxGCPauseMillis=100", "-XX:+DisableExplicitGC", "-XX:TargetSurvivorRatio=90", "-XX:G1NewSizePercent=35", "-XX:G1MaxNewSizePercent=60", "-XX:G1MixedGCLiveThresholdPercent=50", "-XX:+AlwaysPreTouch"
+            jvmArgs "-Xms8G", "-Xmx12G", "-XX:+AllowEnhancedClassRedefinition", "-XX:HotswapAgent=fatjar", "-XX:+UseG1GC", "-XX:+UnlockExperimentalVMOptions", "-XX:MaxGCPauseMillis=100", "-XX:+DisableExplicitGC", "-XX:TargetSurvivorRatio=90", "-XX:G1NewSizePercent=35", "-XX:G1MaxNewSizePercent=60", "-XX:G1MixedGCLiveThresholdPercent=50", "-XX:+AlwaysPreTouch", "-Dterminal.ansi=true", "-Dmixin.debug.export=true"
             mods {
                 modid {
                     source sourceSets.main
@@ -68,8 +67,8 @@ sourceSets.main.resources {
 
 mixin {
     add sourceSets.main, "${modid}.refmap.json"
+
     config "${modid}.mixins.json"
-    debug.export = true
 }
 
 repositories {
@@ -121,26 +120,23 @@ repositories {
     }
 }
 
-configurations {
-    shade
-    implementation.extendsFrom shade
-}
+jarJar.enable()
 
 dependencies {
     // Base
     minecraft("net.minecraftforge:forge:${mc_version}-${forge_version}")
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.4.0")) {
-        jarJar.ranged(it, "[0.4.0,)")
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")) {
+        jarJar.ranged(it, "[0.5.0,)")
     }
 
     // Dependencies (Required)
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version}:${geckolib_version}")
     implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}")
-
-    // Dependencies (Shadowed)
-    shade fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
+    implementation(jarJar fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")) {
+        jarJar.ranged(it, "[${capabilitysyncer_version},)")
+    }
 
     // Dependencies (Integrations)
     implementation fg.deobf('maven.modrinth:better-combat:1.8.4+1.20.1-forge')
@@ -178,43 +174,21 @@ dependencies {
 }
 
 tasks.named('processResources', ProcessResources).configure {
-    var replaceProperties = [
-            // Base
-            modid: modid,
-            mod_name: mod_name,
-            mod_version: mod_version,
-            mod_authors: mod_authors,
-            mod_license: mod_license,
-            mod_description: mod_description,
-            mod_issue_tracker_url: mod_issue_tracker_url,
+    def props = new Properties()
 
-            mc_version: mc_version,
-            mc_version_range: mc_version_range,
-            forge_version_range: forge_version_range,
-            loader_version_range: loader_version_range,
+    file('gradle.properties').withInputStream { props.load(it) }
 
-            // Dependencies (Required)
-            geckolib_version_range: geckolib_version_range,
-            player_animator_version_range: player_animator_version_range,
+    // Filter out any non-String values and system properties
+    def replaceProperties = [:]
 
-            // Dependencies (Shadowed)
-            capabilitysyncer_version: capabilitysyncer_version,
+    props.each { key, value ->
+        if (value instanceof String) {
+            replaceProperties.put(key, value)
+        }
+    }
 
-            // Dependencies (Optional)
-            jei_version_range: jei_version_range,
-            jer_version_range: jer_version_range,
-            jeed_version_range: jeed_version_range,
-
-            config_menus_version_range: config_menus_version_range,
-            catalogue_version_range: catalogue_version_range,
-            gmmo_version_range: gmmo_version_range,
-
-            jade_version_range: jade_version_range,
-            appleskin_version_range: appleskin_version_range
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+    inputs.properties(replaceProperties)
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta', '*.mixins.json']) {
         expand replaceProperties + [project: project]
     }
 
@@ -222,7 +196,6 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 tasks.named('jar', Jar).configure {
-    archiveClassifier = 'slim'
     manifest {
         attributes([
                 'Specification-Title'     : mod_name,
@@ -238,29 +211,21 @@ tasks.named('jar', Jar).configure {
     finalizedBy("reobfJar")
 }
 
-shadowJar {
-    archiveClassifier = ''
-    configurations = [project.configurations.shade]
-
-    relocate("dev._100media.capabilitysyncer", "${group}.relocated.capabilitysyncer")
-    finalizedBy("reobfShadowJar")
-}
-
-assemble.dependsOn shadowJar
-
-reobf {
-    shadowJar {}
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact jar
+            group = mod_group
+            artifactId = base.archivesName.get()
+            version = mod_version
+
+            from components.java
+            jarJar.component(it)
         }
     }
+
     repositories {
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+
         }
     }
 }

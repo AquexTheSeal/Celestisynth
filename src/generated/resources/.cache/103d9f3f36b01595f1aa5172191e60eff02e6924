@@ -1,4 +1,4 @@
-// 1.20.1	2024-05-05T14:07:27.3945093	Registries
+// 1.20.1	2025-08-04T21:11:49.5856642	Registries
 70270cb0333de4ff3c72857d28377ad3703efbf2 data/celestisynth/damage_type/basic_player_attack.json
 22ca819e144bd4092b35532ca181e46759c3b4b1 data/celestisynth/damage_type/basic_player_attack_nokb.json
 1578810581653e48b66ff70a6e115531c4e2eb4b data/celestisynth/damage_type/erasure.json
@@ -7,10 +7,9 @@
 474108c869d473f5c30ed0c1c06da428e81fc8c2 data/celestisynth/damage_type/rapid_player_attack_nokb.json
 1df435e201c3bf13d1c68ca8695fa43d29863233 data/celestisynth/forge/biome_modifier/lunar_crater.json
 2941b323530e95d886f25a23e92058703bfaf38b data/celestisynth/forge/biome_modifier/solar_crater.json
-4415284a84eb38ef59d38a82b15aba4a21daa8d3 data/celestisynth/forge/biome_modifier/underwater_cave_spawns.json
 01e1cdeb93f22a23e18c7bf8086b964c9476aec8 data/celestisynth/forge/biome_modifier/wintereis_spikes.json
 ba9c04464bf1cf56be2e683183fee939728c2ef2 data/celestisynth/forge/biome_modifier/zephyr_deposit.json
-efe8f75d0788af229816602d2a0bad80aacb7a89 data/celestisynth/forge/structure_modifier/nether_fortress_spawns.json
+ec4626e8ec8d7a5273b4969b4566cef0a769050b data/celestisynth/forge/structure_modifier/nether_fortress_spawns.json
 78c6d92a72d3c5f7d38623637186296efff5249d data/celestisynth/worldgen/configured_feature/lunar_crater.json
 3c557478a6b0f028aa7c77d17099e5bb86456464 data/celestisynth/worldgen/configured_feature/solar_crater.json
 67021b6ee3c8ea73b33761b528c3c180a077912f data/celestisynth/worldgen/configured_feature/wintereis_spikes.json

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:fortress",
+    {
+      "id": "#betterfortresses:fortress",
+      "required": false
+    }
+  ]
+}

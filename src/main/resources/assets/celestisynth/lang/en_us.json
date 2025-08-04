@@ -96,10 +96,10 @@
   "item.celestisynth.solaris.condition_2": "Activate: Right-click while holding SHIFT",
   "item.celestisynth.solaris.desc_2": "Dash forward, striking and temporarily igniting entities in your path.",
 
-  "chant.celestisynth.solaris": "A soul that is the sun itself.",
+  "chant.celestisynth.solaris": "Firestarter",
   "chant.celestisynth.solaris1": "Full Spin.",
   "chant.celestisynth.solaris2": "An unbreakable spirit.",
-  "chant.celestisynth.solaris3": "Soul Pursuit.",
+  "chant.celestisynth.solaris3": "HEAT.",
 
   "------------------- CRESCENTIA ------------------":  "",
 
@@ -243,32 +243,32 @@
   "------------------- KERES ------------------":  "",
 
   "item.celestisynth.keres": "Keres",
-  "advancement.celestisynth.obtain_keres.title": "The Ultimate Demonic Pact",
+  "advancement.celestisynth.obtain_keres.title": "Power Hungry",
   "advancement.celestisynth.obtain_keres.description": "Obtain the Keres",
 
   "item.celestisynth.keres.passive_1": "Hellbane Sequence",
   "item.celestisynth.keres.passive_desc_1": "After consecutively attacking targets 5 times in a row, the holder activates a Hellbane state - which increases the Keres' lifesteal and repeatedly ejects homing shadow projectiles towards nearby enemies.",
-  "item.celestisynth.keres.passive_2": "Blood Sacrifice",
+  "item.celestisynth.keres.passive_2": "Consumption",
   "item.celestisynth.keres.passive_desc_2": "While using the Keres to cast a skill, the holder sacrifices 1.5 health every few seconds, but every single skill regenerates the holder's health to some degree when it lands on a target.",
   "item.celestisynth.keres.passive_3": "Cursebane Affliction",
   "item.celestisynth.keres.passive_desc_3": "When a skill hit a target, it gives a Cursebane effect to the target for 5 seconds. The effect reduces the healing rate of the target significantly.",
 
   "item.celestisynth.keres.skill_1": "Blood-Red Severity",
   "item.celestisynth.keres.condition_1": "Activate: Right-click",
-  "item.celestisynth.keres.desc_1": "Sends waves of slashes that bypasses armor. The amount of slashes is proportional to the degree of \"Blood Sacrifice\".",
+  "item.celestisynth.keres.desc_1": "Sends waves of slashes that bypasses armor. The amount of slashes is proportional to the degree of \"Weapon-Consumed Blood\".",
   "item.celestisynth.keres.skill_2": "Dreadful Sorrow",
   "item.celestisynth.keres.condition_2": "Activate: Right-click while holding SHIFT",
-  "item.celestisynth.keres.desc_2": "Jumps to a location and sends a shockwave to the surroundings. The jumping distance is proportional to the degree of \"Blood Sacrifice\".",
-  "item.celestisynth.keres.skill_3": "The Abolishment of Sinners",
+  "item.celestisynth.keres.desc_2": "Jumps to a location and sends a shockwave to the surroundings. The jumping distance is proportional to the degree of \"Weapon-Consumed Blood\".",
+  "item.celestisynth.keres.skill_3": "Carnage Incarnate",
   "item.celestisynth.keres.condition_3": "Hold Right-click for 10 or more seconds",
   "item.celestisynth.keres.desc_3": "Sends out a giant rend that erases blocks and deals massive damage to targets along the way. The slash ignores all armor.",
 
-  "item.celestisynth.keres.notice": "Unable to sacrifice blood. Regeneration is required.",
-  "item.celestisynth.keres.notice1": "Sacrifice.",
+  "item.celestisynth.keres.notice": "Unable to consume blood for Keres. Regeneration is required.",
+  "item.celestisynth.keres.notice1": "Consume.",
 
-  "chant.celestisynth.keres": "May the blood...",
-  "chant.celestisynth.keres1": "of darkness...",
-  "chant.celestisynth.keres2": "DESTROY ALL.",
+  "chant.celestisynth.keres": "I came...",
+  "chant.celestisynth.keres1": "I saw...",
+  "chant.celestisynth.keres2": "I DESTROYED.",
 
   "{o}================{o} ADVANCEMENTS [NON-WEAPONS] {o}================{o}":  "",
 

@@ -1,10 +1,10 @@
 {
-  "type": "celestisynth:add_spawns",
+  "type": "celestisynth:add_spawns_tag",
   "spawners": {
     "type": "celestisynth:star_monolith",
     "maxCount": 1,
     "minCount": 1,
-    "weight": 2
+    "weight": 20
   },
-  "structure": "minecraft:fortress"
+  "structure_tags": "celestisynth:nether_monolith_spawn"
 }
