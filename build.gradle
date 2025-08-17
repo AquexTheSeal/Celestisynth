@@ -238,7 +238,6 @@ publishMods {
     type = STABLE
 
     modLoaders.add("forge")
-    modLoaders.add("neoforge")
 
     curseforge {
         projectId = "872712"
