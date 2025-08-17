@@ -231,7 +231,7 @@ publishing {
 }
 
 publishMods {
-    file = jar.archiveFile
+    file = tasks.jarJar.archiveFile
     changelog = file("CHANGELOG.md").getText()
     version = "${mc_version}-${mod_version}"
     displayName = "${mod_name} v${mc_version}-${mod_version}"

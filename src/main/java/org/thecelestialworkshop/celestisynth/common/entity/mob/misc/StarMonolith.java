@@ -241,6 +241,11 @@ public class StarMonolith extends Mob implements GeoEntity, FixedMovesetEntity, 
         return this.level() instanceof ServerLevel server && server.structureManager().getStructureWithPieceAt(blockPosition(), structureTag).isValid();
     }
 
+    @Override
+    public boolean isPersistenceRequired() {
+        return false;
+    }
+
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
