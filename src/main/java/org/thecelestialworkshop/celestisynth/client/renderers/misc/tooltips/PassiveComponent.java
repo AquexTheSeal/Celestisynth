@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import org.joml.Matrix4f;
-import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.Color;
 
 public class PassiveComponent {
 
@@ -63,16 +63,16 @@ public class PassiveComponent {
                 pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
                 order += 12;
             }
-            pGuiGraphics.fill(pX - 10, pY + ICON_OFFSETED_HEIGHT - 3, pX + this.getWidth(pFont) + 10, pY + ICON_OFFSETED_HEIGHT + this.descriptionWordWrapHeight() + 9, Color.BLACK.argbInt());
+            pGuiGraphics.fill(pX - 10, pY + ICON_OFFSETED_HEIGHT - 3, pX + this.getWidth(pFont) + 10, pY + ICON_OFFSETED_HEIGHT + this.descriptionWordWrapHeight() + 9, Color.BLACK.getColor());
         }
 
         public Component highlightedName() {
             int tickCount = (int) (Minecraft.getInstance().player.tickCount * 0.5);
-            return Component.translatable("item.celestisynth." + data.itemName() + ".passive_" + data.highlightedPassiveIndex()).withStyle(Style.EMPTY.withColor(ExtraUtil.getCelestialColor(tickCount).argbInt()));
+            return Component.translatable("item.celestisynth." + data.itemName() + ".passive_" + data.highlightedPassiveIndex()).withStyle(Style.EMPTY.withColor(ExtraUtil.getCelestialColor(tickCount).getColor()));
         }
 
         public Component highlightedDescription() {
-            return Component.translatable("item.celestisynth." + data.itemName() + ".desc_" + data.highlightedPassiveIndex()).withStyle(Style.EMPTY.withColor(Color.GRAY.argbInt()));
+            return Component.translatable("item.celestisynth." + data.itemName() + ".desc_" + data.highlightedPassiveIndex()).withStyle(Style.EMPTY.withColor(Color.GRAY.getColor()));
         }
 
         public int descriptionWordWrapHeight() {

@@ -3,90 +3,55 @@ package org.thecelestialworkshop.celestisynth.api.item;
 import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.common.registry.CSBlocks;
 import net.minecraft.Util;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.EnumMap;
-import java.util.function.Supplier;
+import java.util.List;
 
-public enum CSArmorMaterials implements ArmorMaterial {
-    SOLAR_CRYSTAL("solar_crystal", 25, Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
-        map.put(ArmorItem.Type.BOOTS, 2);
-        map.put(ArmorItem.Type.LEGGINGS, 5);
-        map.put(ArmorItem.Type.CHESTPLATE, 7);
-        map.put(ArmorItem.Type.HELMET, 2);
-    }), 8, SoundEvents.ARMOR_EQUIP_GOLD, 1.0F, 0.0F, () -> Ingredient.of(CSBlocks.SOLAR_CRYSTAL.get())),
+/**
+ * ArmorMaterial is a registry record as of 1.20.5. Durability multipliers
+ * (25 solar / 29 lunar) now live at the item registration via
+ * {@link ArmorItem.Type#getDurability(int)}.
+ */
+public class CSArmorMaterials {
+    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(BuiltInRegistries.ARMOR_MATERIAL, Celestisynth.MODID);
 
-    LUNAR_STONE("lunar_stone", 29, Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
-        map.put(ArmorItem.Type.BOOTS, 4);
-        map.put(ArmorItem.Type.LEGGINGS, 6);
-        map.put(ArmorItem.Type.CHESTPLATE, 7);
-        map.put(ArmorItem.Type.HELMET, 3);
-    }), 8, SoundEvents.ARMOR_EQUIP_GOLD, 1.5F, 2.0F, () -> Ingredient.of(CSBlocks.LUNAR_STONE.get()));
+    public static final int SOLAR_CRYSTAL_DURABILITY_MULTIPLIER = 25;
+    public static final int LUNAR_STONE_DURABILITY_MULTIPLIER = 29;
 
-    private final String name;
-    private final int durabilityMultiplier;
-    private final EnumMap<ArmorItem.Type, Integer> protectionFunctionForType;
-    private final int enchantmentValue;
-    private final SoundEvent sound;
-    private final float toughness;
-    private final float knockbackResistance;
-    private final LazyLoadedValue<Ingredient> repairIngredient;
-    private static final EnumMap<ArmorItem.Type, Integer> HEALTH_FUNCTION_FOR_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
-        map.put(ArmorItem.Type.BOOTS, 13);
-        map.put(ArmorItem.Type.LEGGINGS, 15);
-        map.put(ArmorItem.Type.CHESTPLATE, 16);
-        map.put(ArmorItem.Type.HELMET, 11);
-    });
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SOLAR_CRYSTAL = ARMOR_MATERIALS.register("solar_crystal", () -> new ArmorMaterial(
+            Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
+                map.put(ArmorItem.Type.BOOTS, 2);
+                map.put(ArmorItem.Type.LEGGINGS, 5);
+                map.put(ArmorItem.Type.CHESTPLATE, 7);
+                map.put(ArmorItem.Type.HELMET, 2);
+            }),
+            8,
+            SoundEvents.ARMOR_EQUIP_GOLD,
+            () -> Ingredient.of(CSBlocks.SOLAR_CRYSTAL.get()),
+            List.of(new ArmorMaterial.Layer(Celestisynth.prefix("solar_crystal"))),
+            1.0F,
+            0.0F
+    ));
 
-    CSArmorMaterials(String pName, int pDurabilityMultiplier, EnumMap<ArmorItem.Type, Integer> pProtectionFunctionForType, int pEnchantmentValue, SoundEvent pSound, float pToughness, float pKnockbackResistance, Supplier<Ingredient> pRepairIngredient) {
-        this.name = pName;
-        this.durabilityMultiplier = pDurabilityMultiplier;
-        this.protectionFunctionForType = pProtectionFunctionForType;
-        this.enchantmentValue = pEnchantmentValue;
-        this.sound = pSound;
-        this.toughness = pToughness;
-        this.knockbackResistance = pKnockbackResistance;
-        this.repairIngredient = new LazyLoadedValue<>(pRepairIngredient);
-    }
-
-    public int getDurabilityForType(ArmorItem.Type pType) {
-        return HEALTH_FUNCTION_FOR_TYPE.get(pType) * this.durabilityMultiplier;
-    }
-
-    public int getDefenseForType(ArmorItem.Type pType) {
-        return this.protectionFunctionForType.get(pType);
-    }
-
-    public int getEnchantmentValue() {
-        return this.enchantmentValue;
-    }
-
-    public SoundEvent getEquipSound() {
-        return this.sound;
-    }
-
-    public Ingredient getRepairIngredient() {
-        return this.repairIngredient.get();
-    }
-
-    public String getName() {
-        return Celestisynth.MODID + ":" +this.name;
-    }
-
-    public float getToughness() {
-        return this.toughness;
-    }
-
-    public float getKnockbackResistance() {
-        return this.knockbackResistance;
-    }
-
-    public String getSerializedName() {
-        return this.name;
-    }
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> LUNAR_STONE = ARMOR_MATERIALS.register("lunar_stone", () -> new ArmorMaterial(
+            Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
+                map.put(ArmorItem.Type.BOOTS, 4);
+                map.put(ArmorItem.Type.LEGGINGS, 6);
+                map.put(ArmorItem.Type.CHESTPLATE, 7);
+                map.put(ArmorItem.Type.HELMET, 3);
+            }),
+            8,
+            SoundEvents.ARMOR_EQUIP_GOLD,
+            () -> Ingredient.of(CSBlocks.LUNAR_STONE.get()),
+            List.of(new ArmorMaterial.Layer(Celestisynth.prefix("lunar_stone"))),
+            1.5F,
+            2.0F
+    ));
 }

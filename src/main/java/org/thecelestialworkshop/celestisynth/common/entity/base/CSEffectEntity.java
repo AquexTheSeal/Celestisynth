@@ -1,5 +1,7 @@
 package org.thecelestialworkshop.celestisynth.common.entity.base;
 
+import java.util.function.Supplier;
+
 import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.common.entity.helper.CSVisualType;
 import org.thecelestialworkshop.celestisynth.common.registry.CSEntityTypes;
@@ -14,16 +16,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -117,7 +118,7 @@ public class CSEffectEntity extends Entity implements GeoEntity {
 
     public CSVisualType getVisualType() {
         if (getVisualID() != null && !getVisualID().equals("none")) {
-            for (RegistryObject<CSVisualType> visual : CSVisualTypes.VISUALS.getEntries()) {
+            for (Supplier<? extends CSVisualType> visual : CSVisualTypes.VISUALS.getEntries()) {
                 if (getVisualID().equals(visual.get().getName())) {
                     return visual.get();
                 }
@@ -241,14 +242,14 @@ public class CSEffectEntity extends Entity implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(OWNER_UUID, Optional.empty());
-        this.entityData.define(VISUAL_ID, "none");
-        this.entityData.define(ANIMATION_ID, "none");
-        this.entityData.define(FRAME_LEVEL, 1);
-        this.entityData.define(SET_ROT_X, 0);
-        this.entityData.define(SET_ROT_Z, 0);
-        this.entityData.define(CUSTOMIZABLE_SIZE, 1F);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        builder.define(OWNER_UUID, Optional.empty());
+        builder.define(VISUAL_ID, "none");
+        builder.define(ANIMATION_ID, "none");
+        builder.define(FRAME_LEVEL, 1);
+        builder.define(SET_ROT_X, 0);
+        builder.define(SET_ROT_Z, 0);
+        builder.define(CUSTOMIZABLE_SIZE, 1F);
     }
 
     @Override
@@ -265,8 +266,4 @@ public class CSEffectEntity extends Entity implements GeoEntity {
         return CSVisualTypes.SOLARIS_BLITZ.get();
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
-}

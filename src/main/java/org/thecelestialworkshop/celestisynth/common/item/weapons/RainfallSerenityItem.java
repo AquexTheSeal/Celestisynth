@@ -6,18 +6,14 @@ import org.thecelestialworkshop.celestisynth.api.item.CSWeapon;
 import org.thecelestialworkshop.celestisynth.api.item.CSWeaponUtil;
 import org.thecelestialworkshop.celestisynth.common.attack.base.WeaponAttackInstance;
 import org.thecelestialworkshop.celestisynth.common.capabilities.CSEntityCapabilityProvider;
-import org.thecelestialworkshop.celestisynth.common.compat.apotheosis.CSCompatAP;
 import org.thecelestialworkshop.celestisynth.common.entity.base.CSEffectEntity;
 import org.thecelestialworkshop.celestisynth.common.entity.helper.CSVisualAnimation;
 import org.thecelestialworkshop.celestisynth.common.entity.mob.misc.RainfallTurret;
 import org.thecelestialworkshop.celestisynth.common.entity.projectile.RainfallArrow;
 import org.thecelestialworkshop.celestisynth.common.registry.*;
-import org.thecelestialworkshop.celestisynth.manager.CSIntegrationManager;
 import org.thecelestialworkshop.celestisynth.util.ParticleUtil;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
-import dev.shadowsoffire.attributeslib.api.ALObjects;
-import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -48,7 +44,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -103,10 +99,6 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
     }
 
     public void addExtraAttributes(ImmutableMultimap.Builder<Attribute, AttributeModifier> map) {
-        if (CSIntegrationManager.checkIronsSpellbooks()) {
-            map.put(AttributeRegistry.SPELL_POWER.get(), new AttributeModifier(UUID.randomUUID(), "Item spell power", 0.075, AttributeModifier.Operation.MULTIPLY_BASE));
-            map.put(AttributeRegistry.MANA_REGEN.get(), new AttributeModifier(UUID.randomUUID(), "Item mana regen", 0.1, AttributeModifier.Operation.MULTIPLY_BASE));
-        }
     }
 
     @Override
@@ -116,8 +108,8 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
 
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         ItemStack heldStack = pPlayer.getItemInHand(pHand);
-        CompoundTag elementData = heldStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
-        InteractionResultHolder<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onArrowNock(heldStack, pLevel, pPlayer, pHand, true);
+        CompoundTag elementData = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getOrCreateLiveTag(heldStack, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER);
+        InteractionResultHolder<ItemStack> ret = net.neoforged.neoforge.event.EventHooks.onArrowNock(heldStack, pLevel, pPlayer, pHand, true);
 
         if (ret != null) return ret;
 
@@ -152,7 +144,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
                 attackExtras(pStack).putFloat(PULL, 0);
                 attackExtras(pStack).putFloat(PULLING, 0);
             } else {
-                attackExtras(pStack).putFloat(PULL, (pStack.getUseDuration() - living.getUseItemRemainingTicks()) / ((RainfallSerenityItem) pStack.getItem()).getDrawSpeed(living, pStack));
+                attackExtras(pStack).putFloat(PULL, (pStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / ((RainfallSerenityItem) pStack.getItem()).getDrawSpeed(living, pStack));
                 attackExtras(pStack).putFloat(PULLING, 1);
             }
         }
@@ -179,18 +171,18 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
     }
 
     public void release(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft, Player player, float charge, ArrowItem arrowitem, ItemStack projectileStack, AbstractArrow existingArrow) {
-        int mult = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, pStack);
+        int mult = CSWeaponUtil.getStackEnchantmentLevel(pStack, Enchantments.MULTISHOT);
         if (mult > 0) {
             for (int i = 1; i < mult + 1; i++) {
-                createAndShootArrow(pLevel, player, charge, existingArrow, arrowitem, projectileStack, 15F * i);
-                createAndShootArrow(pLevel, player, charge, existingArrow, arrowitem, projectileStack, -15F * i);
+                createAndShootArrow(pLevel, player, charge, existingArrow, arrowitem, pStack, projectileStack, 15F * i);
+                createAndShootArrow(pLevel, player, charge, existingArrow, arrowitem, pStack, projectileStack, -15F * i);
             }
         }
     }
 
-    private void createAndShootArrow(Level pLevel, Player player, float charge, AbstractArrow existingArrow, ArrowItem arrowitem, ItemStack projectileStack, float yOffset) {
-        AbstractArrow clone = arrowitem.createArrow(pLevel, projectileStack, player);
-        clone = this.customArrow(clone);
+    private void createAndShootArrow(Level pLevel, Player player, float charge, AbstractArrow existingArrow, ArrowItem arrowitem, ItemStack weaponStack, ItemStack projectileStack, float yOffset) {
+        AbstractArrow clone = arrowitem.createArrow(pLevel, projectileStack, player, weaponStack);
+        clone = this.customArrow(clone, projectileStack, weaponStack);
         this.transferPropertiesToClone(existingArrow, clone);
 
         Vec3 vec31 = player.getUpVector(1.0F);
@@ -223,8 +215,8 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
     }
 
     public void releaseUsingEffect(ItemStack pStack, Level pLevel, LivingEntity player, int pTimeLeft) {
-        CompoundTag elementData = pStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
-        int useDuration = getUseDuration(pStack) - pTimeLeft;
+        CompoundTag elementData = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getOrCreateLiveTag(pStack, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER);
+        int useDuration = getUseDuration(pStack, player) - pTimeLeft;
         double curPowerFromUse = getPowerForTime(player, pStack, useDuration);
         AnimationManager.playAnimation(pLevel, CSPlayerAnimations.CLEAR.get());
         elementData.putBoolean(ANIMATION_BEGUN_KEY, false);
@@ -257,7 +249,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
     }
 
     @Override
-    public AbstractArrow customArrow(AbstractArrow arrow) {
+    public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
         RainfallArrow rainfallArrow = new RainfallArrow(arrow);
 
         rainfallArrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
@@ -265,10 +257,6 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
         rainfallArrow.setPierceLevel((byte) 3);
         rainfallArrow.setImbueQuasar(true);
         rainfallArrow.setStrong(true);
-
-        if (CSIntegrationManager.checkApothicAttributes() && arrow.getOwner() instanceof LivingEntity owner) {
-            rainfallArrow.setBaseDamage(rainfallArrow.getBaseDamage() + 3 + CSCompatAP.apothValue(ALObjects.Attributes.ARROW_VELOCITY, owner));
-        }
 
         return rainfallArrow;
     }
@@ -283,11 +271,11 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
                     RainfallTurret turret = CSEntityTypes.RAINFALL_TURRET.get().create(entity.level());
                     turret.moveTo(entity.position());
                     turret.setOwner(player);
-                    double healthAdd = turret.getMaxHealth() + ((EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack)) * 50);
+                    double healthAdd = turret.getMaxHealth() + ((CSWeaponUtil.getEnchantmentLevel(player, stack, Enchantments.UNBREAKING)) * 50);
                     turret.getAttribute(Attributes.MAX_HEALTH).setBaseValue(healthAdd);
                     turret.setHealth(turret.getMaxHealth());
                     entity.level().addFreshEntity(turret);
-                    turret.setItemData(stack.serializeNBT());
+                    turret.setItemData((CompoundTag) stack.save(entity.level().registryAccess()));
                     for (int i = 0; i < 16; i++) {
                         ParticleUtil.sendParticle(entity.level(), CSParticleTypes.RAINFALL_ENERGY_SMALL.get(),
                                 entity.position().add(entity.level().random.nextGaussian() * 0.4, 0, entity.level().random.nextGaussian() * 0.4),
@@ -307,39 +295,37 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantments.POWER_ARROWS);
-        enchantments.add(Enchantments.PUNCH_ARROWS);
-        enchantments.add(Enchantments.FLAMING_ARROWS);
+    public boolean supportsEnchantment(ItemStack stack, net.minecraft.core.Holder<Enchantment> enchantment) {
+        List<net.minecraft.resources.ResourceKey<Enchantment>> enchantments = new ArrayList<>();
+        enchantments.add(Enchantments.POWER);
+        enchantments.add(Enchantments.PUNCH);
+        enchantments.add(Enchantments.FLAME);
         enchantments.add(Enchantments.MULTISHOT);
         enchantments.add(Enchantments.PIERCING);
         enchantments.add(Enchantments.QUICK_CHARGE);
 
-        if (enchantment == Enchantments.MULTISHOT || enchantment == Enchantments.QUICK_CHARGE) {
-            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, stack) > 0) {
+        if (enchantment.is(Enchantments.MULTISHOT) || enchantment.is(Enchantments.QUICK_CHARGE)) {
+            if (CSWeaponUtil.getStackEnchantmentLevel(stack, Enchantments.PIERCING) > 0) {
                 return false;
             }
         }
 
-        if (enchantment == Enchantments.PIERCING) {
-            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, stack) > 0 || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, stack) > 0) {
+        if (enchantment.is(Enchantments.PIERCING)) {
+            if (CSWeaponUtil.getStackEnchantmentLevel(stack, Enchantments.MULTISHOT) > 0 || CSWeaponUtil.getStackEnchantmentLevel(stack, Enchantments.QUICK_CHARGE) > 0) {
                 return false;
             }
         }
 
-        if (enchantments.contains(enchantment)) return true;
+        if (enchantments.stream().anyMatch(enchantment::is)) return true;
 
-        return super.canApplyAtEnchantingTable(stack, enchantment);
+        return super.supportsEnchantment(stack, enchantment);
     }
 
     public float getDrawSpeed(LivingEntity entity, ItemStack stack) {
-        float piercingEnchLvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, stack);
-        float quickEnchLvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
+        float piercingEnchLvl = CSWeaponUtil.getStackEnchantmentLevel(stack, Enchantments.PIERCING);
+        float quickEnchLvl = CSWeaponUtil.getStackEnchantmentLevel(stack, Enchantments.QUICK_CHARGE);
 
-        float apoth_drawSpeed = CSCompatAP.apothRainfallSerenityDrawSpeed(entity);
-
-        return (7.5F + (piercingEnchLvl * 10)) / ((quickEnchLvl + 1) * 0.6f) + apoth_drawSpeed;
+        return (7.5F + (piercingEnchLvl * 10)) / ((quickEnchLvl + 1) * 0.6f);
     }
 
     public static float getPowerForTime(LivingEntity pEntityLiving, ItemStack stack, int pCharge) {
@@ -351,7 +337,7 @@ public class RainfallSerenityItem extends BowItem implements CSWeapon, CSGeoItem
         return totalCharge;
     }
 
-    public int getUseDuration(ItemStack pStack) {
+    public int getUseDuration(ItemStack pStack, net.minecraft.world.entity.LivingEntity useEntity) {
         return 72000;
     }
 

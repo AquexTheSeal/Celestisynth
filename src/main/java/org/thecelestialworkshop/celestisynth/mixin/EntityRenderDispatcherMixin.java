@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EntityRenderDispatcherMixin {
 
     @Inject(method = "renderHitbox", at = @At("HEAD"), cancellable = true)
-    private static void renderHitbox(PoseStack pPoseStack, VertexConsumer pBuffer, Entity pEntity, float pPartialTicks, CallbackInfo ci) {
+    private static void renderHitbox(PoseStack pPoseStack, VertexConsumer pBuffer, Entity pEntity, float pPartialTicks, float pRed, float pGreen, float pBlue, CallbackInfo ci) {
         if (pEntity.getType() == CSEntityTypes.CS_EFFECT.get() || pEntity.getType() == CSEntityTypes.RAINFALL_LASER_MARKER.get() || pEntity instanceof EffectControllerEntity) {
             ci.cancel();
         }

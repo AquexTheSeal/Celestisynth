@@ -1,0 +1,35 @@
+{
+  "parent": "celestisynth:place_celestial_table",
+  "criteria": {
+    "criteria": {
+      "conditions": {
+        "items": [
+          {
+            "items": "celestisynth:solaris"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.celestisynth.obtain_solaris.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "celestisynth:solaris"
+    },
+    "title": {
+      "translate": "advancement.celestisynth.obtain_solaris.title"
+    }
+  },
+  "requirements": [
+    [
+      "criteria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

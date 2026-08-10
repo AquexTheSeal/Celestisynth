@@ -11,23 +11,23 @@
       "condition": "minecraft:any_of",
       "terms": [
         {
-          "condition": "forge:loot_table_id",
+          "condition": "neoforge:loot_table_id",
           "loot_table_id": "minecraft:chests/ancient_city"
         },
         {
-          "condition": "forge:loot_table_id",
+          "condition": "neoforge:loot_table_id",
           "loot_table_id": "minecraft:chests/abandoned_mineshaft"
         },
         {
-          "condition": "forge:loot_table_id",
+          "condition": "neoforge:loot_table_id",
           "loot_table_id": "betterdungeons:zombie_dungeon/chests/common"
         },
         {
-          "condition": "forge:loot_table_id",
+          "condition": "neoforge:loot_table_id",
           "loot_table_id": "betterdungeons:skeleton_dungeon/chests/common"
         },
         {
-          "condition": "forge:loot_table_id",
+          "condition": "neoforge:loot_table_id",
           "loot_table_id": "betterdungeons:spider_dungeon/chests/egg_room"
         }
       ]

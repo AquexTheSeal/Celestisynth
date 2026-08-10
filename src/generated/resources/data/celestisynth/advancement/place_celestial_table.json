@@ -1,0 +1,30 @@
+{
+  "parent": "celestisynth:obtain_celestial_netherite_ingot",
+  "criteria": {
+    "criteria": {
+      "conditions": {
+        "block": "celestisynth:celestial_crafting_table"
+      },
+      "trigger": "minecraft:enter_block"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.celestisynth.place_celestial_table.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "celestisynth:celestial_crafting_table"
+    },
+    "title": {
+      "translate": "advancement.celestisynth.place_celestial_table.title"
+    }
+  },
+  "requirements": [
+    [
+      "criteria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

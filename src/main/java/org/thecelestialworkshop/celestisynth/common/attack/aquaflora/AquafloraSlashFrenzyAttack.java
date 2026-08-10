@@ -131,25 +131,11 @@ public class AquafloraSlashFrenzyAttack extends AquafloraAttack {
     }
 
     public static void createAquafloraFirework(ItemStack itemStack, Level level, Player player, double x, double y, double z) {
-        ItemStack fireworkStarStack = new ItemStack(Items.FIREWORK_STAR);
-        CompoundTag starExplosionDataTag = fireworkStarStack.getOrCreateTagElement("Explosion");
-        List<Integer> list = Lists.newArrayList();
         DyeColor[] allowedColors = new DyeColor[]{DyeColor.PINK, DyeColor.MAGENTA, DyeColor.WHITE};
+        it.unimi.dsi.fastutil.ints.IntList colors = it.unimi.dsi.fastutil.ints.IntList.of(allowedColors[level.random.nextInt(allowedColors.length)].getFireworkColor());
+        net.minecraft.world.item.component.FireworkExplosion explosion = new net.minecraft.world.item.component.FireworkExplosion(
+                net.minecraft.world.item.component.FireworkExplosion.Shape.SMALL_BALL, colors, it.unimi.dsi.fastutil.ints.IntList.of(), false, false);
 
-        list.add(allowedColors[level.random.nextInt(allowedColors.length)].getFireworkColor());
-        starExplosionDataTag.putIntArray("Colors", list);
-        starExplosionDataTag.putByte("Type", (byte)(FireworkRocketItem.Shape.SMALL_BALL.getId()));
-
-        CompoundTag fireworkDataTag = itemStack.getOrCreateTagElement("Fireworks");
-        ListTag starDataListTag = new ListTag();
-        CompoundTag explosionDataTag = fireworkStarStack.getTagElement("Explosion");
-
-        if (explosionDataTag != null) starDataListTag.add(explosionDataTag);
-
-        fireworkDataTag.putByte("Flight", (byte) 3);
-
-        if (!starDataListTag.isEmpty()) fireworkDataTag.put("Explosions", starDataListTag);
-
-        level.createFireworks(x, y, z, 0.01, 0.01, 0.01, fireworkDataTag);
+        level.createFireworks(x, y, z, 0.01, 0.01, 0.01, List.of(explosion));
     }
 }

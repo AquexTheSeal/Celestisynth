@@ -1,8 +1,0 @@
-// 1.20.1	2024-04-17T00:12:35.8780745	Celestisynth: Better Combat Compatibility
-bbead8c8ee18b69764e02ebf74030397d85eb23f data/celestisynth/weapon_attributes/aquaflora.json
-44f8177bd8435121b622f072dd41e4e51c43bb35 data/celestisynth/weapon_attributes/breezebreaker.json
-5d5ed1663c7611ee44c20e5f45178c5952492099 data/celestisynth/weapon_attributes/crescentia.json
-bb9e868d6db4baea759bcbe7d5e69444b81875fb data/celestisynth/weapon_attributes/frostbound.json
-4dbf1317860f1d26d741af79f60d58d1c5e2d8d7 data/celestisynth/weapon_attributes/keres.json
-da9002352095498d6149f8001c78d5688be5a3d7 data/celestisynth/weapon_attributes/poltergeist.json
-2d4a977008ab36a94d9dfb619b8494f33b371105 data/celestisynth/weapon_attributes/solaris.json

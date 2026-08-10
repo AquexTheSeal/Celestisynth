@@ -1,51 +1,43 @@
 package org.thecelestialworkshop.celestisynth.common.network.s2c;
 
+import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.api.mixin.PlayerMixinSupport;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
-public class ShakeScreenToAllPacket {
-    private final UUID playerId;
-    private final int duration;
-    private final int fadeOutStart;
-    private final float intensity;
+public record ShakeScreenToAllPacket(UUID playerId, int duration, int fadeOutStart, float intensity) implements CustomPacketPayload {
+    public static final Type<ShakeScreenToAllPacket> TYPE = new Type<>(Celestisynth.prefix("shake_screen_to_all"));
 
-    public ShakeScreenToAllPacket(UUID playerId, int duration, int fadeOutStart, float intensity) {
-        this.playerId = playerId;
-        this.duration = duration;
-        this.fadeOutStart = fadeOutStart;
-        this.intensity = intensity;
+    public static final StreamCodec<FriendlyByteBuf, ShakeScreenToAllPacket> STREAM_CODEC = StreamCodec.composite(
+            UUIDUtil.STREAM_CODEC, ShakeScreenToAllPacket::playerId,
+            ByteBufCodecs.INT, ShakeScreenToAllPacket::duration,
+            ByteBufCodecs.INT, ShakeScreenToAllPacket::fadeOutStart,
+            ByteBufCodecs.FLOAT, ShakeScreenToAllPacket::intensity,
+            ShakeScreenToAllPacket::new
+    );
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public ShakeScreenToAllPacket(FriendlyByteBuf buf) {
-        this.playerId = buf.readUUID();
-        this.duration = buf.readInt();
-        this.fadeOutStart = buf.readInt();
-        this.intensity = buf.readFloat();
-    }
-
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeUUID(playerId);
-        buf.writeInt(duration);
-        buf.writeInt(fadeOutStart);
-        buf.writeFloat(intensity);
-    }
-
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
+    public static void handle(ShakeScreenToAllPacket packet, IPayloadContext context) {
         context.enqueueWork(() -> {
             Minecraft instance = Minecraft.getInstance();
-            var player = instance.level.getPlayerByUUID(playerId);
+            if (instance.level == null) return;
+            var player = instance.level.getPlayerByUUID(packet.playerId());
             if (player instanceof PlayerMixinSupport pms) {
-                pms.setScreenShakeDuration(duration);
-                pms.setScreenShakeFadeoutBegin(fadeOutStart);
-                pms.setScreenShakeIntensity(intensity);
+                pms.setScreenShakeDuration(packet.duration());
+                pms.setScreenShakeFadeoutBegin(packet.fadeOutStart());
+                pms.setScreenShakeIntensity(packet.intensity());
             }
         });
-        return true;
     }
 }

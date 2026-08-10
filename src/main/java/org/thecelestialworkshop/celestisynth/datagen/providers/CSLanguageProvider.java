@@ -2,7 +2,7 @@ package org.thecelestialworkshop.celestisynth.datagen.providers;
 
 import org.thecelestialworkshop.celestisynth.Celestisynth;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class CSLanguageProvider extends LanguageProvider {
 

@@ -12,8 +12,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.bus.api.SubscribeEvent;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 public class CSClientMiscEvents {
@@ -30,12 +30,12 @@ public class CSClientMiscEvents {
             ItemStack itemL = Minecraft.getInstance().player.getOffhandItem();
 
             if (itemR.getItem() instanceof CSWeapon) {
-                if (itemR.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && itemR.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
+                if (org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getLiveTag(itemR, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER) != null && org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getLiveTag(itemR, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
                     event.setCanceled(true);
                 }
             }
             if (itemL.getItem() instanceof CSWeapon) {
-                if (itemL.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null && itemL.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
+                if (org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getLiveTag(itemL, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER) != null && org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getLiveTag(itemL, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER).getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) {
                     event.setCanceled(true);
                 }
             }
@@ -43,7 +43,7 @@ public class CSClientMiscEvents {
     }
 
     @SubscribeEvent
-    public static void onLivingRender(RenderLivingEvent event) {
+    public static void onLivingRender(RenderLivingEvent.Pre<?, ?> event) {
         CSEntityCapabilityProvider.get(event.getEntity()).ifPresent(data -> {
             if (data.getTrueInvisibility() > 0) {
                 event.setCanceled(true);
@@ -54,11 +54,6 @@ public class CSClientMiscEvents {
     @SubscribeEvent
     public static void onTooltipColor(RenderTooltipEvent.Color event) {
         CSTooltipRenderer.manageTooltipColors(event);
-    }
-
-    @SubscribeEvent
-    public static void onRenderGui(RenderGuiEvent event) {
-        new CSGuiRenderer(event).renderGuiAdditions();
     }
 
     @SubscribeEvent
@@ -86,7 +81,7 @@ public class CSClientMiscEvents {
             checkAndSetAngle(event, player.getMainHandItem());
         }
 
-        float delta = Minecraft.getInstance().getFrameTime();
+        float delta = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
         float ticksExistedDelta = player.tickCount + delta;
         float intensity = supportedPlayer.getScreenShakeIntensity();
         float duration = supportedPlayer.getScreenShakeDuration();
@@ -114,13 +109,13 @@ public class CSClientMiscEvents {
 
     private static void checkAndSetAngle(ViewportEvent.ComputeCameraAngles event, ItemStack itemStack) {
         if (itemStack.getItem() instanceof AquafloraItem) {
-            CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+            CompoundTag tagElement = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getLiveTag(itemStack, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER);
             if (tagElement != null && tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraSlashFrenzyAttack.ATTACK_ONGOING)) event.setPitch(90);
         }
     }
 
     private static void checkAndSetFOV(ViewportEvent.ComputeFov event, ItemStack itemStack) {
-        CompoundTag tagElement = itemStack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag tagElement = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getLiveTag(itemStack, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER);
         if (tagElement != null && itemStack.getItem() instanceof AquafloraItem aq) {
             //if (tagElement.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY) && tagElement.getBoolean(AquafloraSlashFrenzyAttack.ATTACK_ONGOING)) event.setFOV(140);
         }

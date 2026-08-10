@@ -1,12 +1,14 @@
 package org.thecelestialworkshop.celestisynth.manager;
 
-import org.thecelestialworkshop.celestisynth.common.compat.CompatRegistryManager;
 import org.thecelestialworkshop.celestisynth.common.registry.*;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
 
 public final class CSRegistryManager {
 
     protected static void registerRegistries(IEventBus modBus) {
+        CSCapabilities.ATTACHMENT_TYPES.register(modBus);
+        CSDataComponents.DATA_COMPONENTS.register(modBus);
+        org.thecelestialworkshop.celestisynth.api.item.CSArmorMaterials.ARMOR_MATERIALS.register(modBus);
         CSAttributes.ATTRIBUTES.register(modBus);
         CSEntityTypes.ENTITY_TYPES.register(modBus);
         CSItems.ITEMS.register(modBus);
@@ -23,10 +25,8 @@ public final class CSRegistryManager {
         CSStructures.STRUCTURE_PIECE.register(modBus);
         CSCreativeTabs.CREATIVE_MODE_TABS.register(modBus);
         CSLootModifiers.LOOT_MODIFIERS.register(modBus);
-        CSEnchantments.ENCHANTMENTS.register(modBus);
         CSMobEffects.MOB_EFFECTS.register(modBus);
         CSPlayerAnimations.ANIMATIONS.register(modBus);
         CSStructureModifiers.STRUCTURE_MODIFIER_SERIALIZERS.register(modBus);
-        CompatRegistryManager.registerIntegratedRegistries(modBus);
     }
 }

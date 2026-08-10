@@ -4,13 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.Map;
 
 public record TieredItemStats(Map<Attribute, AttributeModifierCodecHolder> modifiers) {
     public static final Codec<TieredItemStats> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            Codec.unboundedMap(ForgeRegistries.ATTRIBUTES.getCodec(), AttributeModifierCodecHolder.CODEC).fieldOf("modifiers").forGetter(TieredItemStats::modifiers))
+            Codec.unboundedMap(BuiltInRegistries.ATTRIBUTE.byNameCodec(), AttributeModifierCodecHolder.CODEC).fieldOf("modifiers").forGetter(TieredItemStats::modifiers))
             .apply(inst, TieredItemStats::new));
 
     public record AttributeModifierCodecHolder(double modAmount, AttributeModifier.Operation modOperation) {

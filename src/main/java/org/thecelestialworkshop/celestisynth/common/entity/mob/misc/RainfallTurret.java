@@ -50,10 +50,10 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class RainfallTurret extends SummonableEntity implements GeoEntity {
@@ -100,7 +100,7 @@ public class RainfallTurret extends SummonableEntity implements GeoEntity {
     }
 
     public void tickShooting() {
-        double enchantmentAdjustment = (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, createBowFromData()) * 3.25) - (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, createBowFromData()) * 3.5);
+        double enchantmentAdjustment = (org.thecelestialworkshop.celestisynth.api.item.CSWeaponUtil.getStackEnchantmentLevel(createBowFromData(), Enchantments.QUICK_CHARGE) * 3.25) - (org.thecelestialworkshop.celestisynth.api.item.CSWeaponUtil.getStackEnchantmentLevel(createBowFromData(), Enchantments.PIERCING) * 3.5);
         int shootInterval = (int) (20 - Math.min(19, enchantmentAdjustment));
         if (this.getTarget() != null && !this.isRemoved() && this.getOwner() instanceof Player player) {
             this.shootTime++;
@@ -113,7 +113,7 @@ public class RainfallTurret extends SummonableEntity implements GeoEntity {
                 FloatArrayList angles = new FloatArrayList();
                 angles.add(0);
 
-                int multishot = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, createBowFromData());
+                int multishot = org.thecelestialworkshop.celestisynth.api.item.CSWeaponUtil.getStackEnchantmentLevel(createBowFromData(), Enchantments.MULTISHOT);
 
                 if (multishot > 0) {
                     for (int i = 0; i < multishot + 1; i++) {
@@ -147,11 +147,11 @@ public class RainfallTurret extends SummonableEntity implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SHOOTING, false);
-        this.entityData.define(X_SYNC_ROT, 0F);
-        this.entityData.define(ITEM_DATA, new CompoundTag());
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SHOOTING, false);
+        builder.define(X_SYNC_ROT, 0F);
+        builder.define(ITEM_DATA, new CompoundTag());
     }
 
     public void setXSyncedRot(float value) {
@@ -199,9 +199,10 @@ public class RainfallTurret extends SummonableEntity implements GeoEntity {
     }
 
     public ItemStack createBowFromData() {
-        ItemStack stack = new ItemStack(CSItems.RAINFALL_SERENITY.get());
-        stack.deserializeNBT(this.getItemData());
-        return stack;
+        if (this.getItemData() == null || this.getItemData().isEmpty()) {
+            return new ItemStack(CSItems.RAINFALL_SERENITY.get());
+        }
+        return ItemStack.parse(this.level().registryAccess(), this.getItemData()).orElseGet(() -> new ItemStack(CSItems.RAINFALL_SERENITY.get()));
     }
 
     @Override
@@ -284,8 +285,8 @@ public class RainfallTurret extends SummonableEntity implements GeoEntity {
         return false;
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
+    public boolean canDrownInFluidType(net.neoforged.neoforge.fluids.FluidType type) {
+        return false;
     }
 
     public boolean isPushable() {

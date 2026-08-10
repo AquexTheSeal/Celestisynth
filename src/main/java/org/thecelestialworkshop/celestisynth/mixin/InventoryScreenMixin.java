@@ -16,11 +16,11 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
     }
 
     @Override
-    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDeltaX, double pDeltaY) {
         if (Minecraft.getInstance().player != null) {
-            CSTooltipRenderer.manageTooltipScrolling(pDelta);
+            CSTooltipRenderer.manageTooltipScrolling(pDeltaY);
         }
-        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
+        return super.mouseScrolled(pMouseX, pMouseY, pDeltaX, pDeltaY);
     }
 
     @Override

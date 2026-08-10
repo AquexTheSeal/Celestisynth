@@ -2,11 +2,11 @@ package org.thecelestialworkshop.celestisynth.util;
 
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.Mth;
-import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.Color;
 
 public class ExtraUtil {
     public static Style getCelestialStyle(Style originalStype, int tickCount) {
-        return originalStype.withColor(ExtraUtil.getCelestialColor(tickCount).argbInt()).withUnderlined(true);
+        return originalStype.withColor(ExtraUtil.getCelestialColor(tickCount).getColor()).withUnderlined(true);
     }
 
     public static Color getCelestialColor(int tickCount) {

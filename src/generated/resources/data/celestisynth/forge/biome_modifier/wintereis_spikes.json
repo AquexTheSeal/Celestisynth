@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#forge:is_cold/overworld",
-  "features": "celestisynth:wintereis_spikes",
-  "step": "underground_structures"
-}

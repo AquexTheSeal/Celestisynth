@@ -23,7 +23,7 @@ public class CelestialCraftingTable extends Block implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if (pLevel.isClientSide) {
             pPlayer.displayClientMessage(Component.translatable("block.celestisynth.no_more_celestial_workbench").withStyle(ChatFormatting.RED), false);
             return InteractionResult.sidedSuccess(true);

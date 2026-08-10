@@ -29,13 +29,13 @@ public class VeilguardRenderer extends GeoEntityRenderer<Veilguard> {
     }
 
     @Override
-    public void renderRecursively(PoseStack poseStack, Veilguard animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderRecursively(PoseStack poseStack, Veilguard animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
+        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
     }
 
     @Override
-    public void renderFinal(PoseStack poseStack, Veilguard animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderFinal(PoseStack poseStack, Veilguard animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int colour) {
+        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, colour);
         if (animatable.getAction() == Veilguard.ACTION_MELEE || animatable.getAction() == Veilguard.ACTION_RAGE) {
             this.model.getBone("palmleft").ifPresent(part -> {
                 RandomSource rand = animatable.getRandom();
@@ -66,7 +66,7 @@ public class VeilguardRenderer extends GeoEntityRenderer<Veilguard> {
             float r = 0.5F + Mth.sin(animatable.tickCount * 0.4F) * 0.5F;
             this.getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, type,
                     bufferSource.getBuffer(type), partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
-                    r, r, r, 1);
+                    net.minecraft.util.FastColor.ARGB32.colorFromFloat(1F, r, r, r));
         }
     }
 }

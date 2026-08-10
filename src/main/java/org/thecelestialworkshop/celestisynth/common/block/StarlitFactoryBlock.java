@@ -33,6 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class StarlitFactoryBlock extends BaseEntityBlock {
+    public static final com.mojang.serialization.MapCodec<StarlitFactoryBlock> CODEC = simpleCodec(StarlitFactoryBlock::new);
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final EnumProperty<TriPart> TRI_PART = EnumProperty.create("tri_part", TriPart.class);
     public static final BooleanProperty FORGING = BooleanProperty.create("forging");
@@ -43,11 +44,17 @@ public class StarlitFactoryBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return Shapes.box(0, 0, 0, 1, 0.95, 1);
     }
 
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    @Override
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if (pLevel.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -65,7 +72,8 @@ public class StarlitFactoryBlock extends BaseEntityBlock {
         }
     }
 
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    @Override
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (!pLevel.isClientSide) {
             Direction direction = pState.getValue(FACING);
             switch (pState.getValue(TRI_PART)) {
@@ -80,7 +88,7 @@ public class StarlitFactoryBlock extends BaseEntityBlock {
                     this.removeNeighboringBlock(pLevel, pPlayer, pState, pPos.relative(direction.getCounterClockWise()));
             }
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
     @Nullable

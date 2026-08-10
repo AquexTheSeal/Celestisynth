@@ -7,6 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 public record PlayerAnimationContainer(@NotNull ResourceLocation animationId) {
     public KeyframeAnimation asAnimation() {
-        return PlayerAnimationRegistry.getAnimation(animationId);
+        return PlayerAnimationRegistry.getAnimation(animationId) instanceof KeyframeAnimation keyframeAnimation ? keyframeAnimation : null;
     }
 }

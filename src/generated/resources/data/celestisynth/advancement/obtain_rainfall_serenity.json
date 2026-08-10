@@ -1,0 +1,35 @@
+{
+  "parent": "celestisynth:place_celestial_table",
+  "criteria": {
+    "criteria": {
+      "conditions": {
+        "items": [
+          {
+            "items": "celestisynth:rainfall_serenity"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.celestisynth.obtain_rainfall_serenity.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "celestisynth:rainfall_serenity"
+    },
+    "title": {
+      "translate": "advancement.celestisynth.obtain_rainfall_serenity.title"
+    }
+  },
+  "requirements": [
+    [
+      "criteria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

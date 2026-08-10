@@ -27,7 +27,7 @@ public class SolarisBombRenderer extends EntityRenderer<SolarisBomb> {
         poseStack.translate(0, -1 , 0);
         poseStack.mulPose(Axis.YP.rotationDegrees(entity.tickCount * 32));
         VertexConsumer VertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(entity)));
-        this.model.renderToBuffer(poseStack, VertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.model.renderToBuffer(poseStack, VertexConsumer, light, OverlayTexture.NO_OVERLAY, -1);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, light);
     }

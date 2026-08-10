@@ -19,12 +19,11 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class TempestBoss extends Monster implements GeoEntity {
@@ -95,7 +94,7 @@ public class TempestBoss extends Monster implements GeoEntity {
         }
     }
 
-    public void modifyAttribute(Attribute attribute, double value) {
+    public void modifyAttribute(net.minecraft.core.Holder<Attribute> attribute, double value) {
         var mod = getAttribute(attribute);
         assert mod != null;
         mod.setBaseValue(value);
@@ -118,10 +117,10 @@ public class TempestBoss extends Monster implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(BATTLE_PHASE, 1);
-        this.entityData.define(ATTACK_STATE, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(BATTLE_PHASE, 1);
+        builder.define(ATTACK_STATE, 0);
     }
 
     public boolean isControlledByLocalInstance() {
@@ -155,8 +154,4 @@ public class TempestBoss extends Monster implements GeoEntity {
         compoundNBT.putInt("battlePhase_tempest", getPhase().ordinal());
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
-}

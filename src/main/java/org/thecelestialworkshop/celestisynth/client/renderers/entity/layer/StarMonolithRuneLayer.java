@@ -23,7 +23,7 @@ public class StarMonolithRuneLayer extends GeoRenderLayer<StarMonolith> {
             VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.entityTranslucentEmissive(animatable.getRune().runeTexture));
             poseStack.pushPose();
             float alpha = animatable.isDeadOrDying() ? 0F : .5F + (Mth.sin(animatable.tickCount * 0.25F) * .5F);
-            this.getRenderer().actuallyRender(poseStack, animatable, bakedModel, renderType, bufferSource, vertexconsumer, true, partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, alpha, alpha, alpha, 1.0F);
+            this.getRenderer().actuallyRender(poseStack, animatable, bakedModel, renderType, bufferSource, vertexconsumer, true, partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, alpha, alpha, alpha));
             poseStack.popPose();
         }
     }

@@ -39,10 +39,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class Traverser extends Monster implements GeoEntity, FixedMovesetEntity, MonolithSummonedEntity {
@@ -224,8 +224,8 @@ public class Traverser extends Monster implements GeoEntity, FixedMovesetEntity,
     }
 
     @Override
-    public void onAddedToWorld() {
-        super.onAddedToWorld();
+    public void onAddedToLevel() {
+        super.onAddedToLevel();
         this.playSound(CSSoundEvents.SWORD_SWING_FIRE.get(), 0.2F, 1.0f);
     }
 
@@ -345,10 +345,10 @@ public class Traverser extends Monster implements GeoEntity, FixedMovesetEntity,
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ACTION, 0);
-        this.entityData.define(ANIMATION_TICK, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ACTION, 0);
+        builder.define(ANIMATION_TICK, 0);
     }
 
     @Override

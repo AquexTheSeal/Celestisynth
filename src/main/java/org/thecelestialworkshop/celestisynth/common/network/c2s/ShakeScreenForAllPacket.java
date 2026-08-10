@@ -1,43 +1,34 @@
 package org.thecelestialworkshop.celestisynth.common.network.c2s;
 
+import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.common.network.s2c.ShakeScreenToAllPacket;
 import org.thecelestialworkshop.celestisynth.manager.CSNetworkManager;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
-public class ShakeScreenForAllPacket {
-    private final UUID playerId;
-    private final int duration;
-    private final int fadeOutStart;
-    private final float intensity;
+public record ShakeScreenForAllPacket(UUID playerId, int duration, int fadeOutStart, float intensity) implements CustomPacketPayload {
+    public static final Type<ShakeScreenForAllPacket> TYPE = new Type<>(Celestisynth.prefix("shake_screen_for_all"));
 
-    public ShakeScreenForAllPacket(UUID playerId, int duration, int fadeOutStart, float intensity) {
-        this.playerId = playerId;
-        this.duration = duration;
-        this.fadeOutStart = fadeOutStart;
-        this.intensity = intensity;
+    public static final StreamCodec<FriendlyByteBuf, ShakeScreenForAllPacket> STREAM_CODEC = StreamCodec.composite(
+            UUIDUtil.STREAM_CODEC, ShakeScreenForAllPacket::playerId,
+            ByteBufCodecs.INT, ShakeScreenForAllPacket::duration,
+            ByteBufCodecs.INT, ShakeScreenForAllPacket::fadeOutStart,
+            ByteBufCodecs.FLOAT, ShakeScreenForAllPacket::intensity,
+            ShakeScreenForAllPacket::new
+    );
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public ShakeScreenForAllPacket(FriendlyByteBuf buf) {
-        this.playerId = buf.readUUID();
-        this.duration = buf.readInt();
-        this.fadeOutStart = buf.readInt();
-        this.intensity = buf.readFloat();
-    }
-
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeUUID(playerId);
-        buf.writeInt(duration);
-        buf.writeInt(fadeOutStart);
-        buf.writeFloat(intensity);
-    }
-
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> CSNetworkManager.sendToAll(new ShakeScreenToAllPacket(playerId, duration, fadeOutStart, intensity)));
-        return true;
+    public static void handle(ShakeScreenForAllPacket packet, IPayloadContext context) {
+        context.enqueueWork(() -> CSNetworkManager.sendToAll(new ShakeScreenToAllPacket(packet.playerId(), packet.duration(), packet.fadeOutStart(), packet.intensity())));
     }
 }

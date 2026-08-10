@@ -1,6 +1,5 @@
 package org.thecelestialworkshop.celestisynth.client.events;
 
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import org.thecelestialworkshop.celestisynth.client.gui.starlitfactory.StarlitFactoryScreen;
 import org.thecelestialworkshop.celestisynth.client.models.entity.projectile.FrostboundShardModel;
 import org.thecelestialworkshop.celestisynth.client.models.entity.projectile.RainfallLaserModel;
@@ -18,18 +17,13 @@ import org.thecelestialworkshop.celestisynth.client.renderers.misc.NullRenderer;
 import org.thecelestialworkshop.celestisynth.client.renderers.misc.tooltips.AbilityComponent;
 import org.thecelestialworkshop.celestisynth.client.renderers.misc.tooltips.CSTooltipRenderer;
 import org.thecelestialworkshop.celestisynth.client.renderers.misc.tooltips.PassiveComponent;
-import org.thecelestialworkshop.celestisynth.common.compat.spellbooks.ISSCompatItems;
 import org.thecelestialworkshop.celestisynth.common.registry.*;
-import org.thecelestialworkshop.celestisynth.manager.CSIntegrationManager;
-import io.redspace.ironsspellbooks.item.SpellBook;
-import io.redspace.ironsspellbooks.render.SpellBookCurioRenderer;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class CSClientSetupEvents {
 
@@ -78,20 +72,16 @@ public class CSClientSetupEvents {
 
     @SubscribeEvent
     public static void onFMLClientSetupEvent(final FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            MenuScreens.register(CSMenuTypes.STARLIT_FACTORY.get(), StarlitFactoryScreen::new);
-        });
-
-        if (CSIntegrationManager.checkIronsSpellbooks()) {
-            ISSCompatItems.SPELLBOOKS_ITEMS.getEntries().stream().filter(item -> item.get() instanceof SpellBook).forEach((item) ->
-                    CuriosRendererRegistry.register(item.get(), SpellBookCurioRenderer::new)
-            );
-        }
     }
 
     @SubscribeEvent
-    public static void onRegisterGuiOverlaysEvent(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll("keres_carnage_incarnate", CSGuiOverlays.KERES_CARNAGE_INCARNATE_OVERLAY);
+    public static void onRegisterMenuScreensEvent(net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) {
+        event.register(CSMenuTypes.STARLIT_FACTORY.get(), StarlitFactoryScreen::new);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterGuiLayersEvent(net.neoforged.neoforge.client.event.RegisterGuiLayersEvent event) {
+        event.registerAboveAll(org.thecelestialworkshop.celestisynth.Celestisynth.prefix("keres_carnage_incarnate"), CSGuiOverlays.KERES_CARNAGE_INCARNATE_OVERLAY);
     }
 
     @SubscribeEvent

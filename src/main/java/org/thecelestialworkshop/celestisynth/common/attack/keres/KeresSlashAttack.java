@@ -55,7 +55,7 @@ public class KeresSlashAttack extends WeaponAttackInstance {
             wave.moveTo(player.position());
             wave.damage = this.calculateAttributeDependentDamage(player, stack, 0.1F);
             wave.lifespan = (heldDuration / 6) + level.random.nextInt(3);
-            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, stack) > 0) {
+            if (org.thecelestialworkshop.celestisynth.api.item.CSWeaponUtil.getStackEnchantmentLevel(stack, Enchantments.MULTISHOT) > 0) {
                 wave.hasMultishot = true;
             }
             level.addFreshEntity(wave);

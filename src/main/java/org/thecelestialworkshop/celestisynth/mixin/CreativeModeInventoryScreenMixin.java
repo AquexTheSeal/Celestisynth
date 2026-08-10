@@ -12,9 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class CreativeModeInventoryScreenMixin {
 
     @Inject(method = "mouseScrolled", at = @At("HEAD"))
-    void mouseScrolled(double pMouseX, double pMouseY, double pDelta, CallbackInfoReturnable<Boolean> cir) {
+    void mouseScrolled(double pMouseX, double pMouseY, double pDeltaX, double pDeltaY, CallbackInfoReturnable<Boolean> cir) {
         if (Minecraft.getInstance().player != null) {
-            CSTooltipRenderer.manageTooltipScrolling(pDelta);
+            CSTooltipRenderer.manageTooltipScrolling(pDeltaY);
         }
     }
 

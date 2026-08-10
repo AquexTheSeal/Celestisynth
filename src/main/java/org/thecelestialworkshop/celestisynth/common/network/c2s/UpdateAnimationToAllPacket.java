@@ -11,44 +11,38 @@ import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.registries.RegistryManager;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import javax.annotation.Nullable;
-import java.util.function.Supplier;
+import org.jetbrains.annotations.Nullable;
 
-public class UpdateAnimationToAllPacket {
-    private final int layerIndex;
-    private final int playerId;
-    private final ResourceLocation animId;
+public record UpdateAnimationToAllPacket(int layerIndex, int playerId, ResourceLocation animId) implements CustomPacketPayload {
+    public static final Type<UpdateAnimationToAllPacket> TYPE = new Type<>(Celestisynth.prefix("update_animation_to_all"));
 
-    public UpdateAnimationToAllPacket(int layerIndex, int playerId, ResourceLocation animId) {
-        this.layerIndex = layerIndex;
-        this.playerId = playerId;
-        this.animId = animId;
+    public static final StreamCodec<FriendlyByteBuf, UpdateAnimationToAllPacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, UpdateAnimationToAllPacket::layerIndex,
+            ByteBufCodecs.INT, UpdateAnimationToAllPacket::playerId,
+            ResourceLocation.STREAM_CODEC, UpdateAnimationToAllPacket::animId,
+            UpdateAnimationToAllPacket::new
+    );
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public UpdateAnimationToAllPacket(FriendlyByteBuf buf) {
-        this.layerIndex = buf.readInt();
-        this.playerId = buf.readInt();
-        this.animId = buf.readResourceLocation();
-    }
-
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeInt(layerIndex);
-        buf.writeInt(playerId);
-        buf.writeResourceLocation(animId);
-    }
-
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
+    public static void handle(UpdateAnimationToAllPacket packet, IPayloadContext context) {
         context.enqueueWork(() -> {
             Minecraft instance = Minecraft.getInstance();
-            var player = instance.level.getEntity(playerId);
-            animatePlayer(layerIndex, animId, (AbstractClientPlayer) player);
+            if (instance.level == null) return;
+            var player = instance.level.getEntity(packet.playerId());
+            if (player instanceof AbstractClientPlayer clientPlayer) {
+                animatePlayer(packet.layerIndex(), packet.animId(), clientPlayer);
+            }
         });
-        return true;
     }
 
     public static void animatePlayer(int layerIndex, ResourceLocation animId, AbstractClientPlayer player) {
@@ -59,7 +53,7 @@ public class UpdateAnimationToAllPacket {
             default -> throw new IllegalStateException("Invalid layer index!");
         };
         if (layer != null) {
-            @Nullable PlayerAnimationContainer animation = RegistryManager.ACTIVE.getRegistry(CSPlayerAnimations.ANIMATIONS_KEY).getValue(animId);
+            @Nullable PlayerAnimationContainer animation = CSPlayerAnimations.REGISTRY.get(animId);
             if (animation == null) {
                 Celestisynth.LOGGER.warn("Failed to capture animation for server sync: " + animId);
             }

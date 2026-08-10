@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVisualSpecialProperties {
-    public static void set(CSEffectEntity animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public static void set(CSEffectEntity animatable, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, int colour) {
         float lerpBodyRot = Mth.rotLerp(partialTick, animatable.xRotO, animatable.getXRot()) - 165;
 
         //TODO Un-hardcode

@@ -150,7 +150,7 @@ public class KeresShadow extends ThrowableProjectile implements CSWeaponUtil {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(HOMING_TARGET, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        builder.define(HOMING_TARGET, 0);
     }
 }

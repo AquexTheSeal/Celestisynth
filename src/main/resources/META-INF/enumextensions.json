@@ -1,0 +1,22 @@
+{
+    "entries": [
+        {
+            "enum": "net/minecraft/world/item/Rarity",
+            "name": "CELESTISYNTH_CELESTIAL",
+            "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
+            "parameters": {
+                "class": "org/thecelestialworkshop/celestisynth/common/registry/CSRarityTypes",
+                "field": "CELESTIAL_ENUM_PARAMS"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/item/Rarity",
+            "name": "CELESTISYNTH_ETHEREAL",
+            "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
+            "parameters": {
+                "class": "org/thecelestialworkshop/celestisynth/common/registry/CSRarityTypes",
+                "field": "ETHEREAL_ENUM_PARAMS"
+            }
+        }
+    ]
+}

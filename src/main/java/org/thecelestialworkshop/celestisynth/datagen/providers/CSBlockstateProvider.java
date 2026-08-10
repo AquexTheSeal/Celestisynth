@@ -4,8 +4,8 @@ import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.common.registry.CSBlocks;
 import org.thecelestialworkshop.celestisynth.datagen.helpers.BlockDatagenHelper;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class CSBlockstateProvider extends BlockStateProvider {
     private final BlockDatagenHelper helper = new BlockDatagenHelper(models(), this);

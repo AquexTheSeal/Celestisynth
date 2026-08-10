@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#minecraft:is_overworld",
-  "features": "celestisynth:lunar_crater",
-  "step": "underground_structures"
-}

@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 
 public class PoltergeistItem extends SkilledAxeItem implements CSGeoItem {
     public PoltergeistItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
@@ -70,7 +70,7 @@ public class PoltergeistItem extends SkilledAxeItem implements CSGeoItem {
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
         super.inventoryTick(itemStack, level, entity, itemSlot, isSelected);
-        CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getOrCreateLiveTag(itemStack, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER);
         if (data.getBoolean(ANIMATION_BEGUN_KEY)) {
             if (entity instanceof Player player) {
                 player.addEffect(CSWeaponUtil.nonVisiblePotionEffect(MobEffects.DAMAGE_RESISTANCE, 2, 2));

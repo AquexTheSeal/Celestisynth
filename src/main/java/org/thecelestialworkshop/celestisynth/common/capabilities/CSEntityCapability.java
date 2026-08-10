@@ -1,18 +1,24 @@
 package org.thecelestialworkshop.celestisynth.common.capabilities;
 
+import org.thecelestialworkshop.celestisynth.common.network.s2c.EntityCapabilitySyncPacket;
 import org.thecelestialworkshop.celestisynth.manager.CSNetworkManager;
-import dev._100media.capabilitysyncer.core.LivingEntityCapability;
-import dev._100media.capabilitysyncer.network.EntityCapabilityStatusPacket;
-import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class CSEntityCapability extends LivingEntityCapability implements CSCapabilityHelper {
+/**
+ * Per-living-entity state, formerly a Forge capability backed by the
+ * CapabilitySyncer library, now a NeoForge data attachment with a custom
+ * tracking-sync packet.
+ */
+public class CSEntityCapability implements CSCapabilityHelper, INBTSerializable<CompoundTag> {
     public static final String ID = "celestisynthEntityCapabilities";
 
     public static final String FROSTBOUND_ID = "cs.frostBound";
@@ -22,6 +28,8 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
     public static final String QUASAR_IMBUE_SOURCE_ID = "cs.quasarImbueSource";
     public static final String QUASAR_IMBUE_TIME_ID = "cs.quasarImbueTime";
 
+    protected final LivingEntity livingEntity;
+
     private int frostBound;
     private int trueInvisibility;
     private int bloodthirst;
@@ -30,8 +38,14 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
     private @Nullable LivingEntity quasarImbueSource;
     private int quasarImbueTime;
 
-    protected CSEntityCapability(LivingEntity entity) {
-        super(entity);
+    public CSEntityCapability(IAttachmentHolder holder) {
+        this.livingEntity = (LivingEntity) holder;
+    }
+
+    public void updateTracking() {
+        if (livingEntity.level() instanceof ServerLevel) {
+            CSNetworkManager.sendToPlayersTrackingEntityAndSelf(new EntityCapabilitySyncPacket(livingEntity.getId(), writeSyncTag()), livingEntity);
+        }
     }
 
     // FROSTBOUND
@@ -80,7 +94,7 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
 
     // PHANTOM TAG
 
-    public void setPhantomTag(@Nonnull LivingEntity source, int time) {
+    public void setPhantomTag(@NotNull LivingEntity source, int time) {
         this.phantomTagSource = source;
         this.updateTracking();
         this.phantomTagTime = time;
@@ -107,7 +121,7 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
 
     // QUASAR IMBUE
 
-    public void setQuasarImbue(@Nonnull LivingEntity source, int time) {
+    public void setQuasarImbue(@NotNull LivingEntity source, int time) {
         this.quasarImbueSource = source;
         this.updateTracking();
         this.quasarImbueTime = time;
@@ -135,8 +149,7 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
         }
     }
 
-    @Override
-    public CompoundTag serializeNBT(boolean savingToDisk) {
+    public CompoundTag writeSyncTag() {
         CompoundTag nbt = new CompoundTag();
 
         nbt.putInt(FROSTBOUND_ID, this.frostBound);
@@ -151,8 +164,7 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
         return nbt;
     }
 
-    @Override
-    public void deserializeNBT(CompoundTag nbt, boolean readingFromDisk) {
+    public void readSyncTag(CompoundTag nbt) {
         if (nbt.contains(FROSTBOUND_ID, Tag.TAG_INT)) {
             this.frostBound = nbt.getInt(FROSTBOUND_ID);
         }
@@ -173,12 +185,12 @@ public class CSEntityCapability extends LivingEntityCapability implements CSCapa
     }
 
     @Override
-    public EntityCapabilityStatusPacket createUpdatePacket() {
-        return new SimpleEntityCapabilityStatusPacket(this.livingEntity.getId(), CSEntityCapabilityProvider.CS_ENTITY_CAP_RL, this);
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        return writeSyncTag();
     }
 
     @Override
-    public SimpleChannel getNetworkChannel() {
-        return CSNetworkManager.INSTANCE;
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
+        readSyncTag(nbt);
     }
 }

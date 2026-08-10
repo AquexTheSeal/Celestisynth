@@ -100,7 +100,7 @@ public class SkillCastRainfallRain extends EffectControllerEntity {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, getY(), z);
         do {
             mutablePos.move(Direction.DOWN);
-        } while (mutablePos.getY() > level().getMinBuildHeight() && level().getBlockState(mutablePos).isPathfindable(level(), mutablePos, PathComputationType.LAND));
+        } while (mutablePos.getY() > level().getMinBuildHeight() && level().getBlockState(mutablePos).isPathfindable(PathComputationType.LAND));
         return new BlockPos(mutablePos.getX(), mutablePos.getY(), mutablePos.getZ());
     }
 

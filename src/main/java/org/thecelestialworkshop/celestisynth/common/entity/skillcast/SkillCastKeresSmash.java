@@ -54,7 +54,7 @@ public class SkillCastKeresSmash extends EffectControllerEntity {
         }
         List<LivingEntity> targets = level().getEntitiesOfClass(LivingEntity.class, new AABB(-radius, 0, -radius, radius, 4, radius).move(position())).stream().filter(filter).toList();
         for (LivingEntity target : targets) {
-            target.addEffect(new MobEffectInstance(CSMobEffects.CURSEBANE.get(), 100, 1));
+            target.addEffect(new MobEffectInstance(CSMobEffects.CURSEBANE, 100, 1));
             this.initiateAbilityAttack(owner, target, this.damage * multiplier, AttackHurtTypes.RAPID);
             owner.heal((this.damage * multiplier) / 4);
         }

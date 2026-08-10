@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.Color;
 
 public class KeresRendAttack extends WeaponAttackInstance {
     public KeresRendAttack(Player player, ItemStack stack, int heldDuration) {
@@ -41,14 +41,14 @@ public class KeresRendAttack extends WeaponAttackInstance {
     @Override
     public void startUsing() {
         player.playSound(CSSoundEvents.BASS_DROP.get(), 0.3F, 1F);
-        this.chantMessage(player, "keres", 20, Color.WHITE.argbInt());
+        this.chantMessage(player, "keres", 20, Color.WHITE.getColor());
     }
 
     @Override
     public void tickAttack() {
         if (getTimerProgress() == 13) {
             player.playSound(CSSoundEvents.STEP.get(), 0.3F, 0.5F);
-            this.chantMessage(player, "keres1", 20, Color.ofRGB(233, 116, 81).argbInt());
+            this.chantMessage(player, "keres1", 20, Color.ofRGB(233, 116, 81).getColor());
         }
 
         if (getTimerProgress() == 22) {
@@ -56,7 +56,7 @@ public class KeresRendAttack extends WeaponAttackInstance {
         }
 
         if (getTimerProgress() == 25) {
-            this.chantMessage(player, "keres2", 40, Color.RED.argbInt());
+            this.chantMessage(player, "keres2", 40, Color.RED.getColor());
 
             if (!level.isClientSide) {
                 Vec3 lookAngleNormalized = player.getLookAngle().normalize();

@@ -167,7 +167,7 @@ public class PoltergeistCosmicSteelAttack extends WeaponAttackInstance {
         do {
             mutablePos.move(Direction.DOWN);
             getTagController().putInt(SMASH_HEIGHT, getTagController().getInt(SMASH_HEIGHT) + 1);
-        } while (mutablePos.getY() > level.getMinBuildHeight() && level.getBlockState(mutablePos).isPathfindable(level, mutablePos, PathComputationType.LAND));
+        } while (mutablePos.getY() > level.getMinBuildHeight() && level.getBlockState(mutablePos).isPathfindable(PathComputationType.LAND));
         return new BlockPos(mutablePos.getX(), mutablePos.getY(), mutablePos.getZ());
     }
 

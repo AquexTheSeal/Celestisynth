@@ -3,12 +3,11 @@ package org.thecelestialworkshop.celestisynth.manager;
 import org.thecelestialworkshop.celestisynth.api.animation.player.CSAnimator;
 import org.thecelestialworkshop.celestisynth.client.events.CSClientMiscEvents;
 import org.thecelestialworkshop.celestisynth.client.events.CSClientSetupEvents;
+import org.thecelestialworkshop.celestisynth.common.capabilities.CSEntityCapabilityProvider;
 import org.thecelestialworkshop.celestisynth.common.events.CSCommonMiscEvents;
 import org.thecelestialworkshop.celestisynth.common.events.CSCommonSetupEvents;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 public final class CSEventManager {
 
@@ -22,9 +21,8 @@ public final class CSEventManager {
         if (FMLEnvironment.dist.isClient()) {
             modBus.register(CSClientSetupEvents.class);
             forgeBus.register(CSClientMiscEvents.class);
+            modBus.addListener(CSAnimator::registerAnimationLayer);
         }
-
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modBus.addListener(CSAnimator::registerAnimationLayer));
     }
 
     private static void registerCommonEvents(IEventBus modBus, IEventBus forgeBus) {
@@ -34,6 +32,7 @@ public final class CSEventManager {
         forgeBus.register(CSCommonSetupEvents.CSForgeSetupEvents.class);
         forgeBus.register(CSCommonMiscEvents.class);
         forgeBus.register(CSCommandsManager.class);
+        forgeBus.register(CSEntityCapabilityProvider.class);
     }
 
     private static void registerServerEvents(IEventBus modBus, IEventBus forgeBus) {

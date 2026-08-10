@@ -7,6 +7,7 @@ import org.thecelestialworkshop.celestisynth.common.network.c2s.ShakeScreenForAl
 import org.thecelestialworkshop.celestisynth.common.network.s2c.ChangeCameraTypePacket;
 import org.thecelestialworkshop.celestisynth.common.registry.CSAttributes;
 import org.thecelestialworkshop.celestisynth.common.registry.CSDamageSources;
+import org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents;
 import org.thecelestialworkshop.celestisynth.common.registry.CSPlayerAnimations;
 import org.thecelestialworkshop.celestisynth.manager.CSNetworkManager;
 import org.thecelestialworkshop.celestisynth.util.ParticleUtil;
@@ -23,12 +24,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -39,7 +42,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,8 +55,8 @@ public interface CSWeaponUtil {
     String ANIMATION_BEGUN_KEY = "cs.hasAnimationBegun";
 
     default float calculateAttributeDependentDamage(LivingEntity holder, ItemStack stack, float attackAttributeMultiplier) {
-        float holderAttribute = (float) holder.getAttributeValue(Attributes.ATTACK_DAMAGE) + EnchantmentHelper.getDamageBonus(holder.getMainHandItem(), MobType.UNDEFINED);
-        float holderAttackDamage = (holderAttribute - this.getDamageOfItem(holder.getMainHandItem()) + this.getDamageOfItem(stack)) * attackAttributeMultiplier;
+        float holderAttribute = (float) holder.getAttributeValue(Attributes.ATTACK_DAMAGE) + getGenericEnchantmentDamageBonus(holder, holder.getMainHandItem());
+        float holderAttackDamage = (holderAttribute - this.getDamageOfItem(holder, holder.getMainHandItem()) + this.getDamageOfItem(holder, stack)) * attackAttributeMultiplier;
 
         return holderAttackDamage;
     }
@@ -62,8 +65,38 @@ public interface CSWeaponUtil {
         this.initiateAbilityAttack(holder, target, this.calculateAttributeDependentDamage(holder, stack, attackAttributeMultiplier), attackHurtType);
     }
 
-    private float getDamageOfItem(ItemStack stack) {
-        return (float) (stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE).stream().mapToDouble(AttributeModifier::getAmount).sum() + EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED));
+    /**
+     * MobType-based generic damage bonuses were removed in 1.21; sharpness is
+     * the only enchantment that contributed for MobType.UNDEFINED, so this
+     * reproduces its 1.20.1 formula (0.5 * level + 0.5).
+     */
+    private static float getGenericEnchantmentDamageBonus(LivingEntity holder, ItemStack stack) {
+        int level = getEnchantmentLevel(holder, stack, Enchantments.SHARPNESS);
+        return level > 0 ? 0.5F * level + 0.5F : 0.0F;
+    }
+
+    static int getEnchantmentLevel(LivingEntity holder, ItemStack stack, net.minecraft.resources.ResourceKey<Enchantment> enchantment) {
+        var lookup = holder.level().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolder(enchantment);
+        return lookup.map(holderRef -> EnchantmentHelper.getItemEnchantmentLevel(holderRef, stack)).orElse(0);
+    }
+
+    /** Reads the enchantment level straight off the stack's component, no registry access needed. */
+    static int getStackEnchantmentLevel(ItemStack stack, net.minecraft.resources.ResourceKey<Enchantment> key) {
+        var enchantments = stack.getOrDefault(net.minecraft.core.component.DataComponents.ENCHANTMENTS, net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY);
+        for (var entry : enchantments.entrySet()) {
+            if (entry.getKey().is(key)) return entry.getIntValue();
+        }
+        return 0;
+    }
+
+    private float getDamageOfItem(LivingEntity holder, ItemStack stack) {
+        double sum = 0;
+        for (ItemAttributeModifiers.Entry entry : stack.getAttributeModifiers().modifiers()) {
+            if (entry.attribute().equals(Attributes.ATTACK_DAMAGE) && entry.slot().test(EquipmentSlot.MAINHAND)) {
+                sum += entry.modifier().amount();
+            }
+        }
+        return (float) (sum + getGenericEnchantmentDamageBonus(holder, stack));
     }
 
     default void initiateAbilityAttack(LivingEntity holder, LivingEntity target, float damage, DamageSource damageSource, AttackHurtTypes attackHurtType) {
@@ -84,7 +117,7 @@ public interface CSWeaponUtil {
                 case RAPID_NO_KB -> rapidDamageNoKB;
             };
         }
-        double finalDamage = damage * holder.getAttributeValue(CSAttributes.CELESTIAL_DAMAGE.get()) / target.getAttributeValue(CSAttributes.CELESTIAL_DAMAGE_REDUCTION.get());
+        double finalDamage = damage * holder.getAttributeValue(CSAttributes.CELESTIAL_DAMAGE) / target.getAttributeValue(CSAttributes.CELESTIAL_DAMAGE_REDUCTION);
         if (!attackHurtType.doKnockback()) {
             double preAttribute = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
             target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1000);
@@ -108,14 +141,14 @@ public interface CSWeaponUtil {
     }
 
     default CompoundTag attackController(ItemStack stack) {
-        return stack.getOrCreateTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+        return CSDataComponents.getOrCreateLiveTag(stack, CSDataComponents.CS_CONTROLLER);
     }
 
     default CompoundTag attackExtras(ItemStack stack) {
-        return stack.getOrCreateTagElement(CSWeapon.CS_EXTRAS_ELEMENT);
+        return CSDataComponents.getOrCreateLiveTag(stack, CSDataComponents.CS_EXTRAS);
     }
 
-    static MobEffectInstance nonVisiblePotionEffect(MobEffect effect, int ticks, int amplifier) {
+    static MobEffectInstance nonVisiblePotionEffect(Holder<MobEffect> effect, int ticks, int amplifier) {
         return new MobEffectInstance(effect, ticks, amplifier, true, false, false);
     }
 
@@ -129,19 +162,14 @@ public interface CSWeaponUtil {
         player.setDeltaMovement(vec);
     }
 
-    default float getSharpnessValue(ItemStack stack, float multiplier) {
-        return EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SHARPNESS, stack) * multiplier;
+    default float getSharpnessValue(LivingEntity holder, ItemStack stack, float multiplier) {
+        return getEnchantmentLevel(holder, stack, Enchantments.SHARPNESS) * multiplier;
     }
 
     default void useAndDamageItem(ItemStack pStack, Level pLevel, LivingEntity targetOwnerEntity, int damageAmount) {
         if (!pLevel.isClientSide) {
-            pStack.hurtAndBreak(damageAmount, targetOwnerEntity, (ownerEntity) -> {
-                if (targetOwnerEntity.getMainHandItem() == pStack) {
-                    ownerEntity.broadcastBreakEvent(InteractionHand.MAIN_HAND);
-                } else if (targetOwnerEntity.getOffhandItem() == pStack) {
-                    ownerEntity.broadcastBreakEvent(InteractionHand.OFF_HAND);
-                }
-            });
+            EquipmentSlot brokenSlot = targetOwnerEntity.getOffhandItem() == pStack ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND;
+            pStack.hurtAndBreak(damageAmount, targetOwnerEntity, brokenSlot);
         }
         if (targetOwnerEntity instanceof Player ownerPlayer) {
             ownerPlayer.awardStat(Stats.ITEM_USED.get(pStack.getItem()));
@@ -228,8 +256,8 @@ public interface CSWeaponUtil {
 
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (playerOwner.getItemBySlot(slot).getItem() instanceof CSWeapon cs) {
-                    CompoundTag data = playerOwner.getItemBySlot(slot).getTagElement(CS_CONTROLLER_TAG_ELEMENT);
-                    CompoundTag dataAlt = playerOwner.getItemBySlot(slot).getTagElement(CS_EXTRAS_ELEMENT);
+                    CompoundTag data = CSDataComponents.getLiveTag(playerOwner.getItemBySlot(slot), CSDataComponents.CS_CONTROLLER);
+                    CompoundTag dataAlt = CSDataComponents.getLiveTag(playerOwner.getItemBySlot(slot), CSDataComponents.CS_EXTRAS);
 
                     if (data != null) data.getAllKeys().clear();
                     if (dataAlt != null)  dataAlt.getAllKeys().clear();
@@ -245,7 +273,7 @@ public interface CSWeaponUtil {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
         do {
             mutablePos.move(Direction.DOWN);
-        } while (mutablePos.getY() > level.getMinBuildHeight() && level.getBlockState(mutablePos).isPathfindable(level, mutablePos, PathComputationType.LAND));
+        } while (mutablePos.getY() > level.getMinBuildHeight() && level.getBlockState(mutablePos).isPathfindable(PathComputationType.LAND));
         return new BlockPos(mutablePos.getX(), mutablePos.getY(), mutablePos.getZ());
     }
 

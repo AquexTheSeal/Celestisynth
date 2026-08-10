@@ -1,3 +1,3 @@
-// 1.20.1	2024-05-10T22:39:54.2136046	Tags for minecraft:item mod id celestisynth
-397f312555efd58cb12e2b47fb5f079b4dadca63 data/celestisynth/tags/items/blood_rune_activator.json
-2a5bd1645ec9b66c6bd0bbe216d860d4c14852d8 data/celestisynth/tags/items/celestial_core_bases.json
+// 1.21.1	2026-08-10T13:09:01.8574508	Tags for minecraft:item mod id celestisynth
+397f312555efd58cb12e2b47fb5f079b4dadca63 data/celestisynth/tags/item/blood_rune_activator.json
+2a5bd1645ec9b66c6bd0bbe216d860d4c14852d8 data/celestisynth/tags/item/celestial_core_bases.json

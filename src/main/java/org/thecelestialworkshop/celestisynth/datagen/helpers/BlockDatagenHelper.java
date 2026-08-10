@@ -3,15 +3,15 @@ package org.thecelestialworkshop.celestisynth.datagen.helpers;
 import org.thecelestialworkshop.celestisynth.Celestisynth;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockModelProvider;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public class BlockDatagenHelper {
-    public static final ResourceLocation RENDER_TYPE_CUTOUT = new ResourceLocation("cutout");
-    public static final ResourceLocation RENDER_TYPE_TRANSLUCENT = new ResourceLocation("translucent");
+    public static final ResourceLocation RENDER_TYPE_CUTOUT = ResourceLocation.parse("cutout");
+    public static final ResourceLocation RENDER_TYPE_TRANSLUCENT = ResourceLocation.parse("translucent");
 
     private final BlockStateProvider state;
     private final BlockModelProvider model;
@@ -38,7 +38,7 @@ public class BlockDatagenHelper {
     }
 
     public static ResourceLocation key(Block block) {
-        return ForgeRegistries.BLOCKS.getKey(block);
+        return BuiltInRegistries.BLOCK.getKey(block);
     }
 
     public static String name(Block block) {

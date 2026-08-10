@@ -1,37 +1,34 @@
 package org.thecelestialworkshop.celestisynth.common.network.s2c;
 
+import org.thecelestialworkshop.celestisynth.Celestisynth;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
+public record ChangeCameraTypePacket(int playerTarget, int enumID) implements CustomPacketPayload {
+    public static final Type<ChangeCameraTypePacket> TYPE = new Type<>(Celestisynth.prefix("change_camera_type"));
 
-public class ChangeCameraTypePacket {
-    private final int playerTarget;
-    private final int enumID;
+    public static final StreamCodec<FriendlyByteBuf, ChangeCameraTypePacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, ChangeCameraTypePacket::playerTarget,
+            ByteBufCodecs.INT, ChangeCameraTypePacket::enumID,
+            ChangeCameraTypePacket::new
+    );
 
-    public ChangeCameraTypePacket(int target, int enumID) {
-        this.playerTarget = target;
-        this.enumID = enumID;
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public ChangeCameraTypePacket(FriendlyByteBuf buf) {
-        this.playerTarget = buf.readInt();
-        this.enumID = buf.readInt();
-    }
-
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeInt(playerTarget);
-        buf.writeInt(enumID);
-    }
-
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
+    public static void handle(ChangeCameraTypePacket packet, IPayloadContext context) {
         context.enqueueWork(() -> {
             Minecraft instance = Minecraft.getInstance();
-            if (instance.player.getId() == playerTarget) instance.options.setCameraType(CameraType.values()[enumID]);
+            if (instance.player != null && instance.player.getId() == packet.playerTarget()) {
+                instance.options.setCameraType(CameraType.values()[packet.enumID()]);
+            }
         });
-        return true;
     }
 }

@@ -98,11 +98,11 @@ public abstract class WeaponAttackInstance implements CSWeaponUtil {
     }
 
     public CompoundTag getTagController() {
-        return stack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        return attackController(stack);
     }
 
     public CompoundTag getTagExtras() {
-        return stack.getOrCreateTagElement(CS_EXTRAS_ELEMENT);
+        return attackExtras(stack);
     }
 
     public static void playRandomBladeSound(Entity entity, int length) {

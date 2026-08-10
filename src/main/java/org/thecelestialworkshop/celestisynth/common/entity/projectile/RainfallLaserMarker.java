@@ -18,10 +18,10 @@ public class RainfallLaserMarker extends EffectControllerEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ORIGIN, new Vector3f(0, 0, 0));
-        this.entityData.define(IS_QUASAR, true);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ORIGIN, new Vector3f(0, 0, 0));
+        builder.define(IS_QUASAR, true);
     }
 
     @Override

@@ -18,12 +18,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(RenderLayer.class)
 public class RenderLayerMixin {
     @Inject(method = "renderColoredCutoutModel", at = @At("TAIL"))
-    private static <T extends LivingEntity> void renderColoredCutoutModel(EntityModel<T> pModel, ResourceLocation pTextureLocation, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pEntity, float pRed, float pGreen, float pBlue, CallbackInfo ci) {
+    private static <T extends LivingEntity> void renderColoredCutoutModel(EntityModel<T> pModel, ResourceLocation pTextureLocation, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pEntity, int pColor, CallbackInfo ci) {
         CSEntityCapabilityProvider.get(pEntity).ifPresent(data -> {
             if (data.getFrostbound() > 0) {
                 VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.eyes(pTextureLocation));
                 int i = LivingEntityRenderer.getOverlayCoords(pEntity, 0.0F);
-                pModel.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, i, 0F, 0.3F, 1.0F, 1.0F);
+                pModel.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, i, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, 0F, 0.3F, 1.0F));
             }
         });
     }

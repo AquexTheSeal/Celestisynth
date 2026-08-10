@@ -16,9 +16,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.network.NetworkHooks;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -55,15 +54,15 @@ public abstract class EffectControllerEntity extends Entity implements CSWeaponU
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(OWNER_UUID, Optional.empty());
-        this.entityData.define(ORIGIN_ITEM, ItemStack.EMPTY);
-        this.entityData.define(ANGLE_X, 0F);
-        this.entityData.define(ANGLE_Y, 0F);
-        this.entityData.define(ANGLE_Z, 0F);
-        this.entityData.define(ANGLE_ADD_X, 0F);
-        this.entityData.define(ANGLE_ADD_Y, 0F);
-        this.entityData.define(ANGLE_ADD_Z, 0F);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        builder.define(OWNER_UUID, Optional.empty());
+        builder.define(ORIGIN_ITEM, ItemStack.EMPTY);
+        builder.define(ANGLE_X, 0F);
+        builder.define(ANGLE_Y, 0F);
+        builder.define(ANGLE_Z, 0F);
+        builder.define(ANGLE_ADD_X, 0F);
+        builder.define(ANGLE_ADD_Y, 0F);
+        builder.define(ANGLE_ADD_Z, 0F);
     }
 
     @Override
@@ -161,8 +160,4 @@ public abstract class EffectControllerEntity extends Entity implements CSWeaponU
         return this.entityData.get(ANGLE_ADD_Z);
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
-}

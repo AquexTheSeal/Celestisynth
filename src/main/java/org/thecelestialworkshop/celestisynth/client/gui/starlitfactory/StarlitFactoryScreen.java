@@ -17,9 +17,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.common.MinecraftForge;
-import software.bernie.geckolib.core.object.Color;
+import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import software.bernie.geckolib.util.Color;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class StarlitFactoryScreen extends AbstractContainerScreen<StarlitFactory
 
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        this.renderBackground(pGuiGraphics);
+        this.renderBackground(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
 
         if (Minecraft.getInstance().player.tickCount % 200 == 0) {
             this.usedProTip = this.usedProTip >= 4 ? 0 : this.usedProTip + 1;
@@ -50,7 +50,7 @@ public class StarlitFactoryScreen extends AbstractContainerScreen<StarlitFactory
         MutableComponent text = Component.translatable("tip.celestisynth.starlit_factory_" + usedProTip);
         int i = 0;
         for (FormattedCharSequence formattedcharsequence : this.font.split(text, 180)) {
-            pGuiGraphics.drawCenteredString(this.font, formattedcharsequence, super.leftPos + 89, super.topPos + 170 + (i * 9), Color.WHITE.argbInt());
+            pGuiGraphics.drawCenteredString(this.font, formattedcharsequence, super.leftPos + 89, super.topPos + 170 + (i * 9), Color.WHITE.getColor());
             i++;
         }
 
@@ -76,15 +76,15 @@ public class StarlitFactoryScreen extends AbstractContainerScreen<StarlitFactory
     }
 
     @Override
-    public void renderBackground(GuiGraphics pGuiGraphics) {
+    public void renderBackground(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         int factoryForgeTime = menu.data.get(2);
         if (factoryForgeTime > 0) {
             float motion = Mth.sin((float) (Minecraft.getInstance().player.tickCount * 0.2));
             Color color = Color.ofRGBA(0, 0, 0.1F + motion * 0.1F, 0.75F);
-            pGuiGraphics.fillGradient(0, 0, this.width, this.height, color.argbInt(), color.darker(15).argbInt());
-            MinecraftForge.EVENT_BUS.post(new ScreenEvent.BackgroundRendered(this, pGuiGraphics));
+            pGuiGraphics.fillGradient(0, 0, this.width, this.height, color.getColor(), color.darker(15).getColor());
+            NeoForge.EVENT_BUS.post(new ScreenEvent.BackgroundRendered(this, pGuiGraphics));
         } else {
-            super.renderBackground(pGuiGraphics);
+            super.renderBackground(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         }
     }
 
@@ -94,7 +94,7 @@ public class StarlitFactoryScreen extends AbstractContainerScreen<StarlitFactory
         float motion = Mth.sin((float) (Minecraft.getInstance().player.tickCount * 0.2)) * 1;
         Color color = Color.ofRGBA(0.75F + (motion * 0.25F), 0.75F + (motion * 0.25F), 1F, 1F);
         pGuiGraphics.renderItem(new ItemStack(CSBlocks.STARLIT_FACTORY.get()), this.titleLabelX - 5, this.titleLabelY - 22);
-        this.font.drawInBatch8xOutline(this.title.getVisualOrderText(), this.titleLabelX + 15, this.titleLabelY - 15, color.argbInt(), color.darker(5F).getColor(), pGuiGraphics.pose().last().pose(), pGuiGraphics.bufferSource(), LightTexture.FULL_BRIGHT);
+        this.font.drawInBatch8xOutline(this.title.getVisualOrderText(), this.titleLabelX + 15, this.titleLabelY - 15, color.getColor(), color.darker(5F).getColor(), pGuiGraphics.pose().last().pose(), pGuiGraphics.bufferSource(), LightTexture.FULL_BRIGHT);
     }
 
     @Override

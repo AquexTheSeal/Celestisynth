@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.2,
+  "ingredient": {
+    "item": "celestisynth:lunar_stone"
+  },
+  "result": {
+    "count": 1,
+    "id": "celestisynth:lunar_scrap"
+  }
+}

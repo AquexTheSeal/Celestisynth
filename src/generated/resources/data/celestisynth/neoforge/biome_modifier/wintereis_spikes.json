@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#c:is_cold/overworld",
+  "features": "celestisynth:wintereis_spikes",
+  "step": "underground_structures"
+}

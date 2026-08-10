@@ -1,14 +1,14 @@
 package org.thecelestialworkshop.celestisynth.config.client;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class CSClientConfig {
-    public final ForgeConfigSpec.ConfigValue<Boolean> visibilityOnFirstPerson;
-    public final ForgeConfigSpec.ConfigValue<Boolean> showLeftArmOnAnimate;
-    public final ForgeConfigSpec.ConfigValue<Boolean> showRightArmOnAnimate;
-    public final ForgeConfigSpec.ConfigValue<Boolean> showChantMessages;
+    public final ModConfigSpec.ConfigValue<Boolean> visibilityOnFirstPerson;
+    public final ModConfigSpec.ConfigValue<Boolean> showLeftArmOnAnimate;
+    public final ModConfigSpec.ConfigValue<Boolean> showRightArmOnAnimate;
+    public final ModConfigSpec.ConfigValue<Boolean> showChantMessages;
 
-    public CSClientConfig(ForgeConfigSpec.Builder builder) {
+    public CSClientConfig(ModConfigSpec.Builder builder) {
         builder.push("Client-side Configurations");
         visibilityOnFirstPerson = builder.comment("Should the weapon attack effects be visible on first person mode?").define("Is Visible?", true);
         showLeftArmOnAnimate = builder.comment("Defines if your left arm must be shown during the ability casting process.").define("Show Left Arm", false);

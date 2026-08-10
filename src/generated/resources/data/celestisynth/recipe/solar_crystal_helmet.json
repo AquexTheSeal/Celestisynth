@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "g": {
+      "item": "minecraft:gold_block"
+    },
+    "x": {
+      "item": "celestisynth:solar_crystal"
+    }
+  },
+  "pattern": [
+    "xgx",
+    "x x"
+  ],
+  "result": {
+    "count": 1,
+    "id": "celestisynth:solar_crystal_helmet"
+  }
+}

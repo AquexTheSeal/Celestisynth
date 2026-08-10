@@ -2,7 +2,7 @@ package org.thecelestialworkshop.celestisynth.datagen.providers;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.structure.StructureSet;
 public class CSStructureProvider {
 
     public static class Structures {
-        public static void bootstrap(BootstapContext<Structure> ctx) {
+        public static void bootstrap(BootstrapContext<Structure> ctx) {
             HolderGetter<Biome> biomeRegistry = ctx.lookup(Registries.BIOME);
 
 //            ctx.register(CSStructures.WINTEREIS_CLUSTER, new WintereisClusterStructure(new Structure.StructureSettings(
@@ -23,7 +23,7 @@ public class CSStructureProvider {
     }
 
     public static class StructureSets {
-        public static void bootstrap(BootstapContext<StructureSet> ctx) {
+        public static void bootstrap(BootstrapContext<StructureSet> ctx) {
             HolderGetter<Structure> structureRegistry = ctx.lookup(Registries.STRUCTURE);
 
 //            ctx.register(CSStructures.WINTEREIS_CLUSTER_SET, new StructureSet(

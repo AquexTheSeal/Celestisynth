@@ -1,5 +1,7 @@
 package org.thecelestialworkshop.celestisynth.datagen.providers;
 
+import java.util.function.Supplier;
+
 import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.common.registry.CSBlocks;
 import org.thecelestialworkshop.celestisynth.common.registry.CSItems;
@@ -10,18 +12,18 @@ import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class CSItemModelProvider extends ItemModelProvider {
-    private static final List<RegistryObject<Item>> exemptions = new ArrayList<>();
+    private static final List<Supplier<Item>> exemptions = new ArrayList<>();
 
     public CSItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, Celestisynth.MODID, existingFileHelper);
@@ -61,15 +63,15 @@ public class CSItemModelProvider extends ItemModelProvider {
 
     }
 
-    public void defaultItem(Collection<RegistryObject<Item>> items) {
-        for (RegistryObject<Item> item : items) {
+    public void defaultItem(Collection<? extends Supplier<? extends Item>> items) {
+        for (Supplier<? extends Item> item : items) {
 
             if (exemptions.contains(item)) {
                 return;
             }
 
-            String name = item.getId().getPath();
             Item getItem = item.get();
+            String name = BuiltInRegistries.ITEM.getKey(getItem).getPath();
             ResourceLocation datagenLoc = Celestisynth.prefix("item/" + name);
             ModelFile.ExistingModelFile modelType = getItem instanceof DiggerItem || getItem instanceof SwordItem ? getMcLoc("item/handheld") : getMcLoc("item/generated");
 
@@ -83,35 +85,35 @@ public class CSItemModelProvider extends ItemModelProvider {
         }
     }
 
-    public void defaultItem(RegistryObject<Item> item) {
-        String name = item.getId().getPath();
+    public void defaultItem(Supplier<Item> item) {
         Item getItem = item.get();
+        String name = BuiltInRegistries.ITEM.getKey(getItem).getPath();
         ModelFile.ExistingModelFile modelType = getItem instanceof DiggerItem || getItem instanceof SwordItem ? getMcLoc("item/handheld") : getMcLoc("item/generated");
         this.getBuilder(name).parent(modelType).texture("layer0", ITEM_FOLDER + "/" + name);
     }
 
-    public void spawnEgg(RegistryObject<Item> item) {
-        String name = item.getId().getPath();
+    public void spawnEgg(Supplier<Item> item) {
         Item getItem = item.get();
+        String name = BuiltInRegistries.ITEM.getKey(getItem).getPath();
         this.getBuilder(name).parent(getMcLoc("item/template_spawn_egg"));
     }
 
-    public void block(RegistryObject<Block> blockItem) {
-        String name = blockItem.getId().getPath();
+    public void block(Supplier<Block> blockItem) {
+        String name = BuiltInRegistries.BLOCK.getKey(blockItem.get()).getPath();
         this.getBuilder(name).parent(getCSLoc("block/" + name));
     }
 
-    public void csCustomModel(RegistryObject<Item> item, ModelFile.ExistingModelFile modelPath) {
+    public void csCustomModel(Supplier<Item> item, ModelFile.ExistingModelFile modelPath) {
         csCustomModel(item.get(), modelPath);
     }
 
     public void csCustomModel(Item item, ModelFile.ExistingModelFile modelType) {
-        String name = ForgeRegistries.ITEMS.getKey(item).getPath();
+        String name = BuiltInRegistries.ITEM.getKey(item).getPath();
         this.getBuilder(name).parent(modelType).texture("layer0", ITEM_FOLDER + "/" + name);
     }
 
-    public void csSinglePredicatedModel(RegistryObject<Item> item, String modelPath, ResourceLocation predicate, String predicatedModelPath) {
-        String name = item.getId().getPath();
+    public void csSinglePredicatedModel(Supplier<Item> item, String modelPath, ResourceLocation predicate, String predicatedModelPath) {
+        String name = BuiltInRegistries.ITEM.getKey(item.get()).getPath();
         ModelFile.ExistingModelFile modelType = getCSLoc(modelPath);
         ModelFile.ExistingModelFile predModelType = getCSLoc(predicatedModelPath);
         this.getBuilder(name).parent(modelType).texture("layer0", ITEM_FOLDER + "/" + name).override()

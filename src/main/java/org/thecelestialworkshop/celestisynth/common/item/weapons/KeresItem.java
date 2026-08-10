@@ -7,7 +7,7 @@ import org.thecelestialworkshop.celestisynth.common.attack.base.WeaponAttackInst
 import org.thecelestialworkshop.celestisynth.common.attack.keres.KeresRendAttack;
 import org.thecelestialworkshop.celestisynth.common.attack.keres.KeresSlashAttack;
 import org.thecelestialworkshop.celestisynth.common.attack.keres.KeresSmashAttack;
-import org.thecelestialworkshop.celestisynth.common.compat.bettercombat.SwingParticleContainer;
+import org.thecelestialworkshop.celestisynth.api.item.SwingParticleContainer;
 import org.thecelestialworkshop.celestisynth.common.entity.projectile.KeresShadow;
 import org.thecelestialworkshop.celestisynth.common.item.base.SkilledSwordItem;
 import org.thecelestialworkshop.celestisynth.common.registry.*;
@@ -32,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 
 public class KeresItem extends SkilledSwordItem implements CSGeoItem {
     public static final String PASSIVE_STACK = "cs.keresStack";
@@ -63,7 +63,7 @@ public class KeresItem extends SkilledSwordItem implements CSGeoItem {
 
     @Override
     public @Nullable SwingParticleContainer getSwingContainer(LivingEntity holder, ItemStack stack) {
-        if (holder.hasEffect(CSMobEffects.HELLBANE.get()) && holder.getRandom().nextInt(5) == 1) {
+        if (holder.hasEffect(CSMobEffects.HELLBANE) && holder.getRandom().nextInt(5) == 1) {
             return new SwingParticleContainer(CSParticleTypes.KERES_OMEN.get(), 2.8F);
         }
         return new SwingParticleContainer(CSParticleTypes.KERES_ASH.get(), 2.8F);
@@ -89,7 +89,7 @@ public class KeresItem extends SkilledSwordItem implements CSGeoItem {
     @Override
     public void onUseTick(Level pLevel, LivingEntity pEntity, ItemStack pStack, int pRemainingUseDuration) {
         super.onUseTick(pLevel, pEntity, pStack, pRemainingUseDuration);
-        int dur = this.getUseDuration(pStack) - pRemainingUseDuration;
+        int dur = this.getUseDuration(pStack, pEntity) - pRemainingUseDuration;
 
         int durThreshold = dur >= 200 ? 15 : 30;
         if (dur % durThreshold == 0) {
@@ -160,7 +160,7 @@ public class KeresItem extends SkilledSwordItem implements CSGeoItem {
 
         if (isSelected) {
             if (entity instanceof LivingEntity source) {
-                if (source.hasEffect(CSMobEffects.HELLBANE.get())) {
+                if (source.hasEffect(CSMobEffects.HELLBANE)) {
                     double xSin = Mth.sin((float) (0.2 * source.tickCount)) * 3;
                     double zCos = Mth.cos((float) (0.2 * source.tickCount)) * 3;
                     ParticleUtil.sendParticle(level, CSParticleTypes.KERES_ASH.get(), entity.getX() + xSin, entity.getY() + 1, entity.getZ() + zCos);
@@ -196,7 +196,7 @@ public class KeresItem extends SkilledSwordItem implements CSGeoItem {
         boolean flag = super.hurtEnemy(itemStack, entity, source);
         if (flag) {
             double lifesteal = 0.35;
-            if (source.hasEffect(CSMobEffects.HELLBANE.get())) {
+            if (source.hasEffect(CSMobEffects.HELLBANE)) {
                 lifesteal = 0.85;
             }
             source.heal((float) lifesteal);
@@ -205,7 +205,7 @@ public class KeresItem extends SkilledSwordItem implements CSGeoItem {
                 if (source instanceof Player player) {
                     player.getCooldowns().removeCooldown(this);
                 }
-                source.addEffect(new MobEffectInstance(CSMobEffects.HELLBANE.get(), 100, 0));
+                source.addEffect(new MobEffectInstance(CSMobEffects.HELLBANE, 100, 0));
                 this.attackController(itemStack).putInt(PASSIVE_STACK, 0);
             }
         }
@@ -213,15 +213,15 @@ public class KeresItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment == Enchantments.MULTISHOT) {
+    public boolean supportsEnchantment(ItemStack stack, net.minecraft.core.Holder<Enchantment> enchantment) {
+        if (enchantment.is(Enchantments.MULTISHOT)) {
             return true;
         }
-        return super.canApplyAtEnchantingTable(stack, enchantment);
+        return super.supportsEnchantment(stack, enchantment);
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
+    public int getUseDuration(@NotNull ItemStack stack, net.minecraft.world.entity.LivingEntity useEntity) {
         return 72000;
     }
 }

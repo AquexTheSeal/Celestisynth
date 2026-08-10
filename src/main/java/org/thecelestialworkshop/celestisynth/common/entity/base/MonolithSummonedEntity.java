@@ -2,7 +2,7 @@ package org.thecelestialworkshop.celestisynth.common.entity.base;
 
 import org.thecelestialworkshop.celestisynth.common.entity.mob.misc.StarMonolith;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface MonolithSummonedEntity {
 

@@ -53,7 +53,7 @@ public abstract class InventoryMixin {
         ItemStack selected = getSelected();
 
         if (selected.getItem() instanceof CSWeapon) {
-            CompoundTag controllerTag = selected.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+            CompoundTag controllerTag = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getLiveTag(selected, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER);
 
             if (controllerTag != null &&  controllerTag.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY)) ci.cancel();
         }

@@ -1,60 +1,64 @@
 package org.thecelestialworkshop.celestisynth.api.item;
 
-import org.thecelestialworkshop.celestisynth.common.compat.spellbooks.ISSArmorUtil;
+import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.common.entity.base.CSEffectEntity;
 import org.thecelestialworkshop.celestisynth.common.registry.CSAttributes;
 import org.thecelestialworkshop.celestisynth.common.registry.CSParticleTypes;
 import org.thecelestialworkshop.celestisynth.common.registry.CSSoundEvents;
 import org.thecelestialworkshop.celestisynth.common.registry.CSVisualTypes;
-import org.thecelestialworkshop.celestisynth.manager.CSIntegrationManager;
 import org.thecelestialworkshop.celestisynth.util.ParticleUtil;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.UUID;
 
 public class CSArmorItem extends ArmorItem implements CSWeaponUtil {
-    public CSArmorItem(ArmorMaterial pMaterial, Type pType, Properties pProperties) {
+    public CSArmorItem(Holder<ArmorMaterial> pMaterial, Type pType, Properties pProperties) {
         super(pMaterial, pType, pProperties);
     }
 
     @Override
-    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot pEquipmentSlot) {
-        return pEquipmentSlot == this.type.getSlot() ? modifiedAttributes() : super.getDefaultAttributeModifiers(pEquipmentSlot);
+    public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers() {
+        ItemAttributeModifiers base = super.getDefaultAttributeModifiers();
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        for (ItemAttributeModifiers.Entry entry : base.modifiers()) {
+            builder.add(entry.attribute(), entry.modifier(), entry.slot());
+        }
+        this.createExtraAttributes(builder);
+        return builder.build();
     }
 
-    public void createExtraAttributes(ImmutableMultimap.Builder<Attribute, AttributeModifier> additional, UUID uuid) {
-        if (material == CSArmorMaterials.SOLAR_CRYSTAL) {
-            additional.put(CSAttributes.CELESTIAL_DAMAGE.get(), new AttributeModifier(uuid, "Armor celestial damage", 0.05, AttributeModifier.Operation.MULTIPLY_BASE));
-            additional.put(CSAttributes.CELESTIAL_DAMAGE_REDUCTION.get(), new AttributeModifier(uuid, "Armor celestial damage reduction", 0.025, AttributeModifier.Operation.MULTIPLY_BASE));
+    public void createExtraAttributes(ItemAttributeModifiers.Builder additional) {
+        EquipmentSlotGroup slotGroup = EquipmentSlotGroup.bySlot(this.type.getSlot());
+        ResourceLocation bonusId = Celestisynth.prefix("armor_bonus_" + this.type.getName());
+        if (this.material.is(CSArmorMaterials.SOLAR_CRYSTAL.getId())) {
+            additional.add(CSAttributes.CELESTIAL_DAMAGE, new AttributeModifier(bonusId, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE), slotGroup);
+            additional.add(CSAttributes.CELESTIAL_DAMAGE_REDUCTION, new AttributeModifier(bonusId, 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE), slotGroup);
         }
-        if (material == CSArmorMaterials.LUNAR_STONE) {
-            additional.put(CSAttributes.CELESTIAL_DAMAGE.get(), new AttributeModifier(uuid, "Armor celestial damage", 0.025, AttributeModifier.Operation.MULTIPLY_BASE));
-            additional.put(CSAttributes.CELESTIAL_DAMAGE_REDUCTION.get(), new AttributeModifier(uuid, "Armor celestial damage reduction", 0.05, AttributeModifier.Operation.MULTIPLY_BASE));;
+        if (this.material.is(CSArmorMaterials.LUNAR_STONE.getId())) {
+            additional.add(CSAttributes.CELESTIAL_DAMAGE, new AttributeModifier(bonusId, 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE), slotGroup);
+            additional.add(CSAttributes.CELESTIAL_DAMAGE_REDUCTION, new AttributeModifier(bonusId, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE), slotGroup);
         }
     }
 
-    public static void hurtWearer(LivingHurtEvent event) {
+    public static void hurtWearer(LivingIncomingDamageEvent event) {
         LivingEntity entity = event.getEntity();
 
         int solarCount = getSameArmorCount(entity, CSArmorMaterials.SOLAR_CRYSTAL);
@@ -67,7 +71,7 @@ public class CSArmorItem extends ArmorItem implements CSWeaponUtil {
             }
             for (LivingEntity targets : entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(2, 0, 2)).stream().filter(en -> en != entity).toList()) {
                 targets.hurt(entity.damageSources().onFire(), solarCount * 1.2F);
-                targets.setSecondsOnFire(1 + solarCount);
+                targets.igniteForSeconds(1 + solarCount);
             }
         }
 
@@ -85,37 +89,26 @@ public class CSArmorItem extends ArmorItem implements CSWeaponUtil {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        if (material == CSArmorMaterials.SOLAR_CRYSTAL) {
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pIsAdvanced);
+        if (this.material.is(CSArmorMaterials.SOLAR_CRYSTAL.getId())) {
             pTooltipComponents.add(Component.translatable("item.celestisynth.solar_crystal_armor_bonus").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
 
-        if (material == CSArmorMaterials.LUNAR_STONE) {
+        if (this.material.is(CSArmorMaterials.LUNAR_STONE.getId())) {
             pTooltipComponents.add(Component.translatable("item.celestisynth.lunar_stone_armor_bonus").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
     }
 
-    public static int getSameArmorCount(LivingEntity wearer, ArmorMaterial armorMaterial) {
+    public static int getSameArmorCount(LivingEntity wearer, Holder<ArmorMaterial> armorMaterial) {
         int i = 0;
         for (var slot : wearer.getArmorSlots()) {
             if (slot.getItem() instanceof ArmorItem armor) {
-                if (armor.getMaterial() == armorMaterial) {
+                if (armor.getMaterial().is(armorMaterial.unwrapKey().orElseThrow())) {
                     i++;
                 }
             }
         }
         return i;
-    }
-
-    public Multimap<Attribute, AttributeModifier> modifiedAttributes() {
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> additional = ImmutableMultimap.builder();
-        UUID uuid = ARMOR_MODIFIER_UUID_PER_TYPE.get(type);
-        additional.putAll(this.defaultModifiers);
-        this.createExtraAttributes(additional, uuid);
-        if (CSIntegrationManager.checkIronsSpellbooks()) {
-            ISSArmorUtil.addSpellbookAttributesOnArmor(additional, uuid, material);
-        }
-        return additional.build();
     }
 }

@@ -1,6 +1,6 @@
 package org.thecelestialworkshop.celestisynth.manager;
 
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
 
 public final class CSModManager {
 

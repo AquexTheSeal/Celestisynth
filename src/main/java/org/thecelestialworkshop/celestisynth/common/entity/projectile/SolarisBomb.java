@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -74,7 +74,7 @@ public class SolarisBomb extends ThrowableProjectile implements CSWeaponUtil {
                 .filter(bomb -> bomb.getOwner() == owner);
     }
 
-    public static void handleHurtEvent(LivingHurtEvent event) {
+    public static void handleHurtEvent(LivingIncomingDamageEvent event) {
         LivingEntity entity = event.getEntity();
         if (entity.level() instanceof ServerLevel level) {
             if (event.getSource().getEntity() instanceof LivingEntity owner && !event.getSource().is(DamageTypeTags.BYPASSES_COOLDOWN)) {
@@ -100,7 +100,7 @@ public class SolarisBomb extends ThrowableProjectile implements CSWeaponUtil {
         if (getOwner() instanceof Player player) {
             if (pResult.getEntity() instanceof LivingEntity target && target != getOwner()) {
                 initiateAbilityAttack(player, target, 5F, AttackHurtTypes.RAPID);
-                target.setSecondsOnFire(4);
+                target.igniteForSeconds(4);
                 if (target == getLooseTarget()) {
                     explodeFire();
                 }
@@ -126,7 +126,7 @@ public class SolarisBomb extends ThrowableProjectile implements CSWeaponUtil {
         for (LivingEntity targets : level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.6, 1.6, 1.6))) {
             if (getOwner() instanceof Player player) {
                 initiateAbilityAttack(player, targets, 2, AttackHurtTypes.RAPID_NO_KB);
-                targets.setSecondsOnFire(2);
+                targets.igniteForSeconds(2);
             }
         }
         this.remove(RemovalReason.DISCARDED);
@@ -155,7 +155,7 @@ public class SolarisBomb extends ThrowableProjectile implements CSWeaponUtil {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(LOOSE_TARGET, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        builder.define(LOOSE_TARGET, 0);
     }
 }

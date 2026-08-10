@@ -10,8 +10,8 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.api.item.CSWeapon;
 import org.thecelestialworkshop.celestisynth.common.block.StarlitFactoryBlockEntity;
@@ -29,12 +29,12 @@ public class CSTooltipRenderer {
 
     public static void manageCelestialTooltips(RenderTooltipEvent.GatherComponents event) {
         ItemStack stack = event.getItemStack();
-        String name = ForgeRegistries.ITEMS.getKey(stack.getItem()).getPath();
+        String name = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath();
 
         List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
         List<Either<FormattedText, TooltipComponent>> elementsToAdd = new ArrayList<>();
 
-        Style tierColor = Style.EMPTY.withColor(ExtraUtil.getCelestialColor(scroll * 4).argbInt());
+        Style tierColor = Style.EMPTY.withColor(ExtraUtil.getCelestialColor(scroll * 4).getColor());
         Style navigationNoticeColor = Style.EMPTY.withColor(0x96D400);
 
         if (!stack.isEmpty() && StarlitFactoryBlockEntity.getFuelMap().containsKey(stack.getItem())) {
@@ -87,7 +87,7 @@ public class CSTooltipRenderer {
 
     public static void manageTooltipColors(RenderTooltipEvent.Color event) {
         int argb = (0xFF << 24);
-        if (event.getItemStack().getRarity() == CSRarityTypes.CELESTIAL) {
+        if (event.getItemStack().getRarity() == CSRarityTypes.celestial()) {
             event.setBackgroundStart(argb + 0x000002);
             event.setBackgroundEnd(argb + 0x00003f);
             event.setBorderStart(argb + 0xeab80f);

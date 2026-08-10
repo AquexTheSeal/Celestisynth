@@ -19,7 +19,7 @@ public abstract class SkilledSwordItem extends SwordItem implements CSWeapon {
     public static final String ATTACK_INDEX_KEY = "cs.AttackIndex";
 
     public SkilledSwordItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
-        super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+        super(pTier, pProperties.attributes(SwordItem.createAttributes(pTier, pAttackDamageModifier, pAttackSpeedModifier)));
     }
 
     public abstract ImmutableList<WeaponAttackInstance> getPossibleAttacks(Player player, ItemStack stack, int useDuration);
@@ -27,10 +27,10 @@ public abstract class SkilledSwordItem extends SwordItem implements CSWeapon {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack heldStack = player.getItemInHand(interactionHand);
-        CompoundTag data = heldStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getOrCreateLiveTag(heldStack, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER);
 
         if (!player.getCooldowns().isOnCooldown(heldStack.getItem()) && !data.getBoolean(ANIMATION_BEGUN_KEY)) {
-            if (getUseDuration(heldStack) <= 0) {
+            if (getUseDuration(heldStack, player) <= 0) {
                 int index = 0;
                 for (WeaponAttackInstance attack : getPossibleAttacks(player, heldStack, 0)) {
                     if (attack.getCondition()) {
@@ -61,8 +61,8 @@ public abstract class SkilledSwordItem extends SwordItem implements CSWeapon {
 
     @Override
     public void releaseUsing(ItemStack itemstack, @NotNull Level level, @NotNull LivingEntity entity, int i) {
-        CompoundTag data = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
-        int dur = this.getUseDuration(itemstack) - i;
+        CompoundTag data = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getOrCreateLiveTag(itemstack, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER);
+        int dur = this.getUseDuration(itemstack, entity) - i;
 
         if (entity instanceof Player player) {
             int index = 0;
@@ -83,7 +83,7 @@ public abstract class SkilledSwordItem extends SwordItem implements CSWeapon {
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
         super.inventoryTick(itemStack, level, entity, itemSlot, isSelected);
-        CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getOrCreateLiveTag(itemStack, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER);
         if (entity instanceof Player player && data.getBoolean(ANIMATION_BEGUN_KEY)) {
             int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
             data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);

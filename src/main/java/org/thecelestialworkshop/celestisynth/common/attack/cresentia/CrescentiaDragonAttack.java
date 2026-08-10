@@ -14,7 +14,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.Color;
 
 public class CrescentiaDragonAttack extends WeaponAttackInstance {
 
@@ -45,7 +45,7 @@ public class CrescentiaDragonAttack extends WeaponAttackInstance {
     @Override
     public void startUsing() {
         useAndDamageItem(getStack(), level, player, 5);
-        this.chantMessage(player, "crescentia2", 30, Color.WHITE.argbInt());
+        this.chantMessage(player, "crescentia2", 30, Color.WHITE.getColor());
     }
 
     @Override
@@ -55,13 +55,13 @@ public class CrescentiaDragonAttack extends WeaponAttackInstance {
         }
 
         if (getTimerProgress() == 20) {
-            this.chantMessage(player, "crescentia3", 20, Color.PINK.argbInt());
+            this.chantMessage(player, "crescentia3", 20, Color.PINK.getColor());
 
             FloatArrayList angles = new FloatArrayList();
             angles.add(0.0F);
             angles.add(-30.0F);
             angles.add(30.0F);
-            if (stack.getEnchantmentLevel(Enchantments.MULTISHOT) > 0) {
+            if (org.thecelestialworkshop.celestisynth.api.item.CSWeaponUtil.getStackEnchantmentLevel(stack, Enchantments.MULTISHOT) > 0) {
                 angles.add(-15.0F);
                 angles.add(15.0F);
             }

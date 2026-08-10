@@ -27,10 +27,10 @@ import org.thecelestialworkshop.celestisynth.common.registry.CSParticleTypes;
 import org.thecelestialworkshop.celestisynth.manager.CSConfigManager;
 import org.thecelestialworkshop.celestisynth.util.ParticleUtil;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
@@ -135,7 +135,7 @@ public class KeresRend extends ThrowableProjectile implements GeoEntity, CSWeapo
         List<LivingEntity> targets = level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(4, 4, 4)).stream().filter(living -> living != this.getOwner() && !finishedAttacking.contains(living)).toList();
         for (LivingEntity target : targets) {
             if (getOwner() instanceof LivingEntity owner) {
-                target.addEffect(new MobEffectInstance(CSMobEffects.CURSEBANE.get(), 250, 7));
+                target.addEffect(new MobEffectInstance(CSMobEffects.CURSEBANE, 250, 7));
                 float damageCalculation = baseDamage + (target.getMaxHealth() * (baseDamage * 0.015F));
                 owner.heal(damageCalculation / 8);
                 if (owner instanceof Player player) {
@@ -247,6 +247,6 @@ public class KeresRend extends ThrowableProjectile implements GeoEntity, CSWeapo
     }
 
     @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
     }
 }

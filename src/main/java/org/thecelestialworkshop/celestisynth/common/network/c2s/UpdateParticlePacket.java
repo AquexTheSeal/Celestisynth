@@ -1,58 +1,43 @@
 package org.thecelestialworkshop.celestisynth.common.network.c2s;
 
+import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.common.network.s2c.UpdateGroupedParticlePacket;
 import org.thecelestialworkshop.celestisynth.manager.CSNetworkManager;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
+public record UpdateParticlePacket(ParticleType<?> particle, double x, double y, double z, float xSpeed, float ySpeed, float zSpeed) implements CustomPacketPayload {
+    public static final Type<UpdateParticlePacket> TYPE = new Type<>(Celestisynth.prefix("update_particle"));
 
-public class UpdateParticlePacket {
-    private final double x;
-    private final double y;
-    private final double z;
-    private final float xSpeed;
-    private final float ySpeed;
-    private final float zSpeed;
-    private final ParticleType<?> particle;
+    public static final StreamCodec<FriendlyByteBuf, UpdateParticlePacket> STREAM_CODEC = StreamCodec.of(
+            (buffer, packet) -> {
+                buffer.writeResourceLocation(BuiltInRegistries.PARTICLE_TYPE.getKey(packet.particle()));
+                buffer.writeDouble(packet.x());
+                buffer.writeDouble(packet.y());
+                buffer.writeDouble(packet.z());
+                buffer.writeFloat(packet.xSpeed());
+                buffer.writeFloat(packet.ySpeed());
+                buffer.writeFloat(packet.zSpeed());
+            },
+            (buffer) -> new UpdateParticlePacket(
+                    BuiltInRegistries.PARTICLE_TYPE.get(buffer.readResourceLocation()),
+                    buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
+                    buffer.readFloat(), buffer.readFloat(), buffer.readFloat()
+            )
+    );
 
-    public <T extends ParticleType<?>> UpdateParticlePacket(T pParticle, double pX, double pY, double pZ, float xSpeed, float ySpeed, float zSpeed) {
-        this.particle = pParticle;
-        this.x = pX;
-        this.y = pY;
-        this.z = pZ;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
-        this.zSpeed = zSpeed;
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public UpdateParticlePacket(FriendlyByteBuf buffer) {
-        ParticleType<?> particletype = ForgeRegistries.PARTICLE_TYPES.getValue(buffer.readResourceLocation());
-        this.x = buffer.readDouble();
-        this.y = buffer.readDouble();
-        this.z = buffer.readDouble();
-        this.xSpeed = buffer.readFloat();
-        this.ySpeed = buffer.readFloat();
-        this.zSpeed = buffer.readFloat();
-        this.particle = particletype;
-    }
-
-    public void toBytes(FriendlyByteBuf buffer) {
-        buffer.writeResourceLocation(ForgeRegistries.PARTICLE_TYPES.getKey(particle));
-        buffer.writeDouble(x);
-        buffer.writeDouble(y);
-        buffer.writeDouble(z);
-        buffer.writeFloat(xSpeed);
-        buffer.writeFloat(ySpeed);
-        buffer.writeFloat(zSpeed);
-    }
-
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        supplier.get().enqueueWork(() -> {
-            CSNetworkManager.sendToAll(new UpdateGroupedParticlePacket(particle, particle.getOverrideLimiter(), x, y, z, 0, 0, 0, xSpeed, ySpeed, zSpeed, 1));
+    public static void handle(UpdateParticlePacket packet, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            CSNetworkManager.sendToAll(new UpdateGroupedParticlePacket(packet.particle(), packet.particle().getOverrideLimiter(), packet.x(), packet.y(), packet.z(), 0, 0, 0, packet.xSpeed(), packet.ySpeed(), packet.zSpeed(), 1));
         });
-        return true;
     }
 }

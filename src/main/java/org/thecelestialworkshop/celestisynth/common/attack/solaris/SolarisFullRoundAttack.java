@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
-import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.Color;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
     public void startUsing() {
         getTagController().putInt(DIRECTION_INDEX_KEY, player.getRandom().nextInt(2));
         useAndDamageItem(getStack(), level, player, 2);
-        this.chantMessage(player, "solaris", 30, Color.WHITE.argbInt());
+        this.chantMessage(player, "solaris", 30, Color.WHITE.getColor());
     }
 
     @Override
@@ -69,7 +69,7 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
         }
 
         if (getTimerProgress() == 23) {
-            this.chantMessage(player, "solaris1", 20, Color.ORANGE.argbInt());
+            this.chantMessage(player, "solaris1", 20, Color.ORANGE.getColor());
         }
 
         if (getTimerProgress() > 0 && getTimerProgress() < 24) {
@@ -80,11 +80,11 @@ public class SolarisFullRoundAttack extends WeaponAttackInstance {
         } else if (getTimerProgress() > 23 && getTimerProgress() < 60) {
             BlockPos blockPosForAttack = player.blockPosition();
             int range = 4;
-            List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
+            List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, AABB.encapsulatingFullBlocks(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
             for (LivingEntity target : entities) {
                 if (target != player && !player.isAlliedTo(target) && target.isAlive()) {
                     this.attributeDependentAttack(player, target, stack, 0.23F, AttackHurtTypes.RAPID_NO_KB);
-                    target.setSecondsOnFire(5);
+                    target.igniteForSeconds(5);
                 }
             }
             if (getTagController().getInt(DIRECTION_INDEX_KEY) == 0) {

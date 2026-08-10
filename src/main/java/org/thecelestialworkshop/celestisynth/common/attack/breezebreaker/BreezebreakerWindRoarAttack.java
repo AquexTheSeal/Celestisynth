@@ -92,7 +92,7 @@ public class BreezebreakerWindRoarAttack extends BreezebreakerAttack {
                 CSEffectEntity.createInstance(player, null, effectTypes[i], delta.x() * multipliers[i], yOffset, delta.z() * multipliers[i]);
             }
 
-            player.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.5F);
+            player.playSound(SoundEvents.GENERIC_EXPLODE.value(), 1.0F, 1.5F);
             player.playSound(CSSoundEvents.IMPACT_HIT.get(), 1.0F, 1.0F);
             player.playSound(CSSoundEvents.STEP.get(), 1.0F, 1.0F);
         }

@@ -86,10 +86,9 @@ public abstract class EntityRendererMixin<T extends Entity> {
     }
 
     private static void fireVertex(PoseStack.Pose pMatrixEntry, VertexConsumer pBuffer, float pX, float pY, float pZ, float pTexU, float pTexV) {
-        pBuffer.vertex(pMatrixEntry.pose(), pX, pY, pZ)
-                .color(0, 20, 0, 70)
-                .uv(pTexU, pTexV).overlayCoords(0, 10).uv2(240)
-                .normal(pMatrixEntry.normal(), 0.0F, 1.0F, 0.0F)
-                .endVertex();
+        pBuffer.addVertex(pMatrixEntry.pose(), pX, pY, pZ)
+                .setColor(0, 20, 0, 70)
+                .setUv(pTexU, pTexV).setUv1(0, 10).setUv2(240, 0)
+                .setNormal(pMatrixEntry, 0.0F, 1.0F, 0.0F);
     }
 }

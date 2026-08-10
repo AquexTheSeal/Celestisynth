@@ -19,7 +19,7 @@ import org.thecelestialworkshop.celestisynth.common.attack.base.WeaponAttackInst
 import org.thecelestialworkshop.celestisynth.common.attack.frostbound.FrostboundCryogenesisAttack;
 import org.thecelestialworkshop.celestisynth.common.attack.frostbound.FrostboundDanceAttack;
 import org.thecelestialworkshop.celestisynth.common.capabilities.CSEntityCapabilityProvider;
-import org.thecelestialworkshop.celestisynth.common.compat.bettercombat.SwingParticleContainer;
+import org.thecelestialworkshop.celestisynth.api.item.SwingParticleContainer;
 import org.thecelestialworkshop.celestisynth.common.entity.base.CSEffectEntity;
 import org.thecelestialworkshop.celestisynth.common.entity.helper.CSVisualAnimation;
 import org.thecelestialworkshop.celestisynth.common.entity.helper.skinset.FrostboundSlashSkinSet;
@@ -28,7 +28,7 @@ import org.thecelestialworkshop.celestisynth.common.item.base.SkilledSwordItem;
 import org.thecelestialworkshop.celestisynth.common.registry.CSEntityTypes;
 import org.thecelestialworkshop.celestisynth.common.registry.CSItems;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -86,7 +86,7 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
     @Override
     public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) {
         super.onUseTick(pLevel, pLivingEntity, pStack, pRemainingUseDuration);
-        int dur = this.getUseDuration(pStack) - pRemainingUseDuration;
+        int dur = this.getUseDuration(pStack, pLivingEntity) - pRemainingUseDuration;
         if (dur % 10 == 0) {
             for (int i = 0; i <= pLevel.random.nextInt(2); i++) {
                 if (pLivingEntity instanceof Player player) {
@@ -100,7 +100,7 @@ public class FrostboundItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
+    public int getUseDuration(@NotNull ItemStack stack, net.minecraft.world.entity.LivingEntity useEntity) {
         return 72000;
     }
 

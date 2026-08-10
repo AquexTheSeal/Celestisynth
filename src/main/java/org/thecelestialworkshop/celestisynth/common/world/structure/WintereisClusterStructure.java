@@ -1,7 +1,7 @@
 package org.thecelestialworkshop.celestisynth.common.world.structure;
 
 import org.thecelestialworkshop.celestisynth.common.registry.CSStructures;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class WintereisClusterStructure extends Structure {
-    public static final Codec<WintereisClusterStructure> CODEC = simpleCodec(WintereisClusterStructure::new);
+    public static final MapCodec<WintereisClusterStructure> CODEC = simpleCodec(WintereisClusterStructure::new);
 
     public WintereisClusterStructure(Structure.StructureSettings settings) {
         super(settings);

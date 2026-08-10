@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#c:is_mountain",
+  "features": "celestisynth:zephyr_deposit",
+  "step": "surface_structures"
+}

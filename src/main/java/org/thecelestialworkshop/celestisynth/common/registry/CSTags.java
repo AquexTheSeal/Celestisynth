@@ -28,7 +28,7 @@ public class CSTags {
         public static final TagKey<Item> BLOOD_RUNE_ACTIVATOR = tag("blood_rune_activator");
 
         private static TagKey<Item> tag(String name) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation(Celestisynth.MODID, name));
+            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Celestisynth.MODID, name));
         }
     }
 
@@ -36,9 +36,10 @@ public class CSTags {
         private static void init() {}
 
         public static final TagKey<Block> NEEDS_CELESTIAL_TOOL = tag("needs_celestial_tool");
+        public static final TagKey<Block> INCORRECT_FOR_CELESTIAL_TOOL = tag("incorrect_for_celestial_tool");
 
         private static TagKey<Block> tag(String name) {
-            return TagKey.create(Registries.BLOCK, new ResourceLocation(Celestisynth.MODID, name));
+            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Celestisynth.MODID, name));
         }
     }
 
@@ -48,7 +49,7 @@ public class CSTags {
         public static final TagKey<EntityType<?>> FROSTBOUND_SENSITIVE = tag("frostbound_sensitive");
 
         private static TagKey<EntityType<?>> tag(String name) {
-            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(Celestisynth.MODID, name));
+            return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Celestisynth.MODID, name));
         }
     }
 
@@ -58,7 +59,7 @@ public class CSTags {
         public static final TagKey<Biome> HAS_WINTEREIS_CLUSTER = tag("has_structure/has_wintereis_cluster");
 
         private static TagKey<Biome> tag(String name) {
-            return TagKey.create(Registries.BIOME, new ResourceLocation(Celestisynth.MODID, name));
+            return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(Celestisynth.MODID, name));
         }
     }
 
@@ -68,7 +69,7 @@ public class CSTags {
         public static final TagKey<Structure> NETHER_MONOLITH_SPAWN = tag("nether_monolith_spawn");
 
         private static TagKey<Structure> tag(String name) {
-            return TagKey.create(Registries.STRUCTURE, new ResourceLocation(Celestisynth.MODID, name));
+            return TagKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(Celestisynth.MODID, name));
         }
     }
 
@@ -79,7 +80,7 @@ public class CSTags {
         public static final TagKey<DamageType> PIERCES_THROUGH_ALL = tag("pierces_through_all");
 
         private static TagKey<DamageType> tag(String name) {
-            return TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Celestisynth.MODID, name));
+            return TagKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(Celestisynth.MODID, name));
         }
     }
 

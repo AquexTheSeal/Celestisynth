@@ -1,267 +1,101 @@
 plugins {
-    id("net.minecraftforge.gradle") version("${fg_plugin_version}")
-    id("org.spongepowered.mixin") version("${mixin_plugin_version}")
-    id("eclipse")
-    id("idea")
-    id("maven-publish")
-    id("org.parchmentmc.librarian.forgegradle") version("${librarian_plugin_version}")
-    id("me.modmuss50.mod-publish-plugin") version("${publisher_version}")
+    id 'idea'
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.91'
 }
 
-version = "${mc_version}-${mod_version}"
+version = "${minecraft_version}-${mod_version}"
 group = mod_group
-archivesBaseName = modid
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+base {
+    archivesName = modid
+}
 
-println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-minecraft {
-    mappings channel: mappings_channel, version: mappings_version
-    
-    copyIdeResources = true
+neoForge {
+    version = project.neo_version
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
 
     runs {
-        configureEach {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            arg "-mixin.config=${modid}.mixins.json"
-
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            jvmArgs "-Xms8G", "-Xmx12G", "-XX:+AllowEnhancedClassRedefinition", "-XX:HotswapAgent=fatjar", "-XX:+UseG1GC", "-XX:+UnlockExperimentalVMOptions", "-XX:MaxGCPauseMillis=100", "-XX:+DisableExplicitGC", "-XX:TargetSurvivorRatio=90", "-XX:G1NewSizePercent=35", "-XX:G1MaxNewSizePercent=60", "-XX:G1MixedGCLiveThresholdPercent=50", "-XX:+AlwaysPreTouch", "-Dterminal.ansi=true", "-Dmixin.debug.export=true"
-            mods {
-                modid {
-                    source sourceSets.main
-                }
-            }
-        }
-
         client {
-            args '--username', "ManMeme####"
-            property 'forge.enabledGameTestNamespaces', modid
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.modid
         }
+
         server {
-            property 'forge.enabledGameTestNamespaces', modid
-        }
-        gameTestServer {
-            property 'forge.enabledGameTestNamespaces', modid
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.modid
         }
 
         data {
-            args '--mod', modid, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            data()
+            programArguments.addAll '--mod', project.modid, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${modid}" {
+            sourceSet(sourceSets.main)
         }
     }
 }
 
-sourceSets.main.resources {
-    srcDir 'src/generated/resources'
-    ext.refMap = "main.refmap.json"
-}
-
-mixin {
-    add sourceSets.main, "${modid}.refmap.json"
-
-    config "${modid}.mixins.json"
-}
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    mavenLocal()
     maven {
-        name = "CurseMaven Maven"
-        url = "https://www.cursemaven.com"
-    }
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-    }
-    maven {
-        name = "Geckolib Maven"
+        name = "GeckoLib Maven"
         url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
+        content { includeGroup "software.bernie.geckolib" }
     }
     maven {
         name = "KosmX Maven"
         url = "https://maven.kosmx.dev/"
-    }
-
-    maven {
-        name = "BlameJared Maven"
-        url = "https://maven.blamejared.com/"
+        content { includeGroupByRegex "dev\\.kosmx.*" }
     }
     maven {
-        name = "ModMaven"
-        url = "https://modmaven.dev"
+        name = "CurseMaven"
+        url = "https://www.cursemaven.com"
+        content { includeGroup "curse.maven" }
     }
     maven {
-		name = "RyanLiptak Maven"
-		url = "https://maven.ryanliptak.com/"
-    }
-    maven {
-        name = "100Media Maven"
-        url = "https://maven.100media.dev/"
-    }
-    maven {
-        name = "IllusiveC4 Maven"
-        url = "https://maven.theillusivec4.top/"
-    }
-    maven {
-        name = "Iron's Maven - Release"
-        url = "https://code.redspace.io/releases"
-    }
-
-    maven {
-        name = "Iron's Maven - Snapshots"
-        url = "https://code.redspace.io/snapshots"
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content { includeGroup "maven.modrinth" }
     }
 }
 
-jarJar.enable()
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
 
 dependencies {
-    // Base
-    minecraft("net.minecraftforge:forge:${mc_version}-${forge_version}")
-    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")) {
-        jarJar.ranged(it, "[0.5.0,)")
-    }
-
     // Dependencies (Required)
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version}:${geckolib_version}")
-    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}")
-    implementation(jarJar fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")) {
-        jarJar.ranged(it, "[${capabilitysyncer_version},)")
-    }
-
-    // Dependencies (Integrations)
-    implementation fg.deobf('maven.modrinth:better-combat:1.8.4+1.20.1-forge')
-    implementation fg.deobf("curse.maven:cloth-config-348521:4973441")
-    implementation fg.deobf("curse.maven:simply-swords-659887:5116912")
-    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
-    implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.7.0+1.20.1")
-    implementation fg.deobf("io.redspace.ironsspellbooks:irons_spellbooks:1.20.1-3.0.1")
-    implementation fg.deobf("top.theillusivec4.caelus:caelus-forge:3.1.0+1.20")
-
-    // Dependencies (Extras)
-    //runtimeOnly fg.deobf("curse.maven:aaa-particles-979809:5517940")
-    runtimeOnly fg.deobf("curse.maven:just-enough-resources-jer-240630:${jer_version}")
-    runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:${jeed_version}")
-    runtimeOnly fg.deobf("curse.maven:config-menus-forge-544048:${config_menus_version}")
-    runtimeOnly fg.deobf("curse.maven:catalogue-459701:${catalogue_version}")
-    runtimeOnly fg.deobf("curse.maven:gamemenumodoption-353051:${gmmo_version}")
-    runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_version}")
-    runtimeOnly fg.deobf("squeek.appleskin:appleskin-forge:${appleskin_version}")
-
-    runtimeOnly fg.deobf("curse.maven:passive-skill-tree-850298:5367713")
-    runtimeOnly fg.deobf("curse.maven:item-production-lib-950401:5114036")
-    runtimeOnly fg.deobf("curse.maven:curios-309927:5367944")
-    runtimeOnly fg.deobf("curse.maven:attributefix-280510:4911084")
-    runtimeOnly fg.deobf("curse.maven:placebo-283644:5098182")
-    implementation fg.deobf("curse.maven:apothic-attributes-898963:5340012")
-    implementation fg.deobf("curse.maven:apotheosis-313970:5317303")
-    runtimeOnly fg.deobf("curse.maven:mmmmmmmmmmmm-225738:5319203")
-    runtimeOnly fg.deobf("curse.maven:selene-499980:5068161")
-    runtimeOnly fg.deobf("curse.maven:lendercataclysm-551586:5409421")
-    runtimeOnly fg.deobf("curse.maven:lionfish-api-1001614:5363774")
-    runtimeOnly fg.deobf("curse.maven:xenon-564239:5374393")
-    //implementation fg.deobf("curse.maven:oculus-581495:5080444")
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    implementation "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
 }
-
-tasks.named('processResources', ProcessResources).configure {
-    def props = new Properties()
-
-    file('gradle.properties').withInputStream { props.load(it) }
-
-    // Filter out any non-String values and system properties
-    def replaceProperties = [:]
-
-    props.each { key, value ->
-        if (value instanceof String) {
-            replaceProperties.put(key, value)
-        }
-    }
-
-    inputs.properties(replaceProperties)
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta', '*.mixins.json']) {
-        expand replaceProperties + [project: project]
-    }
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-tasks.named('jar', Jar).configure {
-    manifest {
-        attributes([
-                'Specification-Title'     : mod_name,
-                'Specification-Vendor'    : mod_authors,
-                'Specification-Version'   : mod_version,
-                'Implementation-Title'    : mod_name,
-                'Implementation-Version'  : mod_version,
-                'Implementation-Vendor'   : mod_authors,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'MixinConfigs'		  	  : "${modid}.mixins.json"
-        ])
-    }
-    finalizedBy("reobfJar")
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            group = mod_group
-            artifactId = base.archivesName.get()
-            version = mod_version
-
-            from components.java
-            jarJar.component(it)
-        }
-    }
-
-    repositories {
-        maven {
-
-        }
-    }
-}
-
-publishMods {
-    file = tasks.jarJar.archiveFile
-    changelog = file("CHANGELOG.md").getText()
-    version = "${mc_version}-${mod_version}"
-    displayName = "${mod_name} v${mc_version}-${mod_version}"
-    type = STABLE
-
-    modLoaders.add("forge")
-
-    curseforge {
-        projectId = "872712"
-        projectSlug = "celestisynth"
-        accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
-        announcementTitle = "New Celestisynth CurseForge Release! [v${mc_version}-${mod_version}]"
-
-        getMinecraftVersions().add(mc_version)
-        requires("geckolib")
-        requires("playeranimator")
-    }
-
-    modrinth {
-        projectId = "2ocGk7mG"
-        accessToken = providers.environmentVariable("MODRINTH_API_KEY")
-        announcementTitle = "New Celestisynth Modrinth Release! [v${mc_version}-${mod_version}]"
-
-        getMinecraftVersions().add(mc_version)
-        requires("geckolib")
-        requires("playeranimator")
-    }
-}
-
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xmaxerrs', '5000']
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

@@ -30,7 +30,7 @@ public class KeresShadowRenderer extends EntityRenderer<KeresShadow> {
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) - 90.0F));
         ItemStack item = new ItemStack(CSItems.KERES.get());
-        item.getOrCreateTag().putBoolean("shadow", true);
+        net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.CUSTOM_DATA, item, tag -> tag.putBoolean("shadow", true));
         this.itemRenderer.renderStatic(item, ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, poseStack, buffer, entity.level(), 0);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, light);

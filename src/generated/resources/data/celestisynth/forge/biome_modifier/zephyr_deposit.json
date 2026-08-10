@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#forge:is_mountain",
-  "features": "celestisynth:zephyr_deposit",
-  "step": "surface_structures"
-}

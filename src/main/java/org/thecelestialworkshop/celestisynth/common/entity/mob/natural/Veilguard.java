@@ -15,6 +15,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -27,10 +28,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
@@ -162,18 +163,20 @@ public class Veilguard extends Monster implements GeoEntity, FixedMovesetEntity,
     public boolean doHurtTarget(Entity pEntity) {
         float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
         if (pEntity instanceof LivingEntity living) {
-            f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), living.getMobType());
             if (this.getAction() == ACTION_MELEE) {
                 f = f + (living.getHealth() * 0.2F);
             }
         }
-        int i = EnchantmentHelper.getFireAspect(this);
+        int i = org.thecelestialworkshop.celestisynth.api.item.CSWeaponUtil.getEnchantmentLevel(this, this.getMainHandItem(), net.minecraft.world.item.enchantment.Enchantments.FIRE_ASPECT);
         if (i > 0) {
-            pEntity.setSecondsOnFire(i * 4);
+            pEntity.igniteForSeconds(i * 4);
         }
-        boolean flag = pEntity.hurt(this.damageSources().mobAttack(this), f);
+        DamageSource damageSource = this.damageSources().mobAttack(this);
+        boolean flag = pEntity.hurt(damageSource, f);
         if (flag) {
-            this.doEnchantDamageEffects(this, pEntity);
+            if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                EnchantmentHelper.doPostAttackEffects(serverLevel, pEntity, damageSource);
+            }
             this.setLastHurtMob(pEntity);
         }
         return flag;
@@ -228,9 +231,9 @@ public class Veilguard extends Monster implements GeoEntity, FixedMovesetEntity,
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ACTION, 0);
-        this.entityData.define(ANIMATION_TICK, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ACTION, 0);
+        builder.define(ANIMATION_TICK, 0);
     }
 }

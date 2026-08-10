@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraftforge.client.event.RenderGuiEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import org.joml.Matrix4f;
 import org.thecelestialworkshop.celestisynth.api.mixin.PlayerMixinSupport;
 import org.thecelestialworkshop.celestisynth.manager.CSConfigManager;
-import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.Color;
 
 public class CSGuiRenderer {
     public RenderGuiEvent event;
@@ -32,11 +32,11 @@ public class CSGuiRenderer {
     }
 
     public int getWidth() {
-        return event.getWindow().getWidth() / 2;
+        return Minecraft.getInstance().getWindow().getWidth() / 2;
     }
 
     public int getHeight() {
-        return event.getWindow().getHeight() / 2;
+        return Minecraft.getInstance().getWindow().getHeight() / 2;
     }
 
     public void renderGuiAdditions() {
@@ -62,7 +62,7 @@ public class CSGuiRenderer {
                     float txt = textLength / 2F;
                     float xOffset = -(getWidth() / 8F) * 1.3F;
                     float yOffset = -((getHeight() / 8F) * 1.3F) + 7.5F;
-                    font.drawInBatch8xOutline(text.getVisualOrderText(), pointerX + xOffset - txt, pointerY + yOffset, pulse.argbInt(), modifiedPulse.argbInt(), poseMatrix.scale(1.5F), buffer, LightTexture.FULL_BRIGHT);
+                    font.drawInBatch8xOutline(text.getVisualOrderText(), pointerX + xOffset - txt, pointerY + yOffset, pulse.getColor(), modifiedPulse.getColor(), poseMatrix.scale(1.5F), buffer, LightTexture.FULL_BRIGHT);
                     poseMatrix.normal().scale(1.5F);
                 }
             }

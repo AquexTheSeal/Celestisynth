@@ -40,7 +40,7 @@ public class FrostboundShard extends ThrowableProjectile {
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         if (pResult.getEntity() instanceof LivingEntity target && pResult.getEntity() != this.getOwner()) {
-            target.getCapability(CSEntityCapabilityProvider.CAPABILITY).ifPresent(data -> data.setFrostbound(data.getFrostbound() + 20));
+            CSEntityCapabilityProvider.get(target).ifPresent(data -> data.setFrostbound(data.getFrostbound() + 20));
             if (getOwner() instanceof Player player) {
                 target.hurt(CSDamageSources.instance(level()).rapidPlayerAttack(player), 2F);
             } else {
@@ -58,6 +58,6 @@ public class FrostboundShard extends ThrowableProjectile {
     }
 
     @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
     }
 }

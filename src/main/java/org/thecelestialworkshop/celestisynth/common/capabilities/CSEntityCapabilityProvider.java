@@ -1,41 +1,57 @@
 package org.thecelestialworkshop.celestisynth.common.capabilities;
 
 import org.thecelestialworkshop.celestisynth.Celestisynth;
+import org.thecelestialworkshop.celestisynth.common.network.s2c.EntityCapabilitySyncPacket;
+import org.thecelestialworkshop.celestisynth.common.registry.CSCapabilities;
 import org.thecelestialworkshop.celestisynth.manager.CSNetworkManager;
-import dev._100media.capabilitysyncer.core.CapabilityAttacher;
-import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
-public class CSEntityCapabilityProvider extends CapabilityAttacher {
-    private static final Class<CSEntityCapability> CAPABILITY_CLASS = CSEntityCapability.class;
-    public static Capability<CSEntityCapability> CAPABILITY = getCapability(new CapabilityToken<>(){});
-    public static final ResourceLocation CS_ENTITY_CAP_RL = Celestisynth.prefix(CSEntityCapability.ID);
+import java.util.Optional;
 
-    @SuppressWarnings("ConstantConditions")
-    @Nullable
+/**
+ * Attachment access + sync triggers (start-tracking, login, respawn,
+ * dimension change), formerly handled by the CapabilitySyncer library.
+ */
+public class CSEntityCapabilityProvider {
+    public static final ResourceLocation CS_ENTITY_CAP_RL = Celestisynth.prefix("entity_data");
+
     public static CSEntityCapability unwrap(LivingEntity entity) {
-        return get(entity).orElse(null);
+        return entity.getData(CSCapabilities.CS_ENTITY_DATA);
     }
 
-    public static LazyOptional<CSEntityCapability> get(LivingEntity entity) {
-        return entity.getCapability(CAPABILITY);
+    public static Optional<CSEntityCapability> get(LivingEntity entity) {
+        return Optional.of(unwrap(entity));
     }
 
-    private static void attach(AttachCapabilitiesEvent<Entity> event, LivingEntity entity) {
-        genericAttachCapability(event, new CSEntityCapability(entity), CAPABILITY, CS_ENTITY_CAP_RL);
+    @SubscribeEvent
+    public static void onStartTracking(PlayerEvent.StartTracking event) {
+        if (event.getTarget() instanceof LivingEntity target && event.getEntity() instanceof ServerPlayer player) {
+            CSNetworkManager.sendToPlayer(new EntityCapabilitySyncPacket(target.getId(), unwrap(target).writeSyncTag()), player);
+        }
     }
 
-    public static void register() {
-        CapabilityAttacher.registerCapability(CAPABILITY_CLASS);
-        CapabilityAttacher.registerEntityAttacher(LivingEntity.class, CSEntityCapabilityProvider::attach, CSEntityCapabilityProvider::get, false);
-        SimpleEntityCapabilityStatusPacket.register(CSNetworkManager.INSTANCE, CSNetworkManager.PACKET_ID++);
-        SimpleEntityCapabilityStatusPacket.registerRetriever(Celestisynth.prefix(CSEntityCapability.ID), CSEntityCapabilityProvider::unwrap);
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        syncSelf(event);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        syncSelf(event);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        syncSelf(event);
+    }
+
+    private static void syncSelf(PlayerEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            CSNetworkManager.sendToPlayer(new EntityCapabilitySyncPacket(player.getId(), unwrap(player).writeSyncTag()), player);
+        }
     }
 }

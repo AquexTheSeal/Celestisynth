@@ -17,10 +17,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 
 public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
     public static final String BB_COMBO_POINTS = "cs.bbCombo";
@@ -67,7 +67,7 @@ public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
     public void inventoryTick(ItemStack itemStack, Level level, Entity owner, int itemSlot, boolean isSelected) {
         super.inventoryTick(itemStack, level, owner, itemSlot, isSelected);
 
-        CompoundTag extrasData = itemStack.getOrCreateTagElement(CS_EXTRAS_ELEMENT);
+        CompoundTag extrasData = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getOrCreateLiveTag(itemStack, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_EXTRAS);
 
         if (owner instanceof Player playerOwner && (isSelected || playerOwner.getOffhandItem().getItem() instanceof BreezebreakerItem)) sendExpandingParticles(level, ParticleTypes.END_ROD, owner.getX(), owner.getY(), owner.getZ(), 1, 0.1F);
         if (extrasData.getBoolean(AT_BUFF_STATE)) {
@@ -92,7 +92,7 @@ public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     @Override
-    public void onPlayerHurt(LivingHurtEvent event, ItemStack stack) {
+    public void onPlayerHurt(LivingIncomingDamageEvent event, ItemStack stack) {
         if (event.getSource() == event.getEntity().damageSources().fall()) {
             event.setCanceled(true);
         } else {
@@ -101,7 +101,7 @@ public class BreezebreakerItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
+    public int getUseDuration(@NotNull ItemStack stack, net.minecraft.world.entity.LivingEntity useEntity) {
         return 72000;
     }
 

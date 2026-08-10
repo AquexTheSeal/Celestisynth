@@ -43,13 +43,13 @@ public class RainfallLaserRenderer extends EntityRenderer<RainfallArrow> {
         poseStack.pushPose();
         poseStack.scale(scale, scale + extension, scale);
         VertexConsumer consumer = buffer.getBuffer(RenderType.eyes(ARROW_TEXTURE));
-        this.model.renderToBuffer(poseStack, consumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+        this.model.renderToBuffer(poseStack, consumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1);
         poseStack.popPose();
 
         poseStack.pushPose();
         poseStack.scale(scale + .25F,  scale + extension, scale + .25F);
         VertexConsumer consumer1 = buffer.getBuffer(RenderType.eyes(ARROW_TEXTURE));
-        this.model.renderToBuffer(poseStack, consumer1, light, OverlayTexture.NO_OVERLAY, entity.isImbueQuasar() ? 0 : 1, entity.isImbueQuasar() ? 0.3F : 1, entity.isImbueQuasar() ? 1 : 0, 1F);
+        this.model.renderToBuffer(poseStack, consumer1, light, OverlayTexture.NO_OVERLAY, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1F, entity.isImbueQuasar() ? 0F : 1F, entity.isImbueQuasar() ? 0.3F : 1F, entity.isImbueQuasar() ? 1F : 0F));
         poseStack.popPose();
 
         super.render(entity, yaw, partialTicks, poseStack, buffer, light);

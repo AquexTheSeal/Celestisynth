@@ -99,9 +99,9 @@ public class SkillCastFrostboundIceCast extends EffectControllerEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(CAST_LEVEL, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(CAST_LEVEL, 0);
     }
 
     public void setCastLevel(int castLevel) {

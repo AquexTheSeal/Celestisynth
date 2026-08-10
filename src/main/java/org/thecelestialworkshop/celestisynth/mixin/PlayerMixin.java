@@ -140,7 +140,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerMixinSup
 
     private boolean cancelCI(ItemStack stack) {
         if (stack.getItem() instanceof CSWeapon) {
-            CompoundTag controllerTag = stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+            CompoundTag controllerTag = org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.getLiveTag(stack, org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER);
             if (controllerTag != null) return controllerTag.getBoolean(CSWeapon.ANIMATION_BEGUN_KEY);
         }
 

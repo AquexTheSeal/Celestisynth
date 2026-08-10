@@ -16,7 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
-import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.Color;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
         getTagController().putBoolean(STARTED, true);
         getTagController().putFloat(HEAD_ROT_LOCK_KEY, player.getYRot());
         useAndDamageItem(getStack(), level, player, 3);
-        this.chantMessage(player, "solaris2", 30, Color.WHITE.argbInt());
+        this.chantMessage(player, "solaris2", 30, Color.WHITE.getColor());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
         }
 
         if (getTimerProgress() == 23) {
-            this.chantMessage(player, "solaris3", 20, Color.CYAN.argbInt());
+            this.chantMessage(player, "solaris3", 20, Color.CYAN.getColor());
         }
 
         if (getTimerProgress() > 0 && getTimerProgress() < 24) {
@@ -85,12 +85,12 @@ public class SolarisSoulDashAttack extends WeaponAttackInstance {
         } else if (getTimerProgress() > 23 && getTimerProgress() < 60) {
             BlockPos blockPosForAttack = player.blockPosition();
             int range = 7;
-            List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
+            List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, AABB.encapsulatingFullBlocks(blockPosForAttack.offset(-(range), -(range), -(range)), blockPosForAttack.offset(range, range, range)));
 
             for (LivingEntity target : entities) {
                 if (target != player && !player.isAlliedTo(target) && target.isAlive()) {
                     this.attributeDependentAttack(player, target, stack, 0.18F, AttackHurtTypes.RAPID_NO_KB);
-                    target.setSecondsOnFire(5);
+                    target.igniteForSeconds(5);
                 }
             }
 

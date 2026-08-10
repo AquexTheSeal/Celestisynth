@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.Color;
 
 public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<CSEffectEntity> {
 
@@ -26,7 +26,7 @@ public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<C
     }
 
     @Override
-    public void preRender(PoseStack poseStack, CSEffectEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void preRender(PoseStack poseStack, CSEffectEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
         float lerpBodyRot = Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot()) - 165;
         float ageInTicks = animatable.tickCount + partialTick;
         applyRotations(animatable, poseStack, ageInTicks, lerpBodyRot, partialTick);
@@ -34,14 +34,14 @@ public class CSEffectEntityRenderer extends SilencedRotationProjectileRenderer<C
             poseStack.mulPose(Axis.XP.rotationDegrees(animatable.getRotationX()));
             poseStack.mulPose(Axis.ZP.rotationDegrees(animatable.getRotationZ()));
         }
-        CSVisualSpecialProperties.set(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        CSVisualSpecialProperties.set(animatable, poseStack, partialTick, bufferSource, buffer, packedLight, packedOverlay, colour);
+        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
     }
 
     @Override
-    public void renderFinal(PoseStack poseStack, CSEffectEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
-        super.renderFinal(poseStack, animatable, model, bufferSource, bufferSource.getBuffer(RenderType.entityTranslucentEmissive(getTextureLocation(animatable))), partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderFinal(PoseStack poseStack, CSEffectEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int colour) {
+        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, colour);
+        super.renderFinal(poseStack, animatable, model, bufferSource, bufferSource.getBuffer(RenderType.entityTranslucentEmissive(getTextureLocation(animatable))), partialTick, packedLight, packedOverlay, colour);
     }
 
     @Override

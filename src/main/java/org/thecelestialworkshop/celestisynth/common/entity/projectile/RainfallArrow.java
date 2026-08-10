@@ -30,7 +30,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 import org.joml.Vector3f;
 
 public class RainfallArrow extends AbstractArrow implements CSWeaponUtil {
@@ -48,11 +47,16 @@ public class RainfallArrow extends AbstractArrow implements CSWeaponUtil {
     }
 
     public RainfallArrow(Level pLevel, double pX, double pY, double pZ) {
-        super(CSEntityTypes.RAINFALL_ARROW.get(), pX, pY, pZ, pLevel);
+        super(CSEntityTypes.RAINFALL_ARROW.get(), pX, pY, pZ, pLevel, new ItemStack(net.minecraft.world.item.Items.ARROW), null);
     }
 
     public RainfallArrow(Level pLevel, LivingEntity pShooter) {
-        super(CSEntityTypes.RAINFALL_ARROW.get(), pShooter, pLevel);
+        super(CSEntityTypes.RAINFALL_ARROW.get(), pShooter, pLevel, new ItemStack(net.minecraft.world.item.Items.ARROW), null);
+    }
+
+    @Override
+    protected ItemStack getDefaultPickupItem() {
+        return new ItemStack(net.minecraft.world.item.Items.ARROW);
     }
 
     public RainfallArrow(AbstractArrow arrow) {
@@ -93,7 +97,7 @@ public class RainfallArrow extends AbstractArrow implements CSWeaponUtil {
             if (pResult instanceof BlockHitResult || (pResult instanceof EntityHitResult ehr && ehr.getEntity() instanceof LivingEntity)) {
                 for (Entity potentialTarget : rawRainfallItem.iterateEntities(level(), rawRainfallItem.createAABB(hitPos, 4))) {
                     if (potentialTarget instanceof LivingEntity target && potentialTarget != getOwner()) {
-                        if (isFlaming()) target.setSecondsOnFire(2);
+                        if (isFlaming()) target.igniteForSeconds(2);
                         target.hurt(damageSources().indirectMagic(this, getOwner() != null ? getOwner() : null), 2);
                         target.invulnerableTime = 0;
                     }
@@ -234,12 +238,12 @@ public class RainfallArrow extends AbstractArrow implements CSWeaponUtil {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(IS_STRONG, false);
-        this.entityData.define(IS_FLAMING, false);
-        this.entityData.define(ORIGIN, new Vector3f(0, 0, 0));
-        this.entityData.define(SHOULD_IMBUE_QUASAR, true);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(IS_STRONG, false);
+        builder.define(IS_FLAMING, false);
+        builder.define(ORIGIN, new Vector3f(0, 0, 0));
+        builder.define(SHOULD_IMBUE_QUASAR, true);
     }
 
     public boolean isStrong() {
@@ -274,8 +278,4 @@ public class RainfallArrow extends AbstractArrow implements CSWeaponUtil {
         this.entityData.set(SHOULD_IMBUE_QUASAR, imbueAllow);
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
-}

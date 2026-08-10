@@ -1,101 +1,58 @@
 package org.thecelestialworkshop.celestisynth.manager;
 
-import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.common.network.c2s.ShakeScreenForAllPacket;
 import org.thecelestialworkshop.celestisynth.common.network.c2s.UpdateAnimationToAllPacket;
 import org.thecelestialworkshop.celestisynth.common.network.c2s.UpdateParticlePacket;
 import org.thecelestialworkshop.celestisynth.common.network.s2c.*;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public class CSNetworkManager {
-    public static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder.named(Celestisynth.prefix("messages"))
-            .networkProtocolVersion(() -> "1.0")
-            .clientAcceptedVersions(s -> true)
-            .serverAcceptedVersions(s -> true)
-            .simpleChannel();
-    public static int PACKET_ID = 0;
 
     @SubscribeEvent
-    public static void registerPackets(FMLCommonSetupEvent event) {
-        registerC2SPackets();
-        registerS2CPackets();
+    public static void registerPackets(final RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar("1");
+
+        // C2S
+        registrar.playToServer(SetAnimationPacket.TYPE, SetAnimationPacket.STREAM_CODEC, SetAnimationPacket::handle);
+        registrar.playToServer(ShakeScreenForAllPacket.TYPE, ShakeScreenForAllPacket.STREAM_CODEC, ShakeScreenForAllPacket::handle);
+        registrar.playToServer(UpdateParticlePacket.TYPE, UpdateParticlePacket.STREAM_CODEC, UpdateParticlePacket::handle);
+
+        // S2C
+        registrar.playToClient(ChangeCameraTypePacket.TYPE, ChangeCameraTypePacket.STREAM_CODEC, ChangeCameraTypePacket::handle);
+        registrar.playToClient(ShakeScreenToAllPacket.TYPE, ShakeScreenToAllPacket.STREAM_CODEC, ShakeScreenToAllPacket::handle);
+        registrar.playToClient(UpdateGroupedParticlePacket.TYPE, UpdateGroupedParticlePacket.STREAM_CODEC, UpdateGroupedParticlePacket::handle);
+        registrar.playToClient(UpdateAnimationToAllPacket.TYPE, UpdateAnimationToAllPacket.STREAM_CODEC, UpdateAnimationToAllPacket::handle);
+        registrar.playToClient(BlockEntitySetSlotPacket.TYPE, BlockEntitySetSlotPacket.STREAM_CODEC, BlockEntitySetSlotPacket::handle);
+        registrar.playToClient(EntityCapabilitySyncPacket.TYPE, EntityCapabilitySyncPacket.STREAM_CODEC, EntityCapabilitySyncPacket::handle);
     }
 
-    private static void registerC2SPackets() {
-        INSTANCE.messageBuilder(SetAnimationPacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_SERVER)
-                .decoder(SetAnimationPacket::new)
-                .encoder(SetAnimationPacket::toBytes)
-                .consumerMainThread(SetAnimationPacket::handle)
-                .add();
-
-        INSTANCE.messageBuilder(ShakeScreenForAllPacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_SERVER)
-                .decoder(ShakeScreenForAllPacket::new)
-                .encoder(ShakeScreenForAllPacket::toBytes)
-                .consumerMainThread(ShakeScreenForAllPacket::handle)
-                .add();
-
-        INSTANCE.messageBuilder(UpdateParticlePacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_SERVER)
-                .decoder(UpdateParticlePacket::new)
-                .encoder(UpdateParticlePacket::toBytes)
-                .consumerMainThread(UpdateParticlePacket::handle)
-                .add();
+    public static void sendToServer(CustomPacketPayload message) {
+        PacketDistributor.sendToServer(message);
     }
 
-    private static void registerS2CPackets() {
-        INSTANCE.messageBuilder(ChangeCameraTypePacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(ChangeCameraTypePacket::new)
-                .encoder(ChangeCameraTypePacket::toBytes)
-                .consumerMainThread(ChangeCameraTypePacket::handle)
-                .add();
-
-        INSTANCE.messageBuilder(ShakeScreenToAllPacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(ShakeScreenToAllPacket::new)
-                .encoder(ShakeScreenToAllPacket::toBytes)
-                .consumerMainThread(ShakeScreenToAllPacket::handle)
-                .add();
-
-        INSTANCE.messageBuilder(UpdateGroupedParticlePacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(UpdateGroupedParticlePacket::new)
-                .encoder(UpdateGroupedParticlePacket::toBytes)
-                .consumerMainThread(UpdateGroupedParticlePacket::handle)
-                .add();
-
-        INSTANCE.messageBuilder(UpdateAnimationToAllPacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(UpdateAnimationToAllPacket::new)
-                .encoder(UpdateAnimationToAllPacket::toBytes)
-                .consumerMainThread(UpdateAnimationToAllPacket::handle)
-                .add();
-
-        INSTANCE.messageBuilder(BlockEntitySetSlotPacket.class, PACKET_ID++, NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(BlockEntitySetSlotPacket::new)
-                .encoder(BlockEntitySetSlotPacket::toBytes)
-                .consumerMainThread(BlockEntitySetSlotPacket::handle)
-                .add();
+    public static void sendToPlayer(CustomPacketPayload message, ServerPlayer player) {
+        PacketDistributor.sendToPlayer(player, message);
     }
 
-    public static <MSG> void sendToServer(MSG message) {
-        INSTANCE.sendToServer(message);
+    public static void sendToPlayersNearby(CustomPacketPayload message, ServerPlayer player) {
+        PacketDistributor.sendToPlayersTrackingEntity(player, message);
     }
 
-    public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
-        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
+    public static void sendToPlayersNearbyAndSelf(CustomPacketPayload message, ServerPlayer player) {
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, message);
     }
 
-    public static <MSG> void sendToPlayersNearby(MSG message, ServerPlayer player) {
-        INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> player), message);
+    public static void sendToPlayersTrackingEntityAndSelf(CustomPacketPayload message, Entity entity) {
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, message);
     }
 
-    public static <MSG> void sendToPlayersNearbyAndSelf(MSG message, ServerPlayer player) {
-        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), message);
-    }
-
-    public static <MSG> void sendToAll(MSG message) {
-        INSTANCE.send(PacketDistributor.ALL.noArg(), message);
+    public static void sendToAll(CustomPacketPayload message) {
+        PacketDistributor.sendToAllPlayers(message);
     }
 }

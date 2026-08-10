@@ -42,13 +42,13 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
         super(pContext);
     }
 
-    @Inject(method = "render*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/EntityModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V", ordinal = 0, shift = At.Shift.AFTER))
+    @Inject(method = "render*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/EntityModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V", ordinal = 0, shift = At.Shift.AFTER))
     public void celestisynth$render(T pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
         CSEntityCapabilityProvider.get(pEntity).ifPresent(data -> {
             if (data.getFrostbound() > 0) {
                 VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.eyes(this.getTextureLocation(pEntity)));
                 int i = getOverlayCoords(pEntity, this.getWhiteOverlayProgress(pEntity, pPartialTicks));
-                this.model.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, i, 0F, 0.3F, 1.0F, 1.0F);
+                this.model.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, i, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, 0F, 0.3F, 1.0F));
             }
         });
     }

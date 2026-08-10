@@ -18,7 +18,7 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import org.joml.Matrix4f;
-import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.Color;
 
 import java.util.Optional;
 
@@ -86,8 +86,8 @@ public class AbilityComponent {
                 pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
                 order += 12;
             }
-            pGuiGraphics.fill(pX - 10, pY + ICON_OFFSETED_HEIGHT - 3, pX + this.getWidth(pFont) + 10, pY + this.getConditionHeight() + ICON_OFFSETED_HEIGHT + this.descriptionWordWrapHeight() + 9, Color.BLACK.argbInt());
-            pGuiGraphics.renderOutline(pX - 10, pY + ICON_OFFSETED_HEIGHT - 4, getWidth(pFont) + 20, this.getConditionHeight() + this.descriptionWordWrapHeight() + 13, Color.WHITE.argbInt());
+            pGuiGraphics.fill(pX - 10, pY + ICON_OFFSETED_HEIGHT - 3, pX + this.getWidth(pFont) + 10, pY + this.getConditionHeight() + ICON_OFFSETED_HEIGHT + this.descriptionWordWrapHeight() + 9, Color.BLACK.getColor());
+            pGuiGraphics.renderOutline(pX - 10, pY + ICON_OFFSETED_HEIGHT - 4, getWidth(pFont) + 20, this.getConditionHeight() + this.descriptionWordWrapHeight() + 13, Color.WHITE.getColor());
         }
 
         public boolean checkIcon(ResourceLocation icon) {
@@ -102,16 +102,16 @@ public class AbilityComponent {
 
         public Component highlightedName() {
             int tickCount = (int) (Minecraft.getInstance().player.tickCount * 0.5);
-            return Component.translatable("item.celestisynth." + data.itemName() + "." + data.side().getAsText() + "_" + data.highlightedAbilityIndex()).withStyle(Style.EMPTY.withColor(ExtraUtil.getCelestialColor(tickCount).argbInt()));
+            return Component.translatable("item.celestisynth." + data.itemName() + "." + data.side().getAsText() + "_" + data.highlightedAbilityIndex()).withStyle(Style.EMPTY.withColor(ExtraUtil.getCelestialColor(tickCount).getColor()));
         }
 
         public Component highlightedDescription() {
             String extension = data.side() == Side.PASSIVE ? ".passive_desc_" : ".desc_";
-            return Component.translatable("item.celestisynth." + data.itemName() + extension + data.highlightedAbilityIndex()).withStyle(Style.EMPTY.withColor(Color.GRAY.argbInt()));
+            return Component.translatable("item.celestisynth." + data.itemName() + extension + data.highlightedAbilityIndex()).withStyle(Style.EMPTY.withColor(Color.GRAY.getColor()));
         }
 
         public Component highlightedCondition() {
-            return Component.translatable("item.celestisynth." + data.itemName() + ".condition_" + data.highlightedAbilityIndex()).withStyle(Style.EMPTY.withItalic(true).withColor(Color.DARK_GRAY.argbInt()));
+            return Component.translatable("item.celestisynth." + data.itemName() + ".condition_" + data.highlightedAbilityIndex()).withStyle(Style.EMPTY.withItalic(true).withColor(Color.DARK_GRAY.getColor()));
         }
 
         public int descriptionWordWrapHeight() {

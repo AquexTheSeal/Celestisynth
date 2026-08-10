@@ -30,7 +30,7 @@ public class CelestialCoreItem extends Item {
         if (this == CSItems.CELESTIAL_CORE_HEATED.get()) {
             if (pEntity instanceof Player player && (player.isCreative() || player.isSpectator())) return;
 
-            pEntity.setSecondsOnFire(3);
+            pEntity.igniteForSeconds(3);
         }
     }
 }

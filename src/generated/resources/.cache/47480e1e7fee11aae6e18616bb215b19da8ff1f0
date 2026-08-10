@@ -1,4 +1,4 @@
-// 1.20.1	2024-04-20T19:07:49.8003158	Tags for minecraft:damage_type mod id celestisynth
+// 1.21.1	2026-08-10T13:09:01.8584626	Tags for minecraft:damage_type mod id celestisynth
 c30b8b059cfbe0fa0266550fd350a23f1b8212ea data/celestisynth/tags/damage_type/is_celestial_attack.json
 9b71032fb7a5da59b191e2914a766679f0720930 data/celestisynth/tags/damage_type/pierces_through_all.json
 613c7aefe69b29bbfa25ba4c33b5309e656c5e60 data/minecraft/tags/damage_type/bypasses_armor.json

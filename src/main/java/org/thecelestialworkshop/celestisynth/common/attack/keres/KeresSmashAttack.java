@@ -68,7 +68,7 @@ public class KeresSmashAttack extends WeaponAttackInstance {
             player.fallDistance = 0;
         } else {
             player.setDeltaMovement(0, 0, 0);
-            player.addEffect(new MobEffectInstance(CSMobEffects.HELLBANE.get(), 60, 1));
+            player.addEffect(new MobEffectInstance(CSMobEffects.HELLBANE, 60, 1));
             if (!level.isClientSide()) {
                 SkillCastKeresSmash smash = CSEntityTypes.KERES_SMASH.get().create(level);
                 smash.setOwnerUUID(player.getUUID());

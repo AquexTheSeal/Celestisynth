@@ -16,8 +16,7 @@ public class CSMobEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        super.applyEffectTick(pLivingEntity, pAmplifier);
+    public boolean applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         if (this == CSMobEffects.CURSEBANE.get()) {
             for (int i = 0; i < 36; i++) {
                 int j = i * 10;
@@ -25,5 +24,6 @@ public class CSMobEffect extends MobEffect {
                 ParticleUtil.sendParticle(pLivingEntity.level(), CSParticleTypes.KERES_ASH.get(), pLivingEntity.position(), particleVector);
             }
         }
+        return true;
     }
 }

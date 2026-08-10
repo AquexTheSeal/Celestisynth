@@ -3,14 +3,14 @@ package org.thecelestialworkshop.celestisynth.util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.SpawnPlacementType;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.material.Fluids;
 
 public class EntityUtil {
-    public static final SpawnPlacements.Type MONOLITH_SPAWNING_CONDITION = SpawnPlacements.Type.create("any_with_solid_under", (levelReader, blockPos, entityType) ->
-            SpawnPlacements.Type.ON_GROUND.canSpawnAt(levelReader, blockPos, entityType) || levelReader.getFluidState(blockPos).is(Fluids.WATER)
-    );
+    public static final SpawnPlacementType MONOLITH_SPAWNING_CONDITION = (levelReader, blockPos, entityType) ->
+            SpawnPlacementTypes.ON_GROUND.isSpawnPositionOk(levelReader, blockPos, entityType) || levelReader.getFluidState(blockPos).is(Fluids.WATER);
 
     public static boolean isNotAPetOf(Entity owner, LivingEntity target) {
         if (target instanceof OwnableEntity ownable) {

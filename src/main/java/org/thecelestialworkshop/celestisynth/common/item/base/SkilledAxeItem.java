@@ -1,48 +1,26 @@
 package org.thecelestialworkshop.celestisynth.common.item.base;
 
-import org.thecelestialworkshop.celestisynth.api.item.CSDataPackableStatItem;
 import org.thecelestialworkshop.celestisynth.api.item.CSWeapon;
 import org.thecelestialworkshop.celestisynth.common.attack.base.WeaponAttackInstance;
+import org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.util.Lazy;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.DoubleSupplier;
-import java.util.function.IntSupplier;
-
-public abstract class SkilledAxeItem extends AxeItem implements CSWeapon, CSDataPackableStatItem {
+public abstract class SkilledAxeItem extends AxeItem implements CSWeapon {
     public static final String ATTACK_INDEX_KEY = "cs.AttackIndex";
-    private Lazy<? extends Multimap<Attribute, AttributeModifier>> attributeModMapLazy = Lazy.of(() -> {
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> attrModMapBuilder = ImmutableMultimap.builder();
-
-        attrModMapBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", getAttackDamage() - 1, AttributeModifier.Operation.ADDITION));
-        attrModMapBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", getAttackSpeed().getAsDouble(), AttributeModifier.Operation.ADDITION));
-        attrModMapBuilder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(CSDataPackableStatItem.getKBUUIDMod(), "Weapon modifier", getAttackKnockback().getAsDouble(), AttributeModifier.Operation.ADDITION));
-
-        if (ForgeMod.BLOCK_REACH.isPresent()) attrModMapBuilder.put(ForgeMod.BLOCK_REACH.get(), new AttributeModifier(CSDataPackableStatItem.getBlockReachUUIDMod(), "Weapon modifier", getBlockReach().getAsDouble(), AttributeModifier.Operation.ADDITION));
-        if (ForgeMod.ENTITY_REACH.isPresent()) attrModMapBuilder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(CSDataPackableStatItem.getEntityReachUUIDMod(), "Weapon modifier", getAttackReach().getAsDouble(), AttributeModifier.Operation.ADDITION));
-
-        return attrModMapBuilder.build();
-    });
 
     public SkilledAxeItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
-        super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+        super(pTier, pProperties.attributes(AxeItem.createAttributes(pTier, pAttackDamageModifier, pAttackSpeedModifier)));
     }
 
     public abstract ImmutableList<WeaponAttackInstance> getPossibleAttacks(Player player, ItemStack stack, int useDuration);
@@ -50,10 +28,10 @@ public abstract class SkilledAxeItem extends AxeItem implements CSWeapon, CSData
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack heldStack = player.getItemInHand(interactionHand);
-        CompoundTag data = heldStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = CSDataComponents.getOrCreateLiveTag(heldStack, CSDataComponents.CS_CONTROLLER);
 
         if (!player.getCooldowns().isOnCooldown(heldStack.getItem()) && !data.getBoolean(ANIMATION_BEGUN_KEY)) {
-            if (getUseDuration(heldStack) <= 0) {
+            if (getUseDuration(heldStack, player) <= 0) {
                 int index = 0;
                 for (WeaponAttackInstance attack : getPossibleAttacks(player, heldStack, 0)) {
                     if (attack.getCondition()) {
@@ -80,8 +58,8 @@ public abstract class SkilledAxeItem extends AxeItem implements CSWeapon, CSData
 
     @Override
     public void releaseUsing(ItemStack itemstack, @NotNull Level level, @NotNull LivingEntity entity, int i) {
-        CompoundTag data = itemstack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
-        int dur = this.getUseDuration(itemstack) - i;
+        CompoundTag data = CSDataComponents.getOrCreateLiveTag(itemstack, CSDataComponents.CS_CONTROLLER);
+        int dur = this.getUseDuration(itemstack, entity) - i;
         if (entity instanceof Player player) {
             int index = 0;
             for (WeaponAttackInstance attack : getPossibleAttacks(player, itemstack, dur)) {
@@ -101,7 +79,7 @@ public abstract class SkilledAxeItem extends AxeItem implements CSWeapon, CSData
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
         super.inventoryTick(itemStack, level, entity, itemSlot, isSelected);
-        CompoundTag data = itemStack.getOrCreateTagElement(CS_CONTROLLER_TAG_ELEMENT);
+        CompoundTag data = CSDataComponents.getOrCreateLiveTag(itemStack, CSDataComponents.CS_CONTROLLER);
         if (entity instanceof Player player && data.getBoolean(ANIMATION_BEGUN_KEY)) {
             int animationTimer = data.getInt(ANIMATION_TIMER_KEY);
             data.putInt(ANIMATION_TIMER_KEY, animationTimer + 1);
@@ -119,40 +97,5 @@ public abstract class SkilledAxeItem extends AxeItem implements CSWeapon, CSData
 
     public void setAttackIndex(ItemStack stack, int value) {
         attackController(stack).putInt(ATTACK_INDEX_KEY, value);
-    }
-
-    @Override
-    public IntSupplier getActualAttackDamage() {
-        return null;
-    }
-
-    @Override
-    public DoubleSupplier getAttackSpeed() {
-        return null;
-    }
-
-    @Override
-    public DoubleSupplier getAttackKnockback() {
-        return null;
-    }
-
-    @Override
-    public DoubleSupplier getAttackReach() {
-        return null;
-    }
-
-    @Override
-    public DoubleSupplier getBlockReach() {
-        return null;
-    }
-
-    @Override
-    public Lazy<? extends Multimap<Attribute, AttributeModifier>> getAttributes() {
-        return attributeModMapLazy;
-    }
-
-    @Override
-    public void setAttributes(Lazy<? extends Multimap<Attribute, AttributeModifier>> attributes) {
-        this.attributeModMapLazy = attributes;
     }
 }

@@ -13,8 +13,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 
 public class CSCommandsManager {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext pContext) {
@@ -39,7 +39,7 @@ public class CSCommandsManager {
 
     private static int setAnimation(CommandContext<CommandSourceStack> command, Holder<PlayerAnimationContainer> animation) {
         if (command.getSource().getEntity() instanceof Player player) {
-            CSNetworkManager.sendToAll(new UpdateAnimationToAllPacket(LayerManager.MAIN_LAYER, player.getId(), animation.get().animationId()));
+            CSNetworkManager.sendToAll(new UpdateAnimationToAllPacket(LayerManager.MAIN_LAYER, player.getId(), animation.value().animationId()));
             //command.getSource().sendSuccess(() -> Component.translatable("commands.celestisynth.clear_animation"), false);
         }
         return Command.SINGLE_SUCCESS;

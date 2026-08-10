@@ -1,4 +1,4 @@
-// 1.20.1	2025-08-04T17:11:21.0544812	Tags for minecraft:block mod id celestisynth
-5d9d3bd7683d1c9133b942fe8e571e3b10f46029 data/forge/tags/blocks/needs_netherite_tool.json
-36271311fb4b9ada328ee3a9387560ad58b60bb5 data/minecraft/tags/blocks/mineable/pickaxe.json
-57d9894104c0b412cdea1fe39f2e9646cf7ebb50 data/minecraft/tags/blocks/needs_diamond_tool.json
+// 1.21.1	2026-08-10T13:09:01.8731169	Tags for minecraft:block mod id celestisynth
+36271311fb4b9ada328ee3a9387560ad58b60bb5 data/minecraft/tags/block/mineable/pickaxe.json
+57d9894104c0b412cdea1fe39f2e9646cf7ebb50 data/minecraft/tags/block/needs_diamond_tool.json
+5d9d3bd7683d1c9133b942fe8e571e3b10f46029 data/neoforge/tags/block/needs_netherite_tool.json

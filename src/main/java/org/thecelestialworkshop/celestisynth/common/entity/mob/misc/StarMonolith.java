@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import org.thecelestialworkshop.celestisynth.api.item.CSWeaponUtil;
 import org.thecelestialworkshop.celestisynth.common.entity.base.FixedMovesetEntity;
@@ -41,10 +41,10 @@ import org.thecelestialworkshop.celestisynth.common.entity.helper.MonolithRunes;
 import org.thecelestialworkshop.celestisynth.common.registry.CSItems;
 import org.thecelestialworkshop.celestisynth.common.registry.CSTags;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
@@ -181,8 +181,8 @@ public class StarMonolith extends Mob implements GeoEntity, FixedMovesetEntity, 
     }
 
     @Override
-    public void onAddedToWorld() {
-        super.onAddedToWorld();
+    public void onAddedToLevel() {
+        super.onAddedToLevel();
         this.moveTo(this.getFloorPositionUnderPlayer(level(), this.blockPosition()).above(), 0, 0);
     }
 
@@ -214,7 +214,7 @@ public class StarMonolith extends Mob implements GeoEntity, FixedMovesetEntity, 
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
         if (pReason == MobSpawnType.NATURAL || pReason == MobSpawnType.STRUCTURE || pReason == MobSpawnType.CHUNK_GENERATION) {
             if (level().dimension().equals(Level.OVERWORLD)) {
                 setVariant(VARIANT_OVERWORLD);
@@ -230,11 +230,13 @@ public class StarMonolith extends Mob implements GeoEntity, FixedMovesetEntity, 
                 if (isInCurrentStructure(CSTags.Structures.NETHER_MONOLITH_SPAWN)) setRune(MonolithRunes.BLOOD_RUNE);
             }
         }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
-    public boolean isInCurrentStructure(ResourceKey<Structure> structure) {
-        return this.level() instanceof ServerLevel server && server.structureManager().getStructureWithPieceAt(this.blockPosition(), structure).isValid();
+    public boolean isInCurrentStructure(ResourceKey<Structure> structureKey) {
+        if (!(this.level() instanceof ServerLevel server)) return false;
+        Structure structure = server.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.STRUCTURE).get(structureKey);
+        return structure != null && server.structureManager().getStructureWithPieceAt(this.blockPosition(), structure).isValid();
     }
 
     public boolean isInCurrentStructure(TagKey<Structure> structureTag) {
@@ -323,12 +325,12 @@ public class StarMonolith extends Mob implements GeoEntity, FixedMovesetEntity, 
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ACTION, 0);
-        this.entityData.define(ANIMATION_TICK, 0);
-        this.entityData.define(RUNE, 0);
-        this.entityData.define(VARIANT, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ACTION, 0);
+        builder.define(ANIMATION_TICK, 0);
+        builder.define(RUNE, 0);
+        builder.define(VARIANT, 0);
     }
 
     @Override
@@ -336,25 +338,7 @@ public class StarMonolith extends Mob implements GeoEntity, FixedMovesetEntity, 
         return Integer.MAX_VALUE;
     }
 
-    @Override
-    public boolean canDrownInFluidType(FluidType type) {
-        return false;
-    }
-
-    public void setDeltaMovement(Vec3 motionIn) {
-        super.setDeltaMovement(Vec3.ZERO.add(0, -0.3, 0));
-    }
-
-    public void knockback(double strength, double x, double z) {
-    }
-
-    public boolean isPushedByFluid() {
-        return false;
-    }
-
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    
 
     public boolean isPushable() {
         return false;

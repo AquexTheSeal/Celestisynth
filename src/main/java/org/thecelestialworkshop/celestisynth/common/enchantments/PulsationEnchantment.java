@@ -1,26 +1,43 @@
 package org.thecelestialworkshop.celestisynth.common.enchantments;
 
 import org.thecelestialworkshop.celestisynth.common.registry.CSDamageSources;
+import org.thecelestialworkshop.celestisynth.common.registry.CSDamageTypes;
+import org.thecelestialworkshop.celestisynth.common.registry.CSEnchantments;
 import org.thecelestialworkshop.celestisynth.common.registry.CSParticleTypes;
 import org.thecelestialworkshop.celestisynth.common.registry.CSSoundEvents;
 import org.thecelestialworkshop.celestisynth.util.ParticleUtil;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.phys.Vec3;
 
-public class PulsationEnchantment extends BaseEnchantment {
-    public PulsationEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot[] pApplicableSlots) {
-        super(pRarity, pCategory, pApplicableSlots);
+/**
+ * Pulsation is data-driven as of 1.21 (see {@code data/celestisynth/enchantment/pulsation.json});
+ * this class carries the custom attack effect, fired from the damage event pipeline.
+ */
+public final class PulsationEnchantment {
+
+    private PulsationEnchantment() {
     }
 
+    /** Mirrors the doPostAttack trigger of the 1.20.1 code-based enchantment. */
+    public static void onAttack(LivingEntity pAttacker, Entity pTarget, DamageSource source) {
+        if (pAttacker.level().isClientSide) return;
+        if (!(source.is(DamageTypes.PLAYER_ATTACK) || source.is(DamageTypes.MOB_ATTACK)) || source.is(CSDamageTypes.PULSATION)) return;
 
-    @Override
-    public void doPostAttack(LivingEntity pAttacker, Entity pTarget, int pLevel) {
-        super.doPostAttack(pAttacker, pTarget, pLevel);
+        var holder = CSEnchantments.getHolder(pAttacker.level().registryAccess(), CSEnchantments.PULSATION);
+        if (holder.isEmpty()) return;
 
+        int pLevel = EnchantmentHelper.getItemEnchantmentLevel(holder.get(), pAttacker.getMainHandItem());
+        if (pLevel <= 0) return;
+
+        doPostAttack(pAttacker, pTarget, pLevel);
+    }
+
+    public static void doPostAttack(LivingEntity pAttacker, Entity pTarget, int pLevel) {
         int rngData = pAttacker.getRandom().nextInt(3) + 1;
         if (rngData <= pLevel) {
             Vec3 targetPos = new Vec3(pTarget.getX(), pAttacker.getEyeY(), pTarget.getZ());
@@ -36,22 +53,5 @@ public class PulsationEnchantment extends BaseEnchantment {
                 living.knockback(1 + ((pLevel - 1) * 0.50), Mth.sin(pAttacker.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(pAttacker.getYRot() * Mth.DEG_TO_RAD));
             }
         }
-    }
-
-//    @Override
-//    public void afterAttack(LivingEntity pAttacker, Entity pTarget, ItemStack pStack, int pLevel) {
-//
-//        // Prevents double-execution when both weapons in both hands have this enchantment.
-//        if (pAttacker.getMainHandItem().getAllEnchantments().containsKey(this) && pAttacker.getOffhandItem().getAllEnchantments().containsKey(this)) {
-//            if (pAttacker.getOffhandItem() == pStack) {
-//                return;
-//            }
-//        }
-//
-//    }
-
-    @Override
-    public int getMaxLevel() {
-        return 3;
     }
 }

@@ -1,23 +1,18 @@
 package org.thecelestialworkshop.celestisynth.common.recipe;
 
 import org.thecelestialworkshop.celestisynth.common.registry.CSRecipeTypes;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.Container;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
-public class StarlitFactoryRecipe implements Recipe<Container> {
-    protected final ResourceLocation id;
+public class StarlitFactoryRecipe implements Recipe<StarlitFactoryRecipeInput> {
     protected final Ingredient baseMaterial;
     protected final Ingredient baseMaterial1;
     protected final Ingredient baseMaterial2;
@@ -27,8 +22,7 @@ public class StarlitFactoryRecipe implements Recipe<Container> {
     protected final ItemStack result;
     protected final int forgeTime;
 
-    public StarlitFactoryRecipe(ResourceLocation id, Ingredient baseMaterial, Ingredient baseMaterial1, Ingredient baseMaterial2, Ingredient supportingMaterial, Ingredient supportingMaterial1, Ingredient supportingMaterial2, ItemStack result, int forgeTime) {
-        this.id = id;
+    public StarlitFactoryRecipe(Ingredient baseMaterial, Ingredient baseMaterial1, Ingredient baseMaterial2, Ingredient supportingMaterial, Ingredient supportingMaterial1, Ingredient supportingMaterial2, ItemStack result, int forgeTime) {
         this.baseMaterial = baseMaterial;
         this.baseMaterial1 = baseMaterial1;
         this.baseMaterial2 = baseMaterial2;
@@ -44,7 +38,8 @@ public class StarlitFactoryRecipe implements Recipe<Container> {
         return CSRecipeTypes.STARLIT_FACTORY.get();
     }
 
-    public boolean matches(Container pInv, Level pLevel) {
+    @Override
+    public boolean matches(StarlitFactoryRecipeInput pInv, Level pLevel) {
         return
                 baseMaterial.test(!pInv.getItem(0).isEmpty() ? pInv.getItem(0) : ItemStack.EMPTY) &&
                         baseMaterial1.test(!pInv.getItem(1).isEmpty() ? pInv.getItem(1) : ItemStack.EMPTY) &&
@@ -55,14 +50,17 @@ public class StarlitFactoryRecipe implements Recipe<Container> {
                 ;
     }
 
-    public ItemStack assemble(Container pContainer, RegistryAccess pRegistryAccess) {
+    @Override
+    public ItemStack assemble(StarlitFactoryRecipeInput pContainer, HolderLookup.Provider pRegistries) {
         return this.result.copy();
     }
 
+    @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return true;
     }
 
+    @Override
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> nonnulllist = NonNullList.create();
         nonnulllist.add(this.baseMaterial);
@@ -78,7 +76,8 @@ public class StarlitFactoryRecipe implements Recipe<Container> {
         return result;
     }
 
-    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
+    @Override
+    public ItemStack getResultItem(HolderLookup.Provider pRegistries) {
         return this.result;
     }
 
@@ -86,83 +85,60 @@ public class StarlitFactoryRecipe implements Recipe<Container> {
         return this.forgeTime;
     }
 
-    public ResourceLocation getId() {
-        return this.id;
-    }
-
+    @Override
     public RecipeType<?> getType() {
         return CSRecipeTypes.STARLIT_FACTORY_TYPE.get();
     }
 
     public static class Serializer implements RecipeSerializer<StarlitFactoryRecipe> {
-        private final int defaultForgingTime;
+        public static final int DEFAULT_FORGING_TIME = 200;
 
-        public Serializer() {
-            this.defaultForgingTime = 200;
-        }
+        public static final MapCodec<StarlitFactoryRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Ingredient.CODEC.fieldOf("core_material").forGetter(r -> r.baseMaterial),
+                Ingredient.CODEC.fieldOf("supporting_core_material").forGetter(r -> r.baseMaterial1),
+                Ingredient.CODEC.fieldOf("extra_core_material").forGetter(r -> r.baseMaterial2),
+                Ingredient.CODEC.fieldOf("supporting_material_top").forGetter(r -> r.supportingMaterial),
+                Ingredient.CODEC.fieldOf("supporting_material_middle").forGetter(r -> r.supportingMaterial1),
+                Ingredient.CODEC.fieldOf("supporting_material_bottom").forGetter(r -> r.supportingMaterial2),
+                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(r -> r.result),
+                Codec.INT.optionalFieldOf("forging_time", DEFAULT_FORGING_TIME).forGetter(r -> r.forgeTime)
+        ).apply(instance, StarlitFactoryRecipe::new));
 
-        @Override
-        public StarlitFactoryRecipe fromJson(ResourceLocation pRecipeId, JsonObject pJson) {
+        public static final StreamCodec<RegistryFriendlyByteBuf, StarlitFactoryRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork, Serializer::fromNetwork
+        );
 
-            // MATERIALS
-
-            Ingredient baseMaterial = Ingredient.fromJson(this.extractJsonElement(pJson, "core_material"), true);
-            Ingredient baseMaterial1 = Ingredient.fromJson(this.extractJsonElement(pJson, "supporting_core_material"), true);
-            Ingredient baseMaterial2 = Ingredient.fromJson(this.extractJsonElement(pJson, "extra_core_material"), true);
-
-            Ingredient supportingMaterial = Ingredient.fromJson(this.extractJsonElement(pJson, "supporting_material_top"), true);
-            Ingredient supportingMaterial1 = Ingredient.fromJson(this.extractJsonElement(pJson, "supporting_material_middle"), true);
-            Ingredient supportingMaterial2 = Ingredient.fromJson(this.extractJsonElement(pJson, "supporting_material_bottom"), true);
-
-            // RESULT
-
-            if (!pJson.has("result")) {
-                throw new JsonSyntaxException("mfw you try'na make a recipe without a result item wtf are you trying to cook??");
-            }
-
-            ItemStack result;
-            if (pJson.get("result").isJsonObject()) {
-                result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pJson, "result"));
-            } else {
-                String resultItemFromJsonBrainrot = GsonHelper.getAsString(pJson, "result");
-                ResourceLocation resourcelocation = new ResourceLocation(resultItemFromJsonBrainrot);
-                result = new ItemStack(BuiltInRegistries.ITEM.getOptional(resourcelocation).orElseThrow(() -> new IllegalStateException(resultItemFromJsonBrainrot + " does NOT exist, that's not COOL AT ALL!!!")));
-            }
-
-            // FORGING TIME
-
-            int forgingTime = GsonHelper.getAsInt(pJson, "forging_time", this.defaultForgingTime);
-
-            return new StarlitFactoryRecipe(pRecipeId, baseMaterial, baseMaterial1, baseMaterial2, supportingMaterial, supportingMaterial1, supportingMaterial2, result, forgingTime);
-        }
-
-        @Override
-        public @Nullable StarlitFactoryRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
-            Ingredient baseMaterial = Ingredient.fromNetwork(pBuffer);
-            Ingredient baseMaterial1 = Ingredient.fromNetwork(pBuffer);
-            Ingredient baseMaterial2 = Ingredient.fromNetwork(pBuffer);
-            Ingredient supportingMaterial = Ingredient.fromNetwork(pBuffer);
-            Ingredient supportingMaterial1 = Ingredient.fromNetwork(pBuffer);
-            Ingredient supportingMaterial2 = Ingredient.fromNetwork(pBuffer);
-            ItemStack result = pBuffer.readItem();
+        private static StarlitFactoryRecipe fromNetwork(RegistryFriendlyByteBuf pBuffer) {
+            Ingredient baseMaterial = Ingredient.CONTENTS_STREAM_CODEC.decode(pBuffer);
+            Ingredient baseMaterial1 = Ingredient.CONTENTS_STREAM_CODEC.decode(pBuffer);
+            Ingredient baseMaterial2 = Ingredient.CONTENTS_STREAM_CODEC.decode(pBuffer);
+            Ingredient supportingMaterial = Ingredient.CONTENTS_STREAM_CODEC.decode(pBuffer);
+            Ingredient supportingMaterial1 = Ingredient.CONTENTS_STREAM_CODEC.decode(pBuffer);
+            Ingredient supportingMaterial2 = Ingredient.CONTENTS_STREAM_CODEC.decode(pBuffer);
+            ItemStack result = ItemStack.STREAM_CODEC.decode(pBuffer);
             int forgingTime = pBuffer.readVarInt();
-            return new StarlitFactoryRecipe(pRecipeId, baseMaterial, baseMaterial1, baseMaterial2, supportingMaterial, supportingMaterial1, supportingMaterial2, result, forgingTime);
+            return new StarlitFactoryRecipe(baseMaterial, baseMaterial1, baseMaterial2, supportingMaterial, supportingMaterial1, supportingMaterial2, result, forgingTime);
         }
 
-        @Override
-        public void toNetwork(FriendlyByteBuf pBuffer, StarlitFactoryRecipe pRecipe) {
-            pRecipe.baseMaterial.toNetwork(pBuffer);
-            pRecipe.baseMaterial1.toNetwork(pBuffer);
-            pRecipe.baseMaterial2.toNetwork(pBuffer);
-            pRecipe.supportingMaterial.toNetwork(pBuffer);
-            pRecipe.supportingMaterial1.toNetwork(pBuffer);
-            pRecipe.supportingMaterial2.toNetwork(pBuffer);
-            pBuffer.writeItem(pRecipe.result);
+        private static void toNetwork(RegistryFriendlyByteBuf pBuffer, StarlitFactoryRecipe pRecipe) {
+            Ingredient.CONTENTS_STREAM_CODEC.encode(pBuffer, pRecipe.baseMaterial);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(pBuffer, pRecipe.baseMaterial1);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(pBuffer, pRecipe.baseMaterial2);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(pBuffer, pRecipe.supportingMaterial);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(pBuffer, pRecipe.supportingMaterial1);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(pBuffer, pRecipe.supportingMaterial2);
+            ItemStack.STREAM_CODEC.encode(pBuffer, pRecipe.result);
             pBuffer.writeVarInt(pRecipe.forgeTime);
         }
 
-        public JsonElement extractJsonElement(JsonObject pJson, String memberName) {
-            return GsonHelper.isArrayNode(pJson, memberName) ? GsonHelper.getAsJsonArray(pJson, memberName) : GsonHelper.getAsJsonObject(pJson, memberName);
+        @Override
+        public MapCodec<StarlitFactoryRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, StarlitFactoryRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

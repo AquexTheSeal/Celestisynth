@@ -3,6 +3,7 @@ package org.thecelestialworkshop.celestisynth.common.block;
 import org.thecelestialworkshop.celestisynth.client.gui.starlitfactory.StarlitFactoryMenu;
 import org.thecelestialworkshop.celestisynth.common.network.s2c.BlockEntitySetSlotPacket;
 import org.thecelestialworkshop.celestisynth.common.recipe.StarlitFactoryRecipe;
+import org.thecelestialworkshop.celestisynth.common.recipe.StarlitFactoryRecipeInput;
 import org.thecelestialworkshop.celestisynth.common.registry.CSBlockEntityTypes;
 import org.thecelestialworkshop.celestisynth.common.registry.CSItems;
 import org.thecelestialworkshop.celestisynth.common.registry.CSParticleTypes;
@@ -13,6 +14,7 @@ import com.google.common.collect.Maps;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -30,12 +32,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.RecipeHolder;
+import net.minecraft.world.inventory.RecipeCraftingHolder;
 import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -45,17 +47,17 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, RecipeHolder, StackedContentsCompatible, GeoBlockEntity {
+public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, RecipeCraftingHolder, StackedContentsCompatible, GeoBlockEntity {
     private final RecipeType<StarlitFactoryRecipe> recipeType;
     protected NonNullList<ItemStack> containedItems = NonNullList.withSize(8, ItemStack.EMPTY);
     int energyBurnTime;
@@ -91,7 +93,7 @@ public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implemen
         }
     };
     private final Object2IntOpenHashMap<ResourceLocation> recipesUsed = new Object2IntOpenHashMap<>();
-    private final RecipeManager.CachedCheck<Container, StarlitFactoryRecipe> quickCheck;
+    private final RecipeManager.CachedCheck<StarlitFactoryRecipeInput, StarlitFactoryRecipe> quickCheck;
 
     int tickCount;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -168,7 +170,8 @@ public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implemen
             }
         }
 
-        StarlitFactoryRecipe recipe = quickCheck.getRecipeFor(this, pLevel).orElse(null);
+        RecipeHolder<StarlitFactoryRecipe> recipeHolder = quickCheck.getRecipeFor(this.recipeInput(), pLevel).orElse(null);
+        StarlitFactoryRecipe recipe = recipeHolder == null ? null : recipeHolder.value();
 
         if (recipe == null) {
             this.isHoldingValidRecipe = 0;
@@ -197,7 +200,7 @@ public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implemen
                         for (int i = 0; i < 45; i++) {
                             ParticleUtil.sendParticle(pLevel, CSParticleTypes.RAINFALL_ENERGY_SMALL.get(), Vec3.atCenterOf(pPos).add(0, 0.5, 0), Vec3.ZERO.add(Mth.sin(i) * 0.4, 0, Mth.cos(i) * 0.4));
                         }
-                        this.setRecipeUsed(recipe);
+                        this.setRecipeUsed(recipeHolder);
                     }
                 }
             } else {
@@ -209,9 +212,13 @@ public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implemen
         }
     }
 
+    public StarlitFactoryRecipeInput recipeInput() {
+        return new StarlitFactoryRecipeInput(java.util.List.copyOf(this.containedItems.subList(0, 6)));
+    }
+
     public boolean isRecipeAvailableToForge(RegistryAccess access, StarlitFactoryRecipe recipe) {
         if (recipe != null) {
-            ItemStack recipeStack = recipe.assemble(this, access);
+            ItemStack recipeStack = recipe.assemble(this.recipeInput(), access);
             if (recipeStack.isEmpty()) {
                 return false;
             } else {
@@ -234,7 +241,7 @@ public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implemen
     public boolean finishForging(RegistryAccess access, StarlitFactoryRecipe recipe) {
         if (recipe != null && this.isRecipeAvailableToForge(access, recipe)) {
             ItemStack resultStack = containedItems.get(StarlitFactoryMenu.RESULT_SLOT);
-            ItemStack formedResultItem = recipe.assemble(this, access);
+            ItemStack formedResultItem = recipe.assemble(this.recipeInput(), access);
             if (resultStack.isEmpty()) {
                 this.setItem(StarlitFactoryMenu.RESULT_SLOT, formedResultItem.copy());
             } else if (resultStack.is(formedResultItem.getItem())) {
@@ -259,23 +266,25 @@ public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implemen
         return this.energyAmount > 0;
     }
 
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    @Override
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.loadAdditional(pTag, pRegistries);
         this.containedItems = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(pTag, this.containedItems);
+        ContainerHelper.loadAllItems(pTag, this.containedItems, pRegistries);
         this.factoryForgeTime = pTag.getInt("factoryForgeTime");
         this.energyAmount = pTag.getInt("energyAmount");
         this.energyBurnTime = pTag.getInt("energyBurnTime");
         this.maxFactoryForgeTime = pTag.getInt("maxFactoryForgeTime");
         CompoundTag compoundtag = pTag.getCompound("RecipesUsed");
         for(String s : compoundtag.getAllKeys()) {
-            this.recipesUsed.put(new ResourceLocation(s), compoundtag.getInt(s));
+            this.recipesUsed.put(ResourceLocation.parse(s), compoundtag.getInt(s));
         }
     }
 
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        ContainerHelper.saveAllItems(pTag, this.containedItems);
+    @Override
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.saveAdditional(pTag, pRegistries);
+        ContainerHelper.saveAllItems(pTag, this.containedItems, pRegistries);
         pTag.putInt("factoryForgeTime", this.energyBurnTime);
         pTag.putInt("energyAmount", this.energyAmount);
         pTag.putInt("energyBurnTime", this.energyBurnTime);
@@ -327,9 +336,19 @@ public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implemen
     }
 
     @Override
+    protected NonNullList<ItemStack> getItems() {
+        return this.containedItems;
+    }
+
+    @Override
+    protected void setItems(NonNullList<ItemStack> pItems) {
+        this.containedItems = pItems;
+    }
+
+    @Override
     public void setItem(int pSlot, ItemStack pStack) {
         ItemStack itemstack = this.containedItems.get(pSlot);
-        boolean flag = !pStack.isEmpty() && ItemStack.isSameItemSameTags(itemstack, pStack);
+        boolean flag = !pStack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack, pStack);
         this.containedItems.set(pSlot, pStack);
         if (pStack.getCount() > this.getMaxStackSize()) {
             pStack.setCount(this.getMaxStackSize());
@@ -350,16 +369,16 @@ public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implemen
     }
 
     @Override
-    public void setRecipeUsed(@Nullable Recipe<?> pRecipe) {
+    public void setRecipeUsed(@Nullable RecipeHolder<?> pRecipe) {
         if (pRecipe != null) {
-            ResourceLocation resourcelocation = pRecipe.getId();
+            ResourceLocation resourcelocation = pRecipe.id();
             this.recipesUsed.addTo(resourcelocation, 1);
         }
     }
 
     @Nullable
     @Override
-    public Recipe<?> getRecipeUsed() {
+    public RecipeHolder<?> getRecipeUsed() {
         return null;
     }
 
@@ -389,9 +408,10 @@ public class StarlitFactoryBlockEntity extends BaseContainerBlockEntity implemen
         return true;
     }
 
-    public CompoundTag getUpdateTag() {
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         CompoundTag tag = new CompoundTag();
-        this.saveAdditional(tag);
+        this.saveAdditional(tag, pRegistries);
         return tag;
     }
 }

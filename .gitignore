@@ -20,6 +20,12 @@ build
 # other
 eclipse
 run
+runs
+run-data
+run-server
+run-client.log
 
-# Files from Forge MDK
-forge*changelog.txt
+repo
+
+# original 1.20.1 compat sources kept locally while integrations are re-ported
+disabled-compat

@@ -1,0 +1,34 @@
+{
+  "criteria": {
+    "obtained_core": {
+      "conditions": {
+        "items": [
+          {
+            "items": "celestisynth:celestial_core"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "background": "celestisynth:textures/block/zephyr_deposit.png",
+    "description": {
+      "translate": "advancement.celestisynth.obtain_celestial_core.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "celestisynth:celestial_core"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancement.celestisynth.obtain_celestial_core.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained_core"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,6 +1,6 @@
 package org.thecelestialworkshop.celestisynth.manager;
 
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 
 public class CSIntegrationManager {
     public static final String YUNGS_BETTER_FORTRESSES_MODID = "betterfortresses";

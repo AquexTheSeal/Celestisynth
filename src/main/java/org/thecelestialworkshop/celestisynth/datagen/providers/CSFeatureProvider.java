@@ -5,7 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -16,16 +16,15 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.common.world.ForgeBiomeModifiers;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.world.BiomeModifier;
 
 import java.util.List;
 
 public class CSFeatureProvider {
 
     public static class ConfiguredFeatures {
-        public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> ctx) {
+        public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> ctx) {
             ctx.register(CSFeatures.SOLAR_CRATER_CONFIGURED, new ConfiguredFeature<>(CSFeatures.SOLAR_CRATER.get(), new NoneFeatureConfiguration()));
             ctx.register(CSFeatures.LUNAR_CRATER_CONFIGURED, new ConfiguredFeature<>(CSFeatures.LUNAR_CRATER.get(), new NoneFeatureConfiguration()));
             ctx.register(CSFeatures.ZEPHYR_DEPOSIT_CONFIGURED, new ConfiguredFeature<>(CSFeatures.ZEPHYR_DEPOSIT.get(), new NoneFeatureConfiguration()));
@@ -34,7 +33,7 @@ public class CSFeatureProvider {
     }
 
     public static class PlacedFeatures {
-        public static void bootstrap(BootstapContext<PlacedFeature> ctx) {
+        public static void bootstrap(BootstrapContext<PlacedFeature> ctx) {
             ctx.register(CSFeatures.SOLAR_CRATER_PLACED, new PlacedFeature(ctx.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CSFeatures.SOLAR_CRATER_CONFIGURED),
                     List.of(
                             RarityFilter.onAverageOnceEvery(85), CountOnEveryLayerPlacement.of(1), BiomeFilter.biome()
@@ -67,29 +66,29 @@ public class CSFeatureProvider {
     }
 
     public static class BiomeModifiers {
-        public static void bootstrap(BootstapContext<BiomeModifier> ctx) {
+        public static void bootstrap(BootstrapContext<BiomeModifier> ctx) {
             final HolderGetter<PlacedFeature> featureRegistry = ctx.lookup(Registries.PLACED_FEATURE);
             final HolderGetter<Biome> biomeRegistry = ctx.lookup(Registries.BIOME);
 
-            ctx.register(CSFeatures.SOLAR_CRATER_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+            ctx.register(CSFeatures.SOLAR_CRATER_MODIFIER, new net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifier(
                     biomeRegistry.getOrThrow(BiomeTags.IS_NETHER),
                     HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.SOLAR_CRATER_PLACED)),
                     GenerationStep.Decoration.SURFACE_STRUCTURES
                     )
             );
-            ctx.register(CSFeatures.LUNAR_CRATER_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+            ctx.register(CSFeatures.LUNAR_CRATER_MODIFIER, new net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifier(
                     biomeRegistry.getOrThrow(BiomeTags.IS_OVERWORLD),
                     HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.LUNAR_CRATER_PLACED)),
                     GenerationStep.Decoration.UNDERGROUND_STRUCTURES
                     )
             );
-            ctx.register(CSFeatures.ZEPHYR_DEPOSIT_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+            ctx.register(CSFeatures.ZEPHYR_DEPOSIT_MODIFIER, new net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifier(
                     biomeRegistry.getOrThrow(Tags.Biomes.IS_MOUNTAIN),
                     HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.ZEPHYR_DEPOSIT_PLACED)),
                     GenerationStep.Decoration.SURFACE_STRUCTURES
                     )
             );
-            ctx.register(CSFeatures.WINTEREIS_SPIKES_MODIFIER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+            ctx.register(CSFeatures.WINTEREIS_SPIKES_MODIFIER, new net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifier(
                             biomeRegistry.getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD),
                             HolderSet.direct(featureRegistry.getOrThrow(CSFeatures.WINTEREIS_SPIKES_PLACED)),
                             GenerationStep.Decoration.UNDERGROUND_STRUCTURES

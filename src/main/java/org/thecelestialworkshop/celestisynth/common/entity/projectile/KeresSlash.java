@@ -18,10 +18,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class KeresSlash extends ThrowableProjectile implements GeoEntity, CSWeaponUtil {
@@ -54,7 +54,7 @@ public class KeresSlash extends ThrowableProjectile implements GeoEntity, CSWeap
         super.onHitEntity(pResult);
         if (this.getOwner() instanceof LivingEntity owner) {
             if (pResult.getEntity() instanceof LivingEntity target && target != owner) {
-                target.addEffect(new MobEffectInstance(CSMobEffects.CURSEBANE.get(), 100, 1));
+                target.addEffect(new MobEffectInstance(CSMobEffects.CURSEBANE, 100, 1));
                 float damageCalculation = baseDamage + (target.getMaxHealth() * (baseDamage * 0.0035F));
                 this.initiateAbilityAttack(owner, target, damageCalculation, damageSources().indirectMagic(this, this.getOwner()), AttackHurtTypes.RAPID_NO_KB);
                 owner.heal(damageCalculation * 0.5F);
@@ -107,7 +107,7 @@ public class KeresSlash extends ThrowableProjectile implements GeoEntity, CSWeap
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(ROLL, 0F);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        builder.define(ROLL, 0F);
     }
 }

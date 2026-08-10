@@ -5,7 +5,7 @@ import org.thecelestialworkshop.celestisynth.api.item.CSWeaponUtil;
 import org.thecelestialworkshop.celestisynth.common.attack.base.WeaponAttackInstance;
 import org.thecelestialworkshop.celestisynth.common.attack.solaris.SolarisFullRoundAttack;
 import org.thecelestialworkshop.celestisynth.common.attack.solaris.SolarisSoulDashAttack;
-import org.thecelestialworkshop.celestisynth.common.compat.bettercombat.SwingParticleContainer;
+import org.thecelestialworkshop.celestisynth.api.item.SwingParticleContainer;
 import org.thecelestialworkshop.celestisynth.common.entity.projectile.SolarisBomb;
 import org.thecelestialworkshop.celestisynth.common.item.base.SkilledSwordItem;
 import org.thecelestialworkshop.celestisynth.common.registry.CSEntityTypes;
@@ -29,7 +29,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 
 import java.util.List;
 
@@ -84,7 +84,7 @@ public class SolarisItem extends SkilledSwordItem implements CSGeoItem {
     @Override
     public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) {
         super.onUseTick(pLevel, pLivingEntity, pStack, pRemainingUseDuration);
-        int dur = this.getUseDuration(pStack) - pRemainingUseDuration;
+        int dur = this.getUseDuration(pStack, pLivingEntity) - pRemainingUseDuration;
 
         double xV = Mth.sin(dur) * 3;
         double zV = Mth.cos(dur) * 3;
@@ -115,7 +115,7 @@ public class SolarisItem extends SkilledSwordItem implements CSGeoItem {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
+    public int getUseDuration(@NotNull ItemStack stack, net.minecraft.world.entity.LivingEntity useEntity) {
         return 72000;
     }
 
@@ -126,7 +126,7 @@ public class SolarisItem extends SkilledSwordItem implements CSGeoItem {
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity entity, LivingEntity source) {
-        entity.setSecondsOnFire(5);
+        entity.igniteForSeconds(5);
         return super.hurtEnemy(itemStack, entity, source);
     }
 

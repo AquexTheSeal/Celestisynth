@@ -6,7 +6,7 @@ import org.thecelestialworkshop.celestisynth.api.item.CSArmorItem;
 import org.thecelestialworkshop.celestisynth.api.item.CSWeapon;
 import org.thecelestialworkshop.celestisynth.api.item.CSWeaponUtil;
 import org.thecelestialworkshop.celestisynth.common.capabilities.CSEntityCapabilityProvider;
-import org.thecelestialworkshop.celestisynth.common.compat.CompatRegistryManager;
+import org.thecelestialworkshop.celestisynth.common.enchantments.PulsationEnchantment;
 import org.thecelestialworkshop.celestisynth.common.entity.mob.natural.Traverser;
 import org.thecelestialworkshop.celestisynth.common.entity.projectile.SolarisBomb;
 import org.thecelestialworkshop.celestisynth.common.entity.skillcast.SkillCastPoltergeistWard;
@@ -23,19 +23,18 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.ItemAttributeModifierEvent;
-import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.CriticalHitEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.*;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 
 import java.util.stream.Collectors;
 
 public class CSCommonMiscEvents {
 
     @SubscribeEvent
-    public static void onLivingTickEvent(LivingEvent.LivingTickEvent event) {
-        LivingEntity entity = event.getEntity();
+    public static void onLivingTickEvent(net.neoforged.neoforge.event.tick.EntityTickEvent.Post event) {
+        if (!(event.getEntity() instanceof LivingEntity entity)) return;
         CSEntityCapabilityProvider.get(entity).ifPresent(data -> {
             if (data.getQuasarImbueSource() != null) {
                 double radius = 0.5 + entity.getBbWidth();
@@ -98,22 +97,17 @@ public class CSCommonMiscEvents {
     }
 
     @SubscribeEvent
-    public static void giveItemAttributes(ItemAttributeModifierEvent event) {
-        CompatRegistryManager.manageCompatAttributes(event);
-    }
-
-    @SubscribeEvent
     public static void onLivingHealEvent(LivingHealEvent event) {
-        if (event.getEntity().hasEffect(CSMobEffects.CURSEBANE.get())) {
-            event.setAmount((float) (event.getAmount() / (1 + (event.getEntity().getEffect(CSMobEffects.CURSEBANE.get()).getAmplifier() * 2.4))));
+        if (event.getEntity().hasEffect(CSMobEffects.CURSEBANE)) {
+            event.setAmount((float) (event.getAmount() / (1 + (event.getEntity().getEffect(CSMobEffects.CURSEBANE).getAmplifier() * 2.4))));
         }
-        if (event.getEntity().hasEffect(CSMobEffects.HELLBANE.get())) {
-            event.setAmount((float) (event.getAmount() * (1 + (event.getEntity().getEffect(CSMobEffects.HELLBANE.get()).getAmplifier() * 1.6))));
+        if (event.getEntity().hasEffect(CSMobEffects.HELLBANE)) {
+            event.setAmount((float) (event.getAmount() * (1 + (event.getEntity().getEffect(CSMobEffects.HELLBANE).getAmplifier() * 1.6))));
         }
     }
 
     @SubscribeEvent
-    public static void onLivingHurtEvent(LivingHurtEvent event) {
+    public static void onLivingHurtEvent(LivingIncomingDamageEvent event) {
         LivingEntity entity = event.getEntity();
         ItemStack itemR = entity.getMainHandItem();
         ItemStack itemL = entity.getOffhandItem();
@@ -128,18 +122,14 @@ public class CSCommonMiscEvents {
 
         CSArmorItem.hurtWearer(event);
 
-//        if (event.getSource().getEntity() instanceof LivingEntity source) {
-//            source.getHandSlots().forEach(slot -> {
-//                for (Map.Entry<Enchantment, Integer> enchantmentMap : EnchantmentHelper.getEnchantments(slot).entrySet()) {
-//                    if (enchantmentMap.getKey() instanceof BaseEnchantment enchantment) {
-//                        int level = enchantmentMap.getValue();
-//                        enchantment.afterAttack(source, event.getEntity(), slot, level);
-//                    }
-//                }
-//            });
-//        }
-
         SolarisBomb.handleHurtEvent(event);
+    }
+
+    @SubscribeEvent
+    public static void onLivingDamagePost(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof LivingEntity source && source == event.getSource().getDirectEntity()) {
+            PulsationEnchantment.onAttack(source, event.getEntity(), event.getSource());
+        }
     }
 
     @SubscribeEvent
@@ -214,7 +204,7 @@ public class CSCommonMiscEvents {
         ObjectArrayList<ItemStack> invCompartments = Streams.concat(inv.items.stream(), inv.armor.stream(), inv.offhand.stream()).collect(Collectors.toCollection(ObjectArrayList::new));
 
         for (ItemStack stack : invCompartments) {
-            if (!stack.isEmpty() && stack.getTagElement(CSWeapon.CS_CONTROLLER_TAG_ELEMENT) != null) stack.getTag().remove(CSWeapon.CS_CONTROLLER_TAG_ELEMENT);
+            if (!stack.isEmpty()) stack.remove(org.thecelestialworkshop.celestisynth.common.registry.CSDataComponents.CS_CONTROLLER.get());
         }
     }
 }

@@ -11,9 +11,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import org.thecelestialworkshop.celestisynth.Celestisynth;
 import org.thecelestialworkshop.celestisynth.common.registry.CSBlocks;
@@ -85,9 +85,9 @@ public class CSTagsProvider {
         protected void addTags(HolderLookup.Provider pProvider) {
             tag(CSTags.EntityTypes.FROSTBOUND_SENSITIVE)
                     .add(EntityType.BLAZE, EntityType.GHAST, EntityType.MAGMA_CUBE)
-                    .addOptional(new ResourceLocation("cataclysm", "ignited_revenant"))
-                    .addOptional(new ResourceLocation("cataclysm", "ignis"))
-                    .addOptional(new ResourceLocation("iceandfire", "fire_dragon"))
+                    .addOptional(ResourceLocation.fromNamespaceAndPath("cataclysm", "ignited_revenant"))
+                    .addOptional(ResourceLocation.fromNamespaceAndPath("cataclysm", "ignis"))
+                    .addOptional(ResourceLocation.fromNamespaceAndPath("iceandfire", "fire_dragon"))
             ;
         }
     }
@@ -116,7 +116,7 @@ public class CSTagsProvider {
         protected void addTags(HolderLookup.Provider pProvider) {
             tag(CSTags.Structures.NETHER_MONOLITH_SPAWN)
                     .add(BuiltinStructures.FORTRESS)
-                    .addOptionalTag(new ResourceLocation(CSIntegrationManager.YUNGS_BETTER_FORTRESSES_MODID, "better_fortresses"))
+                    .addOptionalTag(ResourceLocation.fromNamespaceAndPath(CSIntegrationManager.YUNGS_BETTER_FORTRESSES_MODID, "better_fortresses"))
             ;
         }
     }

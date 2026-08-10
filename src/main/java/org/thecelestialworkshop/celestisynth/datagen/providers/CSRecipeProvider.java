@@ -1,11 +1,11 @@
 package org.thecelestialworkshop.celestisynth.datagen.providers;
 
+import java.util.function.Supplier;
+
 import org.thecelestialworkshop.celestisynth.Celestisynth;
-import org.thecelestialworkshop.celestisynth.common.compat.spellbooks.ISSItemUtil;
 import org.thecelestialworkshop.celestisynth.common.recipe.StarlitFactoryRecipeBuilder;
 import org.thecelestialworkshop.celestisynth.common.registry.CSBlocks;
 import org.thecelestialworkshop.celestisynth.common.registry.CSItems;
-import org.thecelestialworkshop.celestisynth.manager.CSIntegrationManager;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -16,14 +16,15 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
-import java.util.function.Consumer;
+import net.minecraft.core.HolderLookup;
+import java.util.concurrent.CompletableFuture;
 
 public class CSRecipeProvider extends RecipeProvider {
 
-    public CSRecipeProvider(PackOutput output) {
-        super(output);
+    public CSRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries);
     }
 
     public ResourceLocation modLoc(String path) {
@@ -31,7 +32,7 @@ public class CSRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildRecipes(RecipeOutput consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CSItems.CELESTIAL_CORE.get())
                 .pattern(" x ").pattern("xyx").pattern(" x ")
                 .define('x', Ingredient.of(Items.AMETHYST_SHARD)).define('y', Ingredient.of(csItemTag("celestial_core_bases")))
@@ -152,35 +153,36 @@ public class CSRecipeProvider extends RecipeProvider {
                 CSItems.KERES.get(), 800
         ).save(consumer, modLoc("keres"));
 
-        if (CSIntegrationManager.checkIronsSpellbooks()) {
-            ISSItemUtil.manageRecipeCompatibility(consumer, this);
-        }
     }
 
-    protected void armorSetWithGold(Consumer<FinishedRecipe> consumer, RegistryObject<? extends ItemLike> material, RegistryObject<? extends ItemLike> helmet, RegistryObject<? extends ItemLike> chestplate, RegistryObject<? extends ItemLike> leggings, RegistryObject<? extends ItemLike> boots) {
+    protected void armorSetWithGold(RecipeOutput consumer, Supplier<? extends ItemLike> material, Supplier<? extends ItemLike> helmet, Supplier<? extends ItemLike> chestplate, Supplier<? extends ItemLike> leggings, Supplier<? extends ItemLike> boots) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, helmet.get())
                 .pattern("xgx").pattern("x x")
                 .define('x', Ingredient.of(material.get())).define('g', Ingredient.of(Items.GOLD_BLOCK))
                 .unlockedBy("has_item", has(material.get()))
-                .save(consumer, modLoc(material.getId().getPath() + "_helmet"));
+                .save(consumer, modLoc(materialPath(material) + "_helmet"));
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, chestplate.get())
                 .pattern("x x").pattern("xgx").pattern("xxx")
                 .define('x', Ingredient.of(material.get())).define('g', Ingredient.of(Items.GOLD_BLOCK))
                 .unlockedBy("has_item", has(material.get()))
-                .save(consumer, modLoc(material.getId().getPath() + "_chestplate"));
+                .save(consumer, modLoc(materialPath(material) + "_chestplate"));
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, leggings.get())
                 .pattern("xgx").pattern("x x").pattern("x x")
                 .define('x', Ingredient.of(material.get())).define('g', Ingredient.of(Items.GOLD_BLOCK))
                 .unlockedBy("has_item", has(material.get()))
-                .save(consumer, modLoc(material.getId().getPath() + "_leggings"));
+                .save(consumer, modLoc(materialPath(material) + "_leggings"));
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, boots.get())
                 .pattern("x x").pattern("xgx")
                 .define('x', Ingredient.of(material.get())).define('g', Ingredient.of(Items.GOLD_BLOCK))
                 .unlockedBy("has_item", has(material.get()))
-                .save(consumer, modLoc(material.getId().getPath() + "_boots"));
+                .save(consumer, modLoc(materialPath(material) + "_boots"));
     }
 
     public TagKey<Item> csItemTag(String name) {
-        return ItemTags.create(new ResourceLocation(Celestisynth.MODID,name));
+        return ItemTags.create(ResourceLocation.fromNamespaceAndPath(Celestisynth.MODID, name));
+    }
+
+    protected static String materialPath(Supplier<? extends ItemLike> material) {
+        return net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(material.get().asItem()).getPath();
     }
 }

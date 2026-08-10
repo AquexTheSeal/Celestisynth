@@ -30,16 +30,16 @@ public class StarlitFactoryRenderer extends GeoBlockRenderer<StarlitFactoryBlock
     }
 
     @Override
-    public void renderRecursively(PoseStack poseStack, StarlitFactoryBlockEntity animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderRecursively(PoseStack poseStack, StarlitFactoryBlockEntity animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
+        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
         assert Minecraft.getInstance().player != null;
         float modifiedAlpha = 0.6F + Mth.sin(Minecraft.getInstance().player.tickCount * 0.25F) * 0.4F;
-        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, bufferSource.getBuffer(RenderType.eyes(GLOW_LAYER)), isReRender, partialTick, packedLight, packedOverlay, modifiedAlpha, modifiedAlpha, modifiedAlpha, alpha);
+        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, bufferSource.getBuffer(RenderType.eyes(GLOW_LAYER)), isReRender, partialTick, packedLight, packedOverlay, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, modifiedAlpha, modifiedAlpha, modifiedAlpha));
     }
 
     @Override
-    public void renderFinal(PoseStack poseStack, StarlitFactoryBlockEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderFinal(PoseStack poseStack, StarlitFactoryBlockEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int colour) {
+        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, colour);
         ItemStack stack = animatable.getItem(StarlitFactoryMenu.RESULT_SLOT);
         poseStack.pushPose();
         poseStack.translate(0.5, 1.2, 0.45);

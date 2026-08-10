@@ -25,7 +25,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 
 import java.util.List;
 
@@ -94,12 +94,10 @@ public class CrescentiaItem extends SkilledSwordItem implements CSGeoItem {
         player.playSound(SoundEvents.FIREWORK_ROCKET_LARGE_BLAST, 1.0F, 0.5F + random.nextFloat());
     }
 
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        List<Enchantment> enchantments = new ObjectArrayList<>();
-        enchantments.add(Enchantments.MULTISHOT);
+    @Override
+    public boolean supportsEnchantment(ItemStack stack, net.minecraft.core.Holder<Enchantment> enchantment) {
+        if (enchantment.is(Enchantments.MULTISHOT)) return true;
 
-        if (enchantments.contains(enchantment)) return true;
-
-        return super.canApplyAtEnchantingTable(stack, enchantment);
+        return super.supportsEnchantment(stack, enchantment);
     }
 }
